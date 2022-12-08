@@ -7,6 +7,9 @@ public class Bullet : MonoBehaviour
     [SerializeField]
     private float speed = 70f;
 
+    [SerializeField]
+    public GameObject effectHit;
+
     public void Seek(Transform target)
     {
         targetEnemy = target;
@@ -34,6 +37,10 @@ public class Bullet : MonoBehaviour
 
     void HitTarget()
     {
-        Debug.Log("Hit!");
+        GameObject effect = Instantiate(effectHit, transform.position, transform.rotation);
+        Destroy(effect, 1f);
+
+        Destroy(targetEnemy.gameObject);
+        Destroy(gameObject);
     }
 }
