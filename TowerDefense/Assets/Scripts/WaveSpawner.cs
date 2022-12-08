@@ -11,18 +11,18 @@ public class WaveSpawner : MonoBehaviour
 
     [SerializeField]
     private float timeBetweenWaves = 5f;
-    private float countdown = 2f;
+    private float timeToNextSpawn = 2f;
 
     private int waveIndex = 0;
 
     void Update()
     {
-        if (countdown <= 0f)
+        if (timeToNextSpawn <= 0f)
         {
             StartCoroutine(SpawnWave());
-            countdown = timeBetweenWaves;
+            timeToNextSpawn = timeBetweenWaves;
         }
-        countdown -= Time.deltaTime;
+        timeToNextSpawn -= Time.deltaTime;
     }
 
     IEnumerator SpawnWave()

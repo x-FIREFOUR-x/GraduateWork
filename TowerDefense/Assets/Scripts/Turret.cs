@@ -1,19 +1,33 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Turret : MonoBehaviour
 {
     [SerializeField]
     private Transform target;
+
+
+    [Header("Attributes")]
+
+    [SerializeField]
+    private float fireRate = 1f;
+    [SerializeField]
+    private float timeToNextFire = 0f;
+    [SerializeField]
+    private float shootRange = 15f;
+
+
+    [Header("Setup Fields")]
+
     [SerializeField]
     private string enemyTag = "Enemy";
 
     [SerializeField]
-    private float shootRange = 15f;
-    [SerializeField]
     private float rotateSpeed = 8f;
-    
+
+    [SerializeField]
+    private GameObject bulletPrefab;
+    [SerializeField]
+    private Transform pointStartFire;
 
     void Start()
     {
@@ -52,12 +66,32 @@ public class Turret : MonoBehaviour
     {
         if(target != null)
         {
-            Vector3 dir = target.position - transform.position;
-            Quaternion lookRotation = Quaternion.LookRotation(dir);
+            Vector3 direction = target.position - transform.position;
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
             Vector3 rotation = Quaternion.Lerp(transform.rotation, lookRotation, Time.deltaTime * rotateSpeed).eulerAngles;
 
             transform.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+
+            if(timeToNextFire <= 0f)
+            {
+                Shoot();
+                timeToNextFire = 1 / fireRate;
+            }
+
+            timeToNextFire -= Time.deltaTime;
         }
+    }
+
+    void Shoot()
+    {
+        GameObject bulletObject = Instantiate(bulletPrefab, pointStartFire.position, pointStartFire.rotation);
+        Bullet bullet = bulletObject.GetComponent<Bullet>();
+
+        if (bullet != null)
+        {
+            bullet.Seek(target);
+        }
+           
     }
 
     void OnDrawGizmosSelected()
