@@ -11,9 +11,9 @@ public class WaveSpawner : MonoBehaviour
 
     [SerializeField]
     private float timeBetweenWaves = 5f;
-    private float timeToNextSpawn = 2f;
+    private float timeToNextSpawn = 1f;
 
-    private int waveIndex = 0;
+    private int waveNumber = 1;
 
     void Update()
     {
@@ -27,12 +27,12 @@ public class WaveSpawner : MonoBehaviour
 
     IEnumerator SpawnWave()
     {
-        for (int i = 0; i < waveIndex; i++)
+        for (int i = 0; i < waveNumber; i++)
         {
             SpawnEnemy();
             yield return new WaitForSeconds(0.5f);
         }
-        waveIndex++;
+        waveNumber++;
     }
 
     void SpawnEnemy()

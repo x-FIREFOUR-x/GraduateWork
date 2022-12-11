@@ -57,6 +57,7 @@ public class MapComponentsController : MonoBehaviour
         WayPoints = Instantiate(WayPointsPrefab, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1))
             .GetComponent<WayPoints>();
         WayPoints.Initialize(generatedTilesMatrix, indexesStart, indexesEnd);
+        
     }
 
 }
