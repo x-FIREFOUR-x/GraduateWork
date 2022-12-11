@@ -14,6 +14,7 @@ public class TilesMap : MonoBehaviour
     [SerializeField]
     private int Size = 16;
 
+
     public void Initialize(List<List<int>> GeneratedTileMap)
     {
         Vector3 position = this.transform.position;
