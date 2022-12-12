@@ -42,8 +42,17 @@ public class PathGenerator
             }
             else
             {
-                pathNode.RemoveAt(pathNode.Count - 1);
-                currentNode = pathNode[pathNode.Count - 1];
+                if (pathNode.Count != 1)
+                {
+                    pathNode.RemoveAt(pathNode.Count - 1);
+                    currentNode = pathNode[pathNode.Count - 1];
+                }
+                else
+                {
+                    visitedNode = new bool[size, size];
+                    currentNode = indexesStart;
+                    visitedNode[currentNode.x, currentNode.y] = true;
+                }
             }
 
         }
