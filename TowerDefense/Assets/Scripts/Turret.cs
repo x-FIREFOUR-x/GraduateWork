@@ -5,13 +5,12 @@ public class Turret : MonoBehaviour
     [SerializeField]
     private Transform target;
 
-
     [Header("Attributes")]
 
     [SerializeField]
-    private float fireRate = 1f;
+    private float timeBetweenShoots = 1f;
     [SerializeField]
-    private float timeToNextFire = 0f;
+    private float timeToNextFire = 1f;
     [SerializeField]
     private float shootRange = 15f;
 
@@ -31,6 +30,7 @@ public class Turret : MonoBehaviour
 
     void Start()
     {
+        target = null;
         InvokeRepeating("UpdateTarget", 0f, 0.5f);   
     }
 
@@ -75,7 +75,7 @@ public class Turret : MonoBehaviour
             if(timeToNextFire <= 0f)
             {
                 Shoot();
-                timeToNextFire = 1 / fireRate;
+                timeToNextFire = timeBetweenShoots;
             }
 
             timeToNextFire -= Time.deltaTime;

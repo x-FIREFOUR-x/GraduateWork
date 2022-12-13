@@ -171,9 +171,9 @@ MonoBehaviour:
   WayPointsPrefab: {fileID: 6370203059284023274, guid: b07a176a27d72dc4e8898d803c6b5310, type: 3}
   StartBuildingPrefab: {fileID: 7429232553777342322, guid: e5f44910d69664e4090b3f64dc7df469, type: 3}
   EndBuildingPrefab: {fileID: 5827603720879718295, guid: d0437453eec017f46bfa164d7df5bc79, type: 3}
-  IndexesStart: {x: 1, y: 1}
-  IndexesEnd: {x: 14, y: 14}
-  Size: 16
+  indexesStart: {x: 1, y: 1}
+  indexesEnd: {x: 14, y: 14}
+  size: 16
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -398,4 +398,49 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2059914248
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2059914250}
+  - component: {fileID: 2059914249}
+  m_Layer: 0
+  m_Name: TowerBuildManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2059914249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2059914248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 630a418f78f07ea49ba53512402a8bd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  turretPrefab: {fileID: 7213502884983662289, guid: 4b3ecaf25bb147c41accf95248fd2d9c, type: 3}
+--- !u!4 &2059914250
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2059914248}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -20, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
