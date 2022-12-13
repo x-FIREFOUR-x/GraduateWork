@@ -8,25 +8,25 @@ public class TilesMap : MonoBehaviour
     [SerializeField]
     private GameObject PathTilePrefab;
 
-    private List<List<GameObject>> Tiles;
-    private int Size;
+    private List<List<GameObject>> tiles;
+    private int size;
 
 
-    public void Initialize(int size, List<Vector2Int> generatedPath)
+    public void Initialize(int _size, List<Vector2Int> generatedPath)
     {
-        Size = size;
+        size = _size;
 
         Vector3 position = this.transform.position;
         Quaternion rotation = this.transform.rotation;
 
-        Tiles = new List<List<GameObject>>();
+        tiles = new List<List<GameObject>>();
 
-        for (int i = 0; i < Size; i++)
+        for (int i = 0; i < size; i++)
         {
             position.x = 0;
             List<GameObject> lineTiles = new();
 
-            for (int j = 0; j < Size; j++)
+            for (int j = 0; j < size; j++)
             {
                 if (generatedPath.Contains(new Vector2Int(i, j)))
                 {
@@ -42,7 +42,7 @@ public class TilesMap : MonoBehaviour
                 position.x += TowerTilePrefab.transform.localScale.x + 1;
             }
             position.z += TowerTilePrefab.transform.localScale.z + 1;
-            Tiles.Add(lineTiles);
+            tiles.Add(lineTiles);
         }
     }
 
