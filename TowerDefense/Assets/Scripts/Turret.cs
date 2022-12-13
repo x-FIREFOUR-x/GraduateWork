@@ -6,27 +6,25 @@ public class Turret : MonoBehaviour
     private Transform target;
 
     [Header("Attributes")]
-
     [SerializeField]
     private float timeBetweenShoots = 1f;
     [SerializeField]
     private float timeToNextFire = 1f;
     [SerializeField]
     private float shootRange = 15f;
-
-
-    [Header("Setup Fields")]
-
-    [SerializeField]
-    private string enemyTag = "Enemy";
-
     [SerializeField]
     private float rotateSpeed = 8f;
 
+    [Header("Setup Fields")]
     [SerializeField]
-    private GameObject bulletPrefab;
+    private string enemyTag = "Enemy";
     [SerializeField]
     private Transform pointStartFire;
+
+    [Header("Prefabs")]
+    [SerializeField]
+    private GameObject bulletPrefab;
+
 
     void Start()
     {

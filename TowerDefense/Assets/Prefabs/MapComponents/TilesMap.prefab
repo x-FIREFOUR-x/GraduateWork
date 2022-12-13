@@ -44,6 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 436d4d46a44cedb498c73217c1e0a769, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TowerTilePrefab: {fileID: 126904175936728566, guid: e3a8b5edc6acb8048867bde8543d12d2, type: 3}
-  PathTilePrefab: {fileID: 7074800604941558903, guid: 4c244a92ba9226b43ad4267689d620ba, type: 3}
-  Size: 16
+  towerTilePrefab: {fileID: 126904175936728566, guid: e3a8b5edc6acb8048867bde8543d12d2, type: 3}
+  pathTilePrefab: {fileID: 7074800604941558903, guid: 4c244a92ba9226b43ad4267689d620ba, type: 3}

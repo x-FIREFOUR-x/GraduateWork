@@ -3,10 +3,11 @@ using UnityEngine;
 
 public class TilesMap : MonoBehaviour
 {
+    [Header("Prefabs")]
     [SerializeField]
-    private GameObject TowerTilePrefab;
+    private GameObject towerTilePrefab;
     [SerializeField]
-    private GameObject PathTilePrefab;
+    private GameObject pathTilePrefab;
 
     private List<List<GameObject>> tiles;
     private int size;
@@ -30,18 +31,18 @@ public class TilesMap : MonoBehaviour
             {
                 if (generatedPath.Contains(new Vector2Int(i, j)))
                 {
-                    GameObject tile = Instantiate(PathTilePrefab, position, rotation, this.transform);
+                    GameObject tile = Instantiate(pathTilePrefab, position, rotation, this.transform);
                     lineTiles.Add(tile);
                 }
                 else
                 {
-                    GameObject tile = Instantiate(TowerTilePrefab, position, rotation, this.transform);
+                    GameObject tile = Instantiate(towerTilePrefab, position, rotation, this.transform);
                     lineTiles.Add(tile);
                 }
 
-                position.x += TowerTilePrefab.transform.localScale.x + 1;
+                position.x += towerTilePrefab.transform.localScale.x + 1;
             }
-            position.z += TowerTilePrefab.transform.localScale.z + 1;
+            position.z += towerTilePrefab.transform.localScale.z + 1;
             tiles.Add(lineTiles);
         }
     }

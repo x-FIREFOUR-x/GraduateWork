@@ -5,20 +5,20 @@ public class MapComponentsController : MonoBehaviour
 {
     [Header("Prefabs")]
     [SerializeField]
-    private GameObject TilesMapPrefab;
+    private GameObject tilesMapPrefab;
     [SerializeField]
-    private GameObject WayPointsPrefab;
+    private GameObject wayPointsPrefab;
     [SerializeField]
-    private GameObject StartBuildingPrefab;
+    private GameObject startBuildingPrefab;
     [SerializeField]
-    private GameObject EndBuildingPrefab;
+    private GameObject endBuildingPrefab;
 
     private TilesMap tilesMap;
     private WayPoints wayPoints;
     private Transform startBuilding;
     private Transform endBuilding;
 
-    [Header("Map Attributes")]
+    [Header("Attributes")]
     [SerializeField]
     Vector2Int indexesStart = new Vector2Int(1, 1);
     [SerializeField]
@@ -30,14 +30,14 @@ public class MapComponentsController : MonoBehaviour
     {
         List<Vector2Int> generatedPath = PathGenerator.GeneratePath(size, indexesStart, indexesEnd);
 
-        tilesMap = Instantiate(TilesMapPrefab, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1))
+        tilesMap = Instantiate(tilesMapPrefab, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1))
             .GetComponent<TilesMap>();
         tilesMap.Initialize(size, generatedPath);
 
-        startBuilding = Instantiate(StartBuildingPrefab, new Vector3(5, (float)2.5, 5), new Quaternion(0, 0, 0, 1)).transform;
-        endBuilding = Instantiate(EndBuildingPrefab, new Vector3(70, (float)2.5, 70), new Quaternion(0, 0, 0, 1)).transform;
+        startBuilding = Instantiate(startBuildingPrefab, new Vector3(5, (float)2.5, 5), new Quaternion(0, 0, 0, 1)).transform;
+        endBuilding = Instantiate(endBuildingPrefab, new Vector3(70, (float)2.5, 70), new Quaternion(0, 0, 0, 1)).transform;
 
-        wayPoints = Instantiate(WayPointsPrefab, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1))
+        wayPoints = Instantiate(wayPointsPrefab, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1))
             .GetComponent<WayPoints>();
         wayPoints.Initialize(generatedPath);
     }

@@ -5,6 +5,8 @@ public class TowerTile : MonoBehaviour
 {
     private Renderer render;
 
+    [Header("Attributes")]
+
     [SerializeField]
     private Color hoverColor;
     private Color unhoverColor;
@@ -12,6 +14,7 @@ public class TowerTile : MonoBehaviour
     private GameObject tower;
     [SerializeField]
     private Vector3 towerOffset = new Vector3(0, (float)0.5, 0);
+
 
     void Start()
     {

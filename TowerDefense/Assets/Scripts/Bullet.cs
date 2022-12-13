@@ -4,11 +4,14 @@ public class Bullet : MonoBehaviour
 {
     private Transform targetEnemy;
 
+    [Header("Attributes")]
     [SerializeField]
     private float speed = 70f;
 
+    [Header("Prefabs")]
     [SerializeField]
-    public GameObject effectHit;
+    public GameObject effectHitPrefab;
+
 
     public void Seek(Transform target)
     {
@@ -37,7 +40,7 @@ public class Bullet : MonoBehaviour
 
     void HitTarget()
     {
-        GameObject effect = Instantiate(effectHit, transform.position, transform.rotation);
+        GameObject effect = Instantiate(effectHitPrefab, transform.position, transform.rotation);
         Destroy(effect, 1f);
 
         Destroy(targetEnemy.gameObject);

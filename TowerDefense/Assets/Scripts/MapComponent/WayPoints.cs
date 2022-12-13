@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class WayPoints : MonoBehaviour
 {
-
+    [Header("Prefabs")]
     [SerializeField]
-    private GameObject WayPointRefab;
+    private GameObject wayPointRefab;
 
     private static List<Transform> points = new List<Transform>();
 
@@ -23,7 +23,7 @@ public class WayPoints : MonoBehaviour
             if (generatedPath[indexPathNode - 1].x != generatedPath[indexPathNode + 1].x 
                 && generatedPath[indexPathNode - 1].y != generatedPath[indexPathNode + 1].y)
             {
-                points.Add(Instantiate(WayPointRefab,
+                points.Add(Instantiate(wayPointRefab,
                                new Vector3(generatedPath[indexPathNode].y * 5, (float)2.5, generatedPath[indexPathNode].x * 5),
                                new Quaternion(0, 0, 0, 1), this.transform).transform);
             }
@@ -31,7 +31,7 @@ public class WayPoints : MonoBehaviour
             indexPathNode++;
         }
 
-        points.Add(Instantiate(WayPointRefab,
+        points.Add(Instantiate(wayPointRefab,
                            new Vector3(generatedPath[indexPathNode].y * 5, (float)2.5, generatedPath[indexPathNode].x * 5),
                            new Quaternion(0, 0, 0, 1), this.transform).transform);
     }

@@ -2,11 +2,13 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    [Header("Attributes")]
     [SerializeField]
     private float speed = 10f;
 
     private Transform target;
     private int wavePointIndex = 0;
+
 
     void Start()
     {

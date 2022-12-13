@@ -3,9 +3,12 @@ using System.Collections;
 
 public class WaveSpawner : MonoBehaviour
 {
+    [Header("Prefabs")]
     [SerializeField]
     private Transform enemyPrefab;
 
+
+    [Header("Attributes")]
     [SerializeField]
     private Transform spawnPoint;
 

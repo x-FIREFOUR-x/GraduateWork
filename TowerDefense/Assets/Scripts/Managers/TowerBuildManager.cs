@@ -4,10 +4,12 @@ public class TowerBuildManager : MonoBehaviour
 {
     public static TowerBuildManager instance;
 
+    [Header("Prefabs")]
     [SerializeField]
     private GameObject turretPrefab;
 
     private GameObject chosenTower;
+
 
     void Awake()
     {
