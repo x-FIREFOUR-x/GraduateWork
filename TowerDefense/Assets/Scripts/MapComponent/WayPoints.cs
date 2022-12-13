@@ -7,7 +7,12 @@ public class WayPoints : MonoBehaviour
     [SerializeField]
     private GameObject WayPointRefab;
 
-    public static List<Transform> points = new List<Transform>();
+    private static List<Transform> points = new List<Transform>();
+
+    public static List<Transform> Points 
+    { 
+        get { return points; } 
+    }
 
     public void Initialize(List<Vector2Int> generatedPath)
     {

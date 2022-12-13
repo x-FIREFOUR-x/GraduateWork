@@ -28,46 +28,6 @@ public class MapComponentsController : MonoBehaviour
 
     void Start()
     {
-        /*
-        List<List<int>> generatedTilesMatrix = new List<List<int>> {
-            new List<int>{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new List<int>{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0},
-            new List<int>{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
-            new List<int>{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
-            new List<int>{0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0},
-            new List<int>{0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0},
-            new List<int>{0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0},
-            new List<int>{0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0},
-            new List<int>{0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0},
-            new List<int>{0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            new List<int>{0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0},
-            new List<int>{0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0},
-            new List<int>{0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0},
-            new List<int>{0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0},
-            new List<int>{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0},
-            new List<int>{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        };
-
-        List<Vector2Int> generatedPath = new List<Vector2Int>();
-        int[] rowNum = new[] { 1, 0, -1, 0 };
-        int[] columnNum = new[] { 0, 1, 0, -1 };
-
-        Vector2Int currIndexes = indexesStart;
-        generatedPath.Add(currIndexes);
-        while (currIndexes != indexesEnd)
-        {
-            for (int i = 0; i < rowNum.Length; i++)
-            {
-                Vector2Int node = new Vector2Int(currIndexes.x + rowNum[i], currIndexes.y + columnNum[i]);
-                if (generatedTilesMatrix[node.x][node.y] == 1 && !generatedPath.Contains(node))
-                {
-                    currIndexes = node;
-                    generatedPath.Add(node);
-                }
-            }
-        }
-        */
-        
         List<Vector2Int> generatedPath = PathGenerator.GeneratePath(Size, IndexesStart, IndexesEnd);
 
         TilesMap = Instantiate(TilesMapPrefab, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1))
@@ -80,8 +40,5 @@ public class MapComponentsController : MonoBehaviour
         WayPoints = Instantiate(WayPointsPrefab, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1))
             .GetComponent<WayPoints>();
         WayPoints.Initialize(generatedPath);
-        
     }
-
-    
 }
