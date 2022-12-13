@@ -10,7 +10,7 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
-        target = WayPoints.points[0];
+        target = WayPoints.Points[0];
     }
 
     // Update is called once per frame
@@ -28,13 +28,13 @@ public class Enemy : MonoBehaviour
     void GetNextWayPoint()
     {
         wavePointIndex++;
-        if (wavePointIndex > WayPoints.points.Length - 1)
+        if (wavePointIndex > WayPoints.Points.Count - 1)
         {
             Destroy(gameObject);
         }
         else
         {
-            target = WayPoints.points[wavePointIndex];
+            target = WayPoints.Points[wavePointIndex];
         }
     }
 }
