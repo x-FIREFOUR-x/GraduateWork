@@ -21,6 +21,14 @@ public class TowerBuildManager : MonoBehaviour
         get { return rocketLauncherPrefab; }
     }
 
+    [SerializeField]
+    private GameObject panelsTurretPrefab;
+    public GameObject PanelsTurretPrefab
+    {
+        get { return panelsTurretPrefab; }
+    }
+
+
     void Awake()
     {
         if(instance == null)
