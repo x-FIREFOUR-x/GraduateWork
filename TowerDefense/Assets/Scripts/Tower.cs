@@ -1,8 +1,7 @@
 using UnityEngine;
 
-public class Turret : MonoBehaviour
+public class Tower : MonoBehaviour
 {
-    [SerializeField]
     private Transform target;
 
     [Header("Attributes")]
@@ -23,7 +22,7 @@ public class Turret : MonoBehaviour
 
     [Header("Prefabs")]
     [SerializeField]
-    private GameObject bulletPrefab;
+    private GameObject projectilePrefab;
 
 
     void Start()
@@ -82,7 +81,7 @@ public class Turret : MonoBehaviour
 
     void Shoot()
     {
-        GameObject bulletObject = Instantiate(bulletPrefab, pointStartFire.position, pointStartFire.rotation);
+        GameObject bulletObject = Instantiate(projectilePrefab, pointStartFire.position, pointStartFire.rotation);
         Bullet bullet = bulletObject.GetComponent<Bullet>();
 
         if (bullet != null)

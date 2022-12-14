@@ -13,5 +13,9 @@ public class TowerShop : MonoBehaviour
     {
         towerBuildManager.SetChosenTower(towerBuildManager.TurretPrefab);
     }
-    
+    public void BuyRocketLauncher()
+    {
+        towerBuildManager.SetChosenTower(towerBuildManager.RocketLauncherPrefab);
+    }
+
 }
