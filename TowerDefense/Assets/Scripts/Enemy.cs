@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour
     private Transform target;
     private int wavePointIndex = 0;
 
+    public static string enemyTag = "Enemy";
 
     void Start()
     {

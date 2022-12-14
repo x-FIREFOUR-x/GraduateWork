@@ -164,12 +164,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeBetweenShoots: 1
   timeToNextFire: 1
-  shootRange: 15
+  shootRange: 40
   rotateSpeed: 8
   enemyTag: Enemy
   pointStartFire: {fileID: 3483328079952458921}
-  rotatePart: {fileID: 6718234831002594543}
-  projectilePrefab: {fileID: 9100590622967104924, guid: 82607979a225c6647820c88322b9c4db, type: 3}
+  projectilePrefab: {fileID: 4345204468309552529, guid: 028b473e40716ba43bcd42d1e5c49e7e, type: 3}
 --- !u!1 &9195482718493411328
 GameObject:
   m_ObjectHideFlags: 0

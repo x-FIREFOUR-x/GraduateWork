@@ -16,8 +16,6 @@ public class Tower : MonoBehaviour
 
     [Header("Setup Fields")]
     [SerializeField]
-    private string enemyTag = "Enemy";
-    [SerializeField]
     private Transform pointStartFire;
 
     [Header("Prefabs")]
@@ -33,7 +31,7 @@ public class Tower : MonoBehaviour
 
     void UpdateTarget()
     {
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag(Enemy.enemyTag);
 
         float shortestDistance = Mathf.Infinity;
         GameObject nearestEnemy = null;
@@ -82,7 +80,7 @@ public class Tower : MonoBehaviour
     void Shoot()
     {
         GameObject bulletObject = Instantiate(projectilePrefab, pointStartFire.position, pointStartFire.rotation);
-        Bullet bullet = bulletObject.GetComponent<Bullet>();
+        Projectile bullet = bulletObject.GetComponent<Projectile>();
 
         if (bullet != null)
         {
