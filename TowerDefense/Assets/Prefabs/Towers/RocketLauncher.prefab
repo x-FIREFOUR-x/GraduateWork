@@ -130,6 +130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 722273416b0042544b0b3c604ab9e70d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  countProjectiles: 1
   timeBetweenShoots: 1
   timeToNextFire: 1
   shootRange: 40

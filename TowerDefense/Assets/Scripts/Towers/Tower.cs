@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Tower : MonoBehaviour
@@ -5,6 +6,8 @@ public class Tower : MonoBehaviour
     private Transform target;
 
     [Header("Attributes")]
+    [SerializeField]
+    private int countProjectiles = 1;
     [SerializeField]
     private float timeBetweenShoots = 1f;
     [SerializeField]
@@ -70,7 +73,7 @@ public class Tower : MonoBehaviour
 
             if(timeToNextFire <= 0f)
             {
-                Shoot();
+                StartCoroutine(Shoot());
                 timeToNextFire = timeBetweenShoots;
             }
 
@@ -78,16 +81,19 @@ public class Tower : MonoBehaviour
         }
     }
 
-    void Shoot()
+    IEnumerator Shoot()
     {
-        GameObject bulletObject = Instantiate(projectilePrefab, pointStartFire.position, pointStartFire.rotation);
-        Projectile bullet = bulletObject.GetComponent<Projectile>();
-
-        if (bullet != null)
+        for (int i = 0; i < countProjectiles; i++)
         {
-            bullet.Seek(target);
+            GameObject bulletObject = Instantiate(projectilePrefab, pointStartFire.position, pointStartFire.rotation);
+            Projectile bullet = bulletObject.GetComponent<Projectile>();
+
+            if (bullet != null)
+            {
+                bullet.Seek(target);
+            }
+            yield return new WaitForSeconds(0.2f);
         }
-           
     }
 
     void OnDrawGizmosSelected()
