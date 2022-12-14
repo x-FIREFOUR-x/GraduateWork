@@ -11,6 +11,11 @@ public class TowerBuildManager : MonoBehaviour
     private GameObject chosenTower;
 
 
+    public GameObject TurretPrefab
+    {
+        get { return turretPrefab; }
+    }
+
     void Awake()
     {
         if(instance == null)
@@ -21,11 +26,21 @@ public class TowerBuildManager : MonoBehaviour
 
     void Start()
     {
-        chosenTower = turretPrefab;
+        chosenTower = null;
     }
 
     public GameObject GetChosenTower()
     {
         return chosenTower;
+    }
+
+    public void SetChosenTower(GameObject tower)
+    {
+        chosenTower = tower;
+    }
+
+    public bool isBoughtTower()
+    {
+        return chosenTower != null;
     }
 }

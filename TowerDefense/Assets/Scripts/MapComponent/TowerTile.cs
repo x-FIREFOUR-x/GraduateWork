@@ -16,17 +16,20 @@ public class TowerTile : MonoBehaviour
     private Vector3 towerOffset = new Vector3(0, (float)0.5, 0);
 
 
+    private TowerBuildManager towerBuildManager;
+
     void Start()
     {
         render = GetComponent<Renderer>();
         unhoverColor = render.material.color;
+        towerBuildManager = TowerBuildManager.instance;
     }
 
     private void OnMouseDown()
     {
-        if (tower == null)
+        if (towerBuildManager.isBoughtTower() && tower == null)
         {
-            GameObject chosenTower = TowerBuildManager.instance.GetChosenTower();
+            GameObject chosenTower = towerBuildManager.GetChosenTower();
             tower = Instantiate(chosenTower, transform.position + towerOffset, transform.rotation);
             OnMouseExit();
         }
@@ -34,7 +37,7 @@ public class TowerTile : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (tower == null)
+        if (towerBuildManager.isBoughtTower() && tower == null)
         {
             render.material.color = hoverColor;
         }
