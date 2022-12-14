@@ -17,6 +17,8 @@ public class Tower : MonoBehaviour
     [Header("Setup Fields")]
     [SerializeField]
     private Transform pointStartFire;
+    [SerializeField]
+    private Transform rotatePart;
 
     [Header("Prefabs")]
     [SerializeField]
@@ -63,9 +65,8 @@ public class Tower : MonoBehaviour
         {
             Vector3 direction = target.position - transform.position;
             Quaternion lookRotation = Quaternion.LookRotation(direction);
-            Vector3 rotation = Quaternion.Lerp(transform.rotation, lookRotation, Time.deltaTime * rotateSpeed).eulerAngles;
-
-            transform.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+            Vector3 rotation = Quaternion.Lerp(rotatePart.rotation, lookRotation, Time.deltaTime * rotateSpeed).eulerAngles;
+            rotatePart.rotation = Quaternion.Euler(0f, rotation.y, 0f);
 
             if(timeToNextFire <= 0f)
             {
