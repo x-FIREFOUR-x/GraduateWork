@@ -21,4 +21,10 @@ public class TowerShop : MonoBehaviour
     {
         towerBuildManager.SetChosenTower(towerBuildManager.PanelsTurretPrefab);
     }
+
+    public void BuyLaserTurret()
+    {
+        towerBuildManager.SetChosenTower(towerBuildManager.LaserTurretPrefab);
+    }
+
 }

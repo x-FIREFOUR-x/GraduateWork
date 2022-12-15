@@ -9,23 +9,28 @@ public class TowerBuildManager : MonoBehaviour
     [Header("Prefabs")]
     [SerializeField]
     private GameObject turretPrefab;
+    [SerializeField]
+    private GameObject rocketLauncherPrefab;
+    [SerializeField]
+    private GameObject panelsTurretPrefab;
+    [SerializeField]
+    private GameObject laserTurretPrefab;
+
     public GameObject TurretPrefab
     {
         get { return turretPrefab; }
     }
-
-    [SerializeField]
-    private GameObject rocketLauncherPrefab;
     public GameObject RocketLauncherPrefab
     {
         get { return rocketLauncherPrefab; }
     }
-
-    [SerializeField]
-    private GameObject panelsTurretPrefab;
     public GameObject PanelsTurretPrefab
     {
         get { return panelsTurretPrefab; }
+    }
+    public GameObject LaserTurretPrefab
+    {
+        get { return laserTurretPrefab; }
     }
 
 
