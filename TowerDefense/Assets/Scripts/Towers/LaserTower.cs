@@ -7,7 +7,10 @@ public class LaserTower : Tower
     [Header("Prefabs")]
     [SerializeField]
     private LineRenderer lineLaser;
-
+    [SerializeField]
+    private ParticleSystem hitEffect;
+    [SerializeField]
+    private Light lightHitEffect;
 
     void Update()
     {
@@ -15,14 +18,30 @@ public class LaserTower : Tower
         {
             rotateToTarget();
 
-            lineLaser.enabled = true;
-
+            if(!lineLaser.enabled)
+            {
+                lineLaser.enabled = true;
+                hitEffect.Play();
+                lightHitEffect.enabled = true;
+            }
+            
             lineLaser.SetPosition(0, pointStartFire.position);
             lineLaser.SetPosition(1, target.position);
+
+            Vector3 direction = pointStartFire.position - target.position;
+
+            hitEffect.transform.position = target.position + direction.normalized;
+
+            hitEffect.transform.rotation = Quaternion.LookRotation(direction);
         }
         else
         {
-            lineLaser.enabled = false;
+            if (lineLaser.enabled)
+            {
+                lineLaser.enabled = false;
+                hitEffect.Stop();
+                lightHitEffect.enabled = false;
+            }
         }
     }
 }
