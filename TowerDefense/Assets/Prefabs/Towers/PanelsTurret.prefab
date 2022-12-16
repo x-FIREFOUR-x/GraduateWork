@@ -210,7 +210,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7544833960962722027}
-  - component: {fileID: 7205603479279948368}
+  - component: {fileID: 2259175783054827281}
   m_Layer: 0
   m_Name: PanelsTurret
   m_TagString: Untagged
@@ -235,7 +235,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7205603479279948368
+--- !u!114 &2259175783054827281
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -244,12 +244,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 7205603479279948369}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 722273416b0042544b0b3c604ab9e70d, type: 3}
+  m_Script: {fileID: 11500000, guid: ac87dbab18ea4064b9016860ccfd88bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   countProjectiles: 2
   timeBetweenShoots: 1
-  timeToNextFire: 1
+  timeToNextFire: 0
   shootRange: 15
   rotateSpeed: 8
   pointStartFire: {fileID: 3396452724760783736}

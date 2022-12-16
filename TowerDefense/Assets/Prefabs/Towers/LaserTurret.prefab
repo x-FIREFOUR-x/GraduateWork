@@ -242,7 +242,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6983576675282881140}
-  - component: {fileID: 7755609023344333001}
+  - component: {fileID: -7431901458284483878}
   - component: {fileID: -1268797453948382230}
   m_Layer: 0
   m_Name: LaserTurret
@@ -268,7 +268,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7755609023344333001
+--- !u!114 &-7431901458284483878
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -277,19 +277,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 7755609023344333006}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 722273416b0042544b0b3c604ab9e70d, type: 3}
+  m_Script: {fileID: 11500000, guid: d7fb68d7c66b17949b6988c6dce8a39a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   countProjectiles: 1
   timeBetweenShoots: 1
-  timeToNextFire: 1
+  timeToNextFire: 0
   shootRange: 15
   rotateSpeed: 8
-  useLaser: 1
-  lineLaser: {fileID: -1268797453948382230}
   pointStartFire: {fileID: 2435140106436551608}
   rotatePart: {fileID: 2435140106413035375}
-  projectilePrefab: {fileID: 0}
+  lineLaser: {fileID: -1268797453948382230}
 --- !u!120 &-1268797453948382230
 LineRenderer:
   m_ObjectHideFlags: 0

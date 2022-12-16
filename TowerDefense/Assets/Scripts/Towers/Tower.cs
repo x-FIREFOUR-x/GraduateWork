@@ -1,37 +1,32 @@
 using System.Collections;
 using UnityEngine;
 
-public class Tower : MonoBehaviour
+public abstract class Tower : MonoBehaviour
 {
-    private Transform target;
+    protected Transform target;
 
     [Header("Attributes")]
     [SerializeField]
-    private int countProjectiles = 1;
-    [SerializeField]
-    private float timeBetweenShoots = 1f;
-    [SerializeField]
-    private float timeToNextFire = 1f;
-    [SerializeField]
-    private float shootRange = 15f;
-    [SerializeField]
-    private float rotateSpeed = 8f;
+    protected int countProjectiles = 1;
 
-    [Header("Use Laser")]
     [SerializeField]
-    private bool useLaser = false;
+    protected float timeBetweenShoots = 1f;
     [SerializeField]
-    private LineRenderer lineLaser;
+    protected float timeToNextFire = 0f;
+
+    [SerializeField]
+    protected float shootRange = 15f;
+
+    [SerializeField]
+    protected float rotateSpeed = 8f;
+    
 
     [Header("Setup Fields")]
     [SerializeField]
-    private Transform pointStartFire;
+    protected Transform pointStartFire;
     [SerializeField]
-    private Transform rotatePart;
+    protected Transform rotatePart;
 
-    [Header("Prefabs")]
-    [SerializeField]
-    private GameObject projectilePrefab;
 
 
     void Start()
@@ -68,36 +63,8 @@ public class Tower : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        if(target == null)
-        {
-            if(useLaser)
-            {
-                lineLaser.enabled = false;
-            }
 
-            return;
-        }
-
-        rotateToTarget();
-        if (useLaser)
-        {
-            Laser();
-        }
-        else
-        {
-            if (timeToNextFire <= 0f)
-            {
-                StartCoroutine(Shoot());
-                timeToNextFire = timeBetweenShoots;
-            }
-
-            timeToNextFire -= Time.deltaTime;
-        }
-    }
-
-    void rotateToTarget()
+    protected void rotateToTarget()
     {
         Vector3 direction = target.position - transform.position;
         Quaternion lookRotation = Quaternion.LookRotation(direction);
@@ -105,28 +72,6 @@ public class Tower : MonoBehaviour
         rotatePart.rotation = Quaternion.Euler(0f, rotation.y, 0f);
     }
 
-    void Laser()
-    {
-        lineLaser.enabled = true;
-
-        lineLaser.SetPosition(0, pointStartFire.position);
-        lineLaser.SetPosition(1, target.position);
-    }
-
-    IEnumerator Shoot()
-    {
-        for (int i = 0; i < countProjectiles; i++)
-        {
-            GameObject bulletObject = Instantiate(projectilePrefab, pointStartFire.position, pointStartFire.rotation);
-            Projectile bullet = bulletObject.GetComponent<Projectile>();
-
-            if (bullet != null)
-            {
-                bullet.Seek(target);
-            }
-            yield return new WaitForSeconds(0.2f);
-        }
-    }
 
     void OnDrawGizmosSelected()
     {
