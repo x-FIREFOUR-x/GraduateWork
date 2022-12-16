@@ -4,11 +4,8 @@ public class TowerShop : MonoBehaviour
 {
     TowerBuildManager towerBuildManager;
 
-    [Header("SetUp")]
     [SerializeField]
-    public Color colorText;
-
-
+    private TMPro.TextMeshProUGUI countMoney;
 
     [Header("ShopComponents")]
     [SerializeField]
@@ -20,7 +17,11 @@ public class TowerShop : MonoBehaviour
     [SerializeField]
     private GameObject laserTurretComponent;
 
+    [Header("SetUp")]
+    [SerializeField]
+    public Color colorText;
 
+    public static string currencySymbol = "$";
     void Start()
     {
         towerBuildManager = TowerBuildManager.instance;
@@ -36,6 +37,11 @@ public class TowerShop : MonoBehaviour
 
         laserTurretComponent.GetComponent<ShopComponent>().Initialize(colorText, 
             towerBuildManager.laserTurretPrefab.GetComponent<Tower>().Price);
+    }
+
+    void Update()
+    {
+        countMoney.text = PlayerStats.Money.ToString() + currencySymbol;
     }
 
     public void ChooseTurret()

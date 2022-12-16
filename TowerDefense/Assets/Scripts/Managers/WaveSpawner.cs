@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class WaveSpawner : MonoBehaviour
 {
@@ -18,6 +19,10 @@ public class WaveSpawner : MonoBehaviour
 
     private int waveNumber = 1;
 
+    [Header("UI")]
+    [SerializeField]
+    private TMPro.TextMeshProUGUI waveNumberText;
+
     void Update()
     {
         if (timeToNextSpawn <= 0f)
@@ -26,10 +31,14 @@ public class WaveSpawner : MonoBehaviour
             timeToNextSpawn = timeBetweenWaves;
         }
         timeToNextSpawn -= Time.deltaTime;
+
+        
     }
 
     IEnumerator SpawnWave()
     {
+        waveNumberText.text = "Wave: " + (waveNumber).ToString();
+
         for (int i = 0; i < waveNumber; i++)
         {
             SpawnEnemy();

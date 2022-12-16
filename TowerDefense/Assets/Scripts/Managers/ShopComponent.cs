@@ -22,7 +22,7 @@ public class ShopComponent : MonoBehaviour
         textName.color = colorText;
         textPrice.color = colorText;
 
-        textPrice.text = price.ToString() + "$";
+        textPrice.text = price.ToString() + TowerShop.currencySymbol;
     }
     
 }
