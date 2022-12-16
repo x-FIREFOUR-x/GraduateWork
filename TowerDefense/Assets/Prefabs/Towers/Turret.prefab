@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7213502884983662291}
-  - component: {fileID: 7213502884983662290}
+  - component: {fileID: 5216627754438899833}
   m_Layer: 0
   m_Name: Turret
   m_TagString: Untagged
@@ -65,7 +65,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7213502884983662290
+--- !u!114 &5216627754438899833
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -74,17 +74,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 7213502884983662289}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 722273416b0042544b0b3c604ab9e70d, type: 3}
+  m_Script: {fileID: 11500000, guid: ac87dbab18ea4064b9016860ccfd88bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 4686977106260309065, guid: 09a660aec7847f6428595a225f6b9ec9, type: 3}
-  fireRate: 1
+  countProjectiles: 1
+  timeBetweenShoots: 1
   timeToNextFire: 0
   shootRange: 15
-  enemyTag: Enemy
   rotateSpeed: 8
-  bulletPrefab: {fileID: 9100590622967104924, guid: 82607979a225c6647820c88322b9c4db, type: 3}
   pointStartFire: {fileID: 8649430118030462561}
+  rotatePart: {fileID: 7213502884983662291}
+  projectilePrefab: {fileID: 9100590622967104924, guid: 82607979a225c6647820c88322b9c4db, type: 3}
 --- !u!1 &7213502885100634287
 GameObject:
   m_ObjectHideFlags: 0

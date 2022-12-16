@@ -11,30 +11,42 @@ public class TowerTile : MonoBehaviour
     private Color hoverColor;
     private Color unhoverColor;
 
-    private GameObject tower;
+    [SerializeField]
+    private Color notEnoughMoney;
+
+    public GameObject Tower { get; set; }
     [SerializeField]
     private Vector3 towerOffset = new Vector3(0, (float)0.5, 0);
 
+
+    private TowerBuildManager towerBuildManager;
 
     void Start()
     {
         render = GetComponent<Renderer>();
         unhoverColor = render.material.color;
+        towerBuildManager = TowerBuildManager.instance;
     }
 
     private void OnMouseDown()
     {
-        if (tower == null)
+        if (towerBuildManager.IsChosenTower() && Tower == null)
         {
-            GameObject chosenTower = TowerBuildManager.instance.GetChosenTower();
-            tower = Instantiate(chosenTower, transform.position + towerOffset, transform.rotation);
-            OnMouseExit();
+            if(towerBuildManager.IsMoney())
+            {
+                towerBuildManager.BuildTower(this);
+                OnMouseExit();
+            }
+            else
+            {
+                render.material.color = notEnoughMoney;
+            }
         }
     }
 
     private void OnMouseEnter()
     {
-        if (tower == null)
+        if (towerBuildManager.IsChosenTower() && Tower == null)
         {
             render.material.color = hoverColor;
         }
@@ -43,6 +55,11 @@ public class TowerTile : MonoBehaviour
     private void OnMouseExit()
     {
         render.material.color = unhoverColor;
+    }
+
+    public Vector3 GetTowerBuildPosition()
+    {
+        return transform.position + towerOffset;
     }
 }
 
