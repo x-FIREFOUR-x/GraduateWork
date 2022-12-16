@@ -249,9 +249,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   countProjectiles: 2
   timeBetweenShoots: 1
-  timeToNextFire: 0
+  timeToNextFire: 1
   shootRange: 15
   rotateSpeed: 8
+  <Price>k__BackingField: 100
   pointStartFire: {fileID: 3396452724760783736}
   rotatePart: {fileID: 7544833960962722027}
   projectilePrefab: {fileID: 9100590622967104924, guid: 82607979a225c6647820c88322b9c4db, type: 3}

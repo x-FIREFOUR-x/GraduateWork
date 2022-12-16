@@ -19,6 +19,9 @@ public abstract class Tower : MonoBehaviour
 
     [SerializeField]
     protected float rotateSpeed = 8f;
+
+    [field: SerializeField]
+    public int Price { get; private set; } = 100;
     
 
     [Header("Setup Fields")]

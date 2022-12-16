@@ -230,7 +230,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 648582820}
         m_TargetAssemblyTypeName: TowerShop, Assembly-CSharp
-        m_MethodName: BuyLaserTurret
+        m_MethodName: ChooseLaserTurret
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -479,7 +479,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &632851415
 GameObject:
@@ -588,7 +588,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 648582820}
         m_TargetAssemblyTypeName: TowerShop, Assembly-CSharp
-        m_MethodName: BuyTurret
+        m_MethodName: ChooseTurret
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -786,7 +786,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &705115995
 MonoBehaviour:
@@ -1008,7 +1008,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 648582820}
         m_TargetAssemblyTypeName: TowerShop, Assembly-CSharp
-        m_MethodName: BuyPanelsTurret
+        m_MethodName: ChoosePanelsTurret
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1590,7 +1590,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1656678050
 GameObject:
@@ -1699,7 +1699,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 648582820}
         m_TargetAssemblyTypeName: TowerShop, Assembly-CSharp
-        m_MethodName: BuyRocketLauncher
+        m_MethodName: ChooseRocketLauncher
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1841,7 +1841,7 @@ RectTransform:
   m_Children:
   - {fileID: 648582816}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1877,10 +1877,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 630a418f78f07ea49ba53512402a8bd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turretPrefab: {fileID: 7213502884983662289, guid: 4b3ecaf25bb147c41accf95248fd2d9c, type: 3}
-  rocketLauncherPrefab: {fileID: 4007513055818851279, guid: 57b5feeb3e7300347aefb8c45bcf22f4, type: 3}
-  panelsTurretPrefab: {fileID: 7205603479279948369, guid: 291c75f1fa50a5d479398e12d0041409, type: 3}
-  laserTurretPrefab: {fileID: 7755609023344333006, guid: 616583ad2435f36478ab79e9f28f5fbb, type: 3}
+  <turretPrefab>k__BackingField: {fileID: 7213502884983662289, guid: 4b3ecaf25bb147c41accf95248fd2d9c, type: 3}
+  <rocketLauncherPrefab>k__BackingField: {fileID: 4007513055818851279, guid: 57b5feeb3e7300347aefb8c45bcf22f4, type: 3}
+  <panelsTurretPrefab>k__BackingField: {fileID: 7205603479279948369, guid: 291c75f1fa50a5d479398e12d0041409, type: 3}
+  <laserTurretPrefab>k__BackingField: {fileID: 7755609023344333006, guid: 616583ad2435f36478ab79e9f28f5fbb, type: 3}
 --- !u!4 &2059914250
 Transform:
   m_ObjectHideFlags: 0
@@ -1895,4 +1895,49 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2110826530
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2110826532}
+  - component: {fileID: 2110826531}
+  m_Layer: 0
+  m_Name: PlayerStats
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2110826531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2110826530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9f180cec126bb5499c46c023ab7efbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startMoney: 100
+--- !u!4 &2110826532
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2110826530}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

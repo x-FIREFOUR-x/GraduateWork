@@ -111,3 +111,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hoverColor: {r: 0.16470589, g: 0.9339623, b: 0.8150931, a: 0}
+  notEnoughMoney: {r: 0.9528302, g: 0.0665183, b: 0.0665183, a: 0}
+  towerOffset: {x: 0, y: 0.5, z: 0}

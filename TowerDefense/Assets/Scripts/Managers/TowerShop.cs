@@ -9,22 +9,22 @@ public class TowerShop : MonoBehaviour
         towerBuildManager = TowerBuildManager.instance;
     }
 
-    public void BuyTurret()
+    public void ChooseTurret()
     {
-        towerBuildManager.SetChosenTower(towerBuildManager.TurretPrefab);
+        towerBuildManager.SetChosenTower(towerBuildManager.turretPrefab);
     }
-    public void BuyRocketLauncher()
+    public void ChooseRocketLauncher()
     {
-        towerBuildManager.SetChosenTower(towerBuildManager.RocketLauncherPrefab);
+        towerBuildManager.SetChosenTower(towerBuildManager.rocketLauncherPrefab);
     }
-    public void BuyPanelsTurret()
+    public void ChoosePanelsTurret()
     {
-        towerBuildManager.SetChosenTower(towerBuildManager.PanelsTurretPrefab);
+        towerBuildManager.SetChosenTower(towerBuildManager.panelsTurretPrefab);
     }
 
-    public void BuyLaserTurret()
+    public void ChooseLaserTurret()
     {
-        towerBuildManager.SetChosenTower(towerBuildManager.LaserTurretPrefab);
+        towerBuildManager.SetChosenTower(towerBuildManager.laserTurretPrefab);
     }
 
 }
