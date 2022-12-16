@@ -4,9 +4,38 @@ public class TowerShop : MonoBehaviour
 {
     TowerBuildManager towerBuildManager;
 
+    [Header("SetUp")]
+    [SerializeField]
+    public Color colorText;
+
+
+
+    [Header("ShopComponents")]
+    [SerializeField]
+    private GameObject turretComponent;
+    [SerializeField]
+    private GameObject panelsTurretComponent;
+    [SerializeField]
+    private GameObject rocketLauncherComponent;
+    [SerializeField]
+    private GameObject laserTurretComponent;
+
+
     void Start()
     {
         towerBuildManager = TowerBuildManager.instance;
+
+        turretComponent.GetComponent<ShopComponent>().Initialize(colorText,
+            towerBuildManager.turretPrefab.GetComponent<Tower>().Price);
+
+        panelsTurretComponent.GetComponent<ShopComponent>().Initialize(colorText,
+            towerBuildManager.panelsTurretPrefab.GetComponent<Tower>().Price);
+
+        rocketLauncherComponent.GetComponent<ShopComponent>().Initialize(colorText,
+            towerBuildManager.rocketLauncherPrefab.GetComponent<Tower>().Price);
+
+        laserTurretComponent.GetComponent<ShopComponent>().Initialize(colorText, 
+            towerBuildManager.laserTurretPrefab.GetComponent<Tower>().Price);
     }
 
     public void ChooseTurret()
