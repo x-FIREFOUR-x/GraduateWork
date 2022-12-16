@@ -17,6 +17,12 @@ public class Tower : MonoBehaviour
     [SerializeField]
     private float rotateSpeed = 8f;
 
+    [Header("Use Laser")]
+    [SerializeField]
+    private bool useLaser = false;
+    [SerializeField]
+    private LineRenderer lineLaser;
+
     [Header("Setup Fields")]
     [SerializeField]
     private Transform pointStartFire;
@@ -64,14 +70,24 @@ public class Tower : MonoBehaviour
 
     void Update()
     {
-        if(target != null)
+        if(target == null)
         {
-            Vector3 direction = target.position - transform.position;
-            Quaternion lookRotation = Quaternion.LookRotation(direction);
-            Vector3 rotation = Quaternion.Lerp(rotatePart.rotation, lookRotation, Time.deltaTime * rotateSpeed).eulerAngles;
-            rotatePart.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+            if(useLaser)
+            {
+                lineLaser.enabled = false;
+            }
 
-            if(timeToNextFire <= 0f)
+            return;
+        }
+
+        rotateToTarget();
+        if (useLaser)
+        {
+            Laser();
+        }
+        else
+        {
+            if (timeToNextFire <= 0f)
             {
                 StartCoroutine(Shoot());
                 timeToNextFire = timeBetweenShoots;
@@ -79,6 +95,22 @@ public class Tower : MonoBehaviour
 
             timeToNextFire -= Time.deltaTime;
         }
+    }
+
+    void rotateToTarget()
+    {
+        Vector3 direction = target.position - transform.position;
+        Quaternion lookRotation = Quaternion.LookRotation(direction);
+        Vector3 rotation = Quaternion.Lerp(rotatePart.rotation, lookRotation, Time.deltaTime * rotateSpeed).eulerAngles;
+        rotatePart.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+    }
+
+    void Laser()
+    {
+        lineLaser.enabled = true;
+
+        lineLaser.SetPosition(0, pointStartFire.position);
+        lineLaser.SetPosition(1, target.position);
     }
 
     IEnumerator Shoot()
