@@ -22,6 +22,8 @@ public class WaveSpawner : MonoBehaviour
     [Header("UI")]
     [SerializeField]
     private TMPro.TextMeshProUGUI waveNumberText;
+    [SerializeField]
+    private TMPro.TextMeshProUGUI timeToNextWaveText;
 
     void Update()
     {
@@ -32,7 +34,8 @@ public class WaveSpawner : MonoBehaviour
         }
         timeToNextSpawn -= Time.deltaTime;
 
-        
+        timeToNextSpawn = Mathf.Clamp(timeToNextSpawn, 0f, Mathf.Infinity);
+        timeToNextWaveText.text = "Next: " + string.Format("{0:00:00}", timeToNextSpawn);
     }
 
     IEnumerator SpawnWave()
