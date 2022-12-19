@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour
 
     public static string enemyTag = "Enemy";
 
+
     void Start()
     {
         target = WayPoints.Points[0];
@@ -33,11 +34,23 @@ public class Enemy : MonoBehaviour
         wavePointIndex++;
         if (wavePointIndex > WayPoints.Points.Count - 1)
         {
-            Destroy(gameObject);
+            DamageTower();
         }
         else
         {
             target = WayPoints.Points[wavePointIndex];
         }
+    }
+
+    void DamageTower()
+    {
+        GameObject[] endBuilding = GameObject.FindGameObjectsWithTag(EndBuilding.endBuildingTag);
+
+        if(endBuilding[0] != null)
+        {
+            endBuilding[0].GetComponent<EndBuilding>().TakeDamage(10);
+        }
+
+        Destroy(gameObject);
     }
 }

@@ -2,10 +2,8 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
-
     public static int Money;
-
-    [field: SerializeField]
+    [SerializeField]
     private int startMoney = 1000;
 
     void Start()
