@@ -17,7 +17,6 @@ public class Enemy : MonoBehaviour
         target = WayPoints.Points[0];
     }
 
-    // Update is called once per frame
     void Update()
     {
         Vector3 direction = target.position - transform.position;

@@ -15,15 +15,10 @@ public class WaveSpawner : MonoBehaviour
 
     [SerializeField]
     private float timeBetweenWaves = 5f;
-    private float timeToNextSpawn = 1f;
+    public float timeToNextSpawn { get; private set; } = 1f;
 
-    private int waveNumber = 1;
+    public int waveNumber { get; private set; } = 0;
 
-    [Header("UI")]
-    [SerializeField]
-    private TMPro.TextMeshProUGUI waveNumberText;
-    [SerializeField]
-    private TMPro.TextMeshProUGUI timeToNextWaveText;
 
     void Update()
     {
@@ -35,14 +30,11 @@ public class WaveSpawner : MonoBehaviour
         timeToNextSpawn -= Time.deltaTime;
 
         timeToNextSpawn = Mathf.Clamp(timeToNextSpawn, 0f, Mathf.Infinity);
-        timeToNextWaveText.text = "Next: " + string.Format("{0:00:00}", timeToNextSpawn);
     }
 
     IEnumerator SpawnWave()
     {
-        waveNumberText.text = "Wave: " + (waveNumber).ToString();
-
-        for (int i = 0; i < waveNumber; i++)
+        for (int i = 0; i < waveNumber + 1; i++)
         {
             SpawnEnemy();
             yield return new WaitForSeconds(0.5f);
