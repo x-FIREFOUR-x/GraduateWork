@@ -1,11 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class PauseMenu : MonoBehaviour
 {
     [SerializeField]
     private GameObject pauseMenuUi;
+
+    [SerializeField]
+    private string mainMenuScene = "MainMenuScene";
 
     void Update()
     {
@@ -31,7 +33,6 @@ public class PauseMenu : MonoBehaviour
 
     public void GoToMenu()
     {
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        Debug.Log("Go to menu");
+        SceneManager.LoadScene(mainMenuScene);
     }
 }

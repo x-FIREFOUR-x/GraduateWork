@@ -6,6 +6,9 @@ public class GameOverMenu : MonoBehaviour
     private bool isGameOver = false;
 
     [SerializeField]
+    private string mainMenuScene = "MainMenuScene";
+
+    [SerializeField]
     private GameObject endBuildingPrefab;
     [SerializeField]
     private GameObject gameOverMenuUI;
@@ -21,13 +24,13 @@ public class GameOverMenu : MonoBehaviour
     void gameOver()
     {
         isGameOver = true;
+        Time.timeScale = 0f;
 
         gameOverMenuUI.SetActive(true);
     }
 
     public void GoToMenu()
     {
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        Debug.Log("Go to menu");
+        SceneManager.LoadScene(mainMenuScene);
     }
 }
