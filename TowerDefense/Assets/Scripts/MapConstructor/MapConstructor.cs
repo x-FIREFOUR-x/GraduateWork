@@ -5,13 +5,15 @@ public class MapConstructor : MonoBehaviour
 {
     public static MapConstructor instance;
 
+    private GameObject[,] tileMap;
+
+    private GameObject selectedComponent;
+
     [Header("Attributes")]
     [SerializeField]
     private Vector3Int indexesStartMap = new Vector3Int(0, 0 ,0);
     [SerializeField]
     private int size = 16;
-
-    private GameObject[,] tileMap;
 
     [Header("Prefabs")]
     [SerializeField]
@@ -30,6 +32,8 @@ public class MapConstructor : MonoBehaviour
             instance = this;
         }
 
+        selectedComponent = null;
+
         tileMap = new GameObject[size, size];
         
         Quaternion rotation = this.transform.rotation;
@@ -43,6 +47,11 @@ public class MapConstructor : MonoBehaviour
                 tileMap[i,j] = Instantiate(constructorTilePrefab, position, rotation, this.transform);
             }
         }
+    }
+
+    public void setSelectedComponent(GameObject component)
+    {
+        selectedComponent = component;
     }
 
     public void BuildConstructorTile(GameObject mapTile)
