@@ -20,7 +20,6 @@ public class MapConstructor : MonoBehaviour
     [SerializeField]
     private GameObject endBuilding;
 
-    // Start is called before the first frame update
     void Start()
     {
         tileMap = new GameObject[size, size];
@@ -34,10 +33,10 @@ public class MapConstructor : MonoBehaviour
             for (int j = 0; j < size; j++)
             {
                 Vector3 position = new Vector3(
-                    indexesStartMap.x + constructorTilePrefab.transform.localScale.x * indexesStartMap.x,
+                    indexesStartMap.x + (constructorTilePrefab.transform.localScale.x + 1) * i,
                     indexesStartMap.y,
-                    indexesStartMap.z + constructorTilePrefab.transform.localScale.z * indexesStartMap.z);
-                tileMap[i,j] = Instantiate(constructorTilePrefab, position, rotation, this.transform);
+                    indexesStartMap.z + (constructorTilePrefab.transform.localScale.z + 1) * j);
+                tileMap[i,j] = Instantiate(constructorTilePrefab, position, rotation);
             }
         }
     }
