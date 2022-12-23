@@ -35,7 +35,8 @@ public class MapComponentsController : MonoBehaviour
         tilesMap.Initialize(size, generatedPath);
 
         startBuilding = Instantiate(startBuildingPrefab, new Vector3(5, (float)2.5, 5), new Quaternion(0, 0, 0, 1)).transform;
-        endBuilding = Instantiate(endBuildingPrefab, new Vector3(70, (float)2.5, 70), new Quaternion(0, 0, 0, 1)).transform;
+
+        endBuildingPrefab.transform.SetPositionAndRotation(new Vector3(70, (float)2.5, 70), new Quaternion(0, 0, 0, 1));
 
         wayPoints = Instantiate(wayPointsPrefab, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1))
             .GetComponent<WayPoints>();

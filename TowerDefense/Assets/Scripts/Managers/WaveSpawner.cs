@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class WaveSpawner : MonoBehaviour
 {
@@ -14,9 +15,10 @@ public class WaveSpawner : MonoBehaviour
 
     [SerializeField]
     private float timeBetweenWaves = 5f;
-    private float timeToNextSpawn = 1f;
+    public float timeToNextSpawn { get; private set; } = 1f;
 
-    private int waveNumber = 1;
+    public int waveNumber { get; private set; } = 0;
+
 
     void Update()
     {
@@ -26,11 +28,13 @@ public class WaveSpawner : MonoBehaviour
             timeToNextSpawn = timeBetweenWaves;
         }
         timeToNextSpawn -= Time.deltaTime;
+
+        timeToNextSpawn = Mathf.Clamp(timeToNextSpawn, 0f, Mathf.Infinity);
     }
 
     IEnumerator SpawnWave()
     {
-        for (int i = 0; i < waveNumber; i++)
+        for (int i = 0; i < waveNumber + 1; i++)
         {
             SpawnEnemy();
             yield return new WaitForSeconds(0.5f);
