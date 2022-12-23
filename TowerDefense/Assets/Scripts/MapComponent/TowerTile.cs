@@ -21,7 +21,7 @@ public class TowerTile : MonoBehaviour
 
     private TowerBuildManager towerBuildManager;
 
-    void Start()
+    void Awake()
     {
         render = GetComponent<Renderer>();
         unhoverColor = render.material.color;

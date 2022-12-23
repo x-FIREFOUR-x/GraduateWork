@@ -20,15 +20,11 @@ public class TowerBuildManager : MonoBehaviour
 
     void Awake()
     {
-        if(instance == null)
+        chosenTower = null;
+        if (instance == null)
         {
             instance = this;
         }
-    }
-
-    void Start()
-    {
-        chosenTower = null;
     }
 
     public GameObject GetChosenTower()

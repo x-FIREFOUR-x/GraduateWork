@@ -7,7 +7,7 @@ public class WayPoints : MonoBehaviour
     [SerializeField]
     private GameObject wayPointRefab;
 
-    private static List<Transform> points = new List<Transform>();
+    private static List<Transform> points;
 
     public static List<Transform> Points 
     { 
@@ -16,6 +16,8 @@ public class WayPoints : MonoBehaviour
 
     public void Initialize(List<Vector2Int> generatedPath)
     {
+        points = new List<Transform>();
+
         int indexPathNode = 1;
 
         while (indexPathNode != generatedPath.Count - 1)
