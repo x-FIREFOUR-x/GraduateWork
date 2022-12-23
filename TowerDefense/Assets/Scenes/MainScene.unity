@@ -512,7 +512,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &658380602
 PrefabInstance:
@@ -1374,10 +1374,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1068742689}
+  - component: {fileID: 1068742692}
   - component: {fileID: 1068742691}
   - component: {fileID: 1068742690}
   m_Layer: 0
-  m_Name: GameStateManager
+  m_Name: UIManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1396,7 +1397,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1068742690
 MonoBehaviour:
@@ -1411,6 +1412,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseMenuUi: {fileID: 166992280}
+  mainMenuScene: MainMenuScene
 --- !u!114 &1068742691
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1423,8 +1425,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3daf7065f07de1848ad2ba5ddd41048e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainMenuScene: MainMenuScene
   endBuildingPrefab: {fileID: 522134832}
   gameOverMenuUI: {fileID: 1174261302}
+--- !u!114 &1068742692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1068742688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77591078e982539478307d748f2a33be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countMoney: {fileID: 1147561444}
+  healthText: {fileID: 1211319783}
+  waveNumberText: {fileID: 2135366418}
+  timeToNextWaveText: {fileID: 2115810844}
+  waveSpawnerPrefab: {fileID: 1654633874}
+  endBuildingPrefab: {fileID: 522134832}
 --- !u!1 &1147561442
 GameObject:
   m_ObjectHideFlags: 0
@@ -2531,56 +2552,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8789245204523515722, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
   m_PrefabInstance: {fileID: 1798182448}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1912552400
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1912552402}
-  - component: {fileID: 1912552401}
-  m_Layer: 0
-  m_Name: RenderUI
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1912552401
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1912552400}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77591078e982539478307d748f2a33be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  countMoney: {fileID: 1147561444}
-  healthText: {fileID: 1211319783}
-  waveNumberText: {fileID: 2135366418}
-  timeToNextWaveText: {fileID: 2115810844}
-  waveSpawnerPrefab: {fileID: 1654633874}
-  endBuildingPrefab: {fileID: 522134832}
---- !u!4 &1912552402
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1912552400}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 622.91406, y: 375.46722, z: 296.6484}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1929067046
 GameObject:
   m_ObjectHideFlags: 0
@@ -2776,7 +2747,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 5
+  m_ScrollSensitivity: 15
   m_Viewport: {fileID: 1979527122}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 0}
@@ -2935,7 +2906,7 @@ RectTransform:
   - {fileID: 1174261303}
   - {fileID: 166992281}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -3428,7 +3399,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5827603720879718299, guid: d0437453eec017f46bfa164d7df5bc79, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 5827603720879718299, guid: d0437453eec017f46bfa164d7df5bc79, type: 3}
       propertyPath: m_LocalPosition.x
