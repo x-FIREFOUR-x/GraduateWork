@@ -54,23 +54,24 @@ public class MapConstructor : MonoBehaviour
         selectedComponent = component;
     }
 
-    public void BuildConstructorTile(GameObject mapTile)
+    public void BuildComponent(GameObject mapTile)
     {
         Vector2Int indexes = IndexsOfMapTile(mapTile);
         Vector3 position = getCoordinate(indexes.x, indexes.y);
+
         Quaternion rotation = this.transform.rotation;
-        Destroy(tileMap[indexes.x, indexes.y]);
-        tileMap[indexes.x, indexes.y] = Instantiate(constructorTilePrefab, position, rotation, this.transform);
+
+        if(selectedComponent != null)
+        {
+            if(selectedComponent == pathTilePrefab)
+            {
+                Destroy(tileMap[indexes.x, indexes.y]);
+                tileMap[indexes.x, indexes.y] = Instantiate(selectedComponent, position, rotation, this.transform);
+            }
+        }
+        
     }
 
-    public void BuildPathTile(GameObject mapTile)
-    {
-        Vector2Int indexes = IndexsOfMapTile(mapTile);
-        Vector3 position = getCoordinate(indexes.x, indexes.y);
-        Quaternion rotation = this.transform.rotation;
-        Destroy(tileMap[indexes.x, indexes.y]);
-        tileMap[indexes.x, indexes.y] = Instantiate(pathTilePrefab, position, rotation, this.transform);
-    }
 
     private Vector3 getCoordinate(int i, int j)
     {
