@@ -9,6 +9,10 @@ public class PlayStarter : MonoBehaviour
 
     public void Play()
     {
-        SceneManager.LoadScene(mainScene);
+        if(MapSaver.instance.ÑonstructedMapIsCorrect())
+        {
+            SceneManager.LoadScene(mainScene);
+        }
+        
     }
 }
