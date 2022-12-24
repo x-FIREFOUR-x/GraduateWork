@@ -278,11 +278,11 @@ RectTransform:
   m_Children:
   - {fileID: 1018273274}
   m_Father: {fileID: 1074657879}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -200}
+  m_AnchoredPosition: {x: 0, y: -350}
   m_SizeDelta: {x: 150, y: 100}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &446825756
@@ -512,6 +512,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   indexesStartMap: {x: 0, y: 0, z: 0}
   size: 16
+  offsetBuild: {x: 0, y: 2.5, z: 0}
   constructorTilePrefab: {fileID: 424521677968641178, guid: ce6bde0cdd547954cb1e600e4bf845c3, type: 3}
   pathTilePrefab: {fileID: 7074800604941558903, guid: 4c244a92ba9226b43ad4267689d620ba, type: 3}
   startBuildingPrefab: {fileID: 7429232553777342322, guid: e5f44910d69664e4090b3f64dc7df469, type: 3}
@@ -543,6 +544,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4758969167e1565498b2e587ae20f2fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectMenu: {fileID: 2046393689}
   pathTilePrefab: {fileID: 7074800604941558903, guid: 4c244a92ba9226b43ad4267689d620ba, type: 3}
   startBuildingPrefab: {fileID: 7429232553777342322, guid: e5f44910d69664e4090b3f64dc7df469, type: 3}
   endBuildingPrefab: {fileID: 5827603720879718295, guid: d0437453eec017f46bfa164d7df5bc79, type: 3}
@@ -1095,8 +1097,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1885601783}
-  - {fileID: 446825755}
   - {fileID: 1251919998}
+  - {fileID: 446825755}
   m_Father: {fileID: 2046393690}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1354,11 +1356,11 @@ RectTransform:
   m_Children:
   - {fileID: 640551695}
   m_Father: {fileID: 1074657879}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -350}
+  m_AnchoredPosition: {x: 0, y: -200}
   m_SizeDelta: {x: 150, y: 100}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1251919999
@@ -1735,6 +1737,7 @@ GameObject:
   - component: {fileID: 2046393690}
   - component: {fileID: 2046393692}
   - component: {fileID: 2046393691}
+  - component: {fileID: 2046393693}
   m_Layer: 5
   m_Name: SelectMenu
   m_TagString: Untagged
@@ -1802,3 +1805,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2046393689}
   m_CullTransparentMesh: 1
+--- !u!114 &2046393693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2046393689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c06a1a0f880b5e54e808bad7f3f6d6d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unactiveColor: {r: 0, g: 0.91153574, b: 1, a: 1}
+  activeColor: {r: 0.09803919, g: 0.55379784, b: 0.9137255, a: 1}
+  pathTileButton: {fileID: 1885601782}
+  endBuildingButton: {fileID: 446825754}
+  startBuildingButton: {fileID: 1251919997}
