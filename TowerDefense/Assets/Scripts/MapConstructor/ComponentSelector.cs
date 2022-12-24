@@ -12,16 +12,16 @@ public class ComponentSelector : MonoBehaviour
 
     public void SelectPathTile()
     {
-        MapConstructor.instance.GetComponent<MapConstructor>().setSelectedComponent(pathTilePrefab);
+        MapConstructor.instance.GetComponent<MapConstructor>().SetSelectedComponent(pathTilePrefab);
     }
 
     public void SelectEndBuilding()
     {
-        MapConstructor.instance.GetComponent<MapConstructor>().setSelectedComponent(endBuildingPrefab);
+        MapConstructor.instance.GetComponent<MapConstructor>().SetSelectedComponent(endBuildingPrefab);
     }
 
     public void SelectStartBuilding()
     {
-        MapConstructor.instance.GetComponent<MapConstructor>().setSelectedComponent(startBuildingPrefab);
+        MapConstructor.instance.GetComponent<MapConstructor>().SetSelectedComponent(startBuildingPrefab);
     }
 }

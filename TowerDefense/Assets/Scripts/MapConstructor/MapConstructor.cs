@@ -59,7 +59,7 @@ public class MapConstructor : MonoBehaviour
     }
 
 
-    public void setSelectedComponent(GameObject component)
+    public void SetSelectedComponent(GameObject component)
     {
         selectedComponent = component;
     }
@@ -97,7 +97,8 @@ public class MapConstructor : MonoBehaviour
             Vector2Int oldIndexes = IndexsOfMapTile(build);
             Destroy(tileMap[oldIndexes.x, oldIndexes.y]);
 
-            tileMap[oldIndexes.x, oldIndexes.y] = Instantiate(constructorTilePrefab, build.transform.position, rotation, this.transform);
+            tileMap[oldIndexes.x, oldIndexes.y] =
+                Instantiate(constructorTilePrefab, build.transform.position - offsetBuild, rotation, this.transform);
         }
 
         Destroy(tileMap[indexes.x, indexes.y]);
