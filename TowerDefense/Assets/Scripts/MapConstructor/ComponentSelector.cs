@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ComponentSelector : MonoBehaviour
@@ -8,9 +6,9 @@ public class ComponentSelector : MonoBehaviour
     [SerializeField]
     private GameObject pathTilePrefab;
     [SerializeField]
-    private GameObject startBuilding;
+    private GameObject startBuildingPrefab;
     [SerializeField]
-    private GameObject endBuilding;
+    private GameObject endBuildingPrefab;
 
     public void SelectPathTile()
     {
@@ -19,11 +17,11 @@ public class ComponentSelector : MonoBehaviour
 
     public void SelectEndBuilding()
     {
-        MapConstructor.instance.GetComponent<MapConstructor>().setSelectedComponent(endBuilding);
+        MapConstructor.instance.GetComponent<MapConstructor>().setSelectedComponent(endBuildingPrefab);
     }
 
     public void SelectStartBuilding()
     {
-        MapConstructor.instance.GetComponent<MapConstructor>().setSelectedComponent(startBuilding);
+        MapConstructor.instance.GetComponent<MapConstructor>().setSelectedComponent(startBuildingPrefab);
     }
 }

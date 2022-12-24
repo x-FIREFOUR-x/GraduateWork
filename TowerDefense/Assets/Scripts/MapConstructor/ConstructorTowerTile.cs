@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ConstructorTowerTile : MonoBehaviour
@@ -7,11 +5,9 @@ public class ConstructorTowerTile : MonoBehaviour
     private Renderer render;
 
     [Header("Attributes")]
-
     [SerializeField]
     private Color hoverColor;
     private Color unhoverColor;
-
 
     void Awake()
     {

@@ -514,8 +514,8 @@ MonoBehaviour:
   size: 16
   constructorTilePrefab: {fileID: 424521677968641178, guid: ce6bde0cdd547954cb1e600e4bf845c3, type: 3}
   pathTilePrefab: {fileID: 7074800604941558903, guid: 4c244a92ba9226b43ad4267689d620ba, type: 3}
-  startBuilding: {fileID: 7429232553777342322, guid: e5f44910d69664e4090b3f64dc7df469, type: 3}
-  endBuilding: {fileID: 5827603720879718295, guid: d0437453eec017f46bfa164d7df5bc79, type: 3}
+  startBuildingPrefab: {fileID: 7429232553777342322, guid: e5f44910d69664e4090b3f64dc7df469, type: 3}
+  endBuildingPrefab: {fileID: 5827603720879718295, guid: d0437453eec017f46bfa164d7df5bc79, type: 3}
 --- !u!4 &527679785
 Transform:
   m_ObjectHideFlags: 0
@@ -544,8 +544,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pathTilePrefab: {fileID: 7074800604941558903, guid: 4c244a92ba9226b43ad4267689d620ba, type: 3}
-  startBuilding: {fileID: 7429232553777342322, guid: e5f44910d69664e4090b3f64dc7df469, type: 3}
-  endBuilding: {fileID: 5827603720879718295, guid: d0437453eec017f46bfa164d7df5bc79, type: 3}
+  startBuildingPrefab: {fileID: 7429232553777342322, guid: e5f44910d69664e4090b3f64dc7df469, type: 3}
+  endBuildingPrefab: {fileID: 5827603720879718295, guid: d0437453eec017f46bfa164d7df5bc79, type: 3}
 --- !u!1 &611982516
 GameObject:
   m_ObjectHideFlags: 0

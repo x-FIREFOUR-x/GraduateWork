@@ -6,6 +6,8 @@ public class MapConstructor : MonoBehaviour
     public static MapConstructor instance;
 
     private GameObject[,] tileMap;
+    private GameObject endBuilding;
+    private GameObject startBuilding;
 
     private GameObject selectedComponent;
 
@@ -15,15 +17,19 @@ public class MapConstructor : MonoBehaviour
     [SerializeField]
     private int size = 16;
 
+    [SerializeField]
+    private Vector3 offsetBuild = new Vector3(0, (float)2.5, 0);
+
+
     [Header("Prefabs")]
     [SerializeField]
     private GameObject constructorTilePrefab;
     [SerializeField]
     private GameObject pathTilePrefab;
     [SerializeField]
-    private GameObject startBuilding;
+    private GameObject startBuildingPrefab;
     [SerializeField]
-    private GameObject endBuilding;
+    private GameObject endBuildingPrefab;
 
     void Awake()
     {
@@ -33,6 +39,9 @@ public class MapConstructor : MonoBehaviour
         }
 
         selectedComponent = null;
+
+        endBuilding = null;
+        startBuilding = null;
 
         tileMap = new GameObject[size, size];
         
@@ -48,6 +57,7 @@ public class MapConstructor : MonoBehaviour
             }
         }
     }
+
 
     public void setSelectedComponent(GameObject component)
     {
@@ -68,10 +78,32 @@ public class MapConstructor : MonoBehaviour
                 Destroy(tileMap[indexes.x, indexes.y]);
                 tileMap[indexes.x, indexes.y] = Instantiate(selectedComponent, position, rotation, this.transform);
             }
+
+            if(selectedComponent == startBuildingPrefab)
+                BuildBuilding(indexes, position, rotation, ref startBuilding);
+
+            if (selectedComponent == endBuildingPrefab)
+                BuildBuilding(indexes, position, rotation, ref endBuilding);
         }
         
     }
 
+    private void BuildBuilding(Vector2Int indexes, Vector3 position, Quaternion rotation, ref GameObject build)
+    {
+        if(build != null)
+        {
+            Destroy(build);
+
+            Vector2Int oldIndexes = IndexsOfMapTile(build);
+            Destroy(tileMap[oldIndexes.x, oldIndexes.y]);
+
+            tileMap[oldIndexes.x, oldIndexes.y] = Instantiate(constructorTilePrefab, build.transform.position, rotation, this.transform);
+        }
+
+        Destroy(tileMap[indexes.x, indexes.y]);
+        tileMap[indexes.x, indexes.y] = Instantiate(pathTilePrefab, position, rotation, this.transform);
+        build = Instantiate(selectedComponent, position + offsetBuild, rotation, this.transform);
+    }
 
     private Vector3 getCoordinate(int i, int j)
     {
