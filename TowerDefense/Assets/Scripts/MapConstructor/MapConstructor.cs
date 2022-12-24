@@ -4,7 +4,7 @@ public class MapConstructor : MonoBehaviour
 {
     public static MapConstructor instance;
 
-    private GameObject[,] tileMap;
+    private GameObject[,] tilesMap;
     private GameObject endBuilding;
     private GameObject startBuilding;
 
@@ -22,7 +22,7 @@ public class MapConstructor : MonoBehaviour
 
     [Header("Prefabs")]
     [SerializeField]
-    private GameObject constructorTilePrefab;
+    private GameObject towerTilePrefab;
     [SerializeField]
     private GameObject pathTilePrefab;
     [SerializeField]
@@ -42,17 +42,17 @@ public class MapConstructor : MonoBehaviour
         endBuilding = null;
         startBuilding = null;
 
-        tileMap = new GameObject[size, size];
+        tilesMap = new GameObject[size, size];
         
         Quaternion rotation = this.transform.rotation;
-        var t = constructorTilePrefab.transform.localScale.x;
+        var t = towerTilePrefab.transform.localScale.x;
 
         for (int i = 0; i < size; i++)
         {
             for (int j = 0; j < size; j++)
             {
                 Vector3 position = getCoordinate(i, j);
-                tileMap[i,j] = Instantiate(constructorTilePrefab, position, rotation, this.transform);
+                tilesMap[i,j] = Instantiate(towerTilePrefab, position, rotation, this.transform);
             }
         }
     }
@@ -66,16 +66,16 @@ public class MapConstructor : MonoBehaviour
     public void BuildComponent(GameObject mapTile)
     {
         Vector2Int indexes = IndexsOfMapTile(mapTile);
-        Vector3 position = getCoordinate(indexes.x, indexes.y);
 
+        Vector3 position = getCoordinate(indexes.x, indexes.y);
         Quaternion rotation = this.transform.rotation;
 
         if(selectedComponent != null)
         {
             if(selectedComponent == pathTilePrefab)
             {
-                Destroy(tileMap[indexes.x, indexes.y]);
-                tileMap[indexes.x, indexes.y] = Instantiate(selectedComponent, position, rotation, this.transform);
+                Destroy(tilesMap[indexes.x, indexes.y]);
+                tilesMap[indexes.x, indexes.y] = Instantiate(selectedComponent, position, rotation, this.transform);
             }
 
             if(selectedComponent == startBuildingPrefab)
@@ -94,22 +94,50 @@ public class MapConstructor : MonoBehaviour
             Destroy(build);
 
             Vector2Int oldIndexes = IndexsOfMapTile(build);
-            Destroy(tileMap[oldIndexes.x, oldIndexes.y]);
+            Destroy(tilesMap[oldIndexes.x, oldIndexes.y]);
 
-            tileMap[oldIndexes.x, oldIndexes.y] =
-                Instantiate(constructorTilePrefab, build.transform.position - offsetBuild, rotation, this.transform);
+            tilesMap[oldIndexes.x, oldIndexes.y] =
+                Instantiate(towerTilePrefab, build.transform.position - offsetBuild, rotation, this.transform);
         }
 
-        Destroy(tileMap[indexes.x, indexes.y]);
-        tileMap[indexes.x, indexes.y] = Instantiate(pathTilePrefab, position, rotation, this.transform);
+        Destroy(tilesMap[indexes.x, indexes.y]);
+        tilesMap[indexes.x, indexes.y] = Instantiate(pathTilePrefab, position, rotation, this.transform);
         build = Instantiate(selectedComponent, position + offsetBuild, rotation, this.transform);
+    }
+
+    public void BuildTowerTile(GameObject mapTile)
+    {
+        Vector2Int indexes = IndexsOfMapTile(mapTile);
+
+        if (tilesMap[indexes.x, indexes.y].GetComponent<ConstructorPathTile>() != null)
+        {
+            Vector3 position = getCoordinate(indexes.x, indexes.y);
+            Quaternion rotation = this.transform.rotation;
+
+            Destroy(tilesMap[indexes.x, indexes.y]);
+            tilesMap[indexes.x, indexes.y] = Instantiate(towerTilePrefab, position, rotation, this.transform);
+
+            if (startBuilding != null)
+            {
+                Vector2Int buildIndexes = IndexsOfMapTile(startBuilding);
+                if (indexes == buildIndexes)
+                    Destroy(startBuilding);
+            }
+
+            if (endBuilding != null)
+            {
+                Vector2Int buildIndexes = IndexsOfMapTile(endBuilding);
+                if (indexes == buildIndexes)
+                    Destroy(endBuilding);
+            }
+        }
     }
 
     private Vector3 getCoordinate(int i, int j)
     {
-        return new Vector3(indexesStartMap.x + (constructorTilePrefab.transform.localScale.x + 1) * i,
+        return new Vector3(indexesStartMap.x + (towerTilePrefab.transform.localScale.x + 1) * i,
                            indexesStartMap.y,
-                           indexesStartMap.z + (constructorTilePrefab.transform.localScale.z + 1) * j);
+                           indexesStartMap.z + (towerTilePrefab.transform.localScale.z + 1) * j);
     }
 
     private Vector2Int IndexsOfMapTile(GameObject mapTile)

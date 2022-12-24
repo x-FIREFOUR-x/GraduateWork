@@ -9,7 +9,6 @@ public class SelectMenu : MonoBehaviour
     [SerializeField]
     private Color activeColor;
 
-
     [Header("Buttons")]
     [SerializeField]
     private GameObject pathTileButton;
