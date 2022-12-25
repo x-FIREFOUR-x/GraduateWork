@@ -44,7 +44,8 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    void HitTarget()
+
+    private void HitTarget()
     {
         GameObject effect = Instantiate(effectHitPrefab, transform.position, transform.rotation);
         Destroy(effect, 1f);
@@ -61,12 +62,12 @@ public class Projectile : MonoBehaviour
         Destroy(this.gameObject);
     }
 
-    void DamageOneEnemy(Transform enemy)
+    private void DamageOneEnemy(Transform enemy)
     {
         enemy.GetComponent<Enemy>().TakeDamage(damage);
     }
 
-    void ExplodeDamage()
+    private void ExplodeDamage()
     {
         Collider[] explodedItems = Physics.OverlapSphere(transform.position, explosionRadius);
         foreach(Collider explodedItem in explodedItems)

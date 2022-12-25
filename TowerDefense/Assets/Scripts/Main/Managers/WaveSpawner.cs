@@ -34,7 +34,7 @@ public class WaveSpawner : MonoBehaviour
         timeToNextSpawn = Mathf.Clamp(timeToNextSpawn, 0f, Mathf.Infinity);
     }
 
-    IEnumerator SpawnWave()
+    private IEnumerator SpawnWave()
     {
         for (int i = 0; i < waveNumber + 1; i++)
         {
@@ -44,7 +44,7 @@ public class WaveSpawner : MonoBehaviour
         waveNumber++;
     }
 
-    void SpawnEnemy()
+    private void SpawnEnemy()
     {
         Instantiate(enemyPrefab, spawnPoint.position, spawnPoint.rotation);
     }

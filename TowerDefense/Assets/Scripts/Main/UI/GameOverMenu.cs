@@ -21,7 +21,7 @@ public class GameOverMenu : MonoBehaviour
         }
     }
 
-    void gameOver()
+    private void gameOver()
     {
         isGameOver = true;
         Time.timeScale = 0f;
