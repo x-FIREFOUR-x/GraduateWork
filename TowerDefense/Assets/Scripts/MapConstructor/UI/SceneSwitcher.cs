@@ -1,10 +1,12 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PlayStarter : MonoBehaviour
+public class SceneSwitcher: MonoBehaviour
 {
     [SerializeField]
     private string mainScene = "MainScene";
+    [SerializeField]
+    private string mainMenuScene = "MainMenuScene";
     [SerializeField]
     private Map map;
 
@@ -21,5 +23,11 @@ public class PlayStarter : MonoBehaviour
                 SceneManager.LoadScene(mainScene);
             }
         }
+    }
+
+    public void Back()
+    {
+        Destroy(MapSaver.instance.gameObject);
+        SceneManager.LoadScene(mainMenuScene);
     }
 }
