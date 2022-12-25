@@ -133,8 +133,9 @@ GameObject:
   m_Component:
   - component: {fileID: 12596564}
   - component: {fileID: 12596565}
+  - component: {fileID: 12596566}
   m_Layer: 0
-  m_Name: SceneSwitcher
+  m_Name: UIMenuManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -168,7 +169,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainScene: MainScene
+  mainMenuScene: MainMenuScene
   map: {fileID: 1738640359}
+--- !u!114 &12596566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 12596562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4758969167e1565498b2e587ae20f2fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectMenu: {fileID: 2046393689}
+  pathTilePrefab: {fileID: 2395991690530823689, guid: bc1a530b6b13a1c45a7b3fa02e2ec994, type: 3}
+  startBuildingPrefab: {fileID: 7429232553777342322, guid: e5f44910d69664e4090b3f64dc7df469, type: 3}
+  endBuildingPrefab: {fileID: 5827603720879718295, guid: d0437453eec017f46bfa164d7df5bc79, type: 3}
 --- !u!1 &211302829
 GameObject:
   m_ObjectHideFlags: 0
@@ -331,7 +349,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 527679786}
+      - m_Target: {fileID: 12596566}
         m_TargetAssemblyTypeName: ComponentSelector, Assembly-CSharp
         m_MethodName: SelectEndBuilding
         m_Mode: 1
@@ -493,7 +511,6 @@ GameObject:
   m_Component:
   - component: {fileID: 527679785}
   - component: {fileID: 527679784}
-  - component: {fileID: 527679786}
   m_Layer: 0
   m_Name: Constructor
   m_TagString: Untagged
@@ -536,22 +553,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &527679786
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 527679783}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4758969167e1565498b2e587ae20f2fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  selectMenu: {fileID: 2046393689}
-  pathTilePrefab: {fileID: 2395991690530823689, guid: bc1a530b6b13a1c45a7b3fa02e2ec994, type: 3}
-  startBuildingPrefab: {fileID: 7429232553777342322, guid: e5f44910d69664e4090b3f64dc7df469, type: 3}
-  endBuildingPrefab: {fileID: 5827603720879718295, guid: d0437453eec017f46bfa164d7df5bc79, type: 3}
 --- !u!1 &611982516
 GameObject:
   m_ObjectHideFlags: 0
@@ -1544,7 +1545,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 527679786}
+      - m_Target: {fileID: 12596566}
         m_TargetAssemblyTypeName: ComponentSelector, Assembly-CSharp
         m_MethodName: SelectStartBuilding
         m_Mode: 1
@@ -1994,7 +1995,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 527679786}
+      - m_Target: {fileID: 12596566}
         m_TargetAssemblyTypeName: ComponentSelector, Assembly-CSharp
         m_MethodName: SelectPathTile
         m_Mode: 1
