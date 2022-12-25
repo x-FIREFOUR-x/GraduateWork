@@ -4,11 +4,11 @@ public class MapConstructor : MonoBehaviour
 {
     public static MapConstructor instance;
 
-    private GameObject[,] tilesMap;
-    private GameObject endBuilding;
-    private GameObject startBuilding;
-
     private GameObject selectedComponent;
+
+    [Header("Map")]
+    [SerializeField]
+    private GameObject map;
 
     [Header("Attributes")]
     [SerializeField]
@@ -39,22 +39,7 @@ public class MapConstructor : MonoBehaviour
 
         selectedComponent = null;
 
-        endBuilding = null;
-        startBuilding = null;
-
-        tilesMap = new GameObject[size, size];
-        
-        Quaternion rotation = this.transform.rotation;
-        var t = towerTilePrefab.transform.localScale.x;
-
-        for (int i = 0; i < size; i++)
-        {
-            for (int j = 0; j < size; j++)
-            {
-                Vector3 position = getCoordinate(i, j);
-                tilesMap[i,j] = Instantiate(towerTilePrefab, position, rotation, this.transform);
-            }
-        }
+        map.GetComponent<Map>().Initialize(size, indexesStartMap, towerTilePrefab);
     }
 
 
@@ -67,56 +52,28 @@ public class MapConstructor : MonoBehaviour
     {
         Vector2Int indexes = IndexsOfMapTile(mapTile);
 
-        Vector3 position = getCoordinate(indexes.x, indexes.y);
-        Quaternion rotation = this.transform.rotation;
-
         if(selectedComponent != null)
         {
-            if(selectedComponent == pathTilePrefab)
-            {
-                Destroy(tilesMap[indexes.x, indexes.y]);
-                tilesMap[indexes.x, indexes.y] = Instantiate(selectedComponent, position, rotation, this.transform);
-            }
+            map.GetComponent<Map>().SetTile(indexes.x, indexes.y, pathTilePrefab);
 
-            if(selectedComponent == startBuildingPrefab)
-                BuildBuilding(indexes, position, rotation, ref startBuilding);
+            if (selectedComponent == startBuildingPrefab)
+                map.GetComponent<Map>().SetStartBuilding(indexes.x, indexes.y, selectedComponent, towerTilePrefab);
 
             if (selectedComponent == endBuildingPrefab)
-                BuildBuilding(indexes, position, rotation, ref endBuilding);
+                map.GetComponent<Map>().SetEndBuilding(indexes.x, indexes.y, selectedComponent, towerTilePrefab);
         }
         
-    }
-
-    private void BuildBuilding(Vector2Int indexes, Vector3 position, Quaternion rotation, ref GameObject build)
-    {
-        if(build != null)
-        {
-            Destroy(build);
-
-            Vector2Int oldIndexes = IndexsOfMapTile(build);
-            Destroy(tilesMap[oldIndexes.x, oldIndexes.y]);
-
-            tilesMap[oldIndexes.x, oldIndexes.y] =
-                Instantiate(towerTilePrefab, build.transform.position - offsetBuild, rotation, this.transform);
-        }
-
-        Destroy(tilesMap[indexes.x, indexes.y]);
-        tilesMap[indexes.x, indexes.y] = Instantiate(pathTilePrefab, position, rotation, this.transform);
-        build = Instantiate(selectedComponent, position + offsetBuild, rotation, this.transform);
     }
 
     public void BuildTowerTile(GameObject mapTile)
     {
         Vector2Int indexes = IndexsOfMapTile(mapTile);
 
-        if (tilesMap[indexes.x, indexes.y].GetComponent<ConstructorPathTile>() != null)
+        if (map.GetComponent<Map>().GetTile(indexes.x, indexes.y).GetComponent<ConstructorPathTile>() != null)
         {
-            Vector3 position = getCoordinate(indexes.x, indexes.y);
-            Quaternion rotation = this.transform.rotation;
+            map.GetComponent<Map>().SetTile(indexes.x, indexes.y, towerTilePrefab);
 
-            Destroy(tilesMap[indexes.x, indexes.y]);
-            tilesMap[indexes.x, indexes.y] = Instantiate(towerTilePrefab, position, rotation, this.transform);
-
+            GameObject startBuilding = map.GetComponent<Map>().GetStartBuilding();
             if (startBuilding != null)
             {
                 Vector2Int buildIndexes = IndexsOfMapTile(startBuilding);
@@ -124,6 +81,7 @@ public class MapConstructor : MonoBehaviour
                     Destroy(startBuilding);
             }
 
+            GameObject endBuilding = map.GetComponent<Map>().GetEndBuilding();
             if (endBuilding != null)
             {
                 Vector2Int buildIndexes = IndexsOfMapTile(endBuilding);
@@ -131,13 +89,6 @@ public class MapConstructor : MonoBehaviour
                     Destroy(endBuilding);
             }
         }
-    }
-
-    private Vector3 getCoordinate(int i, int j)
-    {
-        return new Vector3(indexesStartMap.x + (towerTilePrefab.transform.localScale.x + 1) * i,
-                           indexesStartMap.y,
-                           indexesStartMap.z + (towerTilePrefab.transform.localScale.z + 1) * j);
     }
 
     private Vector2Int IndexsOfMapTile(GameObject mapTile)
