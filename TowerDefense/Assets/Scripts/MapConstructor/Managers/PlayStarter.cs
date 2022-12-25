@@ -10,10 +10,18 @@ public class PlayStarter : MonoBehaviour
 
     public void Play()
     {
-        if(MapSaver.instance.ÑonstructedMapIsCorrect())
+        if (map.IsAllBuilds())
         {
-            SceneManager.LoadScene(mainScene);
+            int[,] tilesArray = map.GetTileArray();
+            Vector2Int indexesStartBuild = map.GetIndexesStartBuild();
+            Vector2Int indexesEndBuild = map.GetIndexesEndBuild();
+
+            MapSaver.instance.SetData(tilesArray, indexesStartBuild, indexesEndBuild);
+
+            if (MapSaver.instance.ÑonstructedMapIsCorrect())
+            {
+                SceneManager.LoadScene(mainScene);
+            }
         }
-        
     }
 }

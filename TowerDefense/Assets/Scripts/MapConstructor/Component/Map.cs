@@ -118,4 +118,37 @@ public class Map : MonoBehaviour
 
         return indexes;
     }
+
+    public bool IsAllBuilds()
+    {
+        return startBuilding != null && endBuilding != null;
+    }
+
+    public int[,] GetTileArray()
+    {
+        int[,] array = new int[size, size];
+
+        for (int i = 0; i < size; i++)
+        {
+            for (int j = 0; j < size; j++)
+            {
+                if (tilesMap[i, j].name.Contains(towerTilePrefab.name))
+                    array[i, j] = 0;
+                else
+                    array[i, j] = 1;
+            }
+        }
+
+        return array;
+    }
+
+    public Vector2Int GetIndexesStartBuild()
+    {
+        return IndexsOfMapTile(startBuilding);
+    }
+
+    public Vector2Int GetIndexesEndBuild()
+    {
+        return IndexsOfMapTile(endBuilding);
+    }
 }
