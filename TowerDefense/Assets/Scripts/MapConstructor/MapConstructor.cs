@@ -54,13 +54,17 @@ public class MapConstructor : MonoBehaviour
 
         if(selectedComponent != null)
         {
-            map.GetComponent<Map>().SetTile(indexes.x, indexes.y, pathTilePrefab);
+            if (indexes.x > 0 && indexes.x < size - 1 &&
+                indexes.y > 0 && indexes.y < size - 1)
+            {
+                map.GetComponent<Map>().SetTile(indexes.x, indexes.y, pathTilePrefab);
 
-            if (selectedComponent == startBuildingPrefab)
-                map.GetComponent<Map>().SetStartBuilding(indexes.x, indexes.y, selectedComponent);
+                if (selectedComponent == startBuildingPrefab)
+                    map.GetComponent<Map>().SetStartBuilding(indexes.x, indexes.y, selectedComponent);
 
-            if (selectedComponent == endBuildingPrefab)
-                map.GetComponent<Map>().SetEndBuilding(indexes.x, indexes.y, selectedComponent);
+                if (selectedComponent == endBuildingPrefab)
+                    map.GetComponent<Map>().SetEndBuilding(indexes.x, indexes.y, selectedComponent);
+            }
         }
         
     }
