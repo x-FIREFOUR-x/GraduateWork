@@ -16,9 +16,7 @@ public class PlayStarter : MonoBehaviour
             Vector2Int indexesStartBuild = map.GetIndexesStartBuild();
             Vector2Int indexesEndBuild = map.GetIndexesEndBuild();
 
-            MapSaver.instance.SetData(tilesArray, indexesStartBuild, indexesEndBuild);
-
-            if (MapSaver.instance.ÑonstructedMapIsCorrect())
+            if (MapSaver.instance.SetData(tilesArray, indexesStartBuild, indexesEndBuild))
             {
                 SceneManager.LoadScene(mainScene);
             }

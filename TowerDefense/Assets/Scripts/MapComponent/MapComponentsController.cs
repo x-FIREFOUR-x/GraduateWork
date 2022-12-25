@@ -30,15 +30,25 @@ public class MapComponentsController : MonoBehaviour
 
     void Start()
     {
-        List<Vector2Int> generatedPath = PathGenerator.GeneratePath(size, indexesStart, indexesEnd);
+        List<Vector2Int> generatedPath;
+        if (MapSaver.instance.IsSave)
+        {
+            indexesStart = MapSaver.instance.GetIndexesStart();
+            indexesEnd = MapSaver.instance.GetIndexesEnd();
+            generatedPath = PathGenerator.GetPathWithMatrix(MapSaver.instance.GetTileMatrix(), indexesStart, indexesEnd);
+        }
+        else
+        {
+            generatedPath = PathGenerator.GeneratePath(size, indexesStart, indexesEnd);
+        }
 
         tilesMap = Instantiate(tilesMapPrefab, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1))
             .GetComponent<TilesMap>();
         tilesMap.Initialize(size, generatedPath);
 
-        startBuilding.transform.SetPositionAndRotation(new Vector3(5, (float)2.5, 5), new Quaternion(0, 0, 0, 1));
+        startBuilding.transform.SetPositionAndRotation(new Vector3(5 * indexesStart.x, (float)2.5, 5 * indexesStart.y), new Quaternion(0, 0, 0, 1));
 
-        endBuilding.transform.SetPositionAndRotation(new Vector3(70, (float)2.5, 70), new Quaternion(0, 0, 0, 1));
+        endBuilding.transform.SetPositionAndRotation(new Vector3(5 * indexesEnd.x, (float)2.5, 5 * indexesEnd.y), new Quaternion(0, 0, 0, 1));
 
         wayPoints = Instantiate(wayPointsPrefab, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1))
             .GetComponent<WayPoints>();

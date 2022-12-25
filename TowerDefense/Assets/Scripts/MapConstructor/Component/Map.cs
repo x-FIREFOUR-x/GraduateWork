@@ -135,7 +135,7 @@ public class Map : MonoBehaviour
                 if (tilesMap[i, j].name.Contains(towerTilePrefab.name))
                     array[i, j] = 0;
                 else
-                    array[i, j] = 1;
+                    array[i,j] = 1;
             }
         }
 

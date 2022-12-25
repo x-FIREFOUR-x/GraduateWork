@@ -4,9 +4,11 @@ public class MapSaver : MonoBehaviour
 {
     public static MapSaver instance;
 
-    private int[,] tilesArray;
+    private int[,] tilesMatrix;
     private Vector2Int indexesStart;
     private Vector2Int indexesEnd;
+
+    public bool IsSave { get; private set; }
 
     void Awake()
     {
@@ -15,17 +17,34 @@ public class MapSaver : MonoBehaviour
             instance = this;
         }
 
+        IsSave = false;
+
         DontDestroyOnLoad(this.gameObject);  
     }
 
-    public void SetData(int[,] tiles, Vector2Int start, Vector2Int end)
+    public bool SetData(int[,] tiles, Vector2Int start, Vector2Int end)
     {
-        tilesArray = tiles;
+        tilesMatrix = tiles;
         indexesStart = start;
         indexesEnd = end;
+
+        if (ÑonstructedMapIsCorrect())
+        {
+            IsSave = true;
+            return true;
+        }
+        else
+        {
+            tilesMatrix = null;
+            indexesStart = new Vector2Int();
+            indexesEnd = new Vector2Int();
+            return false;
+        }
+        
     }
 
-    public bool ÑonstructedMapIsCorrect()
+
+    private bool ÑonstructedMapIsCorrect()
     {
         bool isFull = true;
 
@@ -42,10 +61,10 @@ public class MapSaver : MonoBehaviour
             {
                 Vector2Int newIndexes = new Vector2Int(currentIndexes.x + rowNum[i], currentIndexes.y + columnNum[i]);
 
-                if (tilesArray[newIndexes.x, newIndexes.y] == 1
+                if (tilesMatrix[newIndexes.x, newIndexes.y] == 1
                     && newIndexes != prevIndexes
-                    && (newIndexes.x > 0 && newIndexes.x < tilesArray.Length - 1)
-                    && (newIndexes.y > 0 && newIndexes.y < tilesArray.Length - 1))
+                    && (newIndexes.x > 0 && newIndexes.x < tilesMatrix.Length - 1)
+                    && (newIndexes.y > 0 && newIndexes.y < tilesMatrix.Length - 1))
                 {
                     nextIndexes = newIndexes;
                     countNeighbor++;
@@ -62,5 +81,20 @@ public class MapSaver : MonoBehaviour
         }
 
         return isFull;
+    }
+
+    public int[,] GetTileMatrix()
+    {
+        return tilesMatrix;
+    }
+
+    public Vector2Int GetIndexesStart()
+    {
+        return indexesStart;
+    }
+
+    public Vector2Int GetIndexesEnd()
+    {
+        return indexesEnd;
     }
 }
