@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainScene: MainScene
+  map: {fileID: 1738640359}
 --- !u!4 &12596564
 Transform:
   m_ObjectHideFlags: 0
@@ -1544,7 +1545,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10c2be2da7651c24ca73d41151d30ec5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offsetBuild: {x: 0, y: 2.5, z: 0}
+  towerTilePrefab: {fileID: 424521677968641178, guid: ce6bde0cdd547954cb1e600e4bf845c3, type: 3}
+  pathTilePrefab: {fileID: 2395991690530823689, guid: bc1a530b6b13a1c45a7b3fa02e2ec994, type: 3}
 --- !u!4 &1738640360
 Transform:
   m_ObjectHideFlags: 0

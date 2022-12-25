@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Map : MonoBehaviour
@@ -10,16 +8,22 @@ public class Map : MonoBehaviour
     private GameObject endBuilding;
     private GameObject startBuilding;
 
-    [SerializeField]
-    private Vector3 offsetBuild = new Vector3(0, (float)2.5, 0);
+    private Vector3 offsetBuild;
 
     private Vector3 sizeTile;
 
+    [Header("Prefabs")]
+    [SerializeField]
+    private GameObject towerTilePrefab;
+    [SerializeField]
+    private GameObject pathTilePrefab;
 
-    public void Initialize(int size, Vector3 startPosition, GameObject towerTilePrefab)
+
+    public void Initialize(int size, Vector3 startPosition, Vector3 offsetBuild)
     {
         this.transform.position = startPosition;
         this.size = size;
+        this.offsetBuild = offsetBuild;
 
         sizeTile = towerTilePrefab.transform.localScale;
 
@@ -54,7 +58,7 @@ public class Map : MonoBehaviour
         return tilesMap[i, j];
     }
 
-    public void SetStartBuilding(int i, int j, GameObject building, GameObject towerTilePrefab)
+    public void SetStartBuilding(int i, int j, GameObject building)
     {
         Quaternion rotation = this.transform.rotation;
         Vector3 position = getCoordinate(i, j);
@@ -77,7 +81,7 @@ public class Map : MonoBehaviour
         return startBuilding;
     }
 
-    public void SetEndBuilding(int i, int j, GameObject building, GameObject towerTilePrefab)
+    public void SetEndBuilding(int i, int j, GameObject building)
     {
         Quaternion rotation = this.transform.rotation;
         Vector3 position = getCoordinate(i, j);

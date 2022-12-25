@@ -39,7 +39,7 @@ public class MapConstructor : MonoBehaviour
 
         selectedComponent = null;
 
-        map.GetComponent<Map>().Initialize(size, indexesStartMap, towerTilePrefab);
+        map.GetComponent<Map>().Initialize(size, indexesStartMap, offsetBuild);
     }
 
 
@@ -57,10 +57,10 @@ public class MapConstructor : MonoBehaviour
             map.GetComponent<Map>().SetTile(indexes.x, indexes.y, pathTilePrefab);
 
             if (selectedComponent == startBuildingPrefab)
-                map.GetComponent<Map>().SetStartBuilding(indexes.x, indexes.y, selectedComponent, towerTilePrefab);
+                map.GetComponent<Map>().SetStartBuilding(indexes.x, indexes.y, selectedComponent);
 
             if (selectedComponent == endBuildingPrefab)
-                map.GetComponent<Map>().SetEndBuilding(indexes.x, indexes.y, selectedComponent, towerTilePrefab);
+                map.GetComponent<Map>().SetEndBuilding(indexes.x, indexes.y, selectedComponent);
         }
         
     }

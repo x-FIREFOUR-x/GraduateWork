@@ -5,7 +5,8 @@ public class PlayStarter : MonoBehaviour
 {
     [SerializeField]
     private string mainScene = "MainScene";
-
+    [SerializeField]
+    private Map map;
 
     public void Play()
     {
