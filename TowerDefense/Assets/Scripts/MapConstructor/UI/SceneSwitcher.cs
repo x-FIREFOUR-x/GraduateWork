@@ -20,6 +20,7 @@ public class SceneSwitcher: MonoBehaviour
 
             if (MapSaver.instance.SetData(tilesArray, indexesStartBuild, indexesEndBuild))
             {
+                Time.timeScale = 1f;
                 SceneManager.LoadScene(mainScene);
             }
         }
