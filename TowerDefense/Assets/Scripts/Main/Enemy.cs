@@ -1,20 +1,29 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
     [Header("Attributes")]
     [SerializeField]
     private float speed = 10f;
+    [SerializeField]
+    private float startHealth = 100f;
+    private float health;
 
     private Transform target;
     private int wavePointIndex = 0;
 
     public static string enemyTag = "Enemy";
 
+    [Header("SetUp")]
+    [SerializeField]
+    private Image healthBar;
+
 
     void Start()
     {
         target = WayPoints.Points[0];
+        health = startHealth;
     }
 
     void Update()
@@ -28,12 +37,12 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void GetNextWayPoint()
+    private void GetNextWayPoint()
     {
         wavePointIndex++;
         if (wavePointIndex > WayPoints.Points.Count - 1)
         {
-            DamageTower();
+            DamageEndBuilding();
         }
         else
         {
@@ -41,7 +50,19 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void DamageTower()
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+
+        healthBar.fillAmount = health / startHealth;
+
+        if(health <= 0)
+        {
+            Destroy(this.gameObject);
+        }
+    }
+
+    private void DamageEndBuilding()
     {
         GameObject[] endBuilding = GameObject.FindGameObjectsWithTag(EndBuilding.endBuildingTag);
 

@@ -9,6 +9,8 @@ public class Projectile : MonoBehaviour
     private float speed = 70f;
     [SerializeField]
     private float explosionRadius = 0f;
+    [SerializeField]
+    private float damage = 100f;
 
     [Header("Prefabs")]
     [SerializeField]
@@ -45,7 +47,7 @@ public class Projectile : MonoBehaviour
     void HitTarget()
     {
         GameObject effect = Instantiate(effectHitPrefab, transform.position, transform.rotation);
-        Destroy(effect, 2f);
+        Destroy(effect, 1f);
 
         if (explosionRadius > 0f)
         {
@@ -56,12 +58,12 @@ public class Projectile : MonoBehaviour
             DamageOneEnemy(targetEnemy);
         }
 
-        Destroy(gameObject);
+        Destroy(this.gameObject);
     }
 
     void DamageOneEnemy(Transform enemy)
     {
-        Destroy(enemy.gameObject);
+        enemy.GetComponent<Enemy>().TakeDamage(damage);
     }
 
     void ExplodeDamage()
