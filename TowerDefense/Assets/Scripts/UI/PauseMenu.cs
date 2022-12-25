@@ -33,6 +33,8 @@ public class PauseMenu : MonoBehaviour
 
     public void GoToMenu()
     {
+        Time.timeScale = 1f;
+        Destroy(MapSaver.instance.gameObject);
         SceneManager.LoadScene(mainMenuScene);
     }
 }

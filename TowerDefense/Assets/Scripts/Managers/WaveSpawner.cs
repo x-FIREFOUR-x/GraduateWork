@@ -8,17 +8,19 @@ public class WaveSpawner : MonoBehaviour
     [SerializeField]
     private Transform enemyPrefab;
 
-
-    [Header("Attributes")]
-    [SerializeField]
     private Transform spawnPoint;
 
+    [Header("Attributes")]
     [SerializeField]
     private float timeBetweenWaves = 5f;
     public float timeToNextSpawn { get; private set; } = 1f;
 
     public int waveNumber { get; private set; } = 0;
 
+    public void Initialize(Transform spawn)
+    {
+        spawnPoint = spawn;
+    }
 
     void Update()
     {

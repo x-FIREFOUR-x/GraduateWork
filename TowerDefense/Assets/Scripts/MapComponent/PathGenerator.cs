@@ -79,4 +79,35 @@ public class PathGenerator
 
         return countNeigbors == 1;
     }
+
+    static public List<Vector2Int> GetPathWithMatrix(int[,] matrix, Vector2Int indexesStart, Vector2Int indexesEnd)
+    {
+        List<Vector2Int> path = new List<Vector2Int>();
+
+        int[] rowNum = new[] { 1, 0, -1, 0 };
+        int[] columnNum = new[] { 0, 1, 0, -1 };
+
+        Vector2Int prevIndexes = indexesStart;
+        Vector2Int currentIndexes = indexesStart;
+        path.Add(new Vector2Int(currentIndexes.y, currentIndexes.x));
+
+        while (currentIndexes != indexesEnd)
+        {
+            for (int i = 0; i < rowNum.Length; i++)
+            {
+                Vector2Int newIndexes = new Vector2Int(currentIndexes.x + rowNum[i], currentIndexes.y + columnNum[i]);
+
+                if (matrix[newIndexes.x, newIndexes.y] == 1 && newIndexes != prevIndexes)
+                {
+                    prevIndexes = currentIndexes;
+                    currentIndexes = newIndexes;
+                    path.Add(new Vector2Int(currentIndexes.y, currentIndexes.x));
+                    break;
+                }
+            }
+        }
+
+        return path;
+    }
+    
 }
