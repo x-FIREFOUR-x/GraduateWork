@@ -65,7 +65,7 @@ public abstract class Tower : MonoBehaviour
         }
     }
 
-    protected void rotateToTarget()
+    protected void RotateToTarget()
     {
         Vector3 direction = target.position - transform.position;
         Quaternion lookRotation = Quaternion.LookRotation(direction);

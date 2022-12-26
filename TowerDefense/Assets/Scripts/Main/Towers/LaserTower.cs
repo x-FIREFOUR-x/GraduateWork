@@ -20,17 +20,8 @@ public class LaserTower : Tower
     {
         if (target != null)
         {
-            rotateToTarget();
-
-            if(!lineLaser.enabled)
-            {
-                lineLaser.enabled = true;
-                hitEffect.Play();
-                lightHitEffect.enabled = true;
-            }
-            
-            lineLaser.SetPosition(0, pointStartFire.position);
-            lineLaser.SetPosition(1, target.position);
+            RotateToTarget();
+            ActiveLaser();
 
             Vector3 direction = pointStartFire.position - target.position;
             hitEffect.transform.position = target.position + direction.normalized;
@@ -41,12 +32,30 @@ public class LaserTower : Tower
         }
         else
         {
-            if (lineLaser.enabled)
-            {
-                lineLaser.enabled = false;
-                hitEffect.Stop();
-                lightHitEffect.enabled = false;
-            }
+            DisactiveLaser();
+        }
+    }
+
+    private void ActiveLaser()
+    {
+        if (!lineLaser.enabled)
+        {
+            lineLaser.enabled = true;
+            hitEffect.Play();
+            lightHitEffect.enabled = true;
+        }
+
+        lineLaser.SetPosition(0, pointStartFire.position);
+        lineLaser.SetPosition(1, target.position);
+    }
+
+    private void DisactiveLaser()
+    {
+        if (lineLaser.enabled)
+        {
+            lineLaser.enabled = false;
+            hitEffect.Stop();
+            lightHitEffect.enabled = false;
         }
     }
 

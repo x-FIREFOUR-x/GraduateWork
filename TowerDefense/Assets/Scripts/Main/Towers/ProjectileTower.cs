@@ -13,7 +13,7 @@ public class ProjectileTower : Tower
     {
         if(target != null)
         {
-            rotateToTarget();
+            RotateToTarget();
             if (timeToNextFire <= 0f)
             {
                 StartCoroutine(Shoot());
