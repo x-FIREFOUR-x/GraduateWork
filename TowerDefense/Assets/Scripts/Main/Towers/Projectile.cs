@@ -4,6 +4,8 @@ public class Projectile : MonoBehaviour
 {
     private Transform targetEnemy;
 
+    private Vector3 targetStartPosition;
+
     [Header("Attributes")]
     [SerializeField]
     private float speed = 70f;
@@ -20,13 +22,15 @@ public class Projectile : MonoBehaviour
     public void Seek(Transform target)
     {
         targetEnemy = target;
+        targetStartPosition = target.position;
+        transform.LookAt(targetEnemy);
     }
 
     void Update()
     {
         if(targetEnemy != null)
         {
-            Vector3 direction = targetEnemy.position - transform.position;
+            Vector3 direction = GetDiractionToTarget();
             float distanceFrame = speed * Time.deltaTime;
 
             if(direction.magnitude <= distanceFrame)
@@ -36,7 +40,6 @@ public class Projectile : MonoBehaviour
             }
 
             transform.Translate(direction.normalized * distanceFrame, Space.World);
-            transform.LookAt(targetEnemy);
         }
         else
         {
@@ -76,6 +79,18 @@ public class Projectile : MonoBehaviour
             {
                 DamageOneEnemy(explodedItem.transform);
             }
+        }
+    }
+
+    private Vector3 GetDiractionToTarget()
+    {
+        if(explosionRadius > 0)
+        {
+            return targetStartPosition - transform.position;
+        }
+        else
+        {
+            return targetEnemy.position - transform.position;
         }
     }
 }
