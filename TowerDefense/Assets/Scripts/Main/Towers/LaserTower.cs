@@ -7,6 +7,8 @@ public class LaserTower : Tower
     [Header("Attributes")]
     [SerializeField]
     private float damage = 10f;
+    [SerializeField]
+    private float percentSlowing = 0.5f;
 
     [Header("Prefabs")]
     [SerializeField]
@@ -27,8 +29,9 @@ public class LaserTower : Tower
             hitEffect.transform.position = target.position + direction.normalized;
             hitEffect.transform.rotation = Quaternion.LookRotation(direction);
 
-
             target.GetComponent<Enemy>().TakeDamage(damage * Time.deltaTime);
+
+            target.GetComponent<Enemy>().Slow(percentSlowing);
         }
         else
         {
