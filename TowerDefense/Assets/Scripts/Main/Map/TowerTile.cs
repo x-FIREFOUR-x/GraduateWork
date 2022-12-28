@@ -30,7 +30,13 @@ public class TowerTile : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (towerBuildManager.IsChosenTower() && Tower == null)
+        if(Tower != null)
+        {
+            towerBuildManager.SetTowerTile(this);
+            return;
+        }
+
+        if (towerBuildManager.IsChosenTower())
         {
             if(towerBuildManager.IsMoney())
             {
@@ -46,10 +52,7 @@ public class TowerTile : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (towerBuildManager.IsChosenTower() && Tower == null)
-        {
-            render.material.color = hoverColor;
-        }
+        render.material.color = hoverColor;
     }
 
     private void OnMouseExit()

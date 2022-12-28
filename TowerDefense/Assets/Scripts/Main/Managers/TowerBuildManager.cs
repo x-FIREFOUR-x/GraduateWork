@@ -4,9 +4,12 @@ public class TowerBuildManager : MonoBehaviour
 {
     public static TowerBuildManager instance;
 
-    private GameObject chosenTower;
+    private Tower chosenTower;
+    private TowerTile chosenTowerTile;
 
-    
+    [SerializeField]
+    private GameObject uiTowerTile;
+
     [field:Header("Prefabs")]
     [field: SerializeField]
     public GameObject turretPrefab { get; private set;}
@@ -27,14 +30,38 @@ public class TowerBuildManager : MonoBehaviour
         }
     }
 
-    public GameObject GetChosenTower()
+    public Tower GetChosenTower()
     {
         return chosenTower;
     }
 
     public void SetChosenTower(GameObject tower)
     {
-        chosenTower = tower;
+        chosenTower = tower.GetComponent<Tower>();
+        chosenTowerTile = null;
+
+        uiTowerTile.GetComponent<UITowerTile>().Hide();
+    }
+
+    public void SetTowerTile(TowerTile towerTile)
+    {
+        if(chosenTowerTile == towerTile)
+        {
+            DisetTowerTile();
+        }
+        else
+        {
+            chosenTowerTile = towerTile;
+            chosenTower = null;
+
+            uiTowerTile.GetComponent<UITowerTile>().SetTowerTile(chosenTowerTile);
+        }
+    }
+
+    private void DisetTowerTile()
+    {
+        chosenTowerTile = null;
+        uiTowerTile.GetComponent<UITowerTile>().Hide();
     }
 
     public bool IsChosenTower()
@@ -44,14 +71,14 @@ public class TowerBuildManager : MonoBehaviour
 
     public bool IsMoney()
     {
-        return PlayerStats.Money >= chosenTower.GetComponent<Tower>().Price;
+        return PlayerStats.Money >= chosenTower.Price;
     }
 
     public void BuildTower(TowerTile tile)
     {
         if(IsMoney())
         {
-            GameObject tower = Instantiate(chosenTower, tile.GetTowerBuildPosition(), tile.transform.rotation);
+            GameObject tower = Instantiate(chosenTower.gameObject, tile.GetTowerBuildPosition(), tile.transform.rotation);
             tile.Tower = tower;
 
             PlayerStats.Money -= chosenTower.GetComponent<Tower>().Price;
