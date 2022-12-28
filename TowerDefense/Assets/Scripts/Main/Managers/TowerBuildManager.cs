@@ -71,7 +71,6 @@ public class TowerBuildManager : MonoBehaviour
     }
 
 
-
     public void BuildTower(TowerTile tile)
     {
         GameObject tower = Instantiate(chosenTower.gameObject, tile.GetTowerBuildPosition(), tile.transform.rotation);

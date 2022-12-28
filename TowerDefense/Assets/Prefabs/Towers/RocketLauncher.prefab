@@ -135,6 +135,7 @@ MonoBehaviour:
   timeToNextFire: 0
   shootRange: 20
   rotateSpeed: 8
+  <Price>k__BackingField: 100
   pointStartFire: {fileID: 4035774621446171047}
   rotatePart: {fileID: 6059494694254124202}
   projectilePrefab: {fileID: 4345204468309552529, guid: 028b473e40716ba43bcd42d1e5c49e7e, type: 3}
