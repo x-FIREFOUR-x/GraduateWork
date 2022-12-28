@@ -8,7 +8,7 @@ public class TowerBuildManager : MonoBehaviour
     private TowerTile chosenTowerTile;
 
     [SerializeField]
-    private GameObject uiTowerTile;
+    private TowerSeller towerSeller;
 
     [field:Header("Prefabs")]
     [field: SerializeField]
@@ -30,6 +30,7 @@ public class TowerBuildManager : MonoBehaviour
         }
     }
 
+
     public Tower GetChosenTower()
     {
         return chosenTower;
@@ -40,52 +41,54 @@ public class TowerBuildManager : MonoBehaviour
         chosenTower = tower.GetComponent<Tower>();
         chosenTowerTile = null;
 
-        uiTowerTile.GetComponent<UITowerTile>().Hide();
+        towerSeller.Hide();
     }
+
 
     public void SetTowerTile(TowerTile towerTile)
     {
         if(chosenTowerTile == towerTile)
         {
-            DisetTowerTile();
+            towerSeller.Close();
         }
         else
         {
             chosenTowerTile = towerTile;
             chosenTower = null;
 
-            uiTowerTile.GetComponent<UITowerTile>().SetTowerTile(chosenTowerTile);
+            towerSeller.ActiveSellMenu(chosenTowerTile.GetTowerBuildPosition(), PriceSell());
         }
     }
 
-    private void DisetTowerTile()
+    public void DisetTowerTile()
     {
         chosenTowerTile = null;
-        uiTowerTile.GetComponent<UITowerTile>().Hide();
     }
 
-    public bool IsChosenTower()
+    public bool CanBuild()
     {
-        return chosenTower != null;
+        return chosenTower != null && PlayerStats.Money >= chosenTower.Price;
     }
 
-    public bool IsMoney()
-    {
-        return PlayerStats.Money >= chosenTower.Price;
-    }
+
 
     public void BuildTower(TowerTile tile)
     {
-        if(IsMoney())
-        {
-            GameObject tower = Instantiate(chosenTower.gameObject, tile.GetTowerBuildPosition(), tile.transform.rotation);
-            tile.Tower = tower;
+        GameObject tower = Instantiate(chosenTower.gameObject, tile.GetTowerBuildPosition(), tile.transform.rotation);
+        tile.Tower = tower;
 
-            PlayerStats.Money -= chosenTower.GetComponent<Tower>().Price;
-        }
-        else
-        {
-            Debug.Log("Enought money to build");
-        }
+        PlayerStats.Money -= chosenTower.GetComponent<Tower>().Price;
+    }
+
+    public void DestroyTower()
+    {
+        PlayerStats.Money += PriceSell();
+        Destroy(chosenTowerTile.Tower);
+    }
+
+
+    private int PriceSell()
+    {
+        return chosenTowerTile.Tower.GetComponent<Tower>().Price / 2;
     }
 }

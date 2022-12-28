@@ -18,8 +18,8 @@ public class TowerTile : MonoBehaviour
     [SerializeField]
     private Vector3 towerOffset = new Vector3(0, (float)0.5, 0);
 
-
     private TowerBuildManager towerBuildManager;
+
 
     void Awake()
     {
@@ -36,17 +36,13 @@ public class TowerTile : MonoBehaviour
             return;
         }
 
-        if (towerBuildManager.IsChosenTower())
+        if (towerBuildManager.CanBuild())
         {
-            if(towerBuildManager.IsMoney())
-            {
-                towerBuildManager.BuildTower(this);
-                OnMouseExit();
-            }
-            else
-            {
-                render.material.color = notEnoughMoney;
-            }
+            towerBuildManager.BuildTower(this);
+        }
+        else
+        {
+            render.material.color = notEnoughMoney;
         }
     }
 
@@ -64,5 +60,6 @@ public class TowerTile : MonoBehaviour
     {
         return transform.position + towerOffset;
     }
+
 }
 
