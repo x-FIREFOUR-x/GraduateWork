@@ -22,7 +22,8 @@ public class Projectile : MonoBehaviour
     public void Seek(Transform target)
     {
         targetEnemy = target;
-        targetStartPosition = target.position;
+        if (target != null)
+            targetStartPosition = target.position;
         transform.LookAt(targetEnemy);
     }
 
