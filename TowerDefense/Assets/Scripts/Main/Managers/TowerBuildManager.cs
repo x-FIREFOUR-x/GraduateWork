@@ -8,7 +8,7 @@ public class TowerBuildManager : MonoBehaviour
     private TowerTile chosenTowerTile;
 
     [SerializeField]
-    private TowerSeller towerSeller;
+    private TowerSellMenu towerSeller;
 
     [field:Header("Prefabs")]
     [field: SerializeField]

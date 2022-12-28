@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TowerSeller : MonoBehaviour
+public class TowerSellMenu : MonoBehaviour
 {
     [SerializeField]
     private GameObject ui;

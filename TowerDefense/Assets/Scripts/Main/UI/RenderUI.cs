@@ -27,7 +27,7 @@ public class RenderUI : MonoBehaviour
         timeToNextWaveText.text = "Next: " + string.Format("{0:00:00}", waveSpawner.timeToNextSpawn);
         waveNumberText.text = "Wave: " + (waveSpawner.waveNumber).ToString();
 
-        countMoney.text = PlayerStats.Money.ToString() + TowerShop.currencySymbol;
+        countMoney.text = PlayerStats.Money.ToString() + "$";
 
         int health = endBuildingPrefab.GetComponent<EndBuilding>().health;
         healthText.text = "Health: " + health.ToString();

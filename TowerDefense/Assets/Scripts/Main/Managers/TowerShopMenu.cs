@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TowerShop : MonoBehaviour
+public class TowerShopMenu : MonoBehaviour
 {
     TowerBuildManager towerBuildManager;
 
