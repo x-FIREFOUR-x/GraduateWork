@@ -286,8 +286,10 @@ MonoBehaviour:
   timeToNextFire: 0
   shootRange: 15
   rotateSpeed: 8
+  <Price>k__BackingField: 100
   pointStartFire: {fileID: 2435140106436551608}
   rotatePart: {fileID: 2435140106413035375}
+  damage: 40
   lineLaser: {fileID: -1268797453948382230}
   hitEffect: {fileID: 6030207623369911628}
   lightHitEffect: {fileID: 3470220839457871820}

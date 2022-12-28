@@ -13,7 +13,7 @@ public class ProjectileTower : Tower
     {
         if(target != null)
         {
-            rotateToTarget();
+            RotateToTarget();
             if (timeToNextFire <= 0f)
             {
                 StartCoroutine(Shoot());
@@ -23,8 +23,7 @@ public class ProjectileTower : Tower
         timeToNextFire -= Time.deltaTime;
     }
 
-
-    IEnumerator Shoot()
+    private IEnumerator Shoot()
     {
         for (int i = 0; i < countProjectiles; i++)
         {

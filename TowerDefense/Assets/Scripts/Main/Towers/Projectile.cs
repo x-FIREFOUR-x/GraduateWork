@@ -4,11 +4,15 @@ public class Projectile : MonoBehaviour
 {
     private Transform targetEnemy;
 
+    private Vector3 targetStartPosition;
+
     [Header("Attributes")]
     [SerializeField]
     private float speed = 70f;
     [SerializeField]
     private float explosionRadius = 0f;
+    [SerializeField]
+    private float damage = 100f;
 
     [Header("Prefabs")]
     [SerializeField]
@@ -18,13 +22,16 @@ public class Projectile : MonoBehaviour
     public void Seek(Transform target)
     {
         targetEnemy = target;
+        if (target != null)
+            targetStartPosition = target.position;
+        transform.LookAt(targetEnemy);
     }
 
     void Update()
     {
         if(targetEnemy != null)
         {
-            Vector3 direction = targetEnemy.position - transform.position;
+            Vector3 direction = GetDiractionToTarget();
             float distanceFrame = speed * Time.deltaTime;
 
             if(direction.magnitude <= distanceFrame)
@@ -34,7 +41,6 @@ public class Projectile : MonoBehaviour
             }
 
             transform.Translate(direction.normalized * distanceFrame, Space.World);
-            transform.LookAt(targetEnemy);
         }
         else
         {
@@ -42,10 +48,11 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    void HitTarget()
+
+    private void HitTarget()
     {
         GameObject effect = Instantiate(effectHitPrefab, transform.position, transform.rotation);
-        Destroy(effect, 2f);
+        Destroy(effect, 1f);
 
         if (explosionRadius > 0f)
         {
@@ -56,15 +63,15 @@ public class Projectile : MonoBehaviour
             DamageOneEnemy(targetEnemy);
         }
 
-        Destroy(gameObject);
+        Destroy(this.gameObject);
     }
 
-    void DamageOneEnemy(Transform enemy)
+    private void DamageOneEnemy(Transform enemy)
     {
-        Destroy(enemy.gameObject);
+        enemy.GetComponent<Enemy>().TakeDamage(damage);
     }
 
-    void ExplodeDamage()
+    private void ExplodeDamage()
     {
         Collider[] explodedItems = Physics.OverlapSphere(transform.position, explosionRadius);
         foreach(Collider explodedItem in explodedItems)
@@ -73,6 +80,18 @@ public class Projectile : MonoBehaviour
             {
                 DamageOneEnemy(explodedItem.transform);
             }
+        }
+    }
+
+    private Vector3 GetDiractionToTarget()
+    {
+        if(explosionRadius > 0)
+        {
+            return targetStartPosition - transform.position;
+        }
+        else
+        {
+            return targetEnemy.position - transform.position;
         }
     }
 }

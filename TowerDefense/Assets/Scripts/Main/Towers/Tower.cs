@@ -31,14 +31,13 @@ public abstract class Tower : MonoBehaviour
     protected Transform rotatePart;
 
 
-
     void Start()
     {
         target = null;
         InvokeRepeating("UpdateTarget", 0f, 0.5f);   
     }
 
-    void UpdateTarget()
+    protected void UpdateTarget()
     {
         GameObject[] enemies = GameObject.FindGameObjectsWithTag(Enemy.enemyTag);
 
@@ -66,8 +65,7 @@ public abstract class Tower : MonoBehaviour
         }
     }
 
-
-    protected void rotateToTarget()
+    protected void RotateToTarget()
     {
         Vector3 direction = target.position - transform.position;
         Quaternion lookRotation = Quaternion.LookRotation(direction);

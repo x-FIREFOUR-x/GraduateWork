@@ -1,20 +1,33 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
     [Header("Attributes")]
     [SerializeField]
-    private float speed = 10f;
+    private float startHealth = 100f;
+    private float health;
+
+    [SerializeField]
+    private float startSpeed = 10f;
+    private float speed;
+    
 
     private Transform target;
-    private int wavePointIndex = 0;
+    public int WayPointIndex { get; private set; } = 0;
 
     public static string enemyTag = "Enemy";
+
+    [Header("SetUp")]
+    [SerializeField]
+    private Image healthBar;
 
 
     void Start()
     {
         target = WayPoints.Points[0];
+        health = startHealth;
+        speed = startSpeed;
     }
 
     void Update()
@@ -26,22 +39,24 @@ public class Enemy : MonoBehaviour
         {
             GetNextWayPoint();
         }
+
+        speed = startSpeed;
     }
 
-    void GetNextWayPoint()
+    private void GetNextWayPoint()
     {
-        wavePointIndex++;
-        if (wavePointIndex > WayPoints.Points.Count - 1)
+        WayPointIndex++;
+        if (WayPointIndex > WayPoints.Points.Count - 1)
         {
-            DamageTower();
+            DamageEndBuilding();
         }
         else
         {
-            target = WayPoints.Points[wavePointIndex];
+            target = WayPoints.Points[WayPointIndex];
         }
     }
 
-    void DamageTower()
+    private void DamageEndBuilding()
     {
         GameObject[] endBuilding = GameObject.FindGameObjectsWithTag(EndBuilding.endBuildingTag);
 
@@ -51,5 +66,23 @@ public class Enemy : MonoBehaviour
         }
 
         Destroy(gameObject);
+    }
+
+
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+
+        healthBar.fillAmount = health / startHealth;
+
+        if (health <= 0)
+        {
+            Destroy(this.gameObject);
+        }
+    }
+
+    public void Slow(float percentSlowing)
+    {
+        speed = startSpeed * (1 - percentSlowing);
     }
 }
