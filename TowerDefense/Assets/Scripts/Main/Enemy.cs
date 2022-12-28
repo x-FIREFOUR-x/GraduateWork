@@ -14,7 +14,7 @@ public class Enemy : MonoBehaviour
     
 
     private Transform target;
-    private int wavePointIndex = 0;
+    public int WayPointIndex { get; private set; } = 0;
 
     public static string enemyTag = "Enemy";
 
@@ -45,14 +45,14 @@ public class Enemy : MonoBehaviour
 
     private void GetNextWayPoint()
     {
-        wavePointIndex++;
-        if (wavePointIndex > WayPoints.Points.Count - 1)
+        WayPointIndex++;
+        if (WayPointIndex > WayPoints.Points.Count - 1)
         {
             DamageEndBuilding();
         }
         else
         {
-            target = WayPoints.Points[wavePointIndex];
+            target = WayPoints.Points[WayPointIndex];
         }
     }
 
