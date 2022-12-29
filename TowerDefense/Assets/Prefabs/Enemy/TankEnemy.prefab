@@ -268,7 +268,7 @@ GameObject:
   - component: {fileID: 2351659055393109176}
   - component: {fileID: -4314882937532594432}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: TankEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -283,7 +283,7 @@ Transform:
   m_GameObject: {fileID: 7675996590759045107}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 10, y: 2, z: 5}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7631343304651474043}
@@ -318,7 +318,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b0b766142c1e35c42bfbef1432c87fca, type: 2}
+  - {fileID: 2100000, guid: c438cd031db0e8d4591310fe417b8c10, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -365,6 +365,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3698fd7da74f189488cce43401e83e10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
-  startHealth: 100
+  startHealth: 1000
+  <StartSpeed>k__BackingField: 5
+  damage: 10
+  <Price>k__BackingField: 200
   healthBar: {fileID: 4659717340285474795}
