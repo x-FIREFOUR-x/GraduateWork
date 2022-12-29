@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 930349930312286700}
   m_Layer: 0
   m_Name: RocketLauncher
-  m_TagString: Untagged
+  m_TagString: Tower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -133,9 +133,9 @@ MonoBehaviour:
   countProjectiles: 1
   timeBetweenShoots: 2
   timeToNextFire: 0
-  shootRange: 20
+  shootRange: 25
   rotateSpeed: 8
-  <Price>k__BackingField: 100
+  <Price>k__BackingField: 300
   pointStartFire: {fileID: 4035774621446171047}
   rotatePart: {fileID: 6059494694254124202}
   projectilePrefab: {fileID: 4345204468309552529, guid: 028b473e40716ba43bcd42d1e5c49e7e, type: 3}

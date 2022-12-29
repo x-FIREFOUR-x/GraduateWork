@@ -11,8 +11,8 @@ public class Projectile : MonoBehaviour
     private float speed = 70f;
     [SerializeField]
     private float explosionRadius = 0f;
-    [SerializeField]
-    private float damage = 100f;
+    [field:SerializeField]
+    public float Damage { get; private set; } = 100f;
 
     [Header("Prefabs")]
     [SerializeField]
@@ -68,7 +68,7 @@ public class Projectile : MonoBehaviour
 
     private void DamageOneEnemy(Transform enemy)
     {
-        enemy.GetComponent<Enemy>().TakeDamage(damage);
+        enemy.GetComponent<Enemy>().TakeDamage(Damage);
     }
 
     private void ExplodeDamage()

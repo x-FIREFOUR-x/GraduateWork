@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 5216627754438899833}
   m_Layer: 0
   m_Name: Turret
-  m_TagString: Untagged
+  m_TagString: Tower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countProjectiles: 1
-  timeBetweenShoots: 1
+  timeBetweenShoots: 0.5
   timeToNextFire: 0
   shootRange: 15
   rotateSpeed: 8

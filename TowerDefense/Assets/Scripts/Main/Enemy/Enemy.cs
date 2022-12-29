@@ -8,10 +8,16 @@ public class Enemy : MonoBehaviour
     private float startHealth = 100f;
     private float health;
 
-    [SerializeField]
-    private float startSpeed = 10f;
+    [field:SerializeField]
+    public float StartSpeed { get; private set; } = 10f;
     private float speed;
-    
+
+    [SerializeField]
+    private int damage = 10;
+
+    [field: SerializeField]
+    public float Price { get; private set; } = 25;
+
 
     private Transform target;
     public int WayPointIndex { get; private set; } = 0;
@@ -27,7 +33,7 @@ public class Enemy : MonoBehaviour
     {
         target = WayPoints.Points[0];
         health = startHealth;
-        speed = startSpeed;
+        speed = StartSpeed;
     }
 
     void Update()
@@ -40,7 +46,7 @@ public class Enemy : MonoBehaviour
             GetNextWayPoint();
         }
 
-        speed = startSpeed;
+        speed = StartSpeed;
     }
 
     private void GetNextWayPoint()
@@ -62,7 +68,7 @@ public class Enemy : MonoBehaviour
 
         if(endBuilding[0] != null)
         {
-            endBuilding[0].GetComponent<EndBuilding>().TakeDamage(10);
+            endBuilding[0].GetComponent<EndBuilding>().TakeDamage(damage);
         }
 
         Destroy(gameObject);
@@ -83,6 +89,6 @@ public class Enemy : MonoBehaviour
 
     public void Slow(float percentSlowing)
     {
-        speed = startSpeed * (1 - percentSlowing);
+        speed = StartSpeed * (1 - percentSlowing);
     }
 }

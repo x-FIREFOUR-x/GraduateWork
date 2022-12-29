@@ -3,6 +3,9 @@ using System.Collections;
 
 public class WaveSpawner : MonoBehaviour
 {
+    [SerializeField]
+    private HeuristicsCalculator calculator;
+
     [Header("Prefabs")]
     [SerializeField]
     private Transform enemyPrefab;
@@ -27,6 +30,7 @@ public class WaveSpawner : MonoBehaviour
         {
             StartCoroutine(SpawnWave());
             timeToNextSpawn = timeBetweenWaves;
+            Debug.Log(calculator.CalculateDamageAllTowers());
         }
         timeToNextSpawn -= Time.deltaTime;
 

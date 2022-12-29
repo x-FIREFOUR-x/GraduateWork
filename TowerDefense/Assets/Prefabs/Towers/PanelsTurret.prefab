@@ -213,7 +213,7 @@ GameObject:
   - component: {fileID: 2259175783054827281}
   m_Layer: 0
   m_Name: PanelsTurret
-  m_TagString: Untagged
+  m_TagString: Tower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -248,11 +248,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countProjectiles: 2
-  timeBetweenShoots: 1
+  timeBetweenShoots: 0.7
   timeToNextFire: 1
   shootRange: 15
   rotateSpeed: 8
-  <Price>k__BackingField: 100
+  <Price>k__BackingField: 200
   pointStartFire: {fileID: 3396452724760783736}
   rotatePart: {fileID: 7544833960962722027}
   projectilePrefab: {fileID: 9100590622967104924, guid: 82607979a225c6647820c88322b9c4db, type: 3}

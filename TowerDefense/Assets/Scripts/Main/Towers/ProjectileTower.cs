@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ProjectileTower : Tower
@@ -36,5 +35,10 @@ public class ProjectileTower : Tower
             }
             yield return new WaitForSeconds(0.2f);
         }
+    }
+
+    public override float DamageInSecond()
+    {
+        return  projectilePrefab.GetComponent<Projectile>().Damage * countProjectiles / timeBetweenShoots;
     }
 }
