@@ -6,9 +6,13 @@ public class WaveSpawner : MonoBehaviour
     [SerializeField]
     private HeuristicsCalculator calculator;
 
-    [Header("Prefabs")]
+    [Header("Enemy Prefabs")]
     [SerializeField]
-    private Transform enemyPrefab;
+    private Transform standardEnemyPrefab;
+    [SerializeField]
+    private Transform fastEnemyPrefab;
+    [SerializeField]
+    private Transform tankEnemyPrefab;
 
     private Transform spawnPoint;
 
@@ -30,7 +34,6 @@ public class WaveSpawner : MonoBehaviour
         {
             StartCoroutine(SpawnWave());
             timeToNextSpawn = timeBetweenWaves;
-            Debug.Log(calculator.CalculateDamageAllTowers());
         }
         timeToNextSpawn -= Time.deltaTime;
 
@@ -49,6 +52,6 @@ public class WaveSpawner : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        Instantiate(enemyPrefab, spawnPoint.position, spawnPoint.rotation);
+        Instantiate(standardEnemyPrefab, spawnPoint.position, spawnPoint.rotation);
     }
 }

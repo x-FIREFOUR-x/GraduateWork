@@ -2464,7 +2464,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   calculator: {fileID: 1654633877}
-  enemyPrefab: {fileID: 4686977106260309065, guid: dacf52917bbd9b34c92c6053146aa1ad, type: 3}
+  standardEnemyPrefab: {fileID: 4686977106260309065, guid: 09a660aec7847f6428595a225f6b9ec9, type: 3}
+  fastEnemyPrefab: {fileID: 1569746521151002166, guid: 6ab8932a2510bb742bf5f04c9b123766, type: 3}
+  tankEnemyPrefab: {fileID: 4686977106260309065, guid: dacf52917bbd9b34c92c6053146aa1ad, type: 3}
   timeBetweenWaves: 5
 --- !u!4 &1654633876
 Transform:
