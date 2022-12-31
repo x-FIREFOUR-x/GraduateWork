@@ -13,10 +13,14 @@ public class Enemy : MonoBehaviour
     private float speed;
 
     [SerializeField]
+    private float timeReturnSpeed = 1f;
+    private float currentTimeReturnSpeed = 0;
+
+    [SerializeField]
     private int damage = 10;
 
     [field: SerializeField]
-    public float Price { get; private set; } = 25;
+    public int Price { get; private set; } = 25;
 
 
     private Transform target;
@@ -46,7 +50,7 @@ public class Enemy : MonoBehaviour
             GetNextWayPoint();
         }
 
-        speed = StartSpeed;
+        UpdateSpeed();
     }
 
     private void GetNextWayPoint()
@@ -87,8 +91,20 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    private void UpdateSpeed()
+    {
+        currentTimeReturnSpeed -= Time.deltaTime;
+
+        if(currentTimeReturnSpeed <= 0f)
+        {
+            speed = StartSpeed;
+        }
+    }
+
     public void Slow(float percentSlowing)
     {
         speed = StartSpeed * (1 - percentSlowing);
+
+        currentTimeReturnSpeed = timeReturnSpeed;
     }
 }

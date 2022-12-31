@@ -247,6 +247,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac87dbab18ea4064b9016860ccfd88bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Type>k__BackingField: 1
   countProjectiles: 2
   timeBetweenShoots: 0.7
   timeToNextFire: 1
