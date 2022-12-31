@@ -4,6 +4,9 @@ public abstract class Tower : MonoBehaviour
 {
     protected Transform target;
 
+    [field:SerializeField]
+    public TowerType Type { get; private set; }
+
     [Header("Attributes")]
     [SerializeField]
     protected int countProjectiles = 1;

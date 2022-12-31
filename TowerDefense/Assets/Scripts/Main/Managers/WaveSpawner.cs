@@ -1,10 +1,10 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class WaveSpawner : MonoBehaviour
 {
-    [SerializeField]
-    private HeuristicsCalculator calculator;
+    private GeneticAlgorithm algoCreateWave;
 
     [Header("Enemy Prefabs")]
     [SerializeField]
@@ -26,6 +26,7 @@ public class WaveSpawner : MonoBehaviour
     public void Initialize(Transform spawn)
     {
         spawnPoint = spawn;
+        algoCreateWave = new GeneticAlgorithm();
     }
 
     void Update()
@@ -42,6 +43,16 @@ public class WaveSpawner : MonoBehaviour
 
     private IEnumerator SpawnWave()
     {
+        
+        List<EnemyType> availableEnemy = new() {EnemyType.Standard, EnemyType.Fast, EnemyType.Tank};
+        List<int> availablePrices = new() 
+        {
+            standardEnemyPrefab.GetComponent<Enemy>().Price,
+            fastEnemyPrefab.GetComponent<Enemy>().Price,
+            tankEnemyPrefab.GetComponent<Enemy>().Price 
+        };
+        algoCreateWave.SearchKnapsac(availableEnemy, availablePrices);
+
         for (int i = 0; i < waveNumber + 1; i++)
         {
             SpawnEnemy();
@@ -52,6 +63,6 @@ public class WaveSpawner : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        Instantiate(tankEnemyPrefab, spawnPoint.position, spawnPoint.rotation);
+        Instantiate(fastEnemyPrefab, spawnPoint.position, spawnPoint.rotation);
     }
 }
