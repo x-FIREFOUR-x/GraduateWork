@@ -43,14 +43,12 @@ public class WaveSpawner : MonoBehaviour
 
     private IEnumerator SpawnWave()
     {
-        
         List<EnemyType> availableEnemy = new() {EnemyType.Standard, EnemyType.Fast, EnemyType.Tank};
-        List<int> availablePrices = new() 
-        {
-            standardEnemyPrefab.GetComponent<Enemy>().Price,
-            fastEnemyPrefab.GetComponent<Enemy>().Price,
-            tankEnemyPrefab.GetComponent<Enemy>().Price 
-        };
+        Dictionary<EnemyType, int> availablePrices = new();
+        availablePrices[EnemyType.Standard] = standardEnemyPrefab.GetComponent<Enemy>().Price;
+        availablePrices[EnemyType.Fast] = fastEnemyPrefab.GetComponent<Enemy>().Price;
+        availablePrices[EnemyType.Tank] = tankEnemyPrefab.GetComponent<Enemy>().Price; 
+ 
         algoCreateWave.SearchKnapsac(availableEnemy, availablePrices);
 
         for (int i = 0; i < waveNumber + 1; i++)

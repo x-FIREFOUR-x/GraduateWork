@@ -97,4 +97,5 @@ public class HeuristicsCalculator
 
         return heuristicsValue;
     }
+
 }
