@@ -96,7 +96,7 @@ public class GeneticAlgorithm
         for (int i = 0; i < currentPopulation.Count - 1; i++)
         {
             Person newPerson = Crossing(currentPopulation[i], currentPopulation[i + 1]);
-            newPerson.CalculatePrice(_enemysPrices);
+            //newPerson.CalculatePrice(_enemysPrices);
 
             if (newPerson.Price <= totalPrice)
             {
@@ -121,6 +121,21 @@ public class GeneticAlgorithm
     {
         Person newPerson = new();
 
+        int index1Mid = (int)person1.Enemies.Count / 2;
+        int index2Mid = (int)person2.Enemies.Count / 2;
+
+        newPerson.Enemies = new(person1.Enemies.GetRange(0, index1Mid));
+        newPerson.CalculatePrice(_enemysPrices);
+
+        for (int i = index2Mid; i < person2.Enemies.Count; i++)
+        {
+            if (newPerson.Price + _enemysPrices[person2.Enemies[i]] <= totalPrice)
+            {
+                newPerson.Enemies.Add(person2.Enemies[i]);
+                newPerson.Price += _enemysPrices[person2.Enemies[i]];
+            }
+        }
+
         return newPerson;
     }
 
@@ -141,7 +156,7 @@ public class GeneticAlgorithm
                 : size;
 
             Person mutatingPartPerson = new();
-            mutatingPartPerson.Enemies = person.Enemies.GetRange(index, size);
+            mutatingPartPerson.Enemies = new(person.Enemies.GetRange(index, size));
             mutatingPartPerson.CalculatePrice(_enemysPrices);
 
             (List<EnemyType> mutatedPart, int pricemutatedPart) = CreateListEnemiesForPrice(mutatingPartPerson.Price + totalPrice - person.Price);

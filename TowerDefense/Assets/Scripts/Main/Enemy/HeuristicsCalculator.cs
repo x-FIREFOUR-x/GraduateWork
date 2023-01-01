@@ -85,10 +85,11 @@ public class HeuristicsCalculator
 
     public int GetHeuristicsValue(List<EnemyType> enemys)
     {
-        int heuristicsValue = 1;
+        int heuristicsValue = 0;
 
         for (int i = 0; i < enemys.Count; i++)
         {
+            heuristicsValue++;
             for (int j = 0; j < currentTowers.Length; j++)
             {
                 heuristicsValue += advantagePoints[(enemys[i], currentTowers[j].GetComponent<Tower>().Type)];
