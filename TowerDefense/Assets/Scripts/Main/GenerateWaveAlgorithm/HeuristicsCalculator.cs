@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,18 +16,18 @@ public enum TowerType
     LaserTurret
 }
 
-public class HeuristicsCalculator
+public class HeuristicsCalculator: MonoBehaviour
 {
     [SerializeField]
-    private string towerTag = "Tower";
-    [SerializeField]
-    private string pathTileTag = "PathTile";
+    TilesMap map;
+
+    private float distancePath;
 
     private GameObject[] currentTowers;
 
     private Dictionary<(EnemyType, TowerType), int> advantagePoints;
 
-    public HeuristicsCalculator()
+    void Awake()
     {
         advantagePoints = new Dictionary<(EnemyType, TowerType), int>();
 
@@ -46,11 +45,13 @@ public class HeuristicsCalculator
         advantagePoints[(EnemyType.Tank, TowerType.PanelsTurret)] = 0;
         advantagePoints[(EnemyType.Tank, TowerType.RocketLauncher)] = 10;
         advantagePoints[(EnemyType.Tank, TowerType.LaserTurret)] = 5;
+
+        distancePath = map.GetLengthPath();
     }
 
     public int TotalPlayerMoney()
     {
-        currentTowers = GameObject.FindGameObjectsWithTag(towerTag);
+        currentTowers = GameObject.FindGameObjectsWithTag(Tower.towerTag);
         return PlayerStats.TotalMoney;
     }
 

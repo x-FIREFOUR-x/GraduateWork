@@ -21,7 +21,8 @@ public class WaveSpawner : MonoBehaviour
 
     public int waveNumber { get; private set; } = 1;
 
-
+    [Header("Algorithm")]
+    [SerializeField]
     private GeneticAlgorithm algoCreateWave;
 
     private List<EnemyType> availableEnemy;
@@ -33,7 +34,6 @@ public class WaveSpawner : MonoBehaviour
     public void Initialize(Transform spawn)
     {
         spawnPoint = spawn;
-        algoCreateWave = new GeneticAlgorithm();
 
         availableEnemy = new();
         availablePrices = new();

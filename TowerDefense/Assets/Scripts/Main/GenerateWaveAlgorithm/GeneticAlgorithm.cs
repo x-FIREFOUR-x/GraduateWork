@@ -1,8 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GeneticAlgorithm
+public class GeneticAlgorithm: MonoBehaviour
 {
     int countPerson = 20;
     int countIteration = 1000;
@@ -19,12 +18,6 @@ public class GeneticAlgorithm
     [SerializeField]
     private HeuristicsCalculator heuristics;
 
-
-
-    public GeneticAlgorithm()
-    {
-        heuristics = new();
-    }
 
     public List<EnemyType> SearchKnapsac(List<EnemyType> enemysTypes, Dictionary<EnemyType, int> enemysPrices)
     {

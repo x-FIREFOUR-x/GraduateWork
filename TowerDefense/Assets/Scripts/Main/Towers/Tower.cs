@@ -33,6 +33,9 @@ public abstract class Tower : MonoBehaviour
     protected Transform rotatePart;
 
 
+    public static string towerTag = "Tower";
+
+
     void Start()
     {
         target = null;
