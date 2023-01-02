@@ -46,11 +46,4 @@ public class TilesMap : MonoBehaviour
             tiles.Add(lineTiles);
         }
     }
-
-    public float GetLengthPath()
-    {
-        int countPathTile = GameObject.FindGameObjectsWithTag(PathTile.pathTileTag).Length;
-        return countPathTile * (pathTilePrefab.transform.localScale.x + 1);
-    }
-
 }
