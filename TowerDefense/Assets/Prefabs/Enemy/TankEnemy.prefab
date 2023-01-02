@@ -367,6 +367,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startHealth: 1000
   <StartSpeed>k__BackingField: 5
+  timeReturnSpeed: 1
   damage: 10
-  <Price>k__BackingField: 200
+  <Price>k__BackingField: 150
   healthBar: {fileID: 4659717340285474795}

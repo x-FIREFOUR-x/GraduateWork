@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class GeneticAlgorithm
 {
-    int countPerson = 10;
-    int countIteration = 100;
+    int countPerson = 20;
+    int countIteration = 1000;
 
     int mutationChance = 10;
     int maxMutationPartPerson = 10;
@@ -60,7 +60,6 @@ public class GeneticAlgorithm
         {
             (List<EnemyType> newPerson, int price) = CreateListEnemiesForPrice(totalPrice);
             currentPopulation.Add(new Person(newPerson, price, heuristics.GetHeuristicsValue(newPerson)));
-            //currentPopulation.Add((newPerson, price));
         }
     }
 
@@ -96,7 +95,6 @@ public class GeneticAlgorithm
         for (int i = 0; i < currentPopulation.Count - 1; i++)
         {
             Person newPerson = Crossing(currentPopulation[i], currentPopulation[i + 1]);
-            //newPerson.CalculatePrice(_enemysPrices);
 
             if (newPerson.Price <= totalPrice)
             {
@@ -127,7 +125,8 @@ public class GeneticAlgorithm
         newPerson.Enemies = new(person1.Enemies.GetRange(0, index1Mid));
         newPerson.CalculatePrice(_enemysPrices);
 
-        for (int i = index2Mid; i < person2.Enemies.Count; i++)
+        //for (int i = index2Mid; i < person2.Enemies.Count; i++)
+        for (int i = person2.Enemies.Count - 1; i >= 0; i--)
         {
             if (newPerson.Price + _enemysPrices[person2.Enemies[i]] <= totalPrice)
             {

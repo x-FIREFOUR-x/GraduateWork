@@ -65,13 +65,14 @@ public class WaveSpawner : MonoBehaviour
     private IEnumerator SpawnWave()
     {
         UpdateAvailableEnemy();
-        List<EnemyType> packEnemies = algoCreateWave.SearchKnapsac(availableEnemy, availablePrices);
+        List<EnemyType> enemiesWave = algoCreateWave.SearchKnapsac(availableEnemy, availablePrices);
+        enemiesWave = SortBalanceWave(enemiesWave);
 
         isNotEnrolledhWave = true;
 
-        for (int i = 0; i < packEnemies.Count; i++)
+        for (int i = 0; i < enemiesWave.Count; i++)
         {
-            SpawnEnemy(packEnemies[i]);
+            SpawnEnemy(enemiesWave[i]);
             yield return new WaitForSeconds(0.5f);
         }
         waveNumber++;
@@ -115,6 +116,49 @@ public class WaveSpawner : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    private List<EnemyType> SortBalanceWave(List<EnemyType> enemiesWave)
+    {
+        if (waveNumber == 0)
+        {
+            return enemiesWave.GetRange(0, 3);
+        }
+
+        List<EnemyType> newEnemiesWave = new();
+
+        int countStandard = 0;
+        int countFast = 0;
+        int countTank = 0;
+
+        for (int i = 0; i < enemiesWave.Count; i++)
+        {
+            switch (enemiesWave[i])
+            {
+                case EnemyType.Standard:
+                    countStandard++;
+                    break;
+                case EnemyType.Fast:
+                    countFast++;
+                    break;
+                case EnemyType.Tank:
+                    countTank++;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        for (int i = 0; i < countTank; i++)
+            newEnemiesWave.Add(EnemyType.Tank);
+
+        for (int i = 0; i < countStandard; i++)
+            newEnemiesWave.Add(EnemyType.Standard);
+
+        for (int i = 0; i < countFast; i++)
+            newEnemiesWave.Add(EnemyType.Fast);
+
+        return newEnemiesWave;
     }
 
 }

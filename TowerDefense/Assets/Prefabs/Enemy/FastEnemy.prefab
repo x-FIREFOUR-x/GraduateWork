@@ -192,7 +192,7 @@ MonoBehaviour:
   <StartSpeed>k__BackingField: 18
   timeReturnSpeed: 2
   damage: 10
-  <Price>k__BackingField: 50
+  <Price>k__BackingField: 35
   healthBar: {fileID: 1470712006073218452}
 --- !u!1 &4914624814352304178
 GameObject:
