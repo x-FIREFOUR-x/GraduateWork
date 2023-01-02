@@ -107,4 +107,9 @@ public class Enemy : MonoBehaviour
 
         currentTimeReturnSpeed = timeReturnSpeed;
     }
+
+    public void UpgradeHealth(float upByPercentage)
+    {
+        startHealth += startHealth * upByPercentage;
+    }
 }

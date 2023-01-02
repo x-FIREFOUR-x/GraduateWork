@@ -19,7 +19,7 @@ public class WaveSpawner : MonoBehaviour
     private float timeBetweenWaves = 5f;
     public float timeToNextSpawn { get; private set; } = 1f;
 
-    public int waveNumber { get; private set; } = 0;
+    public int waveNumber { get; private set; } = 1;
 
 
     private GeneticAlgorithm algoCreateWave;
@@ -49,6 +49,7 @@ public class WaveSpawner : MonoBehaviour
         {
             if (!isEnrolledhWave)
             {
+                waveNumber++;
                 PlayerStats.AddMoney();
                 isEnrolledhWave = true;
             }   
@@ -71,6 +72,8 @@ public class WaveSpawner : MonoBehaviour
 
     private IEnumerator SpawnWave()
     {
+        UpdateEnemiesStats();
+
         UpdateAvailableEnemy();
         List<EnemyType> enemiesWave = algoCreateWave.SearchKnapsac(availableEnemy, availablePrices);
         enemiesWave = SortBalanceWave(enemiesWave);
@@ -82,7 +85,6 @@ public class WaveSpawner : MonoBehaviour
             SpawnEnemy(enemiesWave[i]);
             yield return new WaitForSeconds(0.5f);
         }
-        waveNumber++;
     }
 
     private void SpawnEnemy(EnemyType enemyType)
@@ -107,7 +109,7 @@ public class WaveSpawner : MonoBehaviour
     {
         switch (waveNumber)
         {
-            case 0:
+            case 1:
                 availableEnemy.Add(EnemyType.Standard);
                 availablePrices[EnemyType.Standard] = standardEnemyPrefab.GetComponent<Enemy>().Price;
                 break;
@@ -127,7 +129,7 @@ public class WaveSpawner : MonoBehaviour
 
     private List<EnemyType> SortBalanceWave(List<EnemyType> enemiesWave)
     {
-        if (waveNumber == 0)
+        if (waveNumber == 1)
         {
             return enemiesWave.GetRange(0, 3);
         }
@@ -168,4 +170,13 @@ public class WaveSpawner : MonoBehaviour
         return newEnemiesWave;
     }
 
+    private void UpdateEnemiesStats()
+    {
+        if(waveNumber % 5 == 0)
+        {
+            standardEnemyPrefab.GetComponent<Enemy>().UpgradeHealth((float)0.25);
+            fastEnemyPrefab.GetComponent<Enemy>().UpgradeHealth((float)0.25);
+            tankEnemyPrefab.GetComponent<Enemy>().UpgradeHealth((float)0.25);
+        }
+    }
 }
