@@ -27,7 +27,7 @@ public class WaveSpawner : MonoBehaviour
     private List<EnemyType> availableEnemy;
     Dictionary<EnemyType, int> availablePrices;
 
-    bool isNotEnrolledhWave = false;
+    bool isEnrolledhWave = true;
 
 
     public void Initialize(Transform spawn)
@@ -41,16 +41,16 @@ public class WaveSpawner : MonoBehaviour
 
     void Update()
     {
-        if (GameObject.FindGameObjectsWithTag(Enemy.enemyTag).Length > 0)
+        if (WaveNotFinished())
         {
             return;
         }
         else
         {
-            if (isNotEnrolledhWave)
+            if (!isEnrolledhWave)
             {
                 PlayerStats.AddMoney();
-                isNotEnrolledhWave = false;
+                isEnrolledhWave = true;
             }   
         }
 
@@ -64,13 +64,18 @@ public class WaveSpawner : MonoBehaviour
         timeToNextSpawn = Mathf.Clamp(timeToNextSpawn, 0f, Mathf.Infinity);
     }
 
+    private bool WaveNotFinished()
+    {
+        return GameObject.FindGameObjectsWithTag(Enemy.enemyTag).Length > 0;
+    }
+
     private IEnumerator SpawnWave()
     {
         UpdateAvailableEnemy();
         List<EnemyType> enemiesWave = algoCreateWave.SearchKnapsac(availableEnemy, availablePrices);
         enemiesWave = SortBalanceWave(enemiesWave);
 
-        isNotEnrolledhWave = true;
+        isEnrolledhWave = false;
 
         for (int i = 0; i < enemiesWave.Count; i++)
         {
