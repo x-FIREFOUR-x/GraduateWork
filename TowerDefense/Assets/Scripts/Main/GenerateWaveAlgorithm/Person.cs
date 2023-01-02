@@ -20,6 +20,13 @@ public class Person
         Value = value;
     }
 
+    public Person(List<EnemyType> enemies)
+    {
+        Enemies = enemies;
+        Price = 0;
+        Value = 0;
+    }
+
     public void CalculatePrice(Dictionary<EnemyType, int> _enemysPrices)
     {
         Price = 0;
@@ -32,5 +39,15 @@ public class Person
     public void CalculateValue(HeuristicsCalculator heuristics)
     {
         Value = heuristics.GetHeuristicsValue(Enemies);
+    }
+
+    public int GetPriceRange(int index, int size, Dictionary<EnemyType, int> _enemysPrices)
+    {
+        int priceRange = 0;
+        for (int i = index; i < size; i++)
+        {
+            priceRange += _enemysPrices[Enemies[i]];
+        }
+        return priceRange;
     }
 }
