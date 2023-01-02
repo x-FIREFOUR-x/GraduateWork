@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class LaserTower : Tower
@@ -60,6 +58,11 @@ public class LaserTower : Tower
             hitEffect.Stop();
             lightHitEffect.enabled = false;
         }
+    }
+
+    public override float DamageInSecond()
+    {
+        return damage;
     }
 
 }

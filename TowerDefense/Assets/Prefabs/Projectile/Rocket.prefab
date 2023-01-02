@@ -45,8 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88b6e809403127f4da634695f9501445, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 30
-  explosionRadius: 5
+  speed: 20
+  explosionRadius: 7
+  <Damage>k__BackingField: 75
   effectHitPrefab: {fileID: 8037884763379772913, guid: 7a97c3e291e360e4cbba41702e82d473, type: 3}
 --- !u!1 &6905021615317733989
 GameObject:

@@ -1,6 +1,5 @@
 using UnityEngine;
 
-
 public class TowerTile : MonoBehaviour
 {
     private Renderer render;

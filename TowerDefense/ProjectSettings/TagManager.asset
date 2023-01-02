@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - PathTile
   - EndBuilding
+  - Tower
   layers:
   - Default
   - TransparentFX

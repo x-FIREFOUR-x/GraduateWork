@@ -268,7 +268,7 @@ GameObject:
   - component: {fileID: 2351659055393109176}
   - component: {fileID: -4314882937532594432}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: StandardEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -365,6 +365,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3698fd7da74f189488cce43401e83e10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
   startHealth: 100
+  <StartSpeed>k__BackingField: 10
+  timeReturnSpeed: 1
+  damage: 10
+  <Price>k__BackingField: 15
   healthBar: {fileID: 4659717340285474795}

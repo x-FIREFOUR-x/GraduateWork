@@ -1,9 +1,11 @@
-using System.Collections;
 using UnityEngine;
 
 public abstract class Tower : MonoBehaviour
 {
     protected Transform target;
+
+    [field:SerializeField]
+    public TowerType Type { get; private set; }
 
     [Header("Attributes")]
     [SerializeField]
@@ -22,7 +24,7 @@ public abstract class Tower : MonoBehaviour
 
     [field: SerializeField]
     public int Price { get; private set; } = 100;
-    
+
 
     [Header("Setup Fields")]
     [SerializeField]
@@ -34,7 +36,7 @@ public abstract class Tower : MonoBehaviour
     void Start()
     {
         target = null;
-        InvokeRepeating("UpdateTarget", 0f, 0.5f);   
+        InvokeRepeating("UpdateTarget", 0f, 0.5f);
     }
 
     protected void UpdateTarget()
@@ -79,4 +81,6 @@ public abstract class Tower : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, shootRange);
     }
+
+    public abstract float DamageInSecond();
 }

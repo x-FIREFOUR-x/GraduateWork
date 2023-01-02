@@ -3,8 +3,6 @@ using UnityEngine.SceneManagement;
 
 public class GameOverMenu : MonoBehaviour
 {
-    private bool isGameOver = false;
-
     [SerializeField]
     private string mainMenuScene = "MainMenuScene";
 
@@ -23,7 +21,6 @@ public class GameOverMenu : MonoBehaviour
 
     private void gameOver()
     {
-        isGameOver = true;
         Time.timeScale = 0f;
 
         gameOverMenuUI.SetActive(true);

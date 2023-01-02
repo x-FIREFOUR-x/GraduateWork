@@ -246,7 +246,7 @@ GameObject:
   - component: {fileID: -1268797453948382230}
   m_Layer: 0
   m_Name: LaserTurret
-  m_TagString: Untagged
+  m_TagString: Tower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -281,15 +281,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7fb68d7c66b17949b6988c6dce8a39a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Type>k__BackingField: 3
   countProjectiles: 0
   timeBetweenShoots: 0
   timeToNextFire: 0
   shootRange: 15
   rotateSpeed: 8
-  <Price>k__BackingField: 100
+  <Price>k__BackingField: 200
   pointStartFire: {fileID: 2435140106436551608}
   rotatePart: {fileID: 2435140106413035375}
-  damage: 40
+  damage: 75
+  percentSlowing: 0.5
   lineLaser: {fileID: -1268797453948382230}
   hitEffect: {fileID: 6030207623369911628}
   lightHitEffect: {fileID: 3470220839457871820}
