@@ -173,7 +173,6 @@ public class GeneticAlgorithm
                 return newPerson;
             else
                 return person;
-
         }
 
         return person;
