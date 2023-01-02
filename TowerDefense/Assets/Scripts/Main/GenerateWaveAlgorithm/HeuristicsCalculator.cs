@@ -18,7 +18,13 @@ public enum TowerType
 
 public class HeuristicsCalculator
 {
+    static public HeuristicsCalculator instance;
+
     private float distancePath;
+    private List<float> distanceMovedEnemies;
+
+    private float percentChangeForQuarter = (float)0.1;
+    private float percentChangeForFinishedPath = (float)0.04;
 
     private GameObject[] currentTowers;
 
@@ -26,6 +32,8 @@ public class HeuristicsCalculator
 
     public HeuristicsCalculator()
     {
+        instance = this;
+
         advantagePoints = new Dictionary<(EnemyType, TowerType), int>();
 
         advantagePoints[(EnemyType.Standard, TowerType.Turret)] = 5;
@@ -46,12 +54,15 @@ public class HeuristicsCalculator
 
         GameObject[] pathTiles = GameObject.FindGameObjectsWithTag(PathTile.pathTileTag);
         distancePath = (pathTiles.Length - 1) * (pathTiles[0].transform.localScale.x + 1);
+        distanceMovedEnemies = new List<float>();
     }
 
     public int TotalPlayerMoney()
     {
         currentTowers = GameObject.FindGameObjectsWithTag(Tower.towerTag);
-        return PlayerStats.TotalMoney;
+        int moneyForBalance =(int)(PlayerStats.TotalMoney * PercentChangeTotalPrice());
+
+        return PlayerStats.TotalMoney + moneyForBalance;
     }
 
     public int GetHeuristicsValue(List<EnemyType> enemys)
@@ -70,4 +81,49 @@ public class HeuristicsCalculator
         return heuristicsValue;
     }
 
+    public void AddDistanceMovedEnemy(float distance)
+    {
+        distanceMovedEnemies.Add(distance);
+    }
+
+    private float PercentChangeTotalPrice()
+    {
+        if(distanceMovedEnemies.Count > 0)
+        {
+            float percent = 0; ;
+
+            /*
+            float averageDistance = 0;
+            for (int i = 0; i < distanceMovedEnemies.Count; i++)
+            {
+                averageDistance += distanceMovedEnemies[i];
+            }
+            averageDistance = averageDistance / distanceMovedEnemies.Count;
+
+            float percentMoved = averageDistance / distancePath;
+            if (percentMoved >= 0.75)
+                percent -= 2 * percentChangeForQuarter;
+            else if (percentMoved >= 0.5)
+                percent -= percentChangeForQuarter;
+            else if (percentMoved >= 0.25)
+                percent += percentChangeForQuarter;
+            else if (percentMoved >= 0)
+                percent += 2 * percentChangeForQuarter;
+            */
+            int countFinishedEnemies = 0;
+            for (int i = 0; i < distanceMovedEnemies.Count; i++)
+            {
+                if (distanceMovedEnemies[i] >= distancePath)
+                    countFinishedEnemies++;
+            }
+            percent -= countFinishedEnemies * percentChangeForFinishedPath;
+
+            distanceMovedEnemies = new List<float>();
+            return percent;
+        }
+        else
+        {
+            return 0;
+        }
+    }
 }

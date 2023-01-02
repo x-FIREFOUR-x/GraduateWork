@@ -25,6 +25,7 @@ public class Enemy : MonoBehaviour
 
     private Transform target;
     public int WayPointIndex { get; private set; } = 0;
+    private float movedDistance = 0;
 
     public static string enemyTag = "Enemy";
 
@@ -45,7 +46,9 @@ public class Enemy : MonoBehaviour
         Vector3 direction = target.position - transform.position;
         transform.Translate(direction.normalized * speed * Time.deltaTime, Space.World);
 
-        if(Vector3.Distance(transform.position, target.position) <= 0.2f)
+        movedDistance += (direction.normalized * speed * Time.deltaTime).magnitude;
+
+        if (Vector3.Distance(transform.position, target.position) <= 0.2f)
         {
             GetNextWayPoint();
         }
@@ -65,6 +68,12 @@ public class Enemy : MonoBehaviour
             target = WayPoints.Points[WayPointIndex];
         }
     }
+    
+    private void Die()
+    {
+        Destroy(gameObject);
+        HeuristicsCalculator.instance.AddDistanceMovedEnemy(movedDistance);
+    }
 
     private void DamageEndBuilding()
     {
@@ -75,7 +84,7 @@ public class Enemy : MonoBehaviour
             endBuilding[0].GetComponent<EndBuilding>().TakeDamage(damage);
         }
 
-        Destroy(gameObject);
+        Die();
     }
 
 
@@ -87,7 +96,7 @@ public class Enemy : MonoBehaviour
 
         if (health <= 0)
         {
-            Destroy(this.gameObject);
+            Die();
         }
     }
 
