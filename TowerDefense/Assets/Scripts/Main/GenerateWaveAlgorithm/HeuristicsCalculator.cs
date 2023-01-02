@@ -70,17 +70,8 @@ public class HeuristicsCalculator
 
     public int TotalPlayerMoney()
     {
-        int totalMoney = 0;
-
         currentTowers = GameObject.FindGameObjectsWithTag(towerTag);
-        foreach (var tower in currentTowers)
-        {
-            totalMoney += tower.GetComponent<Tower>().Price;
-        }
-
-        totalMoney += PlayerStats.Money;
-
-        return totalMoney;
+        return PlayerStats.TotalMoney;
     }
 
     public int GetHeuristicsValue(List<EnemyType> enemys)

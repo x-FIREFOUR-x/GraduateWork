@@ -189,7 +189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startHealth: 100
-  <StartSpeed>k__BackingField: 18
+  <StartSpeed>k__BackingField: 20
   timeReturnSpeed: 2
   damage: 10
   <Price>k__BackingField: 35
