@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2840556201688303838}
-  - component: {fileID: -9194364293332861160}
+  - component: {fileID: 405023717853601526}
   m_Layer: 0
   m_Name: Rocket
   m_TagString: Untagged
@@ -33,7 +33,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-9194364293332861160
+--- !u!114 &405023717853601526
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,13 +42,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 4345204468309552529}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88b6e809403127f4da634695f9501445, type: 3}
+  m_Script: {fileID: 11500000, guid: 90c09325426d1aa4f8de318c92483105, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 20
-  explosionRadius: 7
-  <Damage>k__BackingField: 75
   effectHitPrefab: {fileID: 8037884763379772913, guid: 7a97c3e291e360e4cbba41702e82d473, type: 3}
+  speed: 20
+  <Damage>k__BackingField: 75
+  explosionRadius: 7
 --- !u!1 &6905021615317733989
 GameObject:
   m_ObjectHideFlags: 0
