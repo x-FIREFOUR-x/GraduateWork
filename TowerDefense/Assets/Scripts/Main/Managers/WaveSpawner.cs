@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class WaveSpawner : MonoBehaviour
 {
-    private GeneticAlgorithm algoCreateWave;
+    private Transform spawnPoint;
 
     [Header("Enemy Prefabs")]
     [SerializeField]
@@ -14,8 +14,6 @@ public class WaveSpawner : MonoBehaviour
     [SerializeField]
     private Transform tankEnemyPrefab;
 
-    private Transform spawnPoint;
-
     [Header("Attributes")]
     [SerializeField]
     private float timeBetweenWaves = 5f;
@@ -23,10 +21,14 @@ public class WaveSpawner : MonoBehaviour
 
     public int waveNumber { get; private set; } = 0;
 
+
+    private GeneticAlgorithm algoCreateWave;
+
     private List<EnemyType> availableEnemy;
     Dictionary<EnemyType, int> availablePrices;
 
     bool isNotEnrolledhWave = false;
+
 
     public void Initialize(Transform spawn)
     {

@@ -107,7 +107,7 @@ public class GeneticAlgorithm
             }
         }
 
-        newBestPerson = Mutation(newBestPerson);
+        newBestPerson = MutationRandomRegenerateRange(newBestPerson);
 
         if(newBestPerson.Value > currentPopulation[currentPopulation.Count -1].Value)
         {
@@ -138,7 +138,8 @@ public class GeneticAlgorithm
         return newPerson;
     }
 
-    private Person Mutation(Person person)
+        //Mutation: randomly regenerate a random interval
+    private Person MutationRandomRegenerateRange(Person person)
     {
         int rand = Random.Range(0, 100);
         if (rand < mutationChance)
