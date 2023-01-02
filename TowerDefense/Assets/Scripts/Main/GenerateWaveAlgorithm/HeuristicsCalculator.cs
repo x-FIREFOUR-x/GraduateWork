@@ -48,26 +48,6 @@ public class HeuristicsCalculator
         advantagePoints[(EnemyType.Tank, TowerType.LaserTurret)] = 5;
     }
 
-    public float CalculateDamageAllTowers()
-    {
-        float DPSAllTowers = 0;
-
-        GameObject[] towers = GameObject.FindGameObjectsWithTag(towerTag);
-        foreach (var tower in towers)
-        {
-            DPSAllTowers += tower.GetComponent<Tower>().DamageInSecond();
-        }
-
-        /*
-        GameObject[] pathTiles = GameObject.FindGameObjectsWithTag(pathTileTag);
-        float distance = (pathTiles[0].transform.localScale.x + 1) * (pathTiles.Length - 2);
-
-        float time = distance / standardEnemy.StartSpeed;
-        */
-
-        return DPSAllTowers;
-    }
-
     public int TotalPlayerMoney()
     {
         currentTowers = GameObject.FindGameObjectsWithTag(towerTag);
