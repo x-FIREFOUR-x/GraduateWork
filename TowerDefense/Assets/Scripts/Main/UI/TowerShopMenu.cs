@@ -2,17 +2,17 @@ using UnityEngine;
 
 public class TowerShopMenu : MonoBehaviour
 {
-    TowerBuildManager towerBuildManager;
+    private TowerBuildManager towerBuildManager;
 
     [Header("ShopComponents")]
     [SerializeField]
-    private GameObject turretComponent;
+    private ShopComponent turretComponent;
     [SerializeField]
-    private GameObject panelsTurretComponent;
+    private ShopComponent panelsTurretComponent;
     [SerializeField]
-    private GameObject rocketLauncherComponent;
+    private ShopComponent rocketLauncherComponent;
     [SerializeField]
-    private GameObject laserTurretComponent;
+    private ShopComponent laserTurretComponent;
 
     [Header("SetUp")]
     [SerializeField]
@@ -24,16 +24,16 @@ public class TowerShopMenu : MonoBehaviour
     {
         towerBuildManager = TowerBuildManager.instance;
 
-        turretComponent.GetComponent<ShopComponent>().Initialize(colorText,
+        turretComponent.Initialize(colorText,
             towerBuildManager.turretPrefab.GetComponent<Tower>().Price);
 
-        panelsTurretComponent.GetComponent<ShopComponent>().Initialize(colorText,
+        panelsTurretComponent.Initialize(colorText,
             towerBuildManager.panelsTurretPrefab.GetComponent<Tower>().Price);
 
-        rocketLauncherComponent.GetComponent<ShopComponent>().Initialize(colorText,
+        rocketLauncherComponent.Initialize(colorText,
             towerBuildManager.rocketLauncherPrefab.GetComponent<Tower>().Price);
 
-        laserTurretComponent.GetComponent<ShopComponent>().Initialize(colorText, 
+        laserTurretComponent.Initialize(colorText, 
             towerBuildManager.laserTurretPrefab.GetComponent<Tower>().Price);
     }
 

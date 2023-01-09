@@ -15,11 +15,11 @@ public class GameOverMenu : MonoBehaviour
     {
         if (endBuildingPrefab.GetComponent<EndBuilding>().health <= 0)
         {
-            gameOver();
+            GameOver();
         }
     }
 
-    private void gameOver()
+    private void GameOver()
     {
         Time.timeScale = 0f;
 
