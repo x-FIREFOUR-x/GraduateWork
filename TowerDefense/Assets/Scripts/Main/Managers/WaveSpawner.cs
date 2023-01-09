@@ -25,9 +25,9 @@ public class WaveSpawner : MonoBehaviour
     private GeneticAlgorithm algoCreateWave;
 
     private List<EnemyType> availableEnemy;
-    Dictionary<EnemyType, int> availablePrices;
+    private Dictionary<EnemyType, int> availablePrices;
 
-    bool isEnrolledhWave = true;
+    private bool isEnrolledhWave = true;
 
 
     public void Initialize(Transform spawn)

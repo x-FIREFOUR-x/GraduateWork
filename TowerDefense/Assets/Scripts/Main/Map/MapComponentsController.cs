@@ -15,9 +15,9 @@ public class MapComponentsController : MonoBehaviour
 
     [Header("Attributes")]
     [SerializeField]
-    Vector2Int indexesStart = new Vector2Int(1, 1);
+    private Vector2Int indexesStart = new Vector2Int(1, 1);
     [SerializeField]
-    Vector2Int indexesEnd = new Vector2Int(14, 14);
+    private Vector2Int indexesEnd = new Vector2Int(14, 14);
     [SerializeField]
     private int size = 16;
 
@@ -27,19 +27,22 @@ public class MapComponentsController : MonoBehaviour
     [SerializeField]
     private GameObject wayPointsPrefab;
 
+    private PathGenerator pathGenerator;
 
     void Start()
     {
+        pathGenerator = new PathGenerator();
+
         List<Vector2Int> generatedPath;
         if (MapSaver.instance.IsSave)
         {
             indexesStart = MapSaver.instance.GetIndexesStart();
             indexesEnd = MapSaver.instance.GetIndexesEnd();
-            generatedPath = PathGenerator.GetPathWithMatrix(MapSaver.instance.GetTileMatrix(), indexesStart, indexesEnd);
+            generatedPath = pathGenerator.GetPathWithMatrix(MapSaver.instance.GetTileMatrix(), indexesStart, indexesEnd);
         }
         else
         {
-            generatedPath = PathGenerator.GeneratePath(size, indexesStart, indexesEnd);
+            generatedPath = pathGenerator.GeneratePath(size, indexesStart, indexesEnd);
         }
 
         tilesMap = Instantiate(tilesMapPrefab, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1))

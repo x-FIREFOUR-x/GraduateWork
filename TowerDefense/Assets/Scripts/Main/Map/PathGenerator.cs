@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PathGenerator
 {
-    static public List<Vector2Int> GeneratePath(int size, Vector2Int indexesStart, Vector2Int indexesEnd)
+    public List<Vector2Int> GeneratePath(int size, Vector2Int indexesStart, Vector2Int indexesEnd)
     {
         bool[,] visitedNode = new bool[size, size];
         List<Vector2Int> pathNode = new List<Vector2Int>();
@@ -26,7 +26,7 @@ public class PathGenerator
                 if (visitedNode[node.x, node.y] == false
                     && (node.x > 0 && node.x < size - 1)
                     && (node.y > 0 && node.y < size - 1)
-                    && notMoreOneNeigbor(node, visitedNode))
+                    && NotMoreOneNeigbor(node, visitedNode))
                 {
                     neighboringNode.Add(node);
                 }
@@ -60,7 +60,7 @@ public class PathGenerator
         return pathNode;
     }
 
-    static private bool notMoreOneNeigbor(Vector2Int newNode, bool[,] visitedNode)
+    private bool NotMoreOneNeigbor(Vector2Int newNode, bool[,] visitedNode)
     {
         int[] rowNum = new[] { 1, 0, -1, 0 };
         int[] columnNum = new[] { 0, 1, 0, -1 };
@@ -80,7 +80,7 @@ public class PathGenerator
         return countNeigbors == 1;
     }
 
-    static public List<Vector2Int> GetPathWithMatrix(int[,] matrix, Vector2Int indexesStart, Vector2Int indexesEnd)
+    public List<Vector2Int> GetPathWithMatrix(int[,] matrix, Vector2Int indexesStart, Vector2Int indexesEnd)
     {
         List<Vector2Int> path = new List<Vector2Int>();
 
