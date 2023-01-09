@@ -3,24 +3,21 @@ using UnityEngine;
 
 public class GeneticAlgorithm
 {
-    int countPerson = 20;
-    int countIteration = 1000;
+    private int countPerson = 20;
+    private int countIteration = 1000;
 
-    int mutationChance = 25;
-    int maxMutationPartPerson = 5;
+    private int mutationChance = 25;
+    private int maxMutationPartPerson = 5;
 
-    List<Person> currentPopulation;
+    private List<Person> currentPopulation;
   
     private int totalPrice;
     private List<EnemyType> _enemysTypes;
     private Dictionary<EnemyType, int> _enemysPrices;
 
-    [SerializeField]
-    private HeuristicsCalculator heuristics;
-
     public GeneticAlgorithm()
     {
-        heuristics = new();
+        HeuristicsCalculator.instance = new();
     }
 
     public List<EnemyType> SearchKnapsac(List<EnemyType> enemysTypes, Dictionary<EnemyType, int> enemysPrices)
@@ -29,7 +26,7 @@ public class GeneticAlgorithm
 
         _enemysTypes = enemysTypes;
         _enemysPrices = enemysPrices;
-        totalPrice = heuristics.TotalPlayerMoney();
+        totalPrice = HeuristicsCalculator.instance.TotalPlayerMoney();
 
         CreateStartPopulation();
         SortPopulation();
@@ -53,7 +50,7 @@ public class GeneticAlgorithm
         for (int i = 0; i < countPerson; i++)
         {
             (List<EnemyType> newPerson, int price) = CreateListEnemiesForPrice(totalPrice);
-            currentPopulation.Add(new Person(newPerson, price, heuristics.GetHeuristicsValue(newPerson)));
+            currentPopulation.Add(new Person(newPerson, price, HeuristicsCalculator.instance.GetHeuristicsValue(newPerson)));
         }
     }
 
@@ -67,7 +64,7 @@ public class GeneticAlgorithm
 
             if (newPerson.Price <= totalPrice)
             {
-                newPerson.CalculateValue(heuristics);
+                newPerson.CalculateValue();
 
                 if (newPerson.Value > newBestPerson.Value)
                 {
@@ -130,7 +127,7 @@ public class GeneticAlgorithm
         newPerson.Enemies.InsertRange(index, newPart);
         newPerson.Price = person.Price - priceOldPart + priceNewPart;
 
-        newPerson.CalculateValue(heuristics);
+        newPerson.CalculateValue();
         if (newPerson.Value > person.Value)
             return newPerson;
         else
@@ -162,7 +159,7 @@ public class GeneticAlgorithm
         newPerson.Enemies.InsertRange(index, newPart);
         newPerson.Price = person.Price - priceOldPart + priceNewPart;
 
-        newPerson.CalculateValue(heuristics);
+        newPerson.CalculateValue();
         if (newPerson.Value > person.Value)
             return newPerson;
         else

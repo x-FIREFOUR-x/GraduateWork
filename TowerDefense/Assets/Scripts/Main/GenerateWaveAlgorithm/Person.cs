@@ -36,9 +36,9 @@ public class Person
         }
     }
 
-    public void CalculateValue(HeuristicsCalculator heuristics)
+    public void CalculateValue()
     {
-        Value = heuristics.GetHeuristicsValue(Enemies);
+        Value = HeuristicsCalculator.instance.GetHeuristicsValue(Enemies);
     }
 
     public int GetPriceRange(int index, int size, Dictionary<EnemyType, int> _enemysPrices)
