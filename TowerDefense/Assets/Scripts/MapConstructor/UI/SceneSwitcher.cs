@@ -9,6 +9,8 @@ public class SceneSwitcher: MonoBehaviour
     private string mainMenuScene = "MainMenuScene";
     [SerializeField]
     private Map map;
+    [SerializeField]
+    private MessageManager messageManager;
 
     public void Play()
     {
@@ -23,6 +25,10 @@ public class SceneSwitcher: MonoBehaviour
                 Time.timeScale = 1f;
                 SceneManager.LoadScene(mainScene);
             }
+        }
+        else
+        {
+            messageManager.OpenUncorrectMapMessage();
         }
     }
 
