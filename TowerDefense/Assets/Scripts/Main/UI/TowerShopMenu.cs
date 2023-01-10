@@ -16,7 +16,7 @@ public class TowerShopMenu : MonoBehaviour
 
     [Header("SetUp")]
     [SerializeField]
-    public Color colorText;
+    private Color colorText;
 
     public static string currencySymbol = "$";
 
