@@ -10,21 +10,24 @@ public class SceneSwitcher: MonoBehaviour
     [SerializeField]
     private Map map;
     [SerializeField]
-    private MessageManager messageManager;
+    private MessageManager messageManager ;
 
     public void Play()
     {
-        if (map.IsAllBuilds())
+        if (!map.IsAllBuilds())
         {
-            int[,] tilesArray = map.GetTileArray();
-            Vector2Int indexesStartBuild = map.GetIndexesStartBuild();
-            Vector2Int indexesEndBuild = map.GetIndexesEndBuild();
+            messageManager.OpenUncorrectMapMessage();
+            return;
+        }
 
-            if (MapSaver.instance.SetData(tilesArray, indexesStartBuild, indexesEndBuild))
-            {
-                Time.timeScale = 1f;
-                SceneManager.LoadScene(mainScene);
-            }
+        int[,] tilesArray = map.GetTileArray();
+        Vector2Int indexesStartBuild = map.GetIndexesStartBuild();
+        Vector2Int indexesEndBuild = map.GetIndexesEndBuild();
+
+        if (MapSaver.instance.SetData(tilesArray, indexesStartBuild, indexesEndBuild))
+        {
+            Time.timeScale = 1f;
+            SceneManager.LoadScene(mainScene);
         }
         else
         {

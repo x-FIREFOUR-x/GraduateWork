@@ -17,7 +17,7 @@ public class WaveSpawner : MonoBehaviour
     [Header("Attributes")]
     [SerializeField]
     private float timeBetweenWaves = 5f;
-    public float timeToNextSpawn { get; private set; } = 1f;
+    public float timeToNextSpawn { get; private set; } = 5f;
 
     public int waveNumber { get; private set; } = 1;
 
