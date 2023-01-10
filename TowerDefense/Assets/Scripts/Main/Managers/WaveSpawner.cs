@@ -135,40 +135,9 @@ public class WaveSpawner : MonoBehaviour
             return enemiesWave.GetRange(0, 3);
         }
 
-        List<EnemyType> newEnemiesWave = new();
+        enemiesWave.Sort();
 
-        int countStandard = 0;
-        int countFast = 0;
-        int countTank = 0;
-
-        for (int i = 0; i < enemiesWave.Count; i++)
-        {
-            switch (enemiesWave[i])
-            {
-                case EnemyType.Standard:
-                    countStandard++;
-                    break;
-                case EnemyType.Fast:
-                    countFast++;
-                    break;
-                case EnemyType.Tank:
-                    countTank++;
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        for (int i = 0; i < countTank; i++)
-            newEnemiesWave.Add(EnemyType.Tank);
-
-        for (int i = 0; i < countStandard; i++)
-            newEnemiesWave.Add(EnemyType.Standard);
-
-        for (int i = 0; i < countFast; i++)
-            newEnemiesWave.Add(EnemyType.Fast);
-
-        return newEnemiesWave;
+        return enemiesWave;
     }
 
     private void UpdateEnemiesStats()

@@ -3,9 +3,9 @@ using UnityEngine;
 
 public enum EnemyType
 {
+    Tank,
     Standard,
-    Fast,
-    Tank
+    Fast
 }
 
 public enum TowerType
