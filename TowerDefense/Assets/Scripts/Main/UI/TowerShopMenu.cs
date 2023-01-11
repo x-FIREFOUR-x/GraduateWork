@@ -65,7 +65,7 @@ public class TowerShopMenu : MonoBehaviour
         laserTurretComponent.SetComponentSelected(true);
     }
 
-    private void AllComponentSetNotSelected()
+    public void AllComponentSetNotSelected()
     {
         turretComponent.SetComponentSelected(false);
         panelsTurretComponent.SetComponentSelected(false);

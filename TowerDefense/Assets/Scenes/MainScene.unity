@@ -886,7 +886,6 @@ MonoBehaviour:
   panelsTurretComponent: {fileID: 1798182450}
   rocketLauncherComponent: {fileID: 1236481851}
   laserTurretComponent: {fileID: 1420801599}
-  colorText: {r: 0.8784314, g: 0.84357893, b: 0.0862745, a: 1}
 --- !u!114 &869074695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1757,6 +1756,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 1864239895962478942, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1864239895962478942, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 37cb05c4f8d70a242925e5775e2d7de0, type: 3}
     - target: {fileID: 6879846682407851300, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -1970,6 +1977,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 1864239895962478942, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1864239895962478942, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 7d0a2bb0ac18f5449b8cf8d4b1df6704, type: 3}
     - target: {fileID: 6879846682407851300, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -2675,6 +2690,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 1864239895962478942, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1864239895962478942, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 60ced480c28fd3b4e9aeddeae2918bbc, type: 3}
     - target: {fileID: 6879846682407851300, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -3304,6 +3327,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   towerSeller: {fileID: 1804614104}
+  towerShop: {fileID: 869074694}
   <turretPrefab>k__BackingField: {fileID: 7213502884983662289, guid: 4b3ecaf25bb147c41accf95248fd2d9c, type: 3}
   <rocketLauncherPrefab>k__BackingField: {fileID: 4007513055818851279, guid: 57b5feeb3e7300347aefb8c45bcf22f4, type: 3}
   <panelsTurretPrefab>k__BackingField: {fileID: 7205603479279948369, guid: 291c75f1fa50a5d479398e12d0041409, type: 3}
@@ -3848,6 +3872,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 1864239895962478942, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1864239895962478942, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: e52c8c0ce03b513479c903d9bf5fbb18, type: 3}
     - target: {fileID: 6879846682407851300, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Sprite
       value: 

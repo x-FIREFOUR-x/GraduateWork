@@ -9,6 +9,8 @@ public class TowerBuildManager : MonoBehaviour
 
     [SerializeField]
     private TowerSellMenu towerSeller;
+    [SerializeField]
+    private TowerShopMenu towerShop;
 
     [field:Header("Prefabs")]
     [field: SerializeField]
@@ -83,6 +85,7 @@ public class TowerBuildManager : MonoBehaviour
     {
         PlayerStats.Money += PriceSell();
         Destroy(chosenTowerTile.Tower);
+        towerShop.AllComponentSetNotSelected();
     }
 
 

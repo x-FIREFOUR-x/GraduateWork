@@ -18,7 +18,7 @@ public class ShopComponent : MonoBehaviour
 
     [Header("Buttons Components")]
     [SerializeField]
-    private GameObject image;
+    private GameObject CharacterTower;
     [SerializeField]
     private GameObject textCharacter;
 
@@ -32,6 +32,7 @@ public class ShopComponent : MonoBehaviour
 
     public void Initialize(int price)
     {
+
         textName.color = colorText;
         textPrice.color = colorText;
 
@@ -44,24 +45,25 @@ public class ShopComponent : MonoBehaviour
     {
         textCharacter.GetComponent<TMPro.TextMeshProUGUI>().text =
             "   Characters: \n" +
-            "Count Bullet: " + tower.CountProjectiles.ToString() + "\n" +
-            "Range: " + tower.ShootRange.ToString() + "\n" +
-            "Cooldown: " + tower.TimeBetweenShoots.ToString() + "\n" +
-            "DPS: " + tower.DamageInSecond().ToString() + "\n";
+            " Count Bullet: " + tower.CountProjectiles.ToString() + "\n" +
+            " Range: " + tower.ShootRange.ToString() + "\n" +
+            " Cooldown: " + tower.TimeBetweenShoots.ToString() + "\n" +
+            " DPS: " + tower.DamageInSecond().ToString() + "\n";
     }
 
     public void ChangeImageToCharacter()
     {
-        if(image.activeSelf)
+        if (CharacterTower.activeSelf)
         {
-            image.SetActive(false);
-            textCharacter.SetActive(true);
+            CharacterTower.SetActive(false);
+            textCharacter.SetActive(false);
         }
         else
         {
-            image.SetActive(true);
-            textCharacter.SetActive(false);
+            CharacterTower.SetActive(true);
+            textCharacter.SetActive(true);
         }
+        
     }
 
     public void SetComponentSelected(bool isSelected)
