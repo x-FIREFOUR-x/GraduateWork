@@ -23,10 +23,10 @@ public class HeuristicsCalculator
     private float distancePath;
     private List<float> distanceMovedEnemies;
 
-    private float percentChangeForQuarter = (float)0.1;
-    private float percentChangeForFinishedPath = (float)0.04;
+    private float percentChangeForQuarter = 0.1f;
+    private float percentChangeForFinishedPath = 0.04f;
 
-    private GameObject[] currentTowers;
+    private List<Tower> currentTowers;
 
     private Dictionary<(EnemyType, TowerType), int> advantagePoints;
 
@@ -56,10 +56,19 @@ public class HeuristicsCalculator
         distancePath = (pathTiles.Length - 1) * (pathTiles[0].transform.localScale.x + 1);
         distanceMovedEnemies = new List<float>();
     }
+    public void UpdateCurrentTower()
+    {
+        var objTowers = GameObject.FindGameObjectsWithTag(Tower.towerTag);
+
+        currentTowers = new();
+        foreach (var t in objTowers)
+        {
+            currentTowers.Add(t.GetComponent<Tower>());
+        }
+    }
 
     public int TotalPlayerMoney()
     {
-        currentTowers = GameObject.FindGameObjectsWithTag(Tower.towerTag);
         int moneyForBalance =(int)(PlayerStats.TotalMoney * PercentChangeTotalPrice());
 
         return PlayerStats.TotalMoney + moneyForBalance;
@@ -72,9 +81,9 @@ public class HeuristicsCalculator
         for (int i = 0; i < enemys.Count; i++)
         {
             heuristicsValue++;
-            for (int j = 0; j < currentTowers.Length; j++)
+            for (int j = 0; j < currentTowers.Count; j++)
             {
-                heuristicsValue += advantagePoints[(enemys[i], currentTowers[j].GetComponent<Tower>().Type)];
+                heuristicsValue += advantagePoints[(enemys[i], currentTowers[j].Type)];
             }
         }
 

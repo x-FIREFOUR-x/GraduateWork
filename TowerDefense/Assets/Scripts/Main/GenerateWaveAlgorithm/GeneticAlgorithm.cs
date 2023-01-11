@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Random = System.Random;
 
 public class GeneticAlgorithm
 {
@@ -14,6 +15,8 @@ public class GeneticAlgorithm
     private int totalPrice;
     private List<EnemyType> _enemysTypes;
     private Dictionary<EnemyType, int> _enemysPrices;
+
+    private Random random = new Random();
 
     public GeneticAlgorithm()
     {
@@ -72,7 +75,7 @@ public class GeneticAlgorithm
                 }
             }
         }
-        int rand = Random.Range(0, 100);
+        int rand = random.Next(0, 100);
         if(rand < mutationChance)
             newBestPerson = MutationRandomRegenerateRange(newBestPerson);
         if (rand >= mutationChance && rand < 2 * mutationChance && _enemysTypes.Count > 1)
@@ -112,12 +115,12 @@ public class GeneticAlgorithm
         //Mutation: randomly regenerate a random interval
     private Person MutationRandomRegenerateRange(Person person)
     {
-        int index = Random.Range(0, person.Enemies.Count);
+        int index = random.Next(0, person.Enemies.Count);
 
         int maxSize = (int)(person.Enemies.Count / maxMutationPartPerson);
         maxSize = (maxSize == 0) ? 1 : maxSize;
         maxSize = (maxSize > person.Enemies.Count - index) ? person.Enemies.Count - index : maxSize;
-        int size = Random.Range(1, maxSize + 1);
+        int size = random.Next(1, maxSize + 1);
 
         int priceOldPart = person.GetPriceRange(index, size, _enemysPrices);
         (List<EnemyType> newPart, int priceNewPart) = CreateListEnemiesForPrice(priceOldPart + totalPrice - person.Price);
@@ -137,14 +140,14 @@ public class GeneticAlgorithm
     //Mutation: change random interval to one type enemies
     private Person MutationChangeRangeOneType(Person person)
     {
-        int index = Random.Range(0, person.Enemies.Count);
+        int index = random.Next(0, person.Enemies.Count);
 
         int maxSize = (int)(person.Enemies.Count / maxMutationPartPerson);
         maxSize = (maxSize == 0) ? 1 : maxSize;
         maxSize = (maxSize > person.Enemies.Count - index) ? person.Enemies.Count - index : maxSize;
-        int size = Random.Range(1, maxSize + 1);
+        int size = random.Next(1, maxSize + 1);
 
-        EnemyType type = _enemysTypes[Random.Range(1, _enemysTypes.Count)];
+        EnemyType type = _enemysTypes[random.Next(1, _enemysTypes.Count)];
 
         int priceOldPart = person.GetPriceRange(index, size, _enemysPrices);
     
@@ -177,7 +180,8 @@ public class GeneticAlgorithm
         bool isFinish = false;
         while (!isFinish)
         {
-            int indexRandomEnemy = Random.Range(0, _enemysTypes.Count);
+            Random r = new Random();
+            int indexRandomEnemy = random.Next(0, _enemysTypes.Count);
 
             if (price + _enemysPrices[_enemysTypes[indexRandomEnemy]] <= sumPrice)
             {

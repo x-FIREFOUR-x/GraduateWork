@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public class WaveSpawner : MonoBehaviour
 {
@@ -26,6 +27,11 @@ public class WaveSpawner : MonoBehaviour
 
     private List<EnemyType> availableEnemy;
     private Dictionary<EnemyType, int> availablePrices;
+
+    private List<EnemyType> nextWave;
+    private bool waveGenerated = false;
+    private bool isTaskRunning = false;
+    Task<List<EnemyType>> taskGenerated;
 
     private bool isEnrolledhWave = true;
 
@@ -56,7 +62,7 @@ public class WaveSpawner : MonoBehaviour
             }   
         }
 
-        if (timeToNextSpawn <= 0f)
+        if (timeToNextSpawn <= 0f && waveGenerated)
         {
             StartCoroutine(SpawnWave());
             timeToNextSpawn = timeBetweenWaves;
@@ -64,6 +70,17 @@ public class WaveSpawner : MonoBehaviour
         timeToNextSpawn -= Time.deltaTime;
 
         timeToNextSpawn = Mathf.Clamp(timeToNextSpawn, 0f, Mathf.Infinity);
+
+        if (!waveGenerated && !isTaskRunning)
+        {
+            UpdateGameStats();
+            UpdateAvailableEnemy();
+
+            HeuristicsCalculator.instance.UpdateCurrentTower();
+
+            isTaskRunning = true;
+            taskGenerated = GeneratedWave();
+        }
     }
 
     private bool WaveNotFinished()
@@ -73,17 +90,15 @@ public class WaveSpawner : MonoBehaviour
 
     private IEnumerator SpawnWave()
     {
-        UpdateGameStats();
-
-        UpdateAvailableEnemy();
-        List<EnemyType> enemiesWave = algoCreateWave.SearchKnapsac(availableEnemy, availablePrices);
-        enemiesWave = SortBalanceWave(enemiesWave);
+        waveGenerated = false;
+        nextWave = taskGenerated.Result;
+        nextWave = SortBalanceWave(nextWave);
 
         isEnrolledhWave = false;
 
-        for (int i = 0; i < enemiesWave.Count; i++)
+        for (int i = 0; i < nextWave.Count; i++)
         {
-            SpawnEnemy(enemiesWave[i]);
+            SpawnEnemy(nextWave[i]);
             yield return new WaitForSeconds(0.5f);
         }
     }
@@ -150,5 +165,17 @@ public class WaveSpawner : MonoBehaviour
 
             PlayerStats.IncreaseMoneyByWave(2);
         }
+    }
+
+    private Task<List<EnemyType>> GeneratedWave()
+    {
+        return Task<List<EnemyType>>.Run(() =>
+        {
+            var result = algoCreateWave.SearchKnapsac(availableEnemy, availablePrices);
+            waveGenerated = true;
+            isTaskRunning = false;
+            return result;
+        });
+
     }
 }
