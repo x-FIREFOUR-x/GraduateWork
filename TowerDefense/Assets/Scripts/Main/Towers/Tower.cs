@@ -36,6 +36,10 @@ public abstract class Tower : MonoBehaviour
     public static string towerTag = "Tower";
 
 
+    public float CountProjectiles{ get{ return countProjectiles;}}
+    public float ShootRange { get{ return shootRange; }}
+    public float TimeBetweenShoots { get { return timeBetweenShoots; } }
+
     void Start()
     {
         target = null;

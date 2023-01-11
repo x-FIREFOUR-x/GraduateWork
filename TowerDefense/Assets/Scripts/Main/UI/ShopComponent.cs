@@ -1,10 +1,14 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ShopComponent : MonoBehaviour
 {
-    private Color colorText;
+    [SerializeField]
+    private Tower tower;
 
-    [Header("Turret")]
+    [Header("Components")]
+    [SerializeField]
+    private Image background;
     [SerializeField]
     private GameObject buttonBuy;
     [SerializeField]
@@ -12,15 +16,63 @@ public class ShopComponent : MonoBehaviour
     [SerializeField]
     private TMPro.TextMeshProUGUI textPrice;
 
-    
-    public void Initialize(Color color, int price)
-    {
-        colorText = color;
+    [Header("Buttons Components")]
+    [SerializeField]
+    private GameObject image;
+    [SerializeField]
+    private GameObject textCharacter;
 
+    [Header("SetUp")]
+    [SerializeField]
+    private Color colorSelected;
+    [SerializeField]
+    private Color colorUnselected;
+    [SerializeField]
+    private Color colorText;
+
+    public void Initialize(int price)
+    {
         textName.color = colorText;
         textPrice.color = colorText;
 
         textPrice.text = price.ToString() + "$";
+
+        InitializetextCharacters();
     }
     
+    private void InitializetextCharacters()
+    {
+        textCharacter.GetComponent<TMPro.TextMeshProUGUI>().text =
+            "   Characters: \n" +
+            "Count Bullet: " + tower.CountProjectiles.ToString() + "\n" +
+            "Range: " + tower.ShootRange.ToString() + "\n" +
+            "Cooldown: " + tower.TimeBetweenShoots.ToString() + "\n" +
+            "DPS: " + tower.DamageInSecond().ToString() + "\n";
+    }
+
+    public void ChangeImageToCharacter()
+    {
+        if(image.activeSelf)
+        {
+            image.SetActive(false);
+            textCharacter.SetActive(true);
+        }
+        else
+        {
+            image.SetActive(true);
+            textCharacter.SetActive(false);
+        }
+    }
+
+    public void SetComponentSelected(bool isSelected)
+    {
+        if(isSelected)
+        {
+            background.color = colorSelected;
+        }
+        else
+        {
+            background.color = colorUnselected;
+        }
+    }
 }

@@ -14,9 +14,7 @@ public class TowerShopMenu : MonoBehaviour
     [SerializeField]
     private ShopComponent laserTurretComponent;
 
-    [Header("SetUp")]
-    [SerializeField]
-    private Color colorText;
+    
 
     public static string currencySymbol = "$";
 
@@ -24,37 +22,54 @@ public class TowerShopMenu : MonoBehaviour
     {
         towerBuildManager = TowerBuildManager.instance;
 
-        turretComponent.Initialize(colorText,
-            towerBuildManager.turretPrefab.GetComponent<Tower>().Price);
+        turretComponent.Initialize(towerBuildManager.turretPrefab.GetComponent<Tower>().Price);
 
-        panelsTurretComponent.Initialize(colorText,
-            towerBuildManager.panelsTurretPrefab.GetComponent<Tower>().Price);
+        panelsTurretComponent.Initialize(towerBuildManager.panelsTurretPrefab.GetComponent<Tower>().Price);
 
-        rocketLauncherComponent.Initialize(colorText,
-            towerBuildManager.rocketLauncherPrefab.GetComponent<Tower>().Price);
+        rocketLauncherComponent.Initialize(towerBuildManager.rocketLauncherPrefab.GetComponent<Tower>().Price);
 
-        laserTurretComponent.Initialize(colorText, 
-            towerBuildManager.laserTurretPrefab.GetComponent<Tower>().Price);
+        laserTurretComponent.Initialize(towerBuildManager.laserTurretPrefab.GetComponent<Tower>().Price);
     }
 
     public void ChooseTurret()
     {
         towerBuildManager.SetChosenTower(towerBuildManager.turretPrefab);
-    }
 
-    public void ChooseRocketLauncher()
-    {
-        towerBuildManager.SetChosenTower(towerBuildManager.rocketLauncherPrefab);
+        AllComponentSetNotSelected();
+        turretComponent.SetComponentSelected(true);
     }
 
     public void ChoosePanelsTurret()
     {
         towerBuildManager.SetChosenTower(towerBuildManager.panelsTurretPrefab);
+
+        AllComponentSetNotSelected();
+        panelsTurretComponent.SetComponentSelected(true);
     }
+
+    public void ChooseRocketLauncher()
+    {
+        towerBuildManager.SetChosenTower(towerBuildManager.rocketLauncherPrefab);
+
+        AllComponentSetNotSelected();
+        rocketLauncherComponent.SetComponentSelected(true);
+    }
+
+    
 
     public void ChooseLaserTurret()
     {
         towerBuildManager.SetChosenTower(towerBuildManager.laserTurretPrefab);
+        
+        AllComponentSetNotSelected();
+        laserTurretComponent.SetComponentSelected(true);
     }
 
+    private void AllComponentSetNotSelected()
+    {
+        turretComponent.SetComponentSelected(false);
+        panelsTurretComponent.SetComponentSelected(false);
+        rocketLauncherComponent.SetComponentSelected(false);
+        laserTurretComponent.SetComponentSelected(false);
+    }
 }
