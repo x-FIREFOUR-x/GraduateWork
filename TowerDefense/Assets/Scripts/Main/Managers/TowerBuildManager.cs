@@ -65,6 +65,7 @@ public class TowerBuildManager : MonoBehaviour
     public void DisetTowerTile()
     {
         chosenTowerTile = null;
+        towerShop.AllComponentSetNotSelected();
     }
 
     public bool CanBuild()
