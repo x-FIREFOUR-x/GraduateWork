@@ -6,6 +6,7 @@ public class PlayerStats : MonoBehaviour
     public static int TotalMoney { get; private set; }
     [SerializeField]
     private int startMoney = 100;
+    private static int MoneyByWave = 100;
 
     void Start()
     {
@@ -15,7 +16,12 @@ public class PlayerStats : MonoBehaviour
 
     public static void AddMoney()
     {
-        TotalMoney += 100;
-        Money += 100;
+        TotalMoney += MoneyByWave;
+        Money += MoneyByWave;
+    }
+
+    public static void IncreaseMoneyByWave(float multiplier)
+    {
+        MoneyByWave += (int)(MoneyByWave * multiplier);
     }
 }

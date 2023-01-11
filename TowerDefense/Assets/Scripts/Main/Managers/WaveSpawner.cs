@@ -73,7 +73,7 @@ public class WaveSpawner : MonoBehaviour
 
     private IEnumerator SpawnWave()
     {
-        UpdateEnemiesStats();
+        UpdateGameStats();
 
         UpdateAvailableEnemy();
         List<EnemyType> enemiesWave = algoCreateWave.SearchKnapsac(availableEnemy, availablePrices);
@@ -140,13 +140,15 @@ public class WaveSpawner : MonoBehaviour
         return enemiesWave;
     }
 
-    private void UpdateEnemiesStats()
+    private void UpdateGameStats()
     {
         if(waveNumber % 5 == 0)
         {
             standardEnemyPrefab.GetComponent<Enemy>().UpgradeHealth((float)0.25);
             fastEnemyPrefab.GetComponent<Enemy>().UpgradeHealth((float)0.25);
             tankEnemyPrefab.GetComponent<Enemy>().UpgradeHealth((float)0.25);
+
+            PlayerStats.IncreaseMoneyByWave(2);
         }
     }
 }

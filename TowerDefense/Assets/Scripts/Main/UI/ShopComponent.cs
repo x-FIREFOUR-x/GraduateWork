@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,11 +19,11 @@ public class ShopComponent : MonoBehaviour
 
     [Header("Buttons Components")]
     [SerializeField]
-    private GameObject CharacterTower;
+    private GameObject characterTower;
     [SerializeField]
     private GameObject textCharacter;
 
-    [Header("SetUp")]
+    [Header("Colors")]
     [SerializeField]
     private Color colorSelected;
     [SerializeField]
@@ -48,19 +49,19 @@ public class ShopComponent : MonoBehaviour
             " Count Bullet: " + tower.CountProjectiles.ToString() + "\n" +
             " Range: " + tower.ShootRange.ToString() + "\n" +
             " Cooldown: " + tower.TimeBetweenShoots.ToString() + "\n" +
-            " DPS: " + tower.DamageInSecond().ToString() + "\n";
+            " DPS: " + Math.Round(tower.DamageInSecond(), 1).ToString();
     }
 
     public void ChangeImageToCharacter()
     {
-        if (CharacterTower.activeSelf)
+        if (characterTower.activeSelf)
         {
-            CharacterTower.SetActive(false);
+            characterTower.SetActive(false);
             textCharacter.SetActive(false);
         }
         else
         {
-            CharacterTower.SetActive(true);
+            characterTower.SetActive(true);
             textCharacter.SetActive(true);
         }
         

@@ -633,7 +633,7 @@ MonoBehaviour:
   buttonBuy: {fileID: 6785188914680849506}
   textName: {fileID: 8789245204671376633}
   textPrice: {fileID: 8789245203689632825}
-  CharacterTower: {fileID: 2954021077226176064}
+  characterTower: {fileID: 2954021077226176064}
   textCharacter: {fileID: 4624121118111539415}
   colorSelected: {r: 0.23656674, g: 0.90588236, b: 0.090196095, a: 1}
   colorUnselected: {r: 1, g: 1, b: 1, a: 0.39215687}

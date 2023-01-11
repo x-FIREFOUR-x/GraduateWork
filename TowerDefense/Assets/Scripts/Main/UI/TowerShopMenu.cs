@@ -55,8 +55,6 @@ public class TowerShopMenu : MonoBehaviour
         rocketLauncherComponent.SetComponentSelected(true);
     }
 
-    
-
     public void ChooseLaserTurret()
     {
         towerBuildManager.SetChosenTower(towerBuildManager.laserTurretPrefab);
