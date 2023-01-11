@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class TowerTile : MonoBehaviour
 {
@@ -29,7 +30,10 @@ public class TowerTile : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if(Tower != null)
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
+        if (Tower != null)
         {
             towerBuildManager.SetTowerTile(this);
             return;
@@ -47,6 +51,9 @@ public class TowerTile : MonoBehaviour
 
     private void OnMouseEnter()
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
         render.material.color = hoverColor;
     }
 
