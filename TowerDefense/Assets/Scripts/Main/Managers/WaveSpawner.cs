@@ -31,7 +31,7 @@ public class WaveSpawner : MonoBehaviour
     private List<EnemyType> nextWave;
     private bool waveGenerated = false;
     private bool isTaskRunning = false;
-    Task<List<EnemyType>> taskGenerated;
+    private Task<List<EnemyType>> taskGenerated;
 
     private bool isEnrolledhWave = true;
 

@@ -23,7 +23,6 @@ public class HeuristicsCalculator
     private float distancePath;
     private List<float> distanceMovedEnemies;
 
-    private float percentChangeForQuarter = 0.1f;
     private float percentChangeForFinishedPath = 0.04f;
 
     private List<Tower> currentTowers;
@@ -101,24 +100,6 @@ public class HeuristicsCalculator
         {
             float percent = 0; ;
 
-            /*
-            float averageDistance = 0;
-            for (int i = 0; i < distanceMovedEnemies.Count; i++)
-            {
-                averageDistance += distanceMovedEnemies[i];
-            }
-            averageDistance = averageDistance / distanceMovedEnemies.Count;
-
-            float percentMoved = averageDistance / distancePath;
-            if (percentMoved >= 0.75)
-                percent -= 2 * percentChangeForQuarter;
-            else if (percentMoved >= 0.5)
-                percent -= percentChangeForQuarter;
-            else if (percentMoved >= 0.25)
-                percent += percentChangeForQuarter;
-            else if (percentMoved >= 0)
-                percent += 2 * percentChangeForQuarter;
-            */
             int countFinishedEnemies = 0;
             for (int i = 0; i < distanceMovedEnemies.Count; i++)
             {
@@ -126,6 +107,9 @@ public class HeuristicsCalculator
                     countFinishedEnemies++;
             }
             percent -= countFinishedEnemies * percentChangeForFinishedPath;
+
+            if(countFinishedEnemies == 0)
+                percent += 5 * percentChangeForFinishedPath;
 
             distanceMovedEnemies = new List<float>();
             return percent;
