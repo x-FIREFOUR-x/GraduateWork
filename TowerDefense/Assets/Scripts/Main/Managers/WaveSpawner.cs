@@ -149,7 +149,7 @@ public class WaveSpawner : MonoBehaviour
         {
             return enemiesWave.GetRange(0, 3);
         }
-        //enemiesWave.Sort();
+        enemiesWave.Sort();
         return enemiesWave;
     }
 
@@ -160,9 +160,20 @@ public class WaveSpawner : MonoBehaviour
             standardEnemyPrefab.GetComponent<Enemy>().UpgradeHealth((float)0.25);
             fastEnemyPrefab.GetComponent<Enemy>().UpgradeHealth((float)0.25);
             tankEnemyPrefab.GetComponent<Enemy>().UpgradeHealth((float)0.25);
+        }
+    }
 
+    private void OperationsPostGeneratingWave()
+    {
+        int numberNextWave = waveNumber + 1;
+        if (numberNextWave % 5 == 0)
+        {
             PlayerStats.IncreaseMoneyByWave(2);
         }
+        PlayerStats.AddTotalMoney();
+
+        waveGenerated = true;
+        isTaskRunning = false;
     }
 
     private Task<List<EnemyType>> GeneratedWave()
@@ -170,8 +181,7 @@ public class WaveSpawner : MonoBehaviour
         return Task<List<EnemyType>>.Run(() =>
         {
             var result = algoCreateWave.SearchKnapsac(availableEnemy, availablePrices);
-            waveGenerated = true;
-            isTaskRunning = false;
+            OperationsPostGeneratingWave();
             return result;
         });
 

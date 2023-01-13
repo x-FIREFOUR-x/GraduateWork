@@ -109,7 +109,7 @@ public class HeuristicsCalculator
             percent -= countFinishedEnemies * percentChangeForFinishedPath;
 
             if(countFinishedEnemies == 0)
-                percent += 5 * percentChangeForFinishedPath;
+                percent += 20 * percentChangeForFinishedPath;
 
             distanceMovedEnemies = new List<float>();
             return percent;

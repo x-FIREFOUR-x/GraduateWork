@@ -16,12 +16,16 @@ public class PlayerStats : MonoBehaviour
 
     public static void AddMoney()
     {
-        TotalMoney += MoneyByWave;
         Money += MoneyByWave;
+    }
+
+    public static void AddTotalMoney()
+    {
+        TotalMoney += MoneyByWave;
     }
 
     public static void IncreaseMoneyByWave(float multiplier)
     {
-        MoneyByWave += (int)(MoneyByWave * multiplier);
+        MoneyByWave = (int)(MoneyByWave * multiplier);
     }
 }
