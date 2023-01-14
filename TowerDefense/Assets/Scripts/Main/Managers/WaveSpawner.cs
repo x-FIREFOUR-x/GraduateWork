@@ -149,7 +149,7 @@ public class WaveSpawner : MonoBehaviour
         {
             return enemiesWave.GetRange(0, 3);
         }
-        enemiesWave.Sort();
+        //enemiesWave.Sort();
         return enemiesWave;
     }
 

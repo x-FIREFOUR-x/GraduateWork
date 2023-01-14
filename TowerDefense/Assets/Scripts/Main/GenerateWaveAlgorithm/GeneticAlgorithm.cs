@@ -7,8 +7,8 @@ public class GeneticAlgorithm
     private int countPerson = 20;
     private int countIteration = 1000;
 
-    private int mutationChance = 25;
-    private int maxMutationPartPerson = 5;
+    private int mutationChance = 50;
+    private int maxMutationPartPerson = 2;
 
     private List<Person> currentPopulation;
   

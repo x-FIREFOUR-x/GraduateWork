@@ -290,7 +290,7 @@ MonoBehaviour:
   <Price>k__BackingField: 200
   pointStartFire: {fileID: 2435140106436551608}
   rotatePart: {fileID: 2435140106413035375}
-  damage: 75
+  damage: 60
   percentSlowing: 0.5
   lineLaser: {fileID: -1268797453948382230}
   hitEffect: {fileID: 6030207623369911628}
