@@ -1,0 +1,110 @@
+Date : 2023-10-18 22:14:00
+Directory : d:\Project\5Semestr\CourseWork\TowerDefense
+Total : 59 files,  5065 codes, 86 comments, 1162 blanks, all 6313 lines
+
+Languages
++-----------+------------+------------+------------+------------+------------+
+| language  | files      | code       | comment    | blank      | total      |
++-----------+------------+------------+------------+------------+------------+
+| ShaderLab |         13 |      2,015 |         61 |        557 |      2,633 |
+| C#        |         37 |      1,960 |          4 |        514 |      2,478 |
+| JSON      |          5 |        767 |          0 |          4 |        771 |
+| HLSL      |          4 |        323 |         21 |         87 |        431 |
++-----------+------------+------------+------------+------------+------------+
+
+Directories
++---------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                                | files      | code       | comment    | blank      | total      |
++---------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                   |         59 |      5,065 |         86 |      1,162 |      6,313 |
+| Assets                                                                                                              |         55 |      4,453 |         86 |      1,160 |      5,699 |
+| Assets\Scripts                                                                                                      |         37 |      1,960 |          4 |        514 |      2,478 |
+| Assets\Scripts (Files)                                                                                              |          1 |         80 |          0 |         21 |        101 |
+| Assets\Scripts\Main                                                                                                 |         27 |      1,479 |          4 |        391 |      1,874 |
+| Assets\Scripts\MainMenu                                                                                             |          1 |         22 |          0 |          5 |         27 |
+| Assets\Scripts\Main\Enemy                                                                                           |          1 |         95 |          0 |         30 |        125 |
+| Assets\Scripts\Main\GenerateWaveAlgorithm                                                                           |          3 |        313 |          3 |         83 |        399 |
+| Assets\Scripts\Main\Managers                                                                                        |          3 |        258 |          1 |         61 |        320 |
+| Assets\Scripts\Main\Map                                                                                             |          7 |        290 |          0 |         81 |        371 |
+| Assets\Scripts\Main\Projectile                                                                                      |          3 |         98 |          0 |         28 |        126 |
+| Assets\Scripts\Main\Towers                                                                                          |          3 |        165 |          0 |         43 |        208 |
+| Assets\Scripts\Main\UI                                                                                              |          7 |        260 |          0 |         65 |        325 |
+| Assets\Scripts\MapConstructor                                                                                       |          8 |        379 |          0 |         97 |        476 |
+| Assets\Scripts\MapConstructor (Files)                                                                               |          1 |         82 |          0 |         24 |        106 |
+| Assets\Scripts\MapConstructor\Component                                                                             |          3 |        176 |          0 |         48 |        224 |
+| Assets\Scripts\MapConstructor\UI                                                                                    |          4 |        121 |          0 |         25 |        146 |
+| Assets\TextMesh Pro                                                                                                 |         18 |      2,493 |         82 |        646 |      3,221 |
+| Assets\TextMesh Pro\Shaders                                                                                         |         17 |      2,338 |         82 |        644 |      3,064 |
+| Assets\TextMesh Pro\Sprites                                                                                         |          1 |        155 |          0 |          2 |        157 |
+| Packages                                                                                                            |          2 |        438 |          0 |          2 |        440 |
+| ProjectSettings                                                                                                     |          2 |        174 |          0 |          0 |        174 |
+| ProjectSettings (Files)                                                                                             |          1 |        167 |          0 |          0 |        167 |
+| ProjectSettings\Packages                                                                                            |          1 |          7 |          0 |          0 |          7 |
+| ProjectSettings\Packages\com.unity.testtools.codecoverage                                                           |          1 |          7 |          0 |          0 |          7 |
++---------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++---------------------------------------------------------------------------------------------------------------------+-----------+------------+------------+------------+------------+
+| filename                                                                                                            | language  | code       | comment    | blank      | total      |
++---------------------------------------------------------------------------------------------------------------------+-----------+------------+------------+------------+------------+
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\MainMenu\MainMenuManager.cs                              | C#        |         22 |          0 |          5 |         27 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\Enemy\Enemy.cs                                      | C#        |         95 |          0 |         30 |        125 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\GenerateWaveAlgorithm\GeneticAlgorithm.cs           | C#        |        170 |          3 |         49 |        222 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\GenerateWaveAlgorithm\HeuristicsCalculator.cs       | C#        |         97 |          0 |         26 |        123 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\GenerateWaveAlgorithm\Person.cs                     | C#        |         46 |          0 |          8 |         54 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\Managers\PlayerStats.cs                             | C#        |         26 |          0 |          6 |         32 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\Managers\TowerBuildManager.cs                       | C#        |         76 |          0 |         22 |         98 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\Managers\WaveSpawner.cs                             | C#        |        156 |          1 |         33 |        190 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\Map\EndBuilding.cs                                  | C#        |         16 |          0 |          5 |         21 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\Map\MapComponentsController.cs                      | C#        |         50 |          0 |         13 |         63 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\Map\PathGenerator.cs                                | C#        |         91 |          0 |         23 |        114 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\Map\PathTile.cs                                     | C#        |          7 |          0 |          2 |          9 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\Map\TilesMap.cs                                     | C#        |         40 |          0 |         10 |         50 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\Map\TowerTile.cs                                    | C#        |         54 |          0 |         18 |         72 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\Map\WayPoints.cs                                    | C#        |         32 |          0 |         10 |         42 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\Projectile\Bullet.cs                                | C#        |         39 |          0 |         11 |         50 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\Projectile\Projectile.cs                            | C#        |         14 |          0 |          5 |         19 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\Projectile\Rocket.cs                                | C#        |         45 |          0 |         12 |         57 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\Towers\LaserTower.cs                                | C#        |         57 |          0 |         12 |         69 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\Towers\ProjectileTower.cs                           | C#        |         38 |          0 |          7 |         45 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\Towers\Tower.cs                                     | C#        |         70 |          0 |         24 |         94 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\UI\ClickController.cs                               | C#        |         18 |          0 |          3 |         21 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\UI\GameOverMenu.cs                                  | C#        |         29 |          0 |          7 |         36 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\UI\PauseMenu.cs                                     | C#        |         35 |          0 |          6 |         41 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\UI\RenderUI.cs                                      | C#        |         27 |          0 |          8 |         35 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\UI\ShopComponent.cs                                 | C#        |         69 |          0 |         13 |         82 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\UI\TowerSellMenu.cs                                 | C#        |         28 |          0 |          8 |         36 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\UI\TowerShopMenu.cs                                 | C#        |         54 |          0 |         20 |         74 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\MapConstructor\Component\ConstructorPathTile.cs          | C#        |         28 |          0 |          7 |         35 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\MapConstructor\Component\ConstructorTowerTile.cs         | C#        |         26 |          0 |          8 |         34 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\MapConstructor\Component\Map.cs                          | C#        |        122 |          0 |         33 |        155 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\MapConstructor\MapConstructor.cs                         | C#        |         82 |          0 |         24 |        106 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\MapConstructor\UI\ComponentSelector.cs                   | C#        |         28 |          0 |          6 |         34 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\MapConstructor\UI\MessageManager.cs                      | C#        |         14 |          0 |          3 |         17 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\MapConstructor\UI\SceneSwitcher.cs                       | C#        |         38 |          0 |          6 |         44 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\MapConstructor\UI\SelectMenu.cs                          | C#        |         41 |          0 |         10 |         51 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\MapSaver.cs                                              | C#        |         80 |          0 |         21 |        101 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader              | ShaderLab |        109 |          2 |         33 |        144 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader                    | ShaderLab |        112 |          3 |         31 |        146 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader                           | ShaderLab |        109 |          2 |         33 |        144 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader                      | ShaderLab |        243 |          4 |         71 |        318 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader                          | ShaderLab |        241 |          4 |         66 |        311 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader               | ShaderLab |        188 |         10 |         50 |        248 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader               | ShaderLab |        183 |          8 |         50 |        241 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader                   | ShaderLab |         82 |          4 |         21 |        107 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader                       | ShaderLab |        183 |          8 |         50 |        241 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader               | ShaderLab |        103 |          8 |         28 |        139 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader                      | ShaderLab |        122 |          4 |         33 |        159 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\TextMesh Pro\Shaders\TMP_SDF.shader                              | ShaderLab |        243 |          4 |         71 |        318 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\TextMesh Pro\Shaders\TMP_Sprite.shader                           | ShaderLab |         97 |          0 |         20 |        117 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\TextMesh Pro\Shaders\TMPro.cginc                                 | HLSL      |         63 |          2 |         20 |         85 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc                          | HLSL      |        122 |          2 |         34 |        158 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc                      | HLSL      |         62 |         10 |         14 |         86 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc                         | HLSL      |         76 |          7 |         19 |        102 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Assets\TextMesh Pro\Sprites\EmojiOne.json                               | JSON      |        155 |          0 |          2 |        157 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Packages\manifest.json                                                  | JSON      |         45 |          0 |          1 |         46 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\Packages\packages-lock.json                                             | JSON      |        393 |          0 |          1 |        394 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\ProjectSettings\Packages\com.unity.testtools.codecoverage\Settings.json | JSON      |          7 |          0 |          0 |          7 |
+| d:\Project\5Semestr\CourseWork\TowerDefense\ProjectSettings\SceneTemplateSettings.json                              | JSON      |        167 |          0 |          0 |        167 |
+| Total                                                                                                               |           |      5,065 |         86 |      1,162 |      6,313 |
++---------------------------------------------------------------------------------------------------------------------+-----------+------------+------------+------------+------------+

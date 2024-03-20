@@ -1,0 +1,61 @@
+"filename", "language", "JSON", "HLSL", "ShaderLab", "C#", "comment", "blank", "total"
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\MainMenu\MainMenuManager.cs", "C#", 0, 0, 0, 22, 0, 5, 27
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\Enemy\Enemy.cs", "C#", 0, 0, 0, 95, 0, 30, 125
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\GenerateWaveAlgorithm\GeneticAlgorithm.cs", "C#", 0, 0, 0, 170, 3, 49, 222
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\GenerateWaveAlgorithm\HeuristicsCalculator.cs", "C#", 0, 0, 0, 97, 0, 26, 123
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\GenerateWaveAlgorithm\Person.cs", "C#", 0, 0, 0, 46, 0, 8, 54
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\Managers\PlayerStats.cs", "C#", 0, 0, 0, 26, 0, 6, 32
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\Managers\TowerBuildManager.cs", "C#", 0, 0, 0, 76, 0, 22, 98
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\Managers\WaveSpawner.cs", "C#", 0, 0, 0, 156, 1, 33, 190
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\Map\EndBuilding.cs", "C#", 0, 0, 0, 16, 0, 5, 21
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\Map\MapComponentsController.cs", "C#", 0, 0, 0, 50, 0, 13, 63
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\Map\PathGenerator.cs", "C#", 0, 0, 0, 91, 0, 23, 114
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\Map\PathTile.cs", "C#", 0, 0, 0, 7, 0, 2, 9
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\Map\TilesMap.cs", "C#", 0, 0, 0, 40, 0, 10, 50
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\Map\TowerTile.cs", "C#", 0, 0, 0, 54, 0, 18, 72
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\Map\WayPoints.cs", "C#", 0, 0, 0, 32, 0, 10, 42
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\Projectile\Bullet.cs", "C#", 0, 0, 0, 39, 0, 11, 50
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\Projectile\Projectile.cs", "C#", 0, 0, 0, 14, 0, 5, 19
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\Projectile\Rocket.cs", "C#", 0, 0, 0, 45, 0, 12, 57
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\Towers\LaserTower.cs", "C#", 0, 0, 0, 57, 0, 12, 69
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\Towers\ProjectileTower.cs", "C#", 0, 0, 0, 38, 0, 7, 45
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\Towers\Tower.cs", "C#", 0, 0, 0, 70, 0, 24, 94
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\UI\ClickController.cs", "C#", 0, 0, 0, 18, 0, 3, 21
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\UI\GameOverMenu.cs", "C#", 0, 0, 0, 29, 0, 7, 36
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\UI\PauseMenu.cs", "C#", 0, 0, 0, 35, 0, 6, 41
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\UI\RenderUI.cs", "C#", 0, 0, 0, 27, 0, 8, 35
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\UI\ShopComponent.cs", "C#", 0, 0, 0, 69, 0, 13, 82
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\UI\TowerSellMenu.cs", "C#", 0, 0, 0, 28, 0, 8, 36
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\Main\UI\TowerShopMenu.cs", "C#", 0, 0, 0, 54, 0, 20, 74
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\MapConstructor\Component\ConstructorPathTile.cs", "C#", 0, 0, 0, 28, 0, 7, 35
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\MapConstructor\Component\ConstructorTowerTile.cs", "C#", 0, 0, 0, 26, 0, 8, 34
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\MapConstructor\Component\Map.cs", "C#", 0, 0, 0, 122, 0, 33, 155
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\MapConstructor\MapConstructor.cs", "C#", 0, 0, 0, 82, 0, 24, 106
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\MapConstructor\UI\ComponentSelector.cs", "C#", 0, 0, 0, 28, 0, 6, 34
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\MapConstructor\UI\MessageManager.cs", "C#", 0, 0, 0, 14, 0, 3, 17
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\MapConstructor\UI\SceneSwitcher.cs", "C#", 0, 0, 0, 38, 0, 6, 44
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\MapConstructor\UI\SelectMenu.cs", "C#", 0, 0, 0, 41, 0, 10, 51
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\Scripts\MapSaver.cs", "C#", 0, 0, 0, 80, 0, 21, 101
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader", "ShaderLab", 0, 0, 109, 0, 2, 33, 144
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader", "ShaderLab", 0, 0, 112, 0, 3, 31, 146
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader", "ShaderLab", 0, 0, 109, 0, 2, 33, 144
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader", "ShaderLab", 0, 0, 243, 0, 4, 71, 318
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader", "ShaderLab", 0, 0, 241, 0, 4, 66, 311
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader", "ShaderLab", 0, 0, 188, 0, 10, 50, 248
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader", "ShaderLab", 0, 0, 183, 0, 8, 50, 241
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader", "ShaderLab", 0, 0, 82, 0, 4, 21, 107
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader", "ShaderLab", 0, 0, 183, 0, 8, 50, 241
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader", "ShaderLab", 0, 0, 103, 0, 8, 28, 139
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader", "ShaderLab", 0, 0, 122, 0, 4, 33, 159
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\TextMesh Pro\Shaders\TMP_SDF.shader", "ShaderLab", 0, 0, 243, 0, 4, 71, 318
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\TextMesh Pro\Shaders\TMP_Sprite.shader", "ShaderLab", 0, 0, 97, 0, 0, 20, 117
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\TextMesh Pro\Shaders\TMPro.cginc", "HLSL", 0, 63, 0, 0, 2, 20, 85
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc", "HLSL", 0, 122, 0, 0, 2, 34, 158
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc", "HLSL", 0, 62, 0, 0, 10, 14, 86
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc", "HLSL", 0, 76, 0, 0, 7, 19, 102
+"d:\Project\5Semestr\CourseWork\TowerDefense\Assets\TextMesh Pro\Sprites\EmojiOne.json", "JSON", 155, 0, 0, 0, 0, 2, 157
+"d:\Project\5Semestr\CourseWork\TowerDefense\Packages\manifest.json", "JSON", 45, 0, 0, 0, 0, 1, 46
+"d:\Project\5Semestr\CourseWork\TowerDefense\Packages\packages-lock.json", "JSON", 393, 0, 0, 0, 0, 1, 394
+"d:\Project\5Semestr\CourseWork\TowerDefense\ProjectSettings\Packages\com.unity.testtools.codecoverage\Settings.json", "JSON", 7, 0, 0, 0, 0, 0, 7
+"d:\Project\5Semestr\CourseWork\TowerDefense\ProjectSettings\SceneTemplateSettings.json", "JSON", 167, 0, 0, 0, 0, 0, 167
+"Total", "-", 767, 323, 2015, 1960, 86, 1162, 6313
