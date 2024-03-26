@@ -20,6 +20,12 @@ public class MapComponentsController : MonoBehaviour
     private Vector2Int indexesEnd = new Vector2Int(14, 14);
     [SerializeField]
     private int size = 16;
+    [SerializeField]
+    private Vector3 sizeTile = new(4, 1, 4);
+    [SerializeField]
+    private Vector3 offsetTile = new(1, 0, 1);
+    [SerializeField]
+    private float hightBuilding = 0.5f;
 
     [Header("Prefabs")]
     [SerializeField]
@@ -47,16 +53,20 @@ public class MapComponentsController : MonoBehaviour
 
         tilesMap = Instantiate(tilesMapPrefab, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1))
             .GetComponent<TilesMap>();
-        tilesMap.Initialize(size, generatedPath);
-
-        startBuilding.transform.SetPositionAndRotation(new Vector3(5 * indexesStart.x, (float)2.5, 5 * indexesStart.y), new Quaternion(0, 0, 0, 1));
-
-        endBuilding.transform.SetPositionAndRotation(new Vector3(5 * indexesEnd.x, (float)2.5, 5 * indexesEnd.y), new Quaternion(0, 0, 0, 1));
+        tilesMap.Initialize(size, generatedPath, offsetTile);
 
         wayPoints = Instantiate(wayPointsPrefab, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1))
             .GetComponent<WayPoints>();
         wayPoints.Initialize(generatedPath);
 
         waveSpawner.GetComponent<WaveSpawner>().Initialize(startBuilding.transform);
+
+        startBuilding.transform.SetPositionAndRotation(
+            new Vector3((sizeTile.x + offsetTile.x) * indexesStart.x, hightBuilding, (sizeTile.z + offsetTile.z) * indexesStart.y),
+            new Quaternion(0, 0, 0, 1));
+
+        endBuilding.transform.SetPositionAndRotation(
+            new Vector3((sizeTile.x + offsetTile.x) * indexesEnd.x, hightBuilding, (sizeTile.z + offsetTile.z) * indexesEnd.y),
+            new Quaternion(0, 0, 0, 1));
     }
 }

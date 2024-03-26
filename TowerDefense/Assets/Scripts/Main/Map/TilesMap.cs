@@ -13,7 +13,7 @@ public class TilesMap : MonoBehaviour
     private int size;
 
 
-    public void Initialize(int _size, List<Vector2Int> generatedPath)
+    public void Initialize(int _size, List<Vector2Int> generatedPath, Vector3 offsetTile)
     {
         size = _size;
 
@@ -40,9 +40,9 @@ public class TilesMap : MonoBehaviour
                     lineTiles.Add(tile);
                 }
 
-                position.x += towerTilePrefab.transform.localScale.x + 1;
+                position.x += towerTilePrefab.transform.localScale.x + offsetTile.z;
             }
-            position.z += towerTilePrefab.transform.localScale.z + 1;
+            position.z += towerTilePrefab.transform.localScale.z + offsetTile.z;
             tiles.Add(lineTiles);
         }
     }

@@ -12,7 +12,7 @@ public class MapConstructor : MonoBehaviour
 
     [Header("Attributes")]
     [SerializeField]
-    private Vector3Int indexesStartMap = new Vector3Int(0, 0 ,0);
+    private Vector3Int indexesStartMap = new Vector3Int(0, 0, 0);
     [SerializeField]
     private int size = 16;
 
