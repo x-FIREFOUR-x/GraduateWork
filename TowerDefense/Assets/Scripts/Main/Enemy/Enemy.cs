@@ -32,13 +32,18 @@ public class Enemy : MonoBehaviour
     [Header("SetUp")]
     [SerializeField]
     private Image healthBar;
-
+    [SerializeField]
+    private Transform fullHealthBar;
+    [SerializeField]
+    private float angleX;
 
     void Start()
     {
         target = WayPoints.Points[0];
         health = startHealth;
         speed = StartSpeed;
+
+        InitializeHealthBar();
     }
 
     void Update()
@@ -120,5 +125,14 @@ public class Enemy : MonoBehaviour
     public void UpgradeHealth(float upByPercentage)
     {
         startHealth += startHealth * upByPercentage;
+    }
+
+    private void InitializeHealthBar()
+    {
+        Vector3 angles = transform.localEulerAngles;
+        //angles.x = ((int)angles.y) / 90 % 2 == 0 ? angleX : -angleX;
+        angles.x = angleX;
+        angles.y = -angles.y;
+        fullHealthBar.localEulerAngles = angles;
     }
 }
