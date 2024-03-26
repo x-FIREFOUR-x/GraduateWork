@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 public class WaveSpawner : MonoBehaviour
 {
-    private Transform spawnPoint;
+    public Transform SpawnPoint { get; private set; }
 
     [Header("Enemy Prefabs")]
     [SerializeField]
@@ -39,7 +39,7 @@ public class WaveSpawner : MonoBehaviour
 
     public void Initialize(Transform spawn)
     {
-        spawnPoint = spawn;
+        SpawnPoint = spawn;
 
         algoCreateWave = new GeneticAlgorithm();
 
@@ -109,13 +109,13 @@ public class WaveSpawner : MonoBehaviour
         switch (enemyType)
         {
             case EnemyType.Standard:
-                Instantiate(standardEnemyPrefab, spawnPoint.position, spawnPoint.rotation);
+                Instantiate(standardEnemyPrefab, SpawnPoint.position, SpawnPoint.rotation);
                 break;
             case EnemyType.Fast:
-                Instantiate(fastEnemyPrefab, spawnPoint.position, spawnPoint.rotation);
+                Instantiate(fastEnemyPrefab, SpawnPoint.position, SpawnPoint.rotation);
                 break;
             case EnemyType.Tank:
-                Instantiate(tankEnemyPrefab, spawnPoint.position, spawnPoint.rotation);
+                Instantiate(tankEnemyPrefab, SpawnPoint.position, SpawnPoint.rotation);
                 break;
             default:
                 break;

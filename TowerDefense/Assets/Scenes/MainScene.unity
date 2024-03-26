@@ -724,9 +724,6 @@ MonoBehaviour:
   waveSpawner: {fileID: 1654633874}
   startBuilding: {fileID: 179419894}
   endBuilding: {fileID: 3497745517377867848}
-  indexesStart: {x: 1, y: 1}
-  indexesEnd: {x: 14, y: 14}
-  size: 16
   tilesMapPrefab: {fileID: 5839288057474732416, guid: 5498d3f9eaf3091408b45f2ccc36b8ef, type: 3}
   wayPointsPrefab: {fileID: 6370203059284023274, guid: b07a176a27d72dc4e8898d803c6b5310, type: 3}
 --- !u!1 &705507993
@@ -2753,6 +2750,7 @@ MonoBehaviour:
   fastEnemyPrefab: {fileID: 1569746521151002166, guid: 6ab8932a2510bb742bf5f04c9b123766, type: 3}
   tankEnemyPrefab: {fileID: 4686977106260309065, guid: dacf52917bbd9b34c92c6053146aa1ad, type: 3}
   timeBetweenWaves: 5
+  <timeToNextSpawn>k__BackingField: 5
 --- !u!4 &1654633876
 Transform:
   m_ObjectHideFlags: 0

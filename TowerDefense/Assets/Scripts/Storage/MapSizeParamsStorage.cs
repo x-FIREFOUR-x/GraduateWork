@@ -13,8 +13,8 @@ namespace Storage
         [field: SerializeField] public Vector3 SizeTile { get; private set; }
         [field: SerializeField] public Vector3 OffsetTile { get; private set; }
 
-        [field: SerializeField] public Vector2Int IndexesStartBuilding { get; set; }
-        [field: SerializeField] public Vector2Int IndexesEndBuilding { get; set; }
+        [field: SerializeField] public Vector2Int IndexesStartBuilding { get; private set; }
+        [field: SerializeField] public Vector2Int IndexesEndBuilding { get; private set; }
         [field: SerializeField] public Vector3 OffsetBuilding { get; private set; }
     }
 }
