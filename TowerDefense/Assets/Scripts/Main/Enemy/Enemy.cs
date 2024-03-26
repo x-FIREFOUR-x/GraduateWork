@@ -130,7 +130,6 @@ public class Enemy : MonoBehaviour
     private void InitializeHealthBar()
     {
         Vector3 angles = transform.localEulerAngles;
-        //angles.x = ((int)angles.y) / 90 % 2 == 0 ? angleX : -angleX;
         angles.x = angleX;
         angles.y = -angles.y;
         fullHealthBar.localEulerAngles = angles;
