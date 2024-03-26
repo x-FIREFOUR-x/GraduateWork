@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using Storage;
+
 public class MapComponentsController : MonoBehaviour
 {
     [SerializeField]
@@ -13,20 +15,6 @@ public class MapComponentsController : MonoBehaviour
     private TilesMap tilesMap;
     private WayPoints wayPoints;
 
-    [Header("Attributes")]
-    [SerializeField]
-    private Vector2Int indexesStart = new Vector2Int(1, 1);
-    [SerializeField]
-    private Vector2Int indexesEnd = new Vector2Int(14, 14);
-    [SerializeField]
-    private int size = 16;
-    [SerializeField]
-    private Vector3 sizeTile = new(4, 1, 4);
-    [SerializeField]
-    private Vector3 offsetTile = new(1, 0, 1);
-    [SerializeField]
-    private float hightBuilding = 0.5f;
-
     [Header("Prefabs")]
     [SerializeField]
     private GameObject tilesMapPrefab;
@@ -37,23 +25,25 @@ public class MapComponentsController : MonoBehaviour
 
     void Start()
     {
+        var mapSizeParams = Resources.Load<MapSizeParamsStorage>($"{nameof(MapSizeParamsStorage)}");
+
         pathGenerator = new PathGenerator();
 
         List<Vector2Int> generatedPath;
         if (MapSaver.instance.IsSave)
         {
-            indexesStart = MapSaver.instance.GetIndexesStart();
-            indexesEnd = MapSaver.instance.GetIndexesEnd();
-            generatedPath = pathGenerator.GetPathWithMatrix(MapSaver.instance.GetTileMatrix(), indexesStart, indexesEnd);
+            mapSizeParams.IndexesStartBuilding = MapSaver.instance.GetIndexesStart();
+            mapSizeParams.IndexesEndBuilding = MapSaver.instance.GetIndexesEnd();
+            generatedPath = pathGenerator.GetPathWithMatrix(MapSaver.instance.GetTileMatrix(), mapSizeParams.IndexesStartBuilding, mapSizeParams.IndexesEndBuilding);
         }
         else
         {
-            generatedPath = pathGenerator.GeneratePath(size, indexesStart, indexesEnd);
+            generatedPath = pathGenerator.GeneratePath(mapSizeParams.CountTile, mapSizeParams.IndexesStartBuilding, mapSizeParams.IndexesEndBuilding);
         }
 
         tilesMap = Instantiate(tilesMapPrefab, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1))
             .GetComponent<TilesMap>();
-        tilesMap.Initialize(size, generatedPath, offsetTile);
+        tilesMap.Initialize(mapSizeParams.CountTile, generatedPath, mapSizeParams.OffsetTile);
 
         wayPoints = Instantiate(wayPointsPrefab, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1))
             .GetComponent<WayPoints>();
@@ -62,11 +52,17 @@ public class MapComponentsController : MonoBehaviour
         waveSpawner.GetComponent<WaveSpawner>().Initialize(startBuilding.transform);
 
         startBuilding.transform.SetPositionAndRotation(
-            new Vector3((sizeTile.x + offsetTile.x) * indexesStart.x, hightBuilding, (sizeTile.z + offsetTile.z) * indexesStart.y),
+            new Vector3(
+                (mapSizeParams.SizeTile.x + mapSizeParams.OffsetTile.x) * mapSizeParams.IndexesStartBuilding.x,
+                mapSizeParams.OffsetBuilding.y, 
+                (mapSizeParams.SizeTile.z + mapSizeParams.OffsetTile.z) * mapSizeParams.IndexesStartBuilding.y),
             new Quaternion(0, 0, 0, 1));
 
         endBuilding.transform.SetPositionAndRotation(
-            new Vector3((sizeTile.x + offsetTile.x) * indexesEnd.x, hightBuilding, (sizeTile.z + offsetTile.z) * indexesEnd.y),
+            new Vector3(
+                (mapSizeParams.SizeTile.x + mapSizeParams.OffsetTile.x) * mapSizeParams.IndexesEndBuilding.x,
+                mapSizeParams.OffsetBuilding.y,
+                (mapSizeParams.SizeTile.z + mapSizeParams.OffsetTile.z) * mapSizeParams.IndexesEndBuilding.y),
             new Quaternion(0, 0, 0, 1));
     }
 }
