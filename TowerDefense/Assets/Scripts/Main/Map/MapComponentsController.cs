@@ -57,8 +57,9 @@ public class MapComponentsController : MonoBehaviour
         startBuilding.GetComponent<Building>().Initialize(
             indexesStartBuilding, mapSizeParams.SizeTile, mapSizeParams.OffsetTile, mapSizeParams.OffsetBuilding, WayPoints.Points[0].localPosition);
 
+        Vector3 targetDirEndBuilding = WayPoints.Points.Count > 1 ? WayPoints.Points[WayPoints.Points.Count - 2].localPosition : startBuilding.transform.position;
         endBuilding.GetComponent<EndBuilding>().Initialize(
-            indexesEndBuilding, mapSizeParams.SizeTile, mapSizeParams.OffsetTile, mapSizeParams.OffsetBuilding, WayPoints.Points[WayPoints.Points.Count - 2].localPosition);
+            indexesEndBuilding, mapSizeParams.SizeTile, mapSizeParams.OffsetTile, mapSizeParams.OffsetBuilding, targetDirEndBuilding);
 
         waveSpawner.GetComponent<WaveSpawner>().Initialize(startBuilding.transform);
     }
