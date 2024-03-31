@@ -2746,11 +2746,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7d8020237a50c845beee37327528085, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  standardEnemyPrefab: {fileID: 4686977106260309065, guid: 09a660aec7847f6428595a225f6b9ec9, type: 3}
-  fastEnemyPrefab: {fileID: 1569746521151002166, guid: 6ab8932a2510bb742bf5f04c9b123766, type: 3}
-  tankEnemyPrefab: {fileID: 4686977106260309065, guid: dacf52917bbd9b34c92c6053146aa1ad, type: 3}
+  standardEnemyPrefab: {fileID: 403496, guid: 9f4313a771e05c64d8da7ae6bd19a19f, type: 3}
+  fastEnemyPrefab: {fileID: 413006, guid: 80afb8f52d27bae4f8ff4cf083945861, type: 3}
+  tankEnemyPrefab: {fileID: 5312817056125284158, guid: dacf52917bbd9b34c92c6053146aa1ad, type: 3}
   timeBetweenWaves: 5
-  <timeToNextSpawn>k__BackingField: 5
 --- !u!4 &1654633876
 Transform:
   m_ObjectHideFlags: 0

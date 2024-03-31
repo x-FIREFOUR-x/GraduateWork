@@ -29,7 +29,11 @@ public class Enemy : MonoBehaviour
 
     public static string enemyTag = "Enemy";
 
-    [Header("SetUp")]
+    [Header("SetUpHealthBar")]
+    [SerializeField]
+    private float startPosY;
+
+    [Header("SetUpHealthBar")]
     [SerializeField]
     private Image healthBar;
     [SerializeField]
@@ -43,17 +47,24 @@ public class Enemy : MonoBehaviour
         health = startHealth;
         speed = StartSpeed;
 
+        transform.SetPositionAndRotation(
+            new Vector3(transform.position.x, startPosY, transform.position.z),
+            transform.rotation);
+
         InitializeHealthBar();
     }
 
     void Update()
     {
-        Vector3 direction = target.position - transform.position;
+        Vector3 targetPosition = new Vector3(target.position.x, 0, target.position.z);
+        Vector3 position = new Vector3(transform.position.x, 0, transform.position.z);
+
+        Vector3 direction = targetPosition - position;
         transform.Translate(direction.normalized * speed * Time.deltaTime, Space.World);
 
         movedDistance += (direction.normalized * speed * Time.deltaTime).magnitude;
 
-        if (Vector3.Distance(transform.position, target.position) <= 0.2f)
+        if (Vector3.Distance(position, targetPosition) <= 0.2f)
         {
             GetNextWayPoint();
         }
