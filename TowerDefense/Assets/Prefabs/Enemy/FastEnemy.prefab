@@ -1091,6 +1091,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3698fd7da74f189488cce43401e83e10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  model: {fileID: 2208903936864233308}
   startHealth: 100
   <StartSpeed>k__BackingField: 20
   timeReturnSpeed: 2

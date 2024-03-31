@@ -3,6 +3,9 @@ using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
+    [SerializeField]
+    private Transform model;
+
     [Header("Attributes")]
     [SerializeField]
     private float startHealth = 100f;
@@ -66,22 +69,29 @@ public class Enemy : MonoBehaviour
 
         if (Vector3.Distance(position, targetPosition) <= 0.2f)
         {
-            GetNextWayPoint();
+            if (!GetNextWayPoint())
+            {
+                DamageEndBuilding();
+                Die();
+            }
+
+            Rotate();
         }
 
         UpdateSpeed();
     }
 
-    private void GetNextWayPoint()
+    private bool GetNextWayPoint()
     {
         WayPointIndex++;
         if (WayPointIndex > WayPoints.Points.Count - 1)
         {
-            DamageEndBuilding();
+            return false;
         }
         else
         {
             target = WayPoints.Points[WayPointIndex];
+            return true;
         }
     }
     
@@ -100,7 +110,33 @@ public class Enemy : MonoBehaviour
             endBuilding[0].GetComponent<EndBuilding>().TakeDamage(damage);
         }
 
-        Die();
+        
+    }
+
+    private void UpdateSpeed()
+    {
+        currentTimeReturnSpeed -= Time.deltaTime;
+
+        if(currentTimeReturnSpeed <= 0f)
+        {
+            speed = StartSpeed;
+        }
+    }
+
+    private void InitializeHealthBar()
+    {
+        Vector3 angles = transform.localEulerAngles;
+        angles.x = angleX;
+        angles.y = -angles.y;
+        fullHealthBar.localEulerAngles = angles;
+    }
+
+    private void Rotate()
+    {
+        Vector3 dir = target.position - model.position;
+        dir.Normalize();
+        Quaternion quaternion = Quaternion.LookRotation(dir, Vector3.up);
+        model.rotation = quaternion;
     }
 
 
@@ -116,16 +152,6 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void UpdateSpeed()
-    {
-        currentTimeReturnSpeed -= Time.deltaTime;
-
-        if(currentTimeReturnSpeed <= 0f)
-        {
-            speed = StartSpeed;
-        }
-    }
-
     public void Slow(float percentSlowing)
     {
         speed = StartSpeed * (1 - percentSlowing);
@@ -136,13 +162,5 @@ public class Enemy : MonoBehaviour
     public void UpgradeHealth(float upByPercentage)
     {
         startHealth += startHealth * upByPercentage;
-    }
-
-    private void InitializeHealthBar()
-    {
-        Vector3 angles = transform.localEulerAngles;
-        angles.x = angleX;
-        angles.y = -angles.y;
-        fullHealthBar.localEulerAngles = angles;
     }
 }
