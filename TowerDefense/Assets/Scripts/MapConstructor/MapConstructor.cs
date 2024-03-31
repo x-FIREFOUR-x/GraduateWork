@@ -1,24 +1,18 @@
 using UnityEngine;
 
+using Storage;
+
 public class MapConstructor : MonoBehaviour
 {
     public static MapConstructor instance;
 
     private GameObject selectedComponent;
 
+    private MapSizeParamsStorage mapSizeParams;
+
     [Header("Map")]
     [SerializeField]
     private GameObject map;
-
-    [Header("Attributes")]
-    [SerializeField]
-    private Vector3Int indexesStartMap = new Vector3Int(0, 0 ,0);
-    [SerializeField]
-    private int size = 16;
-
-    [SerializeField]
-    private Vector3 offsetBuild = new Vector3(0, (float)2.5, 0);
-
 
     [Header("Prefabs")]
     [SerializeField]
@@ -39,7 +33,9 @@ public class MapConstructor : MonoBehaviour
 
         selectedComponent = null;
 
-        map.GetComponent<Map>().Initialize(size, indexesStartMap, offsetBuild);
+        mapSizeParams = Resources.Load<MapSizeParamsStorage>($"{nameof(MapSizeParamsStorage)}");
+
+        map.GetComponent<Map>().Initialize(mapSizeParams.CountTile, mapSizeParams.StartMap, mapSizeParams.OffsetBuilding);
     }
 
 
@@ -54,8 +50,8 @@ public class MapConstructor : MonoBehaviour
 
         if(selectedComponent != null)
         {
-            if (indexes.x > 0 && indexes.x < size - 1 &&
-                indexes.y > 0 && indexes.y < size - 1)
+            if (indexes.x > 0 && indexes.x < mapSizeParams.CountTile - 1 &&
+                indexes.y > 0 && indexes.y < mapSizeParams.CountTile - 1)
             {
                 map.GetComponent<Map>().SetTile(indexes.x, indexes.y, pathTilePrefab);
 
@@ -97,8 +93,8 @@ public class MapConstructor : MonoBehaviour
 
     private Vector2Int IndexsOfMapTile(GameObject mapTile)
     {
-        Vector2Int indexes = new((int)((mapTile.transform.position.x - indexesStartMap.x) / (mapTile.transform.localScale.x + 1)),
-                                 (int)((mapTile.transform.position.z - indexesStartMap.z) / (mapTile.transform.localScale.z + 1)));
+        Vector2Int indexes = new((int)((mapTile.transform.position.x - mapSizeParams.StartMap.x) / (mapTile.transform.localScale.x + 1)),
+                                 (int)((mapTile.transform.position.z - mapSizeParams.StartMap.z) / (mapTile.transform.localScale.z + 1)));
 
         return indexes;
     }

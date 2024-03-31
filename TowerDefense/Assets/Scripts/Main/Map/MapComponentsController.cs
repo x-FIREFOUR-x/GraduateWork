@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using Storage;
+
 public class MapComponentsController : MonoBehaviour
 {
     [SerializeField]
@@ -13,14 +15,6 @@ public class MapComponentsController : MonoBehaviour
     private TilesMap tilesMap;
     private WayPoints wayPoints;
 
-    [Header("Attributes")]
-    [SerializeField]
-    private Vector2Int indexesStart = new Vector2Int(1, 1);
-    [SerializeField]
-    private Vector2Int indexesEnd = new Vector2Int(14, 14);
-    [SerializeField]
-    private int size = 16;
-
     [Header("Prefabs")]
     [SerializeField]
     private GameObject tilesMapPrefab;
@@ -29,33 +23,43 @@ public class MapComponentsController : MonoBehaviour
 
     private PathGenerator pathGenerator;
 
+    private MapSizeParamsStorage mapSizeParams;
+
     void Start()
     {
+        mapSizeParams = Resources.Load<MapSizeParamsStorage>($"{nameof(MapSizeParamsStorage)}");
+
+        Vector2Int indexesStartBuilding = mapSizeParams.IndexesStartBuilding;
+        Vector2Int indexesEndBuilding = mapSizeParams.IndexesEndBuilding;
+
         pathGenerator = new PathGenerator();
 
         List<Vector2Int> generatedPath;
         if (MapSaver.instance.IsSave)
         {
-            indexesStart = MapSaver.instance.GetIndexesStart();
-            indexesEnd = MapSaver.instance.GetIndexesEnd();
-            generatedPath = pathGenerator.GetPathWithMatrix(MapSaver.instance.GetTileMatrix(), indexesStart, indexesEnd);
+            indexesStartBuilding = MapSaver.instance.GetIndexesStart();
+            indexesEndBuilding = MapSaver.instance.GetIndexesEnd();
+            generatedPath = pathGenerator.GetPathWithMatrix(MapSaver.instance.GetTileMatrix(), indexesStartBuilding, indexesEndBuilding);
         }
         else
         {
-            generatedPath = pathGenerator.GeneratePath(size, indexesStart, indexesEnd);
+            generatedPath = pathGenerator.GeneratePath(mapSizeParams.CountTile, indexesStartBuilding, indexesEndBuilding);
         }
 
         tilesMap = Instantiate(tilesMapPrefab, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1))
             .GetComponent<TilesMap>();
-        tilesMap.Initialize(size, generatedPath);
-
-        startBuilding.transform.SetPositionAndRotation(new Vector3(5 * indexesStart.x, (float)2.5, 5 * indexesStart.y), new Quaternion(0, 0, 0, 1));
-
-        endBuilding.transform.SetPositionAndRotation(new Vector3(5 * indexesEnd.x, (float)2.5, 5 * indexesEnd.y), new Quaternion(0, 0, 0, 1));
+        tilesMap.Initialize(mapSizeParams.CountTile, generatedPath, mapSizeParams.OffsetTile);
 
         wayPoints = Instantiate(wayPointsPrefab, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1))
             .GetComponent<WayPoints>();
         wayPoints.Initialize(generatedPath);
+
+        startBuilding.GetComponent<Building>().Initialize(
+            indexesStartBuilding, mapSizeParams.SizeTile, mapSizeParams.OffsetTile, mapSizeParams.OffsetBuilding, WayPoints.Points[0].localPosition);
+
+        Vector3 targetDirEndBuilding = WayPoints.Points.Count > 1 ? WayPoints.Points[WayPoints.Points.Count - 2].localPosition : startBuilding.transform.position;
+        endBuilding.GetComponent<EndBuilding>().Initialize(
+            indexesEndBuilding, mapSizeParams.SizeTile, mapSizeParams.OffsetTile, mapSizeParams.OffsetBuilding, targetDirEndBuilding);
 
         waveSpawner.GetComponent<WaveSpawner>().Initialize(startBuilding.transform);
     }
