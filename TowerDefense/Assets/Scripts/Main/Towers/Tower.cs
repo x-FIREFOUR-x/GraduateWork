@@ -31,7 +31,8 @@ public abstract class Tower : MonoBehaviour
     protected Transform pointStartFire;
     [SerializeField]
     protected Transform rotatePart;
-
+    [SerializeField]
+    protected Vector3 offsetTarget = new (0, 0.5f, 0);
 
     public static string towerTag = "Tower";
 

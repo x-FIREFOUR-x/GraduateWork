@@ -7,10 +7,12 @@ public class Rocket : Projectile
     [SerializeField]
     protected float explosionRadius = 0f;
 
-    public override void Seek(Transform target)
+    public override void Seek(Transform target, Vector3 offsetTarget)
     {
-        targetStartPosition = target.position;
-        transform.LookAt(target);
+        targetStartPosition = target.position + offsetTarget;
+
+        if (target != null)
+            transform.LookAt(target.position + offsetTarget);
     }
 
     void Update()

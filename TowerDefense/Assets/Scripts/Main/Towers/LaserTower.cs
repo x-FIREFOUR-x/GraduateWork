@@ -23,8 +23,8 @@ public class LaserTower : Tower
             RotateToTarget();
             ActiveLaser();
 
-            Vector3 direction = pointStartFire.position - target.position;
-            hitEffect.transform.position = target.position + direction.normalized;
+            Vector3 direction = pointStartFire.position - (target.position + offsetTarget);
+            hitEffect.transform.position = (target.position + offsetTarget) + direction.normalized;
             hitEffect.transform.rotation = Quaternion.LookRotation(direction);
 
             target.GetComponent<Enemy>().TakeDamage(damage * Time.deltaTime);
@@ -47,7 +47,7 @@ public class LaserTower : Tower
         }
 
         lineLaser.SetPosition(0, pointStartFire.position);
-        lineLaser.SetPosition(1, target.position);
+        lineLaser.SetPosition(1, target.position + offsetTarget);
     }
 
     private void DisactiveLaser()

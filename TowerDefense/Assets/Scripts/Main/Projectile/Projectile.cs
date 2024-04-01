@@ -12,7 +12,7 @@ public abstract class Projectile : MonoBehaviour
     [field:SerializeField]
     public float Damage { get; private set; } = 100f;
 
-    public abstract void Seek(Transform target);
+    public abstract void Seek(Transform target, Vector3 offsetTarget);
 
     protected abstract void HitTarget();
 }
