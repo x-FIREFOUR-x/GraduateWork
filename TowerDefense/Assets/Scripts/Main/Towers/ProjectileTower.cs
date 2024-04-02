@@ -31,7 +31,7 @@ public class ProjectileTower : Tower
 
             if (bullet != null)
             {
-                bullet.Seek(target);
+                bullet.Seek(target, offsetTarget);
             }
             yield return new WaitForSeconds(0.2f);
         }

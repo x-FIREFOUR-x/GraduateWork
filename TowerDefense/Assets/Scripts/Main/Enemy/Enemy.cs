@@ -3,6 +3,9 @@ using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
+    [SerializeField]
+    private Transform model;
+
     [Header("Attributes")]
     [SerializeField]
     private float startHealth = 100f;
@@ -29,7 +32,11 @@ public class Enemy : MonoBehaviour
 
     public static string enemyTag = "Enemy";
 
-    [Header("SetUp")]
+    [Header("SetUpHealthBar")]
+    [SerializeField]
+    private float startPosY;
+
+    [Header("SetUpHealthBar")]
     [SerializeField]
     private Image healthBar;
     [SerializeField]
@@ -43,34 +50,48 @@ public class Enemy : MonoBehaviour
         health = startHealth;
         speed = StartSpeed;
 
+        transform.SetPositionAndRotation(
+            new Vector3(transform.position.x, startPosY, transform.position.z),
+            transform.rotation);
+
         InitializeHealthBar();
     }
 
     void Update()
     {
-        Vector3 direction = target.position - transform.position;
+        Vector3 targetPosition = new Vector3(target.position.x, 0, target.position.z);
+        Vector3 position = new Vector3(transform.position.x, 0, transform.position.z);
+
+        Vector3 direction = targetPosition - position;
         transform.Translate(direction.normalized * speed * Time.deltaTime, Space.World);
 
         movedDistance += (direction.normalized * speed * Time.deltaTime).magnitude;
 
-        if (Vector3.Distance(transform.position, target.position) <= 0.2f)
+        if (Vector3.Distance(position, targetPosition) <= 0.2f)
         {
-            GetNextWayPoint();
+            if (!GetNextWayPoint())
+            {
+                DamageEndBuilding();
+                Die();
+            }
+
+            Rotate();
         }
 
         UpdateSpeed();
     }
 
-    private void GetNextWayPoint()
+    private bool GetNextWayPoint()
     {
         WayPointIndex++;
         if (WayPointIndex > WayPoints.Points.Count - 1)
         {
-            DamageEndBuilding();
+            return false;
         }
         else
         {
             target = WayPoints.Points[WayPointIndex];
+            return true;
         }
     }
     
@@ -89,7 +110,33 @@ public class Enemy : MonoBehaviour
             endBuilding[0].GetComponent<EndBuilding>().TakeDamage(damage);
         }
 
-        Die();
+        
+    }
+
+    private void UpdateSpeed()
+    {
+        currentTimeReturnSpeed -= Time.deltaTime;
+
+        if(currentTimeReturnSpeed <= 0f)
+        {
+            speed = StartSpeed;
+        }
+    }
+
+    private void InitializeHealthBar()
+    {
+        Vector3 angles = transform.localEulerAngles;
+        angles.x = angleX;
+        angles.y = -angles.y;
+        fullHealthBar.localEulerAngles = angles;
+    }
+
+    private void Rotate()
+    {
+        Vector3 dir = target.position - model.position;
+        dir.Normalize();
+        Quaternion quaternion = Quaternion.LookRotation(dir, Vector3.up);
+        model.rotation = quaternion;
     }
 
 
@@ -105,16 +152,6 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void UpdateSpeed()
-    {
-        currentTimeReturnSpeed -= Time.deltaTime;
-
-        if(currentTimeReturnSpeed <= 0f)
-        {
-            speed = StartSpeed;
-        }
-    }
-
     public void Slow(float percentSlowing)
     {
         speed = StartSpeed * (1 - percentSlowing);
@@ -125,13 +162,5 @@ public class Enemy : MonoBehaviour
     public void UpgradeHealth(float upByPercentage)
     {
         startHealth += startHealth * upByPercentage;
-    }
-
-    private void InitializeHealthBar()
-    {
-        Vector3 angles = transform.localEulerAngles;
-        angles.x = angleX;
-        angles.y = -angles.y;
-        fullHealthBar.localEulerAngles = angles;
     }
 }

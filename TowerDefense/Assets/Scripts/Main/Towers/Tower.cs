@@ -31,7 +31,10 @@ public abstract class Tower : MonoBehaviour
     protected Transform pointStartFire;
     [SerializeField]
     protected Transform rotatePart;
-
+    [SerializeField]
+    protected Vector3 offsetTower;
+    [SerializeField]
+    protected Vector3 offsetTarget;
 
     public static string towerTag = "Tower";
 
@@ -43,6 +46,12 @@ public abstract class Tower : MonoBehaviour
     void Start()
     {
         target = null;
+
+        transform.position = new Vector3(
+            transform.position.x + offsetTower.x,
+            transform.position.y + offsetTower.y,
+            transform.position.z + offsetTower.z);
+
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
     }
 

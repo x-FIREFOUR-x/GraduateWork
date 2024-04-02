@@ -25,13 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1598136566724342517}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.5000001, y: 0.50000006, z: -0.4999999, w: -0.49999994}
   m_LocalPosition: {x: -1.8393269, y: 1.4293928, z: 0.00000019205154}
   m_LocalScale: {x: 0.044139665, y: 0.044139665, z: 0.044139665}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7544833960962722027}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5489195855576510301
 MeshFilter:
@@ -107,13 +107,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3396452724760783737}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.5, y: -0.5, z: -0.5, w: 0.5}
   m_LocalPosition: {x: -5.368745, y: 0.3398233, z: 31.672184}
   m_LocalScale: {x: 22.65536, y: 22.65536, z: 22.65536}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 76483111175503999}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7064740399944256838
 GameObject:
@@ -140,6 +140,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7064740399944256838}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: -0, y: 1.43, z: 1.901}
   m_LocalScale: {x: 0.044139665, y: 0.044139665, z: 0.044139665}
@@ -147,7 +148,6 @@ Transform:
   m_Children:
   - {fileID: 3396452724760783736}
   m_Father: {fileID: 7544833960962722027}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!33 &5730923130452097624
 MeshFilter:
@@ -225,6 +225,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7205603479279948369}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.98, y: 0.5, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -233,7 +234,6 @@ Transform:
   - {fileID: 76483111175503999}
   - {fileID: 5960652322032181812}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2259175783054827281
 MonoBehaviour:
@@ -256,4 +256,6 @@ MonoBehaviour:
   <Price>k__BackingField: 200
   pointStartFire: {fileID: 3396452724760783736}
   rotatePart: {fileID: 7544833960962722027}
+  offsetTower: {x: 0, y: 0.5, z: 0}
+  offsetTarget: {x: 0, y: 1.5, z: 0}
   projectilePrefab: {fileID: 9100590622967104924, guid: 82607979a225c6647820c88322b9c4db, type: 3}

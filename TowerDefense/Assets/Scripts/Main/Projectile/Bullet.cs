@@ -3,11 +3,15 @@ using UnityEngine;
 public class Bullet : Projectile
 {
     private Transform targetEnemy;
+    private Vector3 offsetTarget;
 
-    public override void Seek(Transform target)
+    public override void Seek(Transform target, Vector3 offset)
     {
         targetEnemy = target;
-        transform.LookAt(targetEnemy);
+        offsetTarget = offset;
+        
+        if (targetEnemy != null)
+            transform.LookAt(targetEnemy.position + offsetTarget);
     }
 
     void Update()
@@ -44,6 +48,6 @@ public class Bullet : Projectile
 
     private Vector3 GetDiractionToTarget()
     {
-        return targetEnemy.position - transform.position;
+        return targetEnemy.position + offsetTarget - transform.position;
     }
 }
