@@ -15,8 +15,6 @@ public class TowerTile : MonoBehaviour
     private Color notEnoughMoney;
 
     public GameObject Tower { get; set; }
-    [SerializeField]
-    private Vector3 towerOffset = new Vector3(0, (float)0.5, 0);
 
     private TowerBuildManager towerBuildManager;
 
@@ -64,7 +62,7 @@ public class TowerTile : MonoBehaviour
 
     public Vector3 GetTowerBuildPosition()
     {
-        return transform.position + towerOffset;
+        return transform.position;
     }
 
 }
