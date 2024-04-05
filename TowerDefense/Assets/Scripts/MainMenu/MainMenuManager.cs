@@ -4,14 +4,14 @@ using UnityEngine.SceneManagement;
 public class MainMenuManager : MonoBehaviour
 {
     [SerializeField]
-    private string mainScene = "MainScene";
+    private string defenderGameScene = "DefenderGameScene";
     [SerializeField]
     private string mapConstrucorScene = "MapConstructorScene";
 
     public void Play()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene(mainScene);
+        SceneManager.LoadScene(defenderGameScene);
     }
 
     public void Constructor()

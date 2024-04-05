@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 public class SceneSwitcher: MonoBehaviour
 {
     [SerializeField]
-    private string mainScene = "MainScene";
+    private string defenderGameScene = "DefenderGameScene";
     [SerializeField]
     private string mainMenuScene = "MainMenuScene";
     [SerializeField]
@@ -27,7 +27,7 @@ public class SceneSwitcher: MonoBehaviour
         if (MapSaver.instance.SetData(tilesArray, indexesStartBuild, indexesEndBuild))
         {
             Time.timeScale = 1f;
-            SceneManager.LoadScene(mainScene);
+            SceneManager.LoadScene(defenderGameScene);
         }
         else
         {

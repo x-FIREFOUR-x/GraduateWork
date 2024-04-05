@@ -169,7 +169,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cd3696d439f3694391e60040ab6b777, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainScene: MainScene
+  mainScene: MainSceneDefender
   mainMenuScene: MainMenuScene
   map: {fileID: 1738640359}
   messageManager: {fileID: 12596567}
