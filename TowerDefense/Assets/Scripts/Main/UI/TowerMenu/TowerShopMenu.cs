@@ -6,13 +6,13 @@ public class TowerShopMenu : MonoBehaviour
 
     [Header("ShopComponents")]
     [SerializeField]
-    private ShopComponent turretComponent;
+    private TowerShopComponent turretComponent;
     [SerializeField]
-    private ShopComponent panelsTurretComponent;
+    private TowerShopComponent panelsTurretComponent;
     [SerializeField]
-    private ShopComponent rocketLauncherComponent;
+    private TowerShopComponent rocketLauncherComponent;
     [SerializeField]
-    private ShopComponent laserTurretComponent;
+    private TowerShopComponent laserTurretComponent;
 
     
 

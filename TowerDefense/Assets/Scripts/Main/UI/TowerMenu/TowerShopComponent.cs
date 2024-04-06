@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ShopComponent : MonoBehaviour
+public class TowerShopComponent : MonoBehaviour
 {
     [SerializeField]
     private Tower tower;
