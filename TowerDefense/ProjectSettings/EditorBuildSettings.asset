@@ -9,8 +9,11 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenuScene.unity
     guid: 8f2e117d89d1dd44e98cdd4dc702fcad
   - enabled: 1
-    path: Assets/Scenes/MainSceneDefender.unity
+    path: Assets/Scenes/DefenderGameScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/AttackerGameScene.unity
+    guid: 79d993825ef513d4786fb1220327e9cb
   - enabled: 1
     path: Assets/Scenes/MapConstructorScene.unity
     guid: 1bbfb73afb4db7a45802d8125ccfb64b

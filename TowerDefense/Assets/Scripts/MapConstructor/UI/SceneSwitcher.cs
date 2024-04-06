@@ -6,13 +6,16 @@ public class SceneSwitcher: MonoBehaviour
     [SerializeField]
     private string defenderGameScene = "DefenderGameScene";
     [SerializeField]
+    private string attackerGameScene = "AttackerGameScene";
+    [SerializeField]
     private string mainMenuScene = "MainMenuScene";
+
     [SerializeField]
     private Map map;
     [SerializeField]
-    private MessageManager messageManager ;
+    private MessageManager messageManager;
 
-    public void Play()
+    public void PlayDefenderGame()
     {
         if (!map.IsAllBuilds())
         {
@@ -20,14 +23,29 @@ public class SceneSwitcher: MonoBehaviour
             return;
         }
 
-        int[,] tilesArray = map.GetTileArray();
-        Vector2Int indexesStartBuild = map.GetIndexesStartBuild();
-        Vector2Int indexesEndBuild = map.GetIndexesEndBuild();
-
-        if (MapSaver.instance.SetData(tilesArray, indexesStartBuild, indexesEndBuild))
+        if (MapSaver.instance.SetData(map.GetTileArray(), map.GetIndexesStartBuild(), map.GetIndexesEndBuild()))
         {
             Time.timeScale = 1f;
             SceneManager.LoadScene(defenderGameScene);
+        }
+        else
+        {
+            messageManager.OpenUncorrectMapMessage();
+        }
+    }
+
+    public void PlayAttackerGame()
+    {
+        if (!map.IsAllBuilds())
+        {
+            messageManager.OpenUncorrectMapMessage();
+            return;
+        }
+
+        if (MapSaver.instance.SetData(map.GetTileArray(), map.GetIndexesStartBuild(), map.GetIndexesEndBuild()))
+        {
+            Time.timeScale = 1f;
+            SceneManager.LoadScene(attackerGameScene);
         }
         else
         {
