@@ -2726,7 +2726,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1654633876}
-  - component: {fileID: 1654633875}
+  - component: {fileID: 1654633877}
   m_Layer: 0
   m_Name: WaveSpawner
   m_TagString: Untagged
@@ -2734,22 +2734,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1654633875
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1654633874}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7d8020237a50c845beee37327528085, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  standardEnemyPrefab: {fileID: 403496, guid: 9f4313a771e05c64d8da7ae6bd19a19f, type: 3}
-  fastEnemyPrefab: {fileID: 413006, guid: 80afb8f52d27bae4f8ff4cf083945861, type: 3}
-  tankEnemyPrefab: {fileID: 5312817056125284158, guid: dacf52917bbd9b34c92c6053146aa1ad, type: 3}
-  timeBetweenWaves: 5
 --- !u!4 &1654633876
 Transform:
   m_ObjectHideFlags: 0
@@ -2765,6 +2749,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1654633877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1654633874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5466dc4f5d5fd047a304157476daa9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  standardEnemyPrefab: {fileID: 403496, guid: 9f4313a771e05c64d8da7ae6bd19a19f, type: 3}
+  fastEnemyPrefab: {fileID: 413006, guid: 80afb8f52d27bae4f8ff4cf083945861, type: 3}
+  tankEnemyPrefab: {fileID: 5312817056125284158, guid: dacf52917bbd9b34c92c6053146aa1ad, type: 3}
+  timeBetweenWaves: 5
 --- !u!1 &1672618633
 GameObject:
   m_ObjectHideFlags: 0
