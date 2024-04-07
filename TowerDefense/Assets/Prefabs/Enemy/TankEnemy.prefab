@@ -1102,10 +1102,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   model: {fileID: 1144850472894354669}
-  startHealth: 1000
+  <EnemyType>k__BackingField: 0
+  <StartHealth>k__BackingField: 1000
   <StartSpeed>k__BackingField: 5
   timeReturnSpeed: 1
-  damage: 10
+  <Damage>k__BackingField: 10
   <Price>k__BackingField: 150
   startPosY: 0.5
   healthBar: {fileID: 6415678583352886365}

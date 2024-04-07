@@ -6,9 +6,12 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private Transform model;
 
-    [Header("Attributes")]
-    [SerializeField]
-    private float startHealth = 100f;
+    [field: SerializeField]
+    public EnemyType EnemyType { get; private set; }
+
+    [field: Header("Attributes")]
+    [field: SerializeField]
+    public float StartHealth { get; private set; } = 100f ;
     private float health;
 
     [field:SerializeField]
@@ -19,8 +22,8 @@ public class Enemy : MonoBehaviour
     private float timeReturnSpeed = 1f;
     private float currentTimeReturnSpeed = 0;
 
-    [SerializeField]
-    private int damage = 10;
+    [field: SerializeField]
+    public int Damage { get; private set; } = 10;
 
     [field: SerializeField]
     public int Price { get; private set; } = 25;
@@ -47,7 +50,7 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         target = WayPoints.Points[0];
-        health = startHealth;
+        health = StartHealth;
         speed = StartSpeed;
 
         transform.SetPositionAndRotation(
@@ -107,7 +110,7 @@ public class Enemy : MonoBehaviour
 
         if(endBuilding[0] != null)
         {
-            endBuilding[0].GetComponent<EndBuilding>().TakeDamage(damage);
+            endBuilding[0].GetComponent<EndBuilding>().TakeDamage(Damage);
         }
 
         
@@ -144,7 +147,7 @@ public class Enemy : MonoBehaviour
     {
         health -= damage;
 
-        healthBar.fillAmount = health / startHealth;
+        healthBar.fillAmount = health / StartHealth;
 
         if (health <= 0)
         {
@@ -161,6 +164,6 @@ public class Enemy : MonoBehaviour
 
     public void UpgradeHealth(float upByPercentage)
     {
-        startHealth += startHealth * upByPercentage;
+        StartHealth += StartHealth * upByPercentage;
     }
 }
