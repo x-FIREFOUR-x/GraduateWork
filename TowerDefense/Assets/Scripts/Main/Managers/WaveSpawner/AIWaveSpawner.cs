@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+using UnityEngine;
+
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ public class AIWaveSpawner : WaveSpawner
     private Task<List<EnemyType>> taskGenerated;
 
 
-    public override void Initialize(Transform spawn) 
+    public override void Initialize(Transform spawn)
     {
         SpawnPoint = spawn;
 

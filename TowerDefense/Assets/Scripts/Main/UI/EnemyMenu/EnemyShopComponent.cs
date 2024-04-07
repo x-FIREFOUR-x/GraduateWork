@@ -87,4 +87,10 @@ public class EnemyShopComponent : MonoBehaviour
             textCount.text = count.ToString();
         }
     }
+
+    public void ClearCount()
+    {
+        count = 0;
+        textCount.text = count.ToString();
+    }
 }

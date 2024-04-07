@@ -101,7 +101,9 @@ public class Enemy : MonoBehaviour
     private void Die()
     {
         Destroy(gameObject);
-        HeuristicsCalculator.instance.AddDistanceMovedEnemy(movedDistance);
+
+        if(HeuristicsCalculator.instance != null)
+            HeuristicsCalculator.instance.AddDistanceMovedEnemy(movedDistance);
     }
 
     private void DamageEndBuilding()

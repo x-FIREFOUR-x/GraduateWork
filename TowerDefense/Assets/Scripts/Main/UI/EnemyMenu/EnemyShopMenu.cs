@@ -39,6 +39,7 @@ public class EnemyShopMenu : MonoBehaviour
 
     public bool SubEnemy(EnemyType enemy, int price)
     {
+        //TO DO: start look for idx from the end of the list to remove the enemy
         if (enemies.Remove(enemy))
         {
             PlayerStats.Money += price;
@@ -46,5 +47,17 @@ public class EnemyShopMenu : MonoBehaviour
         }
 
         return false;
+    }
+
+    public List<EnemyType> TakeEnemies()
+    {
+        List<EnemyType> takedEnemies = enemies.GetRange(0, enemies.Count);
+        enemies = new List<EnemyType>();
+
+        standardEnemyComponent.ClearCount();
+        fastEnemyComponent.ClearCount();
+        tankEnemyComponent.ClearCount();
+
+        return takedEnemies;
     }
 }
