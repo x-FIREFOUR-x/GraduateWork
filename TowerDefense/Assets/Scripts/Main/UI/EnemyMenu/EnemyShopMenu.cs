@@ -24,29 +24,32 @@ public class EnemyShopMenu : MonoBehaviour
         tankEnemyComponent.Initialize();
     }
 
-    public bool AddEnemy(EnemyType enemy, int price)
+    public bool AddEnemy(EnemyType enemy, int price, int countAddEnemies = 1)
     {
-        if (price <= PlayerStats.Money)
+        if (PlayerStats.Money < price * countAddEnemies)
+            return false;
+
+        for (int i = 0; i < countAddEnemies; i++)
         {
             enemies.Add(enemy);
             PlayerStats.Money -= price;
-
-            return true;
         }
-
-        return false;
+        
+        return true;
     }
 
-    public bool SubEnemy(EnemyType enemy, int price)
+    public bool SubEnemy(EnemyType enemy, int price, int countExistEnemies, int countSubEnemies = 1)
     {
-        //TO DO: start look for idx from the end of the list to remove the enemy
-        if (enemies.Remove(enemy))
+        if (countExistEnemies < countSubEnemies)
+            return false;
+
+        for (int i = 0; i < countSubEnemies; i++)
         {
+            enemies.RemoveAt(enemies.LastIndexOf(enemy));
             PlayerStats.Money += price;
-            return true;
         }
 
-        return false;
+        return true;
     }
 
     public List<EnemyType> TakeEnemies()

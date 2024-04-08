@@ -69,21 +69,20 @@ public class EnemyShopComponent : MonoBehaviour
 
     public void AddEnemy()
     {
-        if (enemyShopMenu.AddEnemy(enemy.EnemyType, enemy.Price))
+        int countAdd = 1;
+        if (enemyShopMenu.AddEnemy(enemy.EnemyType, enemy.Price, countAdd))
         {
-            count++;
+            count+= countAdd;
             textCount.text = count.ToString();
         }
     }
 
     public void SubEnemy()
     {
-        if (count == 0)
-            return;
-
-        if(enemyShopMenu.SubEnemy(enemy.EnemyType, enemy.Price))
+        int countSub = 1;
+        if(enemyShopMenu.SubEnemy(enemy.EnemyType, enemy.Price, count, countSub))
         {
-            count--;
+            count-= countSub;
             textCount.text = count.ToString();
         }
     }
