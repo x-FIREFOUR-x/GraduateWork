@@ -67,9 +67,9 @@ public class EnemyShopComponent : MonoBehaviour
         
     }
 
-    public void AddEnemy()
+    public void AddEnemy(int countAdd)
     {
-        int countAdd = 1;
+        
         if (enemyShopMenu.AddEnemy(enemy.EnemyType, enemy.Price, countAdd))
         {
             count+= countAdd;
@@ -77,9 +77,9 @@ public class EnemyShopComponent : MonoBehaviour
         }
     }
 
-    public void SubEnemy()
+    public void SubEnemy(int countSub)
     {
-        int countSub = 1;
+        
         if(enemyShopMenu.SubEnemy(enemy.EnemyType, enemy.Price, count, countSub))
         {
             count-= countSub;
