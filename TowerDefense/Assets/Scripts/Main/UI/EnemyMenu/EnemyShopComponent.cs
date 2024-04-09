@@ -1,5 +1,7 @@
-using System;
+using System.Collections;
+
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class EnemyShopComponent : MonoBehaviour
@@ -7,10 +9,14 @@ public class EnemyShopComponent : MonoBehaviour
     [SerializeField]
     private Enemy enemy;
 
+    private int count = 0;
+
+
     [SerializeField]
     private EnemyShopMenu enemyShopMenu;
 
-    [Header("Components")]
+
+    [Header("Text Components Settings")]
     [SerializeField]
     private TMPro.TextMeshProUGUI textName;
     [SerializeField]
@@ -18,17 +24,34 @@ public class EnemyShopComponent : MonoBehaviour
     [SerializeField]
     private TMPro.TextMeshProUGUI textCount;
 
-    [Header("Image Button Components")]
+    [SerializeField]
+    private Color colorText;
+
+
+    [Header("Image Button Settings")]
     [SerializeField]
     private GameObject characterEnemy;
     [SerializeField]
     private GameObject textCharacter;
 
-    [Header("Colors")]
-    [SerializeField]
-    private Color colorText;
 
-    private int count = 0;
+    [Header("Add and Sub Buttons Settings")]
+    [SerializeField]
+    private Button buttonSub;
+    [SerializeField]
+    private Button button5Sub;
+    [SerializeField]
+    private Button buttonAdd;
+    [SerializeField]
+    private Button button5Add;
+
+    [SerializeField]
+    private Color failColorButtonsAddAndSub;
+    private Color colorButtonsAddAndSub;
+
+    [SerializeField]
+    private float timeShowFail;
+
 
     public void Initialize()
     {
@@ -39,6 +62,12 @@ public class EnemyShopComponent : MonoBehaviour
 
         textCount.color = colorText;
         textCount.text = "0";
+
+        colorButtonsAddAndSub = buttonAdd.GetComponent<Image>().color;
+        buttonAdd.onClick.AddListener(() => AddEnemy(buttonAdd, 1));
+        button5Add.onClick.AddListener(() => AddEnemy(button5Add, 5));
+        buttonSub.onClick.AddListener(() => SubEnemy(buttonSub, 1));
+        button5Sub.onClick.AddListener(() => SubEnemy(button5Sub, 5));
 
         InitializetextCharacters();
     }
@@ -67,17 +96,27 @@ public class EnemyShopComponent : MonoBehaviour
         
     }
 
-    public void AddEnemy(int countAdd)
+    public void ClearCount()
     {
-        
+        count = 0;
+        textCount.text = count.ToString();
+    }
+
+    private void AddEnemy(Button clickedButton, int countAdd)
+    {
         if (enemyShopMenu.AddEnemy(enemy.EnemyType, enemy.Price, countAdd))
         {
             count+= countAdd;
             textCount.text = count.ToString();
         }
+        else
+        {
+            clickedButton.GetComponent<Image>().color = failColorButtonsAddAndSub;
+            StartCoroutine(RestoringButtonAfterFail(timeShowFail, clickedButton));
+        }
     }
 
-    public void SubEnemy(int countSub)
+    private void SubEnemy(Button clickedButton, int countSub)
     {
         
         if(enemyShopMenu.SubEnemy(enemy.EnemyType, enemy.Price, count, countSub))
@@ -85,11 +124,16 @@ public class EnemyShopComponent : MonoBehaviour
             count-= countSub;
             textCount.text = count.ToString();
         }
+        else
+        {
+            clickedButton.GetComponent<Image>().color = failColorButtonsAddAndSub;
+            StartCoroutine(RestoringButtonAfterFail(timeShowFail, clickedButton));
+        }
     }
 
-    public void ClearCount()
+    private IEnumerator RestoringButtonAfterFail(float deleyTime, Button button)
     {
-        count = 0;
-        textCount.text = count.ToString();
+        yield return new WaitForSeconds(deleyTime);
+        button.GetComponent<Image>().color = colorButtonsAddAndSub;
     }
 }
