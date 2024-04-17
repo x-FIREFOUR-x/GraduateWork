@@ -29,7 +29,7 @@ public class GeneticAlgorithm
 
         _enemysTypes = enemysTypes;
         _enemysPrices = enemysPrices;
-        totalPrice = HeuristicsCalculator.instance.TotalPlayerMoney();
+        totalPrice = HeuristicsCalculator.instance.MoneyForWave();
 
         CreateStartPopulation();
         SortPopulation();

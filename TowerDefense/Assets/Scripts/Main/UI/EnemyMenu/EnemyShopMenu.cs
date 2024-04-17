@@ -26,13 +26,13 @@ public class EnemyShopMenu : MonoBehaviour
 
     public bool AddEnemy(EnemyType enemy, int price, int countAddEnemies = 1)
     {
-        if (PlayerStats.Money < price * countAddEnemies)
+        if (PlayerStats.GetPlayerMoney() < price * countAddEnemies)
             return false;
 
         for (int i = 0; i < countAddEnemies; i++)
         {
             enemies.Add(enemy);
-            PlayerStats.Money -= price;
+            PlayerStats.AddPlayerMoney(-price);
         }
         
         return true;
@@ -46,7 +46,7 @@ public class EnemyShopMenu : MonoBehaviour
         for (int i = 0; i < countSubEnemies; i++)
         {
             enemies.RemoveAt(enemies.LastIndexOf(enemy));
-            PlayerStats.Money += price;
+            PlayerStats.AddPlayerMoney(price);
         }
 
         return true;

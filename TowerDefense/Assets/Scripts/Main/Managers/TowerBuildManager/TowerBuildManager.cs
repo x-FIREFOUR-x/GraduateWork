@@ -70,7 +70,7 @@ public class TowerBuildManager : MonoBehaviour
 
     public bool CanBuild()
     {
-        return chosenTower != null && PlayerStats.Money >= chosenTower.Price;
+        return chosenTower != null && PlayerStats.GetPlayerMoney() >= chosenTower.Price;
     }
 
 
@@ -79,12 +79,12 @@ public class TowerBuildManager : MonoBehaviour
         GameObject tower = Instantiate(chosenTower.gameObject, tile.GetTowerBuildPosition(), tile.transform.rotation);
         tile.Tower = tower;
 
-        PlayerStats.Money -= chosenTower.GetComponent<Tower>().Price;
+        PlayerStats.AddPlayerMoney(-chosenTower.GetComponent<Tower>().Price);
     }
 
     public void DestroyTower()
     {
-        PlayerStats.Money += PriceSell();
+        PlayerStats.AddPlayerMoney(PriceSell());
         Destroy(chosenTowerTile.Tower);
         towerShop.AllComponentSetNotSelected();
     }

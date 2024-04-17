@@ -35,7 +35,7 @@ public class AIWaveSpawner : WaveSpawner
             if (!isEnrolledhWave)
             {
                 waveNumber++;
-                PlayerStats.AddMoney();
+                PlayerStats.IncreaseMoneyAfterWave();
                 isEnrolledhWave = true;
             }
         }
@@ -105,7 +105,6 @@ public class AIWaveSpawner : WaveSpawner
         {
             PlayerStats.IncreaseMoneyByWave(2);
         }
-        PlayerStats.AddTotalMoney();
 
         waveGenerated = true;
         isTaskRunning = false;

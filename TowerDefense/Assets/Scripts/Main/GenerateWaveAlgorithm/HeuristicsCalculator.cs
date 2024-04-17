@@ -66,12 +66,14 @@ public class HeuristicsCalculator
         }
     }
 
-    public int TotalPlayerMoney()
+    
+    public int MoneyForWave()
     {
-        int moneyForBalance =(int)(PlayerStats.TotalMoney * PercentChangeTotalPrice());
+        int moneyForBalance =(int)(PlayerStats.MoneyAttacker * PercentChangeTotalPrice());
 
-        return PlayerStats.TotalMoney + moneyForBalance;
+        return PlayerStats.MoneyAttacker + moneyForBalance;
     }
+    
 
     public int GetHeuristicsValue(List<EnemyType> enemys)
     {

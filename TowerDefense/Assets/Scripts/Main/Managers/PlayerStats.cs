@@ -2,26 +2,52 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
-    public static int Money;
-    public static int TotalMoney { get; private set; }
+    [SerializeField]
+    private bool playerIsDefenderSerialize = true;
+    private static bool playerIsDefender;
+
     [SerializeField]
     private int startMoney = 100;
     private static int MoneyByWave = 100;
 
+    public static int MoneyDefender { get; private set; }
+    private static int TotalMoneyDefender;
+
+    public static int MoneyAttacker { get; private set; }
+
+    public static int GetPlayerMoney()
+    {
+        return (playerIsDefender) ? MoneyDefender : MoneyAttacker;
+    }
+
     void Start()
     {
-        Money = startMoney;
-        TotalMoney = startMoney;
+        playerIsDefender = playerIsDefenderSerialize;
+
+        MoneyDefender = startMoney;
+        TotalMoneyDefender = startMoney;
+
+        MoneyAttacker = startMoney;
     }
 
-    public static void AddMoney()
+    public static void AddPlayerMoney(int number)
     {
-        Money += MoneyByWave;
+        if (playerIsDefender)
+        {
+            MoneyDefender += number;
+        }
+        else
+        {
+            MoneyAttacker += number;
+        }
     }
 
-    public static void AddTotalMoney()
+    public static void IncreaseMoneyAfterWave()
     {
-        TotalMoney += MoneyByWave;
+        MoneyDefender += MoneyByWave;
+        TotalMoneyDefender += MoneyByWave;
+
+        MoneyAttacker = TotalMoneyDefender;
     }
 
     public static void IncreaseMoneyByWave(float multiplier)
