@@ -10,8 +10,8 @@ public class TowerShopComponent : MonoBehaviour
     [Header("Components")]
     [SerializeField]
     private Image background;
-    [SerializeField]
-    private GameObject buttonBuy;
+    [field: SerializeField]
+    public Button buttonBuy { get; private set; }
     [SerializeField]
     private TMPro.TextMeshProUGUI textName;
     [SerializeField]

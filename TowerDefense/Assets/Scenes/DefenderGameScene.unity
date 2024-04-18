@@ -1762,6 +1762,22 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 37cb05c4f8d70a242925e5775e2d7de0, type: 3}
+    - target: {fileID: 4836879500363233817, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4836879500363233817, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4836879500363233817, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4836879500363233817, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6879846682407851300, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -1794,6 +1810,22 @@ PrefabInstance:
       propertyPath: rightClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 8789245203689632823, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8789245203689632823, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8789245203689632823, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8789245203689632823, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8789245203689632824, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Name
       value: TextPriceRocketLauncher
@@ -1818,6 +1850,10 @@ PrefabInstance:
       propertyPath: tower
       value: 
       objectReference: {fileID: 930349930312286700, guid: 57b5feeb3e7300347aefb8c45bcf22f4, type: 3}
+    - target: {fileID: 8789245204523515719, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: <buttonBuy>k__BackingField
+      value: 
+      objectReference: {fileID: 1236481852}
     - target: {fileID: 8789245204523515722, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Name
       value: RocketLauncherComponent
@@ -1906,6 +1942,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8789245204671376632, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8789245204671376632, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8789245204671376632, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8789245204671376633, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_text
       value: Rocket Launcher
@@ -1933,6 +1981,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a4d5bdc0c2be27c41bd0fb5fd9df60f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1236481852 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1489176578298873863, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+  m_PrefabInstance: {fileID: 1236481849}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1406771554
@@ -2104,6 +2163,22 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 7d0a2bb0ac18f5449b8cf8d4b1df6704, type: 3}
+    - target: {fileID: 4836879500363233817, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4836879500363233817, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4836879500363233817, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4836879500363233817, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6879846682407851300, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -2136,6 +2211,22 @@ PrefabInstance:
       propertyPath: rightClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 8789245203689632823, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8789245203689632823, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8789245203689632823, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8789245203689632823, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8789245203689632824, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Name
       value: TextPriceLaserTurret
@@ -2160,6 +2251,10 @@ PrefabInstance:
       propertyPath: tower
       value: 
       objectReference: {fileID: -7431901458284483878, guid: 616583ad2435f36478ab79e9f28f5fbb, type: 3}
+    - target: {fileID: 8789245204523515719, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: <buttonBuy>k__BackingField
+      value: 
+      objectReference: {fileID: 1420801600}
     - target: {fileID: 8789245204523515722, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Name
       value: LaserTurretComponent
@@ -2248,6 +2343,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8789245204671376632, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8789245204671376632, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8789245204671376632, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8789245204671376633, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_text
       value: Laser Turret
@@ -2275,6 +2382,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a4d5bdc0c2be27c41bd0fb5fd9df60f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1420801600 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1489176578298873863, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+  m_PrefabInstance: {fileID: 1420801597}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1503070949
@@ -2934,6 +3052,22 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 60ced480c28fd3b4e9aeddeae2918bbc, type: 3}
+    - target: {fileID: 4836879500363233817, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4836879500363233817, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4836879500363233817, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4836879500363233817, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6879846682407851300, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -2966,6 +3100,22 @@ PrefabInstance:
       propertyPath: rightClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 8789245203689632823, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8789245203689632823, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8789245203689632823, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8789245203689632823, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8789245203689632824, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Name
       value: TextPricePanelsTurret
@@ -2990,6 +3140,10 @@ PrefabInstance:
       propertyPath: tower
       value: 
       objectReference: {fileID: 2259175783054827281, guid: 291c75f1fa50a5d479398e12d0041409, type: 3}
+    - target: {fileID: 8789245204523515719, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: <buttonBuy>k__BackingField
+      value: 
+      objectReference: {fileID: 1798182451}
     - target: {fileID: 8789245204523515722, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Name
       value: PanelsTurretComponent
@@ -3078,6 +3232,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8789245204671376632, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8789245204671376632, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8789245204671376632, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8789245204671376633, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_text
       value: PanelsTurret
@@ -3105,6 +3271,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a4d5bdc0c2be27c41bd0fb5fd9df60f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1798182451 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1489176578298873863, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+  m_PrefabInstance: {fileID: 1798182448}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1804614103
@@ -3570,10 +3747,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   towerSeller: {fileID: 1804614104}
   towerShop: {fileID: 869074694}
-  <turretPrefab>k__BackingField: {fileID: 7213502884983662289, guid: 4b3ecaf25bb147c41accf95248fd2d9c, type: 3}
-  <rocketLauncherPrefab>k__BackingField: {fileID: 4007513055818851279, guid: 57b5feeb3e7300347aefb8c45bcf22f4, type: 3}
-  <panelsTurretPrefab>k__BackingField: {fileID: 7205603479279948369, guid: 291c75f1fa50a5d479398e12d0041409, type: 3}
-  <laserTurretPrefab>k__BackingField: {fileID: 7755609023344333006, guid: 616583ad2435f36478ab79e9f28f5fbb, type: 3}
 --- !u!4 &2059914250
 Transform:
   m_ObjectHideFlags: 0
@@ -3751,6 +3924,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9f180cec126bb5499c46c023ab7efbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerIsDefenderSerialize: 1
   startMoney: 100
 --- !u!4 &2110826532
 Transform:
@@ -4108,6 +4282,10 @@ PrefabInstance:
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 1489176578298873863, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1489176578298873863, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 869074694}
@@ -4131,10 +4309,42 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: e52c8c0ce03b513479c903d9bf5fbb18, type: 3}
+    - target: {fileID: 4836879500363233817, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4836879500363233817, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4836879500363233817, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4836879500363233817, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6879846682407851300, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: e52c8c0ce03b513479c903d9bf5fbb18, type: 3}
+    - target: {fileID: 8789245203689632823, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8789245203689632823, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8789245203689632823, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8789245203689632823, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8789245204352832281, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -4143,6 +4353,10 @@ PrefabInstance:
       propertyPath: tower
       value: 
       objectReference: {fileID: 5216627754438899833, guid: 4b3ecaf25bb147c41accf95248fd2d9c, type: 3}
+    - target: {fileID: 8789245204523515719, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: <buttonBuy>k__BackingField
+      value: 
+      objectReference: {fileID: 8789245204320603152}
     - target: {fileID: 8789245204523515722, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Name
       value: TurretComponent
@@ -4231,6 +4445,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8789245204671376632, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8789245204671376632, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8789245204671376632, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4245,6 +4471,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a4d5bdc0c2be27c41bd0fb5fd9df60f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8789245204320603152 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1489176578298873863, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
+  m_PrefabInstance: {fileID: 8789245204320603150}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807

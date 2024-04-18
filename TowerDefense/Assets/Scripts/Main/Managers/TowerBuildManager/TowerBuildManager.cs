@@ -1,5 +1,7 @@
 using UnityEngine;
 
+using TowerDefense.Storage;
+
 public class TowerBuildManager : MonoBehaviour
 {
     public static TowerBuildManager instance;
@@ -7,31 +9,30 @@ public class TowerBuildManager : MonoBehaviour
     private Tower chosenTower;
     private TowerTile chosenTowerTile;
 
+    private TowersStorage towersStorage;
+
+
     [SerializeField]
     private TowerSellMenu towerSeller;
     [SerializeField]
     private TowerShopMenu towerShop;
 
-    [field:Header("Prefabs")]
-    [field: SerializeField]
-    public GameObject turretPrefab { get; private set;}
-    [field: SerializeField]
-    public GameObject rocketLauncherPrefab { get; private set; }
-    [field: SerializeField]
-    public GameObject panelsTurretPrefab { get; private set; }
-    [field: SerializeField]
-    public GameObject laserTurretPrefab { get; private set; }
 
-
-    void Awake()
+    private void Awake()
     {
         chosenTower = null;
         if (instance == null)
         {
             instance = this;
         }
+
+        towersStorage = Resources.Load<TowersStorage>($"{nameof(TowersStorage)}");
     }
 
+    public GameObject GetTowerPrefab(TowerType towerType)
+    {
+        return towersStorage.Towers[(int)towerType].gameObject;
+    }
 
     public Tower GetChosenTower()
     {
