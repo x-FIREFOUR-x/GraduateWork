@@ -1,20 +1,14 @@
+using System.Collections.Generic;
+
 using UnityEngine;
 
 public class TowerShopMenu : MonoBehaviour
 {
+    [SerializeField]
+    private List<TowerShopComponent> towerShopComponents;
+
     private TowerBuildManager towerBuildManager;
 
-    [Header("ShopComponents")]
-    [SerializeField]
-    private TowerShopComponent turretComponent;
-    [SerializeField]
-    private TowerShopComponent panelsTurretComponent;
-    [SerializeField]
-    private TowerShopComponent rocketLauncherComponent;
-    [SerializeField]
-    private TowerShopComponent laserTurretComponent;
-
-    
     public static string currencySymbol = "$";
 
 
@@ -22,17 +16,12 @@ public class TowerShopMenu : MonoBehaviour
     {
         towerBuildManager = TowerBuildManager.instance;
 
-        turretComponent.Initialize(towerBuildManager.GetTowerPrefab(TowerType.Turret).GetComponent<Tower>().Price);
-        turretComponent.buttonBuy.onClick.AddListener(() => ChooseTower(TowerType.Turret));
-
-        panelsTurretComponent.Initialize(towerBuildManager.GetTowerPrefab(TowerType.PanelsTurret).GetComponent<Tower>().Price);
-        panelsTurretComponent.buttonBuy.onClick.AddListener(() => ChooseTower(TowerType.PanelsTurret));
-
-        rocketLauncherComponent.Initialize(towerBuildManager.GetTowerPrefab(TowerType.RocketLauncher).GetComponent<Tower>().Price);
-        rocketLauncherComponent.buttonBuy.onClick.AddListener(() => ChooseTower(TowerType.RocketLauncher));
-
-        laserTurretComponent.Initialize(towerBuildManager.GetTowerPrefab(TowerType.LaserTurret).GetComponent<Tower>().Price);
-        laserTurretComponent.buttonBuy.onClick.AddListener(() => ChooseTower(TowerType.LaserTurret));
+        for (int i = 0; i < towerShopComponents.Count; i++)
+        {
+            TowerType towerType = (TowerType)i;
+            towerShopComponents[i].Initialize(towerBuildManager.GetTowerPrefab(towerType).GetComponent<Tower>().Price);
+            towerShopComponents[i].buttonBuy.onClick.AddListener(() => ChooseTower(towerType));
+        }
     }
 
     public void ChooseTower(TowerType towerType)
@@ -40,30 +29,14 @@ public class TowerShopMenu : MonoBehaviour
         towerBuildManager.SetChosenTower(towerBuildManager.GetTowerPrefab(towerType));
 
         AllComponentSetNotSelected();
-        switch (towerType)
-        {
-            case TowerType.Turret:
-                turretComponent.SetComponentSelected(true);
-                break;
-            case TowerType.PanelsTurret:
-                panelsTurretComponent.SetComponentSelected(true);
-                break;
-            case TowerType.RocketLauncher:
-                rocketLauncherComponent.SetComponentSelected(true);
-                break;
-            case TowerType.LaserTurret:
-                laserTurretComponent.SetComponentSelected(true);
-                break;
-            default:
-                break;
-        }
+        towerShopComponents[(int)towerType].SetComponentSelected(true);
     }
 
     public void AllComponentSetNotSelected()
     {
-        turretComponent.SetComponentSelected(false);
-        panelsTurretComponent.SetComponentSelected(false);
-        rocketLauncherComponent.SetComponentSelected(false);
-        laserTurretComponent.SetComponentSelected(false);
+        foreach (var shopComponent in towerShopComponents)
+        {
+            shopComponent.SetComponentSelected(false);
+        }
     }
 }

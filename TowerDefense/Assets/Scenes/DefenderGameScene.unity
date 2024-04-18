@@ -875,10 +875,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3a131d839312bb4585337b06bf19136, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turretComponent: {fileID: 8789245204320603151}
-  panelsTurretComponent: {fileID: 1798182450}
-  rocketLauncherComponent: {fileID: 1236481851}
-  laserTurretComponent: {fileID: 1420801599}
+  towerShopComponents:
+  - {fileID: 8789245204320603151}
+  - {fileID: 1798182450}
+  - {fileID: 1236481851}
+  - {fileID: 1420801599}
 --- !u!114 &869074695
 MonoBehaviour:
   m_ObjectHideFlags: 0
