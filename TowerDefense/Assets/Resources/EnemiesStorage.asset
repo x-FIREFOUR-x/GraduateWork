@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d15bdae3aedbe30458c79648dd1501d4, type: 3}
+  m_Name: EnemiesStorage
+  m_EditorClassIdentifier: 
+  <Enemies>k__BackingField:
+  - {fileID: 5312817056125317982, guid: dacf52917bbd9b34c92c6053146aa1ad, type: 3}
+  - {fileID: 165424, guid: 9f4313a771e05c64d8da7ae6bd19a19f, type: 3}
+  - {fileID: 153010, guid: 80afb8f52d27bae4f8ff4cf083945861, type: 3}

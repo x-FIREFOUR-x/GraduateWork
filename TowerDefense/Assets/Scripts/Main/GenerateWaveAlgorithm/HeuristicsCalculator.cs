@@ -1,21 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EnemyType
-{
-    Tank,
-    Standard,
-    Fast
-}
-
-public enum TowerType
-{
-    Turret,
-    PanelsTurret,
-    RocketLauncher,
-    LaserTurret
-}
-
 public class HeuristicsCalculator
 {
     static public HeuristicsCalculator instance;

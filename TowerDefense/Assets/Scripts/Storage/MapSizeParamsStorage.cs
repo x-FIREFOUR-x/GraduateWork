@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Storage
+namespace TowerDefense.Storage
 {
 
     [CreateAssetMenu(fileName = "MapSizeParamsStorage", menuName = "Storage/MapSizeParamsStorage")]
