@@ -3,13 +3,8 @@ using UnityEngine;
 
 public class EnemyShopMenu : MonoBehaviour
 {
-    [Header("ShopComponents")]
     [SerializeField]
-    private EnemyShopComponent standardEnemyComponent;
-    [SerializeField]
-    private EnemyShopComponent fastEnemyComponent;
-    [SerializeField]
-    private EnemyShopComponent tankEnemyComponent;
+    private List<EnemyShopComponent> EnemyShopComponents;
 
 
     private List<EnemyType> enemies = new List<EnemyType>();
@@ -19,9 +14,10 @@ public class EnemyShopMenu : MonoBehaviour
 
     void Start()
     {
-        standardEnemyComponent.Initialize();
-        fastEnemyComponent.Initialize();
-        tankEnemyComponent.Initialize();
+        foreach (var enemyShopComponent in EnemyShopComponents)
+        {
+            enemyShopComponent.Initialize();
+        }
     }
 
     public bool AddEnemy(EnemyType enemy, int price, int countAddEnemies = 1)
@@ -57,9 +53,10 @@ public class EnemyShopMenu : MonoBehaviour
         List<EnemyType> takedEnemies = enemies.GetRange(0, enemies.Count);
         enemies = new List<EnemyType>();
 
-        standardEnemyComponent.ClearCount();
-        fastEnemyComponent.ClearCount();
-        tankEnemyComponent.ClearCount();
+        foreach (var enemyShopComponent in EnemyShopComponents)
+        {
+            enemyShopComponent.ClearCount();
+        }
 
         return takedEnemies;
     }

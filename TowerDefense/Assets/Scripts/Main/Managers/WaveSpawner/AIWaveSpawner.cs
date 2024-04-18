@@ -13,9 +13,9 @@ public class AIWaveSpawner : WaveSpawner
     private Task<List<EnemyType>> taskGenerated;
 
 
-    public override void Initialize(Transform spawn)
+    public override void Initialize(Transform spawn) 
     {
-        SpawnPoint = spawn;
+        base.Initialize(spawn);
 
         algoCreateWave = new GeneticAlgorithm();
 

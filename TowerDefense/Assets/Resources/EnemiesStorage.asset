@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: EnemiesStorage
   m_EditorClassIdentifier: 
   <Enemies>k__BackingField:
-  - {fileID: 5312817056125317982, guid: dacf52917bbd9b34c92c6053146aa1ad, type: 3}
   - {fileID: 165424, guid: 9f4313a771e05c64d8da7ae6bd19a19f, type: 3}
   - {fileID: 153010, guid: 80afb8f52d27bae4f8ff4cf083945861, type: 3}
+  - {fileID: 5312817056125317982, guid: dacf52917bbd9b34c92c6053146aa1ad, type: 3}

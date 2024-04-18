@@ -1102,7 +1102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   model: {fileID: 1144850472894354669}
-  <EnemyType>k__BackingField: 0
+  <EnemyType>k__BackingField: 2
   <StartHealth>k__BackingField: 1000
   <StartSpeed>k__BackingField: 5
   timeReturnSpeed: 1

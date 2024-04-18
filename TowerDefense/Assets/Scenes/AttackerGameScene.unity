@@ -1218,9 +1218,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1e4f154e3342904597170ca4190ef9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  standardEnemyComponent: {fileID: 2134406996208417436}
-  fastEnemyComponent: {fileID: 1719382778}
-  tankEnemyComponent: {fileID: 829438951}
+  EnemyShopComponents:
+  - {fileID: 2134406996208417436}
+  - {fileID: 1719382778}
+  - {fileID: 829438951}
 --- !u!1 &911629675
 GameObject:
   m_ObjectHideFlags: 0
@@ -2605,9 +2606,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3190bcb461d841748a8138c24fca9fa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  standardEnemyPrefab: {fileID: 403496, guid: 9f4313a771e05c64d8da7ae6bd19a19f, type: 3}
-  fastEnemyPrefab: {fileID: 413006, guid: 80afb8f52d27bae4f8ff4cf083945861, type: 3}
-  tankEnemyPrefab: {fileID: 5312817056125284158, guid: dacf52917bbd9b34c92c6053146aa1ad, type: 3}
   timeBetweenWaves: 10
   enemyShopMenu: {fileID: 869074699}
 --- !u!1 &1672618633
@@ -3491,10 +3489,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   towerSeller: {fileID: 1804614104}
   towerShop: {fileID: 0}
-  <turretPrefab>k__BackingField: {fileID: 7213502884983662289, guid: 4b3ecaf25bb147c41accf95248fd2d9c, type: 3}
-  <rocketLauncherPrefab>k__BackingField: {fileID: 4007513055818851279, guid: 57b5feeb3e7300347aefb8c45bcf22f4, type: 3}
-  <panelsTurretPrefab>k__BackingField: {fileID: 7205603479279948369, guid: 291c75f1fa50a5d479398e12d0041409, type: 3}
-  <laserTurretPrefab>k__BackingField: {fileID: 7755609023344333006, guid: 616583ad2435f36478ab79e9f28f5fbb, type: 3}
 --- !u!4 &2059914250
 Transform:
   m_ObjectHideFlags: 0
