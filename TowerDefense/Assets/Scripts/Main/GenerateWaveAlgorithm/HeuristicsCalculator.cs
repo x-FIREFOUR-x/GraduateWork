@@ -1,5 +1,8 @@
 using System.Collections.Generic;
+
 using UnityEngine;
+
+using TowerDefense.Map.Tile;
 
 public class HeuristicsCalculator
 {

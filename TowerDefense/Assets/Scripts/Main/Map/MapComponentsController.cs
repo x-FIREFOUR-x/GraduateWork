@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using TowerDefense.Storage;
-
+using TowerDefense.Map.Tile;
 public class MapComponentsController : MonoBehaviour
 {
     [SerializeField]

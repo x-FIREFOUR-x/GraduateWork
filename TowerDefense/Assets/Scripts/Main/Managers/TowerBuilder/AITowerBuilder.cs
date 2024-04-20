@@ -5,6 +5,7 @@ using UnityEngine;
 
 using TowerDefense.Storage;
 using TowerDefense.Collections;
+using TowerDefense.Map.Tile;
 
 namespace TowerDefense.TowerBuilder
 {

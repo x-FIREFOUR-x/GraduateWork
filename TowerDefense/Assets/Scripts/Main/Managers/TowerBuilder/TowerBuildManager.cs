@@ -1,6 +1,7 @@
 using UnityEngine;
 
 using TowerDefense.Storage;
+using TowerDefense.Map.Tile;
 
 namespace TowerDefense.TowerBuilder
 {

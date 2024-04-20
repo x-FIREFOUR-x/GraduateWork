@@ -719,7 +719,7 @@ MonoBehaviour:
   waveSpawner: {fileID: 1654633874}
   startBuilding: {fileID: 179419894}
   endBuilding: {fileID: 3497745517377867848}
-  tilesMapPrefab: {fileID: 5839288057474732416, guid: 5498d3f9eaf3091408b45f2ccc36b8ef, type: 3}
+  tilesMapPrefab: {fileID: 5839288057474732416, guid: c0330ab72ec7fc54bb2961a6cf932ff4, type: 3}
   wayPointsPrefab: {fileID: 6370203059284023274, guid: b07a176a27d72dc4e8898d803c6b5310, type: 3}
 --- !u!1 &705507993
 GameObject:
