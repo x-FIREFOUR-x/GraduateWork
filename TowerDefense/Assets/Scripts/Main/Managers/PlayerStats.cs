@@ -42,6 +42,11 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
+    public static void AddDefenderMoney(int number)
+    {
+        MoneyDefender += number;
+    }
+
     public static void IncreaseMoneyAfterWave()
     {
         MoneyDefender += MoneyByWave;
