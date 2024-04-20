@@ -10,24 +10,24 @@ public class TilesMap : MonoBehaviour
     private GameObject pathTilePrefab;
 
     private List<List<GameObject>> tiles;
-    private int size;
+    public int Size { get; private set; }
 
 
     public void Initialize(int _size, List<Vector2Int> generatedPath, Vector3 offsetTile)
     {
-        size = _size;
+        Size = _size;
 
         Vector3 position = this.transform.position;
         Quaternion rotation = this.transform.rotation;
 
         tiles = new List<List<GameObject>>();
 
-        for (int i = 0; i < size; i++)
+        for (int i = 0; i < Size; i++)
         {
             position.x = 0;
             List<GameObject> lineTiles = new();
 
-            for (int j = 0; j < size; j++)
+            for (int j = 0; j < Size; j++)
             {
                 if (generatedPath.Contains(new Vector2Int(i, j)))
                 {
@@ -45,5 +45,10 @@ public class TilesMap : MonoBehaviour
             position.z += towerTilePrefab.transform.localScale.z + offsetTile.z;
             tiles.Add(lineTiles);
         }
+    }
+
+    public GameObject GetTileAt(int row, int column)
+    {
+        return tiles[row][column];
     }
 }

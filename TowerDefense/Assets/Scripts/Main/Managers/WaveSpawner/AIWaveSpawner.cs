@@ -34,7 +34,7 @@ public class AIWaveSpawner : WaveSpawner
         {
             if (!isEnrolledhWave)
             {
-                waveNumber++;
+                WaveNumber++;
                 PlayerStats.IncreaseMoneyAfterWave();
                 isEnrolledhWave = true;
             }
@@ -90,7 +90,7 @@ public class AIWaveSpawner : WaveSpawner
 
     private List<EnemyType> SortBalanceWave(List<EnemyType> enemiesWave)
     {
-        if (waveNumber == 1)
+        if (WaveNumber == 1)
         {
             return enemiesWave.GetRange(0, 3);
         }
@@ -100,7 +100,7 @@ public class AIWaveSpawner : WaveSpawner
 
     private void OperationsPostGeneratingWave()
     {
-        int numberNextWave = waveNumber + 1;
+        int numberNextWave = WaveNumber + 1;
         if (numberNextWave % 5 == 0)
         {
             PlayerStats.IncreaseMoneyByWave(2);

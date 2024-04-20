@@ -14,7 +14,7 @@ public abstract class WaveSpawner : MonoBehaviour
     protected float timeBetweenWaves = 5f;
     public float timeToNextSpawn { get; protected set; } = 5f;
 
-    public int waveNumber { get; protected set; } = 1;
+    public int WaveNumber { get; protected set; } = 1;
 
 
     protected List<EnemyType> availableEnemy;
@@ -43,7 +43,7 @@ public abstract class WaveSpawner : MonoBehaviour
 
     protected void UpdateAvailableEnemy()
     {
-        switch (waveNumber)
+        switch (WaveNumber)
         {
             case 1:
                 availableEnemy.Add(EnemyType.Standard);
@@ -65,7 +65,7 @@ public abstract class WaveSpawner : MonoBehaviour
 
     protected void UpdateGameStats()
     {
-        if(waveNumber % 5 == 0)
+        if(WaveNumber % 5 == 0)
         {
             foreach (var enemy in enemiesStorage.Enemies)
             {

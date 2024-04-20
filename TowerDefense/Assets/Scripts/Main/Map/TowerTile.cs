@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+using TowerDefense.TowerBuilder;
+
 public class TowerTile : MonoBehaviour
 {
     private Renderer render;

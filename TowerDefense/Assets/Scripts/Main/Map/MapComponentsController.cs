@@ -12,7 +12,7 @@ public class MapComponentsController : MonoBehaviour
     [SerializeField]
     private GameObject endBuilding;
 
-    private TilesMap tilesMap;
+    public TilesMap TilesMap { get; private set; }
     private WayPoints wayPoints;
 
     [Header("Prefabs")]
@@ -46,9 +46,9 @@ public class MapComponentsController : MonoBehaviour
             generatedPath = pathGenerator.GeneratePath(mapSizeParams.CountTile, indexesStartBuilding, indexesEndBuilding);
         }
 
-        tilesMap = Instantiate(tilesMapPrefab, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1))
+        TilesMap = Instantiate(tilesMapPrefab, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1))
             .GetComponent<TilesMap>();
-        tilesMap.Initialize(mapSizeParams.CountTile, generatedPath, mapSizeParams.OffsetTile);
+        TilesMap.Initialize(mapSizeParams.CountTile, generatedPath, mapSizeParams.OffsetTile);
 
         wayPoints = Instantiate(wayPointsPrefab, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1))
             .GetComponent<WayPoints>();

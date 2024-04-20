@@ -2,6 +2,8 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
+using TowerDefense.TowerBuilder;
+
 public class TowerShopMenu : MonoBehaviour
 {
     [SerializeField]

@@ -28,8 +28,9 @@ public class PlayerWaveSpawner : WaveSpawner
         {
             if (WaveToBeStarted)
             {
-                waveNumber++;
+                WaveNumber++;
                 PlayerStats.IncreaseMoneyAfterWave();
+                UpdateGameStats();
 
                 WaveToBeStarted = false;
             }
