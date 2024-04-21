@@ -12,7 +12,7 @@ public class PlayerWaveSpawner : WaveSpawner
 
     public override void Initialize(Transform spawn)
     {
-        SpawnPoint = spawn;
+        base.Initialize(spawn);
 
         availableEnemy = new List<EnemyType>();
         availablePrices = new Dictionary<EnemyType, int>();
@@ -28,8 +28,9 @@ public class PlayerWaveSpawner : WaveSpawner
         {
             if (WaveToBeStarted)
             {
-                waveNumber++;
-                PlayerStats.AddMoney();
+                WaveNumber++;
+                PlayerStats.IncreaseMoneyAfterWave();
+                UpdateGameStats();
 
                 WaveToBeStarted = false;
             }

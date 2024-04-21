@@ -1,20 +1,8 @@
 using System.Collections.Generic;
+
 using UnityEngine;
 
-public enum EnemyType
-{
-    Tank,
-    Standard,
-    Fast
-}
-
-public enum TowerType
-{
-    Turret,
-    PanelsTurret,
-    RocketLauncher,
-    LaserTurret
-}
+using TowerDefense.Map.Tile;
 
 public class HeuristicsCalculator
 {
@@ -66,12 +54,14 @@ public class HeuristicsCalculator
         }
     }
 
-    public int TotalPlayerMoney()
+    
+    public int MoneyForWave()
     {
-        int moneyForBalance =(int)(PlayerStats.TotalMoney * PercentChangeTotalPrice());
+        int moneyForBalance =(int)(PlayerStats.MoneyAttacker * PercentChangeTotalPrice());
 
-        return PlayerStats.TotalMoney + moneyForBalance;
+        return PlayerStats.MoneyAttacker + moneyForBalance;
     }
+    
 
     public int GetHeuristicsValue(List<EnemyType> enemys)
     {

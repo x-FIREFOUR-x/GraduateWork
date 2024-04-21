@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2350365823752287227}
   - component: {fileID: 279756900672333975}
   - component: {fileID: 1273430041813036741}
-  - component: {fileID: 3864538496857335525}
+  - component: {fileID: -558469976591584474}
   m_Layer: 0
   m_Name: TowerTile
   m_TagString: Untagged
@@ -27,13 +27,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 126904175936728566}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 4, y: 1, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2350365823752287227
 MeshFilter:
@@ -93,12 +93,20 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 126904175936728566}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3864538496857335525
+--- !u!114 &-558469976591584474
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -107,9 +115,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 126904175936728566}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f20e189ff93c4b345887e68c8d34f506, type: 3}
+  m_Script: {fileID: 11500000, guid: 6d4b9109bbf88284e9a249172b9fb384, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverColor: {r: 0.16470589, g: 0.9339623, b: 0.8150931, a: 0}
-  notEnoughMoney: {r: 0.9528302, g: 0.0665183, b: 0.0665183, a: 0}
-  towerOffset: {x: 0, y: 0.5, z: 0}
