@@ -1,9 +1,12 @@
 using UnityEngine;
 
 using TowerDefense.Storage;
-using TowerDefense.Map.Tile;
+using TowerDefense.Main.Map.Tiles;
+using TowerDefense.Main.Towers;
+using TowerDefense.Main.UI.TowerMenu;
 
-namespace TowerDefense.TowerBuilder
+
+namespace TowerDefense.Main.Managers.TowerBuilders
 {
     public class TowerBuildManager : MonoBehaviour
     {

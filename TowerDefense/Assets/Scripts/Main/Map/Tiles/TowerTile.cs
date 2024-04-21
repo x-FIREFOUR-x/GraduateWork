@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 
-using TowerDefense.TowerBuilder;
 
-namespace TowerDefense.Map.Tile
+namespace TowerDefense.Main.Map.Tiles
 {
     public class TowerTile : MonoBehaviour
     {

@@ -1,16 +1,20 @@
 using UnityEngine;
 
-public class MessageManager : MonoBehaviour
-{
-    [SerializeField]
-    private GameObject uncorrectMapMessage;
 
-    public void CloseUncorrectMapMessage()
+namespace TowerDefense.MapConstructor.UI
+{
+    public class MessageManager : MonoBehaviour
     {
-        uncorrectMapMessage.SetActive(false);
-    }
-    public void OpenUncorrectMapMessage()
-    {
-        uncorrectMapMessage.SetActive(true);
+        [SerializeField]
+        private GameObject uncorrectMapMessage;
+
+        public void CloseUncorrectMapMessage()
+        {
+            uncorrectMapMessage.SetActive(false);
+        }
+        public void OpenUncorrectMapMessage()
+        {
+            uncorrectMapMessage.SetActive(true);
+        }
     }
 }

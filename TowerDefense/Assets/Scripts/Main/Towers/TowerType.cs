@@ -1,7 +1,10 @@
-﻿public enum TowerType
+﻿namespace TowerDefense.Main.Towers
 {
-    Turret = 0,
-    PanelsTurret,
-    RocketLauncher,
-    LaserTurret
+    public enum TowerType
+    {
+        Turret = 0,
+        PanelsTurret,
+        RocketLauncher,
+        LaserTurret
+    }
 }

@@ -1,6 +1,7 @@
 using UnityEngine;
 
-namespace TowerDefense.Map.Tile
+
+namespace TowerDefense.Main.Map.Tiles
 {
     public class PathTile : MonoBehaviour
     {

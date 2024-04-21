@@ -1,40 +1,45 @@
 using UnityEngine.SceneManagement;
 using UnityEngine;
 
-public class PauseMenu : MonoBehaviour
+
+namespace TowerDefense.Main.UI.Menu
 {
-    [SerializeField]
-    private GameObject pauseMenuUi;
-
-    [SerializeField]
-    private string mainMenuScene = "MainMenuScene";
-
-    void Update()
+    public class PauseMenu : MonoBehaviour
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        [SerializeField]
+        private GameObject pauseMenuUi;
+
+        [SerializeField]
+        private string mainMenuScene = "MainMenuScene";
+
+        void Update()
         {
-            SwitchPause();
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                SwitchPause();
+            }
         }
-    }
 
-    public void SwitchPause()
-    {
-        if (pauseMenuUi.activeSelf)
+        public void SwitchPause()
         {
-            pauseMenuUi.SetActive(false);
+            if (pauseMenuUi.activeSelf)
+            {
+                pauseMenuUi.SetActive(false);
+                Time.timeScale = 1f;
+            }
+            else
+            {
+                pauseMenuUi.SetActive(true);
+                Time.timeScale = 0f;
+            }
+        }
+
+        public void GoToMenu()
+        {
             Time.timeScale = 1f;
-        }
-        else
-        {
-            pauseMenuUi.SetActive(true);
-            Time.timeScale = 0f;
+            Destroy(MapSaver.instance.gameObject);
+            SceneManager.LoadScene(mainMenuScene);
         }
     }
 
-    public void GoToMenu()
-    {
-        Time.timeScale = 1f;
-        Destroy(MapSaver.instance.gameObject);
-        SceneManager.LoadScene(mainMenuScene);
-    }
 }

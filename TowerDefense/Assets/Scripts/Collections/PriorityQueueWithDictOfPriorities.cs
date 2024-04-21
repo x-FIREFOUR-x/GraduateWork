@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
+
 namespace TowerDefense.Collections
 {
     public class PriorityQueueWithDictOfPriorities<Value, KeyPriority, Priority>
@@ -21,7 +22,6 @@ namespace TowerDefense.Collections
 		{
 			elements.Add(Tuple.Create(item, priorityValue));
 		}
-
 
 		public Value Peek(KeyPriority keyPriority)
 		{

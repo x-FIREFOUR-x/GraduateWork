@@ -2,43 +2,49 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-using TowerDefense.TowerBuilder;
+using TowerDefense.Main.Managers.TowerBuilders;
+using TowerDefense.Main.Towers;
 
-public class TowerShopMenu : MonoBehaviour
+
+namespace TowerDefense.Main.UI.TowerMenu
 {
-    [SerializeField]
-    private List<TowerShopComponent> towerShopComponents;
-
-    private TowerBuildManager towerBuildManager;
-
-    public static string currencySymbol = "$";
-
-
-    void Start()
+    public class TowerShopMenu : MonoBehaviour
     {
-        towerBuildManager = TowerBuildManager.instance;
+        [SerializeField]
+        private List<TowerShopComponent> towerShopComponents;
 
-        for (int i = 0; i < towerShopComponents.Count; i++)
+        private TowerBuildManager towerBuildManager;
+
+        public static string currencySymbol = "$";
+
+
+        void Start()
         {
-            TowerType towerType = (TowerType)i;
-            towerShopComponents[i].Initialize(towerBuildManager.GetTowerPrefab(towerType).GetComponent<Tower>().Price);
-            towerShopComponents[i].buttonBuy.onClick.AddListener(() => ChooseTower(towerType));
+            towerBuildManager = TowerBuildManager.instance;
+
+            for (int i = 0; i < towerShopComponents.Count; i++)
+            {
+                TowerType towerType = (TowerType)i;
+                towerShopComponents[i].Initialize(towerBuildManager.GetTowerPrefab(towerType).GetComponent<Tower>().Price);
+                towerShopComponents[i].buttonBuy.onClick.AddListener(() => ChooseTower(towerType));
+            }
+        }
+
+        public void ChooseTower(TowerType towerType)
+        {
+            towerBuildManager.SetChosenTower(towerBuildManager.GetTowerPrefab(towerType));
+
+            AllComponentSetNotSelected();
+            towerShopComponents[(int)towerType].SetComponentSelected(true);
+        }
+
+        public void AllComponentSetNotSelected()
+        {
+            foreach (var shopComponent in towerShopComponents)
+            {
+                shopComponent.SetComponentSelected(false);
+            }
         }
     }
 
-    public void ChooseTower(TowerType towerType)
-    {
-        towerBuildManager.SetChosenTower(towerBuildManager.GetTowerPrefab(towerType));
-
-        AllComponentSetNotSelected();
-        towerShopComponents[(int)towerType].SetComponentSelected(true);
-    }
-
-    public void AllComponentSetNotSelected()
-    {
-        foreach (var shopComponent in towerShopComponents)
-        {
-            shopComponent.SetComponentSelected(false);
-        }
-    }
 }

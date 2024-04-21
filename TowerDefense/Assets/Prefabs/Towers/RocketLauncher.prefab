@@ -131,7 +131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Type>k__BackingField: 2
-  countProjectiles: 1
+  countProjectileEntitys: 1
   timeBetweenShoots: 2
   timeToNextFire: 0
   shootRange: 25
@@ -141,7 +141,7 @@ MonoBehaviour:
   rotatePart: {fileID: 6059494694254124202}
   offsetTower: {x: 0, y: 0.38, z: 0}
   offsetTarget: {x: 0, y: 0.5, z: 0}
-  projectilePrefab: {fileID: 4345204468309552529, guid: 028b473e40716ba43bcd42d1e5c49e7e, type: 3}
+  ProjectileEntityPrefab: {fileID: 4345204468309552529, guid: 028b473e40716ba43bcd42d1e5c49e7e, type: 3}
 --- !u!1 &4035774621446171048
 GameObject:
   m_ObjectHideFlags: 0

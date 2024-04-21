@@ -5,9 +5,13 @@ using UnityEngine;
 
 using TowerDefense.Storage;
 using TowerDefense.Collections;
-using TowerDefense.Map.Tile;
+using TowerDefense.Main.Map;
+using TowerDefense.Main.Map.Tiles;
+using TowerDefense.Main.Managers.WaveSpawners;
+using TowerDefense.Main.Towers;
 
-namespace TowerDefense.TowerBuilder
+
+namespace TowerDefense.Main.Managers.TowerBuilders
 {
     public class AITowerBuilder : MonoBehaviour
     {

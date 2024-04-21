@@ -2,6 +2,7 @@
 
 using UnityEngine;
 
+
 namespace TowerDefense.Storage
 {
     [CreateAssetMenu(fileName = "TowersStorage", menuName = "Storage/TowersStorage")]

@@ -1,35 +1,42 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameOverMenu : MonoBehaviour
+using TowerDefense.Main.Map.Buildings;
+
+
+namespace TowerDefense.Main.UI.Menu
 {
-    [SerializeField]
-    private string mainMenuScene = "MainMenuScene";
-
-    [SerializeField]
-    private GameObject endBuildingPrefab;
-    [SerializeField]
-    private GameObject gameOverMenuUI;
-
-    void Update()
+    public class GameOverMenu : MonoBehaviour
     {
-        if (endBuildingPrefab.GetComponent<EndBuilding>().health <= 0)
+        [SerializeField]
+        private string mainMenuScene = "MainMenuScene";
+
+        [SerializeField]
+        private GameObject endBuildingPrefab;
+        [SerializeField]
+        private GameObject gameOverMenuUI;
+
+        void Update()
         {
-            GameOver();
+            if (endBuildingPrefab.GetComponent<EndBuilding>().health <= 0)
+            {
+                GameOver();
+            }
+        }
+
+        private void GameOver()
+        {
+            Time.timeScale = 0f;
+
+            gameOverMenuUI.SetActive(true);
+        }
+
+        public void GoToMenu()
+        {
+            Time.timeScale = 1f;
+            Destroy(MapSaver.instance.gameObject);
+            SceneManager.LoadScene(mainMenuScene);
         }
     }
 
-    private void GameOver()
-    {
-        Time.timeScale = 0f;
-
-        gameOverMenuUI.SetActive(true);
-    }
-
-    public void GoToMenu()
-    {
-        Time.timeScale = 1f;
-        Destroy(MapSaver.instance.gameObject);
-        SceneManager.LoadScene(mainMenuScene);
-    }
 }

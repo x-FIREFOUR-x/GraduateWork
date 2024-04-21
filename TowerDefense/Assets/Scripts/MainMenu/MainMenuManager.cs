@@ -1,34 +1,39 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MainMenuManager : MonoBehaviour
+
+namespace TowerDefense.MainMenu
 {
-    [SerializeField]
-    private string defenderGameScene = "DefenderGameScene";
-    [SerializeField]
-    private string attackerGameScene = "AttackerGameScene";
-    [SerializeField]
-    private string mapConstrucorScene = "MapConstructorScene";
-
-    public void PlayDefenderGame()
+    public class MainMenuManager : MonoBehaviour
     {
-        Time.timeScale = 1f;
-        SceneManager.LoadScene(defenderGameScene);
+        [SerializeField]
+        private string defenderGameScene = "DefenderGameScene";
+        [SerializeField]
+        private string attackerGameScene = "AttackerGameScene";
+        [SerializeField]
+        private string mapConstrucorScene = "MapConstructorScene";
+
+        public void PlayDefenderGame()
+        {
+            Time.timeScale = 1f;
+            SceneManager.LoadScene(defenderGameScene);
+        }
+
+        public void PlayAttackerGame()
+        {
+            Time.timeScale = 1f;
+            SceneManager.LoadScene(attackerGameScene);
+        }
+
+        public void Constructor()
+        {
+            SceneManager.LoadScene(mapConstrucorScene);
+        }
+
+        public void Quit()
+        {
+            Application.Quit();
+        }
     }
 
-    public void PlayAttackerGame()
-    {
-        Time.timeScale = 1f;
-        SceneManager.LoadScene(attackerGameScene);
-    }
-
-    public void Constructor()
-    {
-        SceneManager.LoadScene(mapConstrucorScene);
-    }
-
-    public void Quit()
-    {
-        Application.Quit();
-    }
 }
