@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TowerDefense.Main.Enemies;
 
 
-namespace TowerDefense.Main.GenerateWaveAlgorithm
+namespace TowerDefense.Algorithms.GenerateWaveAlgorithm.GeneticAlgorithm
 {
     public class Person
     {
@@ -43,7 +43,7 @@ namespace TowerDefense.Main.GenerateWaveAlgorithm
 
         public void CalculateValue()
         {
-            Value = HeuristicsCalculator.instance.GetHeuristicsValue(Enemies);
+            Value = EnemiesHeuristicsCalculator.instance.GetHeuristicsValue(Enemies);
         }
 
         public int GetPriceRange(int index, int size, Dictionary<EnemyType, int> _enemysPrices)

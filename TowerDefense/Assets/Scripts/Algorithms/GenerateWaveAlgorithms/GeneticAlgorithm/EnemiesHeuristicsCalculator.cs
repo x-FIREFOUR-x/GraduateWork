@@ -8,11 +8,11 @@ using TowerDefense.Main.Towers;
 using TowerDefense.Main.Managers;
 
 
-namespace TowerDefense.Main.GenerateWaveAlgorithm
+namespace TowerDefense.Algorithms.GenerateWaveAlgorithm.GeneticAlgorithm
 {
-    public class HeuristicsCalculator
+    public class EnemiesHeuristicsCalculator
     {
-        static public HeuristicsCalculator instance;
+        static public EnemiesHeuristicsCalculator instance;
 
         private float distancePath;
         private List<float> distanceMovedEnemies;
@@ -23,7 +23,7 @@ namespace TowerDefense.Main.GenerateWaveAlgorithm
 
         private Dictionary<(EnemyType, TowerType), int> advantagePoints;
 
-        public HeuristicsCalculator()
+        public EnemiesHeuristicsCalculator()
         {
             instance = this;
 

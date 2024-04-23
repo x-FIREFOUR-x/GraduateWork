@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TowerDefense.Main.Enemies;
 
 
-namespace TowerDefense.Main.GenerateWaveAlgorithm
+namespace TowerDefense.Algorithms.GenerateWaveAlgorithm.GeneticAlgorithm
 {
     using Random = System.Random;
 
@@ -17,7 +17,7 @@ namespace TowerDefense.Main.GenerateWaveAlgorithm
 
         private List<Person> currentPopulation;
 
-        private int totalPrice;
+        private int _totalPrice;
         private List<EnemyType> _enemysTypes;
         private Dictionary<EnemyType, int> _enemysPrices;
 
@@ -25,16 +25,16 @@ namespace TowerDefense.Main.GenerateWaveAlgorithm
 
         public GeneticAlgorithm()
         {
-            HeuristicsCalculator.instance = new();
+            EnemiesHeuristicsCalculator.instance = new();
         }
 
-        public List<EnemyType> SearchKnapsac(List<EnemyType> enemysTypes, Dictionary<EnemyType, int> enemysPrices)
+        public List<EnemyType> SearchKnapsac(List<EnemyType> enemysTypes, Dictionary<EnemyType, int> enemysPrices, int totalPrice)
         {
             currentPopulation = new();
 
             _enemysTypes = enemysTypes;
             _enemysPrices = enemysPrices;
-            totalPrice = HeuristicsCalculator.instance.MoneyForWave();
+            _totalPrice = totalPrice;
 
             CreateStartPopulation();
             SortPopulation();
@@ -57,8 +57,8 @@ namespace TowerDefense.Main.GenerateWaveAlgorithm
         {
             for (int i = 0; i < countPerson; i++)
             {
-                (List<EnemyType> newPerson, int price) = CreateListEnemiesForPrice(totalPrice);
-                currentPopulation.Add(new Person(newPerson, price, HeuristicsCalculator.instance.GetHeuristicsValue(newPerson)));
+                (List<EnemyType> newPerson, int price) = CreateListEnemiesForPrice(_totalPrice);
+                currentPopulation.Add(new Person(newPerson, price, EnemiesHeuristicsCalculator.instance.GetHeuristicsValue(newPerson)));
             }
         }
 
@@ -70,7 +70,7 @@ namespace TowerDefense.Main.GenerateWaveAlgorithm
             {
                 Person newPerson = Crossing(currentPopulation[i], currentPopulation[i + 1]);
 
-                if (newPerson.Price <= totalPrice)
+                if (newPerson.Price <= _totalPrice)
                 {
                     newPerson.CalculateValue();
 
@@ -106,7 +106,7 @@ namespace TowerDefense.Main.GenerateWaveAlgorithm
             //for (int i = index2Mid; i < person2.Enemies.Count; i++)
             for (int i = person2.Enemies.Count - 1; i >= 0; i--)
             {
-                if (newPerson.Price + _enemysPrices[person2.Enemies[i]] <= totalPrice)
+                if (newPerson.Price + _enemysPrices[person2.Enemies[i]] <= _totalPrice)
                 {
                     newPerson.Enemies.Add(person2.Enemies[i]);
                     newPerson.Price += _enemysPrices[person2.Enemies[i]];
@@ -128,7 +128,7 @@ namespace TowerDefense.Main.GenerateWaveAlgorithm
             int size = random.Next(1, maxSize + 1);
 
             int priceOldPart = person.GetPriceRange(index, size, _enemysPrices);
-            (List<EnemyType> newPart, int priceNewPart) = CreateListEnemiesForPrice(priceOldPart + totalPrice - person.Price);
+            (List<EnemyType> newPart, int priceNewPart) = CreateListEnemiesForPrice(priceOldPart + _totalPrice - person.Price);
 
             Person newPerson = new Person(new List<EnemyType>(person.Enemies));
             newPerson.Enemies.RemoveRange(index, size);

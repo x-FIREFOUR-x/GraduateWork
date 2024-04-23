@@ -1,10 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-using TowerDefense.Main.GenerateWaveAlgorithm;
 using TowerDefense.Main.Map;
 using TowerDefense.Main.Map.Buildings;
-
+using TowerDefense.Algorithms.GenerateWaveAlgorithm.GeneticAlgorithm;
 
 namespace TowerDefense.Main.Enemies
 {
@@ -109,8 +108,8 @@ namespace TowerDefense.Main.Enemies
         {
             Destroy(gameObject);
 
-            if (HeuristicsCalculator.instance != null)
-                HeuristicsCalculator.instance.AddDistanceMovedEnemy(movedDistance);
+            if (EnemiesHeuristicsCalculator.instance != null)
+                EnemiesHeuristicsCalculator.instance.AddDistanceMovedEnemy(movedDistance);
         }
 
         private void DamageEndBuilding()

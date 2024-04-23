@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 using TowerDefense.Main.Enemies;
-using TowerDefense.Main.GenerateWaveAlgorithm;
+using TowerDefense.Algorithms.GenerateWaveAlgorithm.GeneticAlgorithm;
 
 
 namespace TowerDefense.Main.Managers.WaveSpawners
@@ -61,7 +61,7 @@ namespace TowerDefense.Main.Managers.WaveSpawners
                 UpdateGameStats();
                 UpdateAvailableEnemy();
 
-                HeuristicsCalculator.instance.UpdateCurrentTower();
+                EnemiesHeuristicsCalculator.instance.UpdateCurrentTower();
 
                 isTaskRunning = true;
                 taskGenerated = GeneratedWave();
@@ -88,7 +88,7 @@ namespace TowerDefense.Main.Managers.WaveSpawners
         {
             return Task<List<EnemyType>>.Run(() =>
             {
-                var result = algoCreateWave.SearchKnapsac(availableEnemy, availablePrices);
+                var result = algoCreateWave.SearchKnapsac(availableEnemy, availablePrices, EnemiesHeuristicsCalculator.instance.MoneyForWave());
                 OperationsPostGeneratingWave();
                 return result;
             });
