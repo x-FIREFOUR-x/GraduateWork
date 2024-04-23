@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 using TowerDefense.Main.Map;
 using TowerDefense.Main.Map.Buildings;
-using TowerDefense.Algorithms.GenerateWaveAlgorithm.GeneticAlgorithm;
+using TowerDefense.Algorithms.GeneticAlgorithm.Heuristics;
 
 namespace TowerDefense.Main.Enemies
 {

@@ -8,9 +8,9 @@ using TowerDefense.Main.Towers;
 using TowerDefense.Main.Managers;
 
 
-namespace TowerDefense.Algorithms.GenerateWaveAlgorithm.GeneticAlgorithm
+namespace TowerDefense.Algorithms.GeneticAlgorithm.Heuristics
 {
-    public class EnemiesHeuristicsCalculator
+    public class EnemiesHeuristicsCalculator : HeuristicsCalculator<EnemyType>
     {
         static public EnemiesHeuristicsCalculator instance;
 
@@ -69,7 +69,7 @@ namespace TowerDefense.Algorithms.GenerateWaveAlgorithm.GeneticAlgorithm
         }
 
 
-        public int GetHeuristicsValue(List<EnemyType> enemys)
+        public override int GetHeuristicsValue(List<EnemyType> enemys)
         {
             int heuristicsValue = 0;
 
