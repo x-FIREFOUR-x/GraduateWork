@@ -8,7 +8,6 @@ using TowerDefense.Main.Enemies;
 using TowerDefense.Algorithms.GeneticAlgorithm;
 using TowerDefense.Algorithms.GeneticAlgorithm.Heuristics;
 using TowerDefense.Algorithms.GeneticAlgorithm.Persons;
-using TowerDefense.Algorithms.GeneticAlgorithm.PersonFactories;
 
 
 namespace TowerDefense.Main.Managers.WaveSpawners
@@ -16,7 +15,7 @@ namespace TowerDefense.Main.Managers.WaveSpawners
 
     public class AIWaveSpawner: WaveSpawner
     {
-        private GeneticAlgorithm<EnemyPerson, EnemyType> algoCreateWave;
+        private GeneticAlgorithm<Person<EnemyType>, EnemyType> algoCreateWave;
 
         private bool waveGenerated = false;
         private bool isTaskRunning = false;
@@ -27,7 +26,7 @@ namespace TowerDefense.Main.Managers.WaveSpawners
         {
             base.Initialize(spawn);
 
-            algoCreateWave = new GeneticAlgorithm<EnemyPerson, EnemyType>(new EnemyPersonFactory(), new EnemiesHeuristicsCalculator());
+            algoCreateWave = new GeneticAlgorithm<Person<EnemyType>, EnemyType>(new PersonFactory<EnemyType>(), new EnemiesHeuristicsCalculator());
 
             availableEnemy = new List<EnemyType>();
             availablePrices = new Dictionary<EnemyType, int>();

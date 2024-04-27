@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 
-
 using TowerDefense.Algorithms.GeneticAlgorithm.Persons;
-using TowerDefense.Algorithms.GeneticAlgorithm.PersonFactories;
 using TowerDefense.Algorithms.GeneticAlgorithm.Heuristics;
 
 
@@ -27,7 +25,7 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm
         private List<TPerson> _currentPopulation;
 
 
-        private IPersonFactory<TPerson, TGene> _personFactory;
+        private PersonFactory<TGene> _personFactory;
         private HeuristicsCalculator<TGene> _heuristicsCalculator;
 
 
@@ -35,7 +33,7 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm
 
 
         public GeneticAlgorithm(
-            IPersonFactory<TPerson, TGene> personFactory,
+            PersonFactory<TGene> personFactory,
             HeuristicsCalculator<TGene> heuristicsCalculator,
             int sizePopulation = 20,
             int countIteration = 1000,
@@ -81,13 +79,13 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm
             for (int i = 0; i < _sizePopulation; i++)
             {
                 (List<TGene> newPerson, int price) = CreateListGenesForPrice(_totalPrice);
-                _currentPopulation.Add(_personFactory.CreatePerson(newPerson, price, _heuristicsCalculator.GetHeuristicsValue(newPerson)));
+                _currentPopulation.Add((TPerson)_personFactory.CreatePerson(newPerson, price, _heuristicsCalculator.GetHeuristicsValue(newPerson)));
             }
         }
 
         private void CreateNewPopulation()
         {
-            TPerson newBestPerson = _personFactory.CreatePerson();
+            TPerson newBestPerson = (TPerson)_personFactory.CreatePerson();
 
             for (int i = 0; i < _currentPopulation.Count - 1; i++)
             {
@@ -95,7 +93,7 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm
 
                 if (newPerson.Price <= _totalPrice)
                 {
-                    newPerson.CalculateValue();
+                    newPerson.CalculateValue(_heuristicsCalculator);
 
                     if (newPerson.Value > newBestPerson.Value)
                     {
@@ -118,7 +116,7 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm
 
         private TPerson Crossing(TPerson person1, TPerson person2)
         {
-            TPerson newPerson = _personFactory.CreatePerson();
+            TPerson newPerson = (TPerson)_personFactory.CreatePerson();
 
             int index1Mid = (int)person1.Genes.Count / 2;
             int index2Mid = (int)person2.Genes.Count / 2;
@@ -153,12 +151,12 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm
             int priceOldPart = person.GetPriceRangeGenes(index, size, _genesPrices);
             (List<TGene> newPart, int priceNewPart) = CreateListGenesForPrice(priceOldPart + _totalPrice - person.Price);
 
-            TPerson newPerson = _personFactory.CreatePerson(new List<TGene>(person.Genes));
+            TPerson newPerson = (TPerson)_personFactory.CreatePerson(new List<TGene>(person.Genes));
             newPerson.Genes.RemoveRange(index, size);
             newPerson.Genes.InsertRange(index, newPart);
             newPerson.Price = person.Price - priceOldPart + priceNewPart;
 
-            newPerson.CalculateValue();
+            newPerson.CalculateValue(_heuristicsCalculator);
             if (newPerson.Value > person.Value)
                 return newPerson;
             else
@@ -185,12 +183,12 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm
             priceNewPart += priceAdditionalPart;
             newPart.AddRange(additionalPart);
 
-            TPerson newPerson = _personFactory.CreatePerson(new List<TGene>(person.Genes));
+            TPerson newPerson = (TPerson)_personFactory.CreatePerson(new List<TGene>(person.Genes));
             newPerson.Genes.RemoveRange(index, size);
             newPerson.Genes.InsertRange(index, newPart);
             newPerson.Price = person.Price - priceOldPart + priceNewPart;
 
-            newPerson.CalculateValue();
+            newPerson.CalculateValue(_heuristicsCalculator);
             if (newPerson.Value > person.Value)
                 return newPerson;
             else
