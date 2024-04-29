@@ -67,6 +67,15 @@ namespace TowerDefense.Main.Managers.WaveSpawners
             }
         }
 
+        protected void UpdateMoneyByWave()
+        {
+            int numberNextWave = WaveNumber + 1;
+            if (numberNextWave % 5 == 0)
+            {
+                PlayerStats.IncreaseMoneyByWave(2);
+            }
+        }
+
         protected void UpdateGameStats()
         {
             if (WaveNumber % 5 == 0)

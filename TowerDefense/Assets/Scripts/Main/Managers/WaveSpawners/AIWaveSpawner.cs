@@ -109,11 +109,7 @@ namespace TowerDefense.Main.Managers.WaveSpawners
 
         private void OperationsPostGeneratingWave()
         {
-            int numberNextWave = WaveNumber + 1;
-            if (numberNextWave % 5 == 0)
-            {
-                PlayerStats.IncreaseMoneyByWave(2);
-            }
+            UpdateMoneyByWave();
 
             waveGenerated = true;
             isTaskRunning = false;
