@@ -10,7 +10,7 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm.Persons
             return new Person<TGene>();
         }
 
-        public Person<TGene> CreatePerson(List<TGene> genes, int price, int value)
+        public Person<TGene> CreatePerson(List<TGene> genes, int price, float value)
         {
             return new Person<TGene>(genes, price, value);
         }

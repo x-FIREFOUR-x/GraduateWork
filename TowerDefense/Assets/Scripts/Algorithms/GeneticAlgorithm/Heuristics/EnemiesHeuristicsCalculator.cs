@@ -69,7 +69,7 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm.Heuristics
         }
 
 
-        public override int GetHeuristicsValue(List<EnemyType> enemys)
+        public override float GetHeuristicsValue(List<EnemyType> enemys)
         {
             int heuristicsValue = 0;
 

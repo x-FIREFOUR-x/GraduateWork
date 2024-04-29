@@ -9,7 +9,7 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm.Persons
     {
         public List<TGene> Genes { get; set; }
         public int Price { get; set; }
-        public int Value { get; set; }
+        public float Value { get; set; }
 
 
         public Person()
@@ -19,7 +19,7 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm.Persons
             Value = 0;
         }
 
-        public Person(List<TGene> genes, int price, int value)
+        public Person(List<TGene> genes, int price, float value)
         {
             Genes = genes;
             Price = price;
@@ -49,6 +49,9 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm.Persons
 
         public int GetPriceRangeGenes(int index, int size, Dictionary<TGene, int> _genesPrices)
         {
+            if (Genes.Count == 0)
+                return 0;
+
             int priceRange = 0;
             for (int i = index; i < size; i++)
             {

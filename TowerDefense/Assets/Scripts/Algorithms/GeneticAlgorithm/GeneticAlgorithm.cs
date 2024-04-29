@@ -49,12 +49,12 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm
             _maxMutationPartPerson = maxMutationPartPerson;
         }
 
-        public List<TGene> SearchKnapsac(List<TGene> enemysTypes, Dictionary<TGene, int> enemysPrices, int totalPrice)
+        public List<TGene> SearchKnapsac(List<TGene> genesTypes, Dictionary<TGene, int> genesPrices, int totalPrice)
         {
             _currentPopulation = new();
 
-            _genesTypes = enemysTypes;
-            _genesPrices = enemysPrices;
+            _genesTypes = genesTypes;
+            _genesPrices = genesPrices;
             _totalPrice = totalPrice;
 
             CreateStartPopulation();
@@ -86,6 +86,7 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm
         private void CreateNewPopulation()
         {
             TPerson newBestPerson = (TPerson)_personFactory.CreatePerson();
+            newBestPerson.CalculateValue(_heuristicsCalculator);
 
             for (int i = 0; i < _currentPopulation.Count - 1; i++)
             {
@@ -146,7 +147,9 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm
             int maxSize = (int)(person.Genes.Count * _maxMutationPartPerson);
             maxSize = (maxSize == 0) ? 1 : maxSize;
             maxSize = (maxSize > person.Genes.Count - index) ? person.Genes.Count - index : maxSize;
+
             int size = random.Next(1, maxSize + 1);
+            size = (maxSize == 0) ? 1 : size;
 
             int priceOldPart = person.GetPriceRangeGenes(index, size, _genesPrices);
             (List<TGene> newPart, int priceNewPart) = CreateListGenesForPrice(priceOldPart + _totalPrice - person.Price);
