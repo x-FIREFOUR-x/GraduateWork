@@ -11,7 +11,7 @@ namespace TowerDefense.Main.Managers
 
         [SerializeField]
         private int startMoney = 100;
-        private static int MoneyByWave = 100;
+        private static int MoneyByWave;
 
         public static int MoneyDefender { get; private set; }
         private static int TotalMoneyDefender;
@@ -31,6 +31,8 @@ namespace TowerDefense.Main.Managers
             TotalMoneyDefender = startMoney;
 
             MoneyAttacker = startMoney;
+
+            MoneyByWave = 100;
         }
 
         public static void AddPlayerMoney(int number)
