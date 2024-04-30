@@ -125,7 +125,6 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm
             newPerson.Genes = new(person1.Genes.GetRange(0, index1Mid));
             newPerson.CalculatePrice(_genesPrices);
 
-            //for (int i = index2Mid; i < person2.Enemies.Count; i++)
             for (int i = person2.Genes.Count - 1; i >= 0; i--)
             {
                 if (newPerson.Price + _genesPrices[person2.Genes[i]] <= _totalPrice)
@@ -148,8 +147,7 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm
             maxSize = (maxSize == 0) ? 1 : maxSize;
             maxSize = (maxSize > person.Genes.Count - index) ? person.Genes.Count - index : maxSize;
 
-            int size = random.Next(1, maxSize + 1);
-            size = (maxSize == 0) ? 1 : size;
+            int size = (maxSize != 0) ? random.Next(1, maxSize + 1) : 0;
 
             int priceOldPart = person.GetPriceRangeGenes(index, size, _genesPrices);
             (List<TGene> newPart, int priceNewPart) = CreateListGenesForPrice(priceOldPart + _totalPrice - person.Price);
@@ -210,12 +208,12 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm
             while (!isFinish)
             {
                 Random r = new Random();
-                int indexRandomEnemy = random.Next(0, _genesTypes.Count);
+                int indexRandomGeneType = random.Next(0, _genesTypes.Count);
 
-                if (price + _genesPrices[_genesTypes[indexRandomEnemy]] <= sumPrice)
+                if (price + _genesPrices[_genesTypes[indexRandomGeneType]] <= sumPrice)
                 {
-                    newPerson.Add(_genesTypes[indexRandomEnemy]);
-                    price += _genesPrices[_genesTypes[indexRandomEnemy]];
+                    newPerson.Add(_genesTypes[indexRandomGeneType]);
+                    price += _genesPrices[_genesTypes[indexRandomGeneType]];
                 }
                 else
                 {

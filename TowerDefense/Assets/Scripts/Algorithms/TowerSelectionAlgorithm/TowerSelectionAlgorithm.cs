@@ -34,7 +34,7 @@ namespace TowerDefense.Algorithms.TowerSelectionAlgorithm
             }
 
             _heuristicsCalculator = new TowersHeuristicsCalculator();
-            _algoGenerateTower = new GeneticAlgorithm<Person<TowerType>, TowerType>(new PersonFactory<TowerType>(), _heuristicsCalculator);
+            _algoGenerateTower = new GeneticAlgorithm<Person<TowerType>, TowerType>(new PersonFactory<TowerType>(), _heuristicsCalculator, 20, 1000, 100, 1);
         }
 
         public List<Tuple<TowerType, Vector2Int>> GenerateTowerList(List<TowerType> towersTypes, Dictionary<TowerType, int> towersPrices, int totalPrice)

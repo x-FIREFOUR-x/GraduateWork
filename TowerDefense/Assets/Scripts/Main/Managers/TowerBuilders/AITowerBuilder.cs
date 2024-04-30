@@ -62,9 +62,9 @@ namespace TowerDefense.Main.Managers.TowerBuilders
         private void InitializeTowerSelectionAlgorithm()
         {
             Dictionary<TowerType, float> sharesTowerType = new Dictionary<TowerType, float> {
-                [TowerType.Turret] = 0.25f,
-                [TowerType.PanelsTurret] = 0.25f,
-                [TowerType.RocketLauncher] = 0.25f,
+                [TowerType.Turret] = 0.15f,
+                [TowerType.PanelsTurret] = 0.3f,
+                [TowerType.RocketLauncher] = 0.3f,
                 [TowerType.LaserTurret] = 0.25f,
             };
 
