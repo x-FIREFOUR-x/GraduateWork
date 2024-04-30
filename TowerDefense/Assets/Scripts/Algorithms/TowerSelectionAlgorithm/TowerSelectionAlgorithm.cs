@@ -8,6 +8,7 @@ using TowerDefense.Collections;
 using TowerDefense.Algorithms.GeneticAlgorithm;
 using TowerDefense.Algorithms.GeneticAlgorithm.Persons;
 using TowerDefense.Algorithms.GeneticAlgorithm.Heuristics;
+using TowerDefense.Algorithms.GeneticAlgorithm.Mutations;
 
 namespace TowerDefense.Algorithms.TowerSelectionAlgorithm
 {
@@ -34,7 +35,18 @@ namespace TowerDefense.Algorithms.TowerSelectionAlgorithm
             }
 
             _heuristicsCalculator = new TowersHeuristicsCalculator();
-            _algoGenerateTower = new GeneticAlgorithm<Person<TowerType>, TowerType>(new PersonFactory<TowerType>(), _heuristicsCalculator, 20, 1000, 100, 1);
+
+            MutationSelector mutationSelector = new MutationSelector(new List<Mutation> {
+                new Mutation(MutationType.None, 0),
+                new Mutation(MutationType.RandomRegenerateRange, 0.2f),
+                new Mutation(MutationType.ChangeRangeOneType, 0.8f)
+            });
+
+            _algoGenerateTower = new GeneticAlgorithm<Person<TowerType>, TowerType>(
+                new PersonFactory<TowerType>(),
+                _heuristicsCalculator,
+                mutationSelector,
+                20, 1000, 100);
         }
 
         public List<Tuple<TowerType, Vector2Int>> GenerateTowerList(List<TowerType> towersTypes, Dictionary<TowerType, int> towersPrices, int totalPrice)

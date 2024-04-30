@@ -2,6 +2,7 @@ using System.Collections.Generic;
 
 using TowerDefense.Algorithms.GeneticAlgorithm.Persons;
 using TowerDefense.Algorithms.GeneticAlgorithm.Heuristics;
+using TowerDefense.Algorithms.GeneticAlgorithm.Mutations;
 
 
 namespace TowerDefense.Algorithms.GeneticAlgorithm
@@ -13,9 +14,8 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm
         private int _sizePopulation;
         private int _countIteration;
 
-        private int _mutationChance;
         private float _maxMutationPartPerson;
-
+        private MutationSelector _mutationSelector;
 
         private int _totalPrice;
         private List<TGene> _genesTypes;
@@ -35,9 +35,9 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm
         public GeneticAlgorithm(
             PersonFactory<TGene> personFactory,
             HeuristicsCalculator<TGene> heuristicsCalculator,
+            MutationSelector mutationSelector,
             int sizePopulation = 20,
             int countIteration = 1000,
-            int mutationChance = 50,
             float maxMutationPartPerson = 0.5f)
         {
             _personFactory = personFactory;
@@ -45,7 +45,7 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm
 
             _sizePopulation = sizePopulation;
             _countIteration = countIteration;
-            _mutationChance = mutationChance;
+            _mutationSelector = mutationSelector;
             _maxMutationPartPerson = maxMutationPartPerson;
         }
 
@@ -102,11 +102,19 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm
                     }
                 }
             }
-            int rand = random.Next(0, 100);
-            if (rand < _mutationChance)
-                newBestPerson = MutationRandomRegenerateRange(newBestPerson);
-            if (rand >= _mutationChance && rand < 2 * _mutationChance && _genesTypes.Count > 1)
-                newBestPerson = MutationChangeRangeOneType(newBestPerson);
+
+            MutationType randomMutation = _mutationSelector.SelectMutation();
+            switch (randomMutation)
+            {
+                case MutationType.RandomRegenerateRange:
+                    newBestPerson = MutationRandomRegenerateRange(newBestPerson);
+                    break;
+                case MutationType.ChangeRangeOneType:
+                    newBestPerson = MutationChangeRangeOneType(newBestPerson);
+                    break;
+                default:
+                    break;
+            }
 
             if (newBestPerson.Value > _currentPopulation[_currentPopulation.Count - 1].Value)
             {
