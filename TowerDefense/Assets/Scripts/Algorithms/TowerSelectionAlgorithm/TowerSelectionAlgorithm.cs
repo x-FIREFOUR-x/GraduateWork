@@ -10,6 +10,7 @@ using TowerDefense.Algorithms.GeneticAlgorithm.Persons;
 using TowerDefense.Algorithms.GeneticAlgorithm.Heuristics;
 using TowerDefense.Algorithms.GeneticAlgorithm.Mutations;
 
+
 namespace TowerDefense.Algorithms.TowerSelectionAlgorithm
 {
     public class TowerSelectionAlgorithm

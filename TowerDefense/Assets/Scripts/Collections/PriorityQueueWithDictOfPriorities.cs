@@ -15,7 +15,7 @@ namespace TowerDefense.Collections
 		public PriorityQueueWithDictOfPriorities(Func<Priority, Priority, bool> comparer)
 		{
 			elements = new();
-			_comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
+			_comparer = comparer ?? throw new ArgumentNullException("Error!" + nameof(comparer));
 		}
 
 		public void Add(Value item, Dictionary<KeyPriority, Priority> priorityValue)
