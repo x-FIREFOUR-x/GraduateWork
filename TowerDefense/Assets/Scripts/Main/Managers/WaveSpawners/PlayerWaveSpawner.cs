@@ -36,6 +36,7 @@ namespace TowerDefense.Main.Managers.WaveSpawners
                 {
                     WaveNumber++;
                     PlayerStats.IncreaseMoneyAfterWave();
+                    UpdateMoneyByWave();
                     UpdateGameStats();
 
                     WaveToBeStarted = false;

@@ -9,6 +9,7 @@ using TowerDefense.Main.Map;
 using TowerDefense.Main.Map.Tiles;
 using TowerDefense.Main.Managers.WaveSpawners;
 using TowerDefense.Main.Towers;
+using TowerDefense.Algorithms.TowerSelectionAlgorithm;
 
 
 namespace TowerDefense.Main.Managers.TowerBuilders
@@ -25,34 +26,81 @@ namespace TowerDefense.Main.Managers.TowerBuilders
 
         private TowersStorage towersStorage;
 
-        //private TowerGeneratorAlgorithm;
-        PriorityQueueWithDictOfPriorities<TowerTile, TowerType, int> pQ;
+        private TowerSelectionAlgorithm towerSelectionAlgorithm;
+        private List<TowerType> availableTowersTypes;
+        private Dictionary<TowerType, int> availableTowersPrices;
+
         private int countBuildedTowerList = 0;
+
 
         private void Start()
         {
             towersStorage = Resources.Load<TowersStorage>($"{nameof(TowersStorage)}");
 
             tilesMap = mapComponentController.TilesMap;
-            //TowerGeneratorAlgorithm(CreatePriorityQueueTilesForTowers());
-            pQ = CreatePriorityQueueTilesForTowers();
+            InitializeTowerSelectionAlgorithm();
         }
 
         private void Update()
         {
             if(!waveSpawner.WaveNotFinished() && countBuildedTowerList != waveSpawner.WaveNumber)
             {
-                //List<Tuple<TowerType, TowerTile>> towerList = TowerGeneratorAlgorithm.GenerateTowerList(PlayerStats.MoneyDefender);
-                List<Tuple<TowerType, TowerTile>> towerAndTileList = new List<Tuple<TowerType, TowerTile>> { new Tuple<TowerType, TowerTile>(TowerType.Turret, pQ.Peek(TowerType.Turret))};
+                UpdateAvailableTower();
 
-                foreach (var towerAndTile in towerAndTileList)
+                List<Tuple<TowerType, Vector2Int>> towerList = towerSelectionAlgorithm.GenerateTowerList(availableTowersTypes, availableTowersPrices, PlayerStats.MoneyDefender);
+                foreach (var towerAndTile in towerList)
                 {
-                    BuildTower(towerAndTile.Item1, towerAndTile.Item2);
+                    TowerTile towerTile = tilesMap.GetTileAt(towerAndTile.Item2.x, towerAndTile.Item2.y).GetComponent<TowerTile>();
+                    BuildTower(towerAndTile.Item1, towerTile);
                 }
 
                 countBuildedTowerList++;
             }
         }
+
+
+        private void InitializeTowerSelectionAlgorithm()
+        {
+            Dictionary<TowerType, float> sharesTowerType = new Dictionary<TowerType, float> {
+                [TowerType.Turret] = 0.15f,
+                [TowerType.PanelsTurret] = 0.3f,
+                [TowerType.RocketLauncher] = 0.3f,
+                [TowerType.LaserTurret] = 0.25f,
+            };
+
+            availableTowersTypes = new List<TowerType>();
+            availableTowersPrices = new Dictionary<TowerType, int>();
+
+            towerSelectionAlgorithm = new TowerSelectionAlgorithm(CreatePriorityQueueTilesForTowers(), sharesTowerType);
+        }
+
+        private void UpdateAvailableTower()
+        {
+            
+            switch (countBuildedTowerList)
+            {
+                case 0:
+                    availableTowersTypes.Add(TowerType.Turret);
+                    availableTowersPrices[TowerType.Turret] = towersStorage.Towers[(int)TowerType.Turret].GetComponent<Tower>().Price;
+                    break;
+                case 2:
+                    availableTowersTypes.Add(TowerType.PanelsTurret);
+                    availableTowersPrices[TowerType.PanelsTurret] = towersStorage.Towers[(int)TowerType.PanelsTurret].GetComponent<Tower>().Price;
+                    break;
+                case 4:
+                    availableTowersTypes.Add(TowerType.RocketLauncher);
+                    availableTowersPrices[TowerType.RocketLauncher] = towersStorage.Towers[(int)TowerType.RocketLauncher].GetComponent<Tower>().Price;
+                    break;
+                case 6:
+                    availableTowersTypes.Add(TowerType.LaserTurret);
+                    availableTowersPrices[TowerType.LaserTurret] = towersStorage.Towers[(int)TowerType.LaserTurret].GetComponent<Tower>().Price;
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
 
         private void BuildTower(TowerType towerType, TowerTile tile)
         {
@@ -63,9 +111,9 @@ namespace TowerDefense.Main.Managers.TowerBuilders
             PlayerStats.AddDefenderMoney(-tower.Price);
         }
 
-        private PriorityQueueWithDictOfPriorities<TowerTile, TowerType, int> CreatePriorityQueueTilesForTowers()
+        private PriorityQueueWithDictOfPriorities<Vector2Int, TowerType, int> CreatePriorityQueueTilesForTowers()
         {
-            PriorityQueueWithDictOfPriorities<TowerTile, TowerType, int> priorityQueueTowerTiles = new((a, b) => a > b);
+            PriorityQueueWithDictOfPriorities<Vector2Int, TowerType, int> priorityQueueTowerTiles = new((a, b) => a > b);
             for (int i = 0; i < tilesMap.Size; i++)
             {
                 for (int j = 0; j < tilesMap.Size; j++)
@@ -76,7 +124,7 @@ namespace TowerDefense.Main.Managers.TowerBuilders
                         continue;
 
                     Dictionary<TowerType, int> dictOfPriorities = CreateDictOfPrioritiesForTowerTile(towerTile.GetTowerBuildPosition());
-                    priorityQueueTowerTiles.Add(towerTile, dictOfPriorities);
+                    priorityQueueTowerTiles.Add(new Vector2Int(i, j), dictOfPriorities);
                 }
             }
 

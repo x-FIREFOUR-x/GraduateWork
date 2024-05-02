@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 
-
 using TowerDefense.Algorithms.GeneticAlgorithm.Persons;
-using TowerDefense.Algorithms.GeneticAlgorithm.PersonFactories;
 using TowerDefense.Algorithms.GeneticAlgorithm.Heuristics;
+using TowerDefense.Algorithms.GeneticAlgorithm.Mutations;
 
 
 namespace TowerDefense.Algorithms.GeneticAlgorithm
@@ -15,9 +14,8 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm
         private int _sizePopulation;
         private int _countIteration;
 
-        private int _mutationChance;
         private float _maxMutationPartPerson;
-
+        private MutationSelector _mutationSelector;
 
         private int _totalPrice;
         private List<TGene> _genesTypes;
@@ -27,7 +25,7 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm
         private List<TPerson> _currentPopulation;
 
 
-        private IPersonFactory<TPerson, TGene> _personFactory;
+        private PersonFactory<TGene> _personFactory;
         private HeuristicsCalculator<TGene> _heuristicsCalculator;
 
 
@@ -35,11 +33,11 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm
 
 
         public GeneticAlgorithm(
-            IPersonFactory<TPerson, TGene> personFactory,
+            PersonFactory<TGene> personFactory,
             HeuristicsCalculator<TGene> heuristicsCalculator,
+            MutationSelector mutationSelector,
             int sizePopulation = 20,
             int countIteration = 1000,
-            int mutationChance = 50,
             float maxMutationPartPerson = 0.5f)
         {
             _personFactory = personFactory;
@@ -47,16 +45,16 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm
 
             _sizePopulation = sizePopulation;
             _countIteration = countIteration;
-            _mutationChance = mutationChance;
+            _mutationSelector = mutationSelector;
             _maxMutationPartPerson = maxMutationPartPerson;
         }
 
-        public List<TGene> SearchKnapsac(List<TGene> enemysTypes, Dictionary<TGene, int> enemysPrices, int totalPrice)
+        public List<TGene> SearchKnapsac(List<TGene> genesTypes, Dictionary<TGene, int> genesPrices, int totalPrice)
         {
             _currentPopulation = new();
 
-            _genesTypes = enemysTypes;
-            _genesPrices = enemysPrices;
+            _genesTypes = genesTypes;
+            _genesPrices = genesPrices;
             _totalPrice = totalPrice;
 
             CreateStartPopulation();
@@ -81,13 +79,14 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm
             for (int i = 0; i < _sizePopulation; i++)
             {
                 (List<TGene> newPerson, int price) = CreateListGenesForPrice(_totalPrice);
-                _currentPopulation.Add(_personFactory.CreatePerson(newPerson, price, _heuristicsCalculator.GetHeuristicsValue(newPerson)));
+                _currentPopulation.Add((TPerson)_personFactory.CreatePerson(newPerson, price, _heuristicsCalculator.GetHeuristicsValue(newPerson)));
             }
         }
 
         private void CreateNewPopulation()
         {
-            TPerson newBestPerson = _personFactory.CreatePerson();
+            TPerson newBestPerson = (TPerson)_personFactory.CreatePerson();
+            newBestPerson.CalculateValue(_heuristicsCalculator);
 
             for (int i = 0; i < _currentPopulation.Count - 1; i++)
             {
@@ -95,7 +94,7 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm
 
                 if (newPerson.Price <= _totalPrice)
                 {
-                    newPerson.CalculateValue();
+                    newPerson.CalculateValue(_heuristicsCalculator);
 
                     if (newPerson.Value > newBestPerson.Value)
                     {
@@ -103,11 +102,19 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm
                     }
                 }
             }
-            int rand = random.Next(0, 100);
-            if (rand < _mutationChance)
-                newBestPerson = MutationRandomRegenerateRange(newBestPerson);
-            if (rand >= _mutationChance && rand < 2 * _mutationChance && _genesTypes.Count > 1)
-                newBestPerson = MutationChangeRangeOneType(newBestPerson);
+
+            MutationType randomMutation = _mutationSelector.SelectMutation();
+            switch (randomMutation)
+            {
+                case MutationType.RandomRegenerateRange:
+                    newBestPerson = MutationRandomRegenerateRange(newBestPerson);
+                    break;
+                case MutationType.ChangeRangeOneType:
+                    newBestPerson = MutationChangeRangeOneType(newBestPerson);
+                    break;
+                default:
+                    break;
+            }
 
             if (newBestPerson.Value > _currentPopulation[_currentPopulation.Count - 1].Value)
             {
@@ -118,7 +125,7 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm
 
         private TPerson Crossing(TPerson person1, TPerson person2)
         {
-            TPerson newPerson = _personFactory.CreatePerson();
+            TPerson newPerson = (TPerson)_personFactory.CreatePerson();
 
             int index1Mid = (int)person1.Genes.Count / 2;
             int index2Mid = (int)person2.Genes.Count / 2;
@@ -126,7 +133,6 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm
             newPerson.Genes = new(person1.Genes.GetRange(0, index1Mid));
             newPerson.CalculatePrice(_genesPrices);
 
-            //for (int i = index2Mid; i < person2.Enemies.Count; i++)
             for (int i = person2.Genes.Count - 1; i >= 0; i--)
             {
                 if (newPerson.Price + _genesPrices[person2.Genes[i]] <= _totalPrice)
@@ -148,17 +154,18 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm
             int maxSize = (int)(person.Genes.Count * _maxMutationPartPerson);
             maxSize = (maxSize == 0) ? 1 : maxSize;
             maxSize = (maxSize > person.Genes.Count - index) ? person.Genes.Count - index : maxSize;
-            int size = random.Next(1, maxSize + 1);
+
+            int size = (maxSize != 0) ? random.Next(1, maxSize + 1) : 0;
 
             int priceOldPart = person.GetPriceRangeGenes(index, size, _genesPrices);
             (List<TGene> newPart, int priceNewPart) = CreateListGenesForPrice(priceOldPart + _totalPrice - person.Price);
 
-            TPerson newPerson = _personFactory.CreatePerson(new List<TGene>(person.Genes));
+            TPerson newPerson = (TPerson)_personFactory.CreatePerson(new List<TGene>(person.Genes));
             newPerson.Genes.RemoveRange(index, size);
             newPerson.Genes.InsertRange(index, newPart);
             newPerson.Price = person.Price - priceOldPart + priceNewPart;
 
-            newPerson.CalculateValue();
+            newPerson.CalculateValue(_heuristicsCalculator);
             if (newPerson.Value > person.Value)
                 return newPerson;
             else
@@ -185,12 +192,12 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm
             priceNewPart += priceAdditionalPart;
             newPart.AddRange(additionalPart);
 
-            TPerson newPerson = _personFactory.CreatePerson(new List<TGene>(person.Genes));
+            TPerson newPerson = (TPerson)_personFactory.CreatePerson(new List<TGene>(person.Genes));
             newPerson.Genes.RemoveRange(index, size);
             newPerson.Genes.InsertRange(index, newPart);
             newPerson.Price = person.Price - priceOldPart + priceNewPart;
 
-            newPerson.CalculateValue();
+            newPerson.CalculateValue(_heuristicsCalculator);
             if (newPerson.Value > person.Value)
                 return newPerson;
             else
@@ -209,12 +216,12 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm
             while (!isFinish)
             {
                 Random r = new Random();
-                int indexRandomEnemy = random.Next(0, _genesTypes.Count);
+                int indexRandomGeneType = random.Next(0, _genesTypes.Count);
 
-                if (price + _genesPrices[_genesTypes[indexRandomEnemy]] <= sumPrice)
+                if (price + _genesPrices[_genesTypes[indexRandomGeneType]] <= sumPrice)
                 {
-                    newPerson.Add(_genesTypes[indexRandomEnemy]);
-                    price += _genesPrices[_genesTypes[indexRandomEnemy]];
+                    newPerson.Add(_genesTypes[indexRandomGeneType]);
+                    price += _genesPrices[_genesTypes[indexRandomGeneType]];
                 }
                 else
                 {

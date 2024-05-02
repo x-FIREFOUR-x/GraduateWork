@@ -8,7 +8,7 @@ using TowerDefense.Main.Enemies;
 using TowerDefense.Algorithms.GeneticAlgorithm;
 using TowerDefense.Algorithms.GeneticAlgorithm.Heuristics;
 using TowerDefense.Algorithms.GeneticAlgorithm.Persons;
-using TowerDefense.Algorithms.GeneticAlgorithm.PersonFactories;
+using TowerDefense.Algorithms.GeneticAlgorithm.Mutations;
 
 
 namespace TowerDefense.Main.Managers.WaveSpawners
@@ -16,7 +16,7 @@ namespace TowerDefense.Main.Managers.WaveSpawners
 
     public class AIWaveSpawner: WaveSpawner
     {
-        private GeneticAlgorithm<EnemyPerson, EnemyType> algoCreateWave;
+        private GeneticAlgorithm<Person<EnemyType>, EnemyType> algoCreateWave;
 
         private bool waveGenerated = false;
         private bool isTaskRunning = false;
@@ -27,7 +27,12 @@ namespace TowerDefense.Main.Managers.WaveSpawners
         {
             base.Initialize(spawn);
 
-            algoCreateWave = new GeneticAlgorithm<EnemyPerson, EnemyType>(new EnemyPersonFactory(), new EnemiesHeuristicsCalculator());
+            MutationSelector mutationSelector = new MutationSelector(new List<Mutation> {
+                new Mutation(MutationType.None, 0),
+                new Mutation(MutationType.RandomRegenerateRange, 0.5f),
+                new Mutation(MutationType.ChangeRangeOneType, 0.5f)
+            });
+            algoCreateWave = new GeneticAlgorithm<Person<EnemyType>, EnemyType>(new PersonFactory<EnemyType>(), new EnemiesHeuristicsCalculator(), mutationSelector);
 
             availableEnemy = new List<EnemyType>();
             availablePrices = new Dictionary<EnemyType, int>();
@@ -110,11 +115,7 @@ namespace TowerDefense.Main.Managers.WaveSpawners
 
         private void OperationsPostGeneratingWave()
         {
-            int numberNextWave = WaveNumber + 1;
-            if (numberNextWave % 5 == 0)
-            {
-                PlayerStats.IncreaseMoneyByWave(2);
-            }
+            UpdateMoneyByWave();
 
             waveGenerated = true;
             isTaskRunning = false;
