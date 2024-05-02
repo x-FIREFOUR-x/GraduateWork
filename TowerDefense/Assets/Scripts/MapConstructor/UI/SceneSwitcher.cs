@@ -1,43 +1,68 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneSwitcher: MonoBehaviour
+using TowerDefense.MapConstructor.Component;
+
+
+namespace TowerDefense.MapConstructor.UI
 {
-    [SerializeField]
-    private string mainScene = "MainScene";
-    [SerializeField]
-    private string mainMenuScene = "MainMenuScene";
-    [SerializeField]
-    private Map map;
-    [SerializeField]
-    private MessageManager messageManager ;
-
-    public void Play()
+    public class SceneSwitcher : MonoBehaviour
     {
-        if (!map.IsAllBuilds())
+        [SerializeField]
+        private string defenderGameScene = "DefenderGameScene";
+        [SerializeField]
+        private string attackerGameScene = "AttackerGameScene";
+        [SerializeField]
+        private string mainMenuScene = "MainMenuScene";
+
+        [SerializeField]
+        private Map map;
+        [SerializeField]
+        private MessageManager messageManager;
+
+        public void PlayDefenderGame()
         {
-            messageManager.OpenUncorrectMapMessage();
-            return;
+            if (!map.IsAllBuilds())
+            {
+                messageManager.OpenUncorrectMapMessage();
+                return;
+            }
+
+            if (MapSaver.instance.SetData(map.GetTileArray(), map.GetIndexesStartBuild(), map.GetIndexesEndBuild()))
+            {
+                Time.timeScale = 1f;
+                SceneManager.LoadScene(defenderGameScene);
+            }
+            else
+            {
+                messageManager.OpenUncorrectMapMessage();
+            }
         }
 
-        int[,] tilesArray = map.GetTileArray();
-        Vector2Int indexesStartBuild = map.GetIndexesStartBuild();
-        Vector2Int indexesEndBuild = map.GetIndexesEndBuild();
+        public void PlayAttackerGame()
+        {
+            if (!map.IsAllBuilds())
+            {
+                messageManager.OpenUncorrectMapMessage();
+                return;
+            }
 
-        if (MapSaver.instance.SetData(tilesArray, indexesStartBuild, indexesEndBuild))
-        {
-            Time.timeScale = 1f;
-            SceneManager.LoadScene(mainScene);
+            if (MapSaver.instance.SetData(map.GetTileArray(), map.GetIndexesStartBuild(), map.GetIndexesEndBuild()))
+            {
+                Time.timeScale = 1f;
+                SceneManager.LoadScene(attackerGameScene);
+            }
+            else
+            {
+                messageManager.OpenUncorrectMapMessage();
+            }
         }
-        else
+
+        public void Back()
         {
-            messageManager.OpenUncorrectMapMessage();
+            Destroy(MapSaver.instance.gameObject);
+            SceneManager.LoadScene(mainMenuScene);
         }
     }
 
-    public void Back()
-    {
-        Destroy(MapSaver.instance.gameObject);
-        SceneManager.LoadScene(mainMenuScene);
-    }
 }

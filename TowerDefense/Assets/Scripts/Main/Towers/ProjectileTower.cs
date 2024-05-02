@@ -1,44 +1,52 @@
 using System.Collections;
+
 using UnityEngine;
 
-public class ProjectileTower : Tower
+using TowerDefense.Main.Projectiles;
+
+
+namespace TowerDefense.Main.Towers
 {
-    [Header("Prefabs")]
-    [SerializeField]
-    private GameObject projectilePrefab;
-
-
-    void Update()
+    public class ProjectileEntityTower : Tower
     {
-        if(target != null)
+        [Header("Prefabs")]
+        [SerializeField]
+        private GameObject ProjectileEntityPrefab;
+
+
+        void Update()
         {
-            RotateToTarget();
-            if (timeToNextFire <= 0f)
+            if (target != null)
             {
-                StartCoroutine(Shoot());
-                timeToNextFire = timeBetweenShoots;
+                RotateToTarget();
+                if (timeToNextFire <= 0f)
+                {
+                    StartCoroutine(Shoot());
+                    timeToNextFire = timeBetweenShoots;
+                }
+            }
+            timeToNextFire -= Time.deltaTime;
+        }
+
+        private IEnumerator Shoot()
+        {
+            for (int i = 0; i < countProjectileEntitys; i++)
+            {
+                GameObject bulletObject = Instantiate(ProjectileEntityPrefab, pointStartFire.position, pointStartFire.rotation);
+                Projectile bullet = bulletObject.GetComponent<Projectile>();
+
+                if (bullet != null)
+                {
+                    bullet.Seek(target, offsetTarget);
+                }
+                yield return new WaitForSeconds(0.2f);
             }
         }
-        timeToNextFire -= Time.deltaTime;
-    }
 
-    private IEnumerator Shoot()
-    {
-        for (int i = 0; i < countProjectiles; i++)
+        public override float DamageInSecond()
         {
-            GameObject bulletObject = Instantiate(projectilePrefab, pointStartFire.position, pointStartFire.rotation);
-            Projectile bullet = bulletObject.GetComponent<Projectile>();
-
-            if (bullet != null)
-            {
-                bullet.Seek(target, offsetTarget);
-            }
-            yield return new WaitForSeconds(0.2f);
+            return ProjectileEntityPrefab.GetComponent<Projectile>().Damage * countProjectileEntitys / timeBetweenShoots;
         }
     }
 
-    public override float DamageInSecond()
-    {
-        return  projectilePrefab.GetComponent<Projectile>().Damage * countProjectiles / timeBetweenShoots;
-    }
 }
