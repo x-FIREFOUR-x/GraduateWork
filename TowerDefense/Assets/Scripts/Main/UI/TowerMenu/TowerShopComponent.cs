@@ -41,7 +41,7 @@ namespace TowerDefense.Main.UI.TowerMenu
         [SerializeField]
         private Color colorCharacterText;
 
-        public void Initialize(int price)
+        public void Initialize(int price, float sizeUnitTileInRange)
         {
             IsSelected = false;
 
@@ -50,18 +50,20 @@ namespace TowerDefense.Main.UI.TowerMenu
 
             textPrice.text = price.ToString() + "$";
 
-            InitializetextCharacters();
+            InitializetextCharacters(sizeUnitTileInRange);
         }
 
-        private void InitializetextCharacters()
+        private void InitializetextCharacters(float sizeUniSizeUnitTileInRangetTile)
         {
+            float range = (tower.ShootRange - sizeUniSizeUnitTileInRangetTile / 2) / sizeUniSizeUnitTileInRangetTile ;
+
             textCharacter.GetComponent<TMPro.TextMeshProUGUI>().color = colorCharacterText;
             textCharacter.GetComponent<TMPro.TextMeshProUGUI>().text =
                 "\n   Characters: \n" +
                 " Count Bullet: " + tower.CountProjectileEntitys.ToString() + "\n" +
-                " Range: " + tower.ShootRange.ToString() + "\n" +
+                " Range: " + MathF.Round(range, 1).ToString() + "\n" +
                 " Cooldown: " + tower.TimeBetweenShoots.ToString() + "\n" +
-                " DPS: " + Math.Round(tower.DamageInSecond(), 1).ToString();
+                " DPS: " + MathF.Round(tower.DamageInSecond(), 1).ToString();
         }
 
         public void ChangeImageToCharacter()
