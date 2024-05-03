@@ -96,6 +96,10 @@ namespace TowerDefense.Main.Managers.TowerBuilders
             towerShop.AllComponentSetNotSelected();
         }
 
+        public float GetShootRangeChosenTower()
+        {
+            return chosenTower != null ? chosenTower.ShootRange : 0;
+        }
 
         private int PriceSell()
         {

@@ -8,17 +8,20 @@ namespace TowerDefense.Main.Map.Tiles
 {
     public class ClickableTowerTile : TowerTile
     {
-        [Header("Colors:")]
+        private TowerBuildManager towerBuildManager;
 
+        [Header("Colors:")]
         [SerializeField]
         private Color hoverColor;
         private Color unhoverColor;
 
         [SerializeField]
-        private Color notEnoughMoney;
+        private Color failBuildColor;
 
-
-        private TowerBuildManager towerBuildManager;
+        [Header("Tower Range:")]
+        [SerializeField]
+        private GameObject towerRangeRing;
+        private Vector3 unitSize;
 
 
         private void Awake()
@@ -26,6 +29,8 @@ namespace TowerDefense.Main.Map.Tiles
             render = GetComponent<Renderer>();
             unhoverColor = render.material.color;
             towerBuildManager = TowerBuildManager.instance;
+
+            unitSize = new Vector3(towerRangeRing.transform.localScale.x, towerRangeRing.transform.localScale.y, towerRangeRing.transform.localScale.z);
         }
 
         private void OnMouseDown()
@@ -45,7 +50,7 @@ namespace TowerDefense.Main.Map.Tiles
             }
             else
             {
-                render.material.color = notEnoughMoney;
+                render.material.color = failBuildColor;
             }
         }
 
@@ -55,11 +60,29 @@ namespace TowerDefense.Main.Map.Tiles
                 return;
 
             render.material.color = hoverColor;
+
+            ActivateTowerRangeRing();
         }
 
         private void OnMouseExit()
         {
             render.material.color = unhoverColor;
+
+            DisactivateTowerRangeRing();
+        }
+
+
+        private void ActivateTowerRangeRing()
+        {
+            float towerShootRange = towerBuildManager.GetShootRangeChosenTower();
+            towerRangeRing.transform.localScale = new Vector3(unitSize.x * towerShootRange, unitSize.y * towerShootRange, unitSize.z * towerShootRange);
+            towerRangeRing.SetActive(true);
+        }
+
+        private void DisactivateTowerRangeRing()
+        {
+            towerRangeRing.SetActive(false);
+            towerRangeRing.transform.localScale = new Vector3(unitSize.x, unitSize.y, unitSize.z);
         }
     }
 
