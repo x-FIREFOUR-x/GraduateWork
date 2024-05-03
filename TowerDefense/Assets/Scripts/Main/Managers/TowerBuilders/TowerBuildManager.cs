@@ -23,6 +23,12 @@ namespace TowerDefense.Main.Managers.TowerBuilders
         [SerializeField]
         private TowerShopMenu towerShop;
 
+        [Header("Effect")]
+        [SerializeField]
+        private GameObject effectBuildingPrefab;
+        [SerializeField]
+        private float timeEffectBuilding;
+
 
         private void Awake()
         {
@@ -91,6 +97,9 @@ namespace TowerDefense.Main.Managers.TowerBuilders
         {
             GameObject tower = Instantiate(chosenTower.gameObject, tile.GetTowerBuildPosition(), tile.transform.rotation);
             tile.Tower = tower;
+
+            GameObject effect = Instantiate(effectBuildingPrefab, tile.GetTowerBuildPosition(), tile.transform.rotation);
+            Destroy(effect, timeEffectBuilding);
 
             PlayerStats.AddPlayerMoney(-chosenTower.GetComponent<Tower>().Price);
         }

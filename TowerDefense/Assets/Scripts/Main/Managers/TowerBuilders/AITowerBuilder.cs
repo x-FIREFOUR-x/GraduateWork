@@ -23,6 +23,12 @@ namespace TowerDefense.Main.Managers.TowerBuilders
         [SerializeField]
         private WaveSpawner waveSpawner;
 
+        [Header("Effect")]
+        [SerializeField]
+        private GameObject effectBuildingPrefab;
+        [SerializeField]
+        private float timeEffectBuilding;
+
 
         private TowersStorage towersStorage;
 
@@ -107,6 +113,9 @@ namespace TowerDefense.Main.Managers.TowerBuilders
             Tower tower = towersStorage.Towers[(int)towerType].GetComponent<Tower>();
             GameObject towerObj = Instantiate(tower.gameObject, tile.GetTowerBuildPosition(), tile.transform.rotation);
             tile.Tower = towerObj;
+
+            GameObject effect = Instantiate(effectBuildingPrefab, tile.GetTowerBuildPosition(), tile.transform.rotation);
+            Destroy(effect, timeEffectBuilding);
 
             PlayerStats.AddDefenderMoney(-tower.Price);
         }

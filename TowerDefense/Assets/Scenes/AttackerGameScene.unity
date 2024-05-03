@@ -3493,6 +3493,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapComponentController: {fileID: 705115995}
   waveSpawner: {fileID: 1654633878}
+  effectBuildingPrefab: {fileID: 358637981425055526, guid: 8eb503696b886e04faff8fc0f480d473, type: 3}
+  timeEffectBuilding: 1
 --- !u!1 &2101387946
 GameObject:
   m_ObjectHideFlags: 0
