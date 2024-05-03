@@ -32,6 +32,12 @@ namespace TowerDefense.Main.UI.TowerMenu
 
         public void ChooseTower(TowerType towerType)
         {
+            if (towerShopComponents[(int)towerType].IsSelected)
+            {
+                towerBuildManager.DisetChosenTower();
+                return;
+            }
+
             towerBuildManager.SetChosenTower(towerBuildManager.GetTowerPrefab(towerType));
 
             AllComponentSetNotSelected();

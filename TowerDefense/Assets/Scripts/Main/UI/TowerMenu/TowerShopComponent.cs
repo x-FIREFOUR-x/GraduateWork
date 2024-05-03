@@ -10,6 +10,8 @@ namespace TowerDefense.Main.UI.TowerMenu
 {
     public class TowerShopComponent : MonoBehaviour
     {
+        public bool IsSelected { get; private set; }
+
         [SerializeField]
         private Tower tower;
 
@@ -39,6 +41,7 @@ namespace TowerDefense.Main.UI.TowerMenu
 
         public void Initialize(int price)
         {
+            IsSelected = false;
 
             textName.color = colorText;
             textPrice.color = colorText;
@@ -75,7 +78,8 @@ namespace TowerDefense.Main.UI.TowerMenu
 
         public void SetComponentSelected(bool isSelected)
         {
-            if (isSelected)
+            IsSelected = isSelected;
+            if (IsSelected)
             {
                 background.color = colorSelected;
             }

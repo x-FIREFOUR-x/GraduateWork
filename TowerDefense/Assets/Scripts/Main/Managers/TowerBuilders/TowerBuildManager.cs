@@ -69,9 +69,14 @@ namespace TowerDefense.Main.Managers.TowerBuilders
             }
         }
 
-        public void DisetTowerTile()
+        public void DisetChosenTowerTile()
         {
             chosenTowerTile = null;
+        }
+
+        public void DisetChosenTower()
+        {
+            chosenTower = null;
             towerShop.AllComponentSetNotSelected();
         }
 
