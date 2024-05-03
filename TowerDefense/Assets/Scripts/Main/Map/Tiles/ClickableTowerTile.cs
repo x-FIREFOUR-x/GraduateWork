@@ -79,7 +79,7 @@ namespace TowerDefense.Main.Map.Tiles
             towerRangeRing.SetActive(true);
         }
 
-        private void DisactivateTowerRangeRing()
+        public void DisactivateTowerRangeRing()
         {
             towerRangeRing.SetActive(false);
             towerRangeRing.transform.localScale = new Vector3(unitSize.x, unitSize.y, unitSize.z);

@@ -13,7 +13,7 @@ namespace TowerDefense.Main.Managers.TowerBuilders
         public static TowerBuildManager instance;
 
         private Tower chosenTower;
-        private TowerTile chosenTowerTile;
+        private ClickableTowerTile chosenTowerTile;
 
         private TowersStorage towersStorage;
 
@@ -54,7 +54,7 @@ namespace TowerDefense.Main.Managers.TowerBuilders
         }
 
 
-        public void SetTowerTile(TowerTile towerTile)
+        public void SetTowerTile(ClickableTowerTile towerTile)
         {
             if (chosenTowerTile == towerTile)
             {
@@ -77,6 +77,7 @@ namespace TowerDefense.Main.Managers.TowerBuilders
         public void DisetChosenTower()
         {
             chosenTower = null;
+            chosenTowerTile?.DisactivateTowerRangeRing();
             towerShop.AllComponentSetNotSelected();
         }
 
