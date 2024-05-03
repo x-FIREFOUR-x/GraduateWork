@@ -37,6 +37,8 @@ namespace TowerDefense.Main.UI.EnemyMenu
         private GameObject characterEnemy;
         [SerializeField]
         private GameObject textCharacter;
+        [SerializeField]
+        private Color colorCharacterText;
 
 
         [Header("Add and Sub Buttons Settings")]
@@ -78,8 +80,9 @@ namespace TowerDefense.Main.UI.EnemyMenu
 
         private void InitializetextCharacters()
         {
+            textCharacter.GetComponent<TMPro.TextMeshProUGUI>().color = colorCharacterText;
             textCharacter.GetComponent<TMPro.TextMeshProUGUI>().text =
-                "   Characters: \n" +
+                "\n  Characters: \n" +
                 " Health: " + enemy.StartHealth.ToString() + "\n" +
                 " Speed: " + enemy.StartSpeed.ToString() + "\n" +
                 " Damage: " + enemy.Damage.ToString();

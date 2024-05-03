@@ -648,6 +648,7 @@ MonoBehaviour:
   colorSelected: {r: 0.23656674, g: 0.90588236, b: 0.090196095, a: 1}
   colorUnselected: {r: 1, g: 1, b: 1, a: 0.39215687}
   colorText: {r: 0, g: 0, b: 0, a: 1}
+  colorCharacterText: {r: 0.22599363, g: 0, b: 1, a: 1}
 --- !u!1 &8789245204671376635
 GameObject:
   m_ObjectHideFlags: 0

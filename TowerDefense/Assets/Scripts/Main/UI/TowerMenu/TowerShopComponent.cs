@@ -38,6 +38,8 @@ namespace TowerDefense.Main.UI.TowerMenu
         private Color colorUnselected;
         [SerializeField]
         private Color colorText;
+        [SerializeField]
+        private Color colorCharacterText;
 
         public void Initialize(int price)
         {
@@ -53,8 +55,9 @@ namespace TowerDefense.Main.UI.TowerMenu
 
         private void InitializetextCharacters()
         {
+            textCharacter.GetComponent<TMPro.TextMeshProUGUI>().color = colorCharacterText;
             textCharacter.GetComponent<TMPro.TextMeshProUGUI>().text =
-                "   Characters: \n" +
+                "\n   Characters: \n" +
                 " Count Bullet: " + tower.CountProjectileEntitys.ToString() + "\n" +
                 " Range: " + tower.ShootRange.ToString() + "\n" +
                 " Cooldown: " + tower.TimeBetweenShoots.ToString() + "\n" +
