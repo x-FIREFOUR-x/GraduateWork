@@ -46,11 +46,11 @@ namespace TowerDefense.Main.Map.Tiles
 
             if (towerBuildManager.CanBuild())
             {
-                towerBuildManager.BuildTower(this);
+                SuccessfulBuildTower();
             }
             else
             {
-                render.material.color = failBuildColor;
+                FailedBuildTower();
             }
         }
 
@@ -71,6 +71,18 @@ namespace TowerDefense.Main.Map.Tiles
             DisactivateTowerRangeRing();
         }
 
+        private void SuccessfulBuildTower()
+        {
+            DisactivateTowerRangeRing();
+
+            towerBuildManager.BuildTower(this);
+        }
+
+        private void FailedBuildTower()
+        {
+            DisactivateTowerRangeRing();
+            render.material.color = failBuildColor;
+        }
 
         private void ActivateTowerRangeRing()
         {
