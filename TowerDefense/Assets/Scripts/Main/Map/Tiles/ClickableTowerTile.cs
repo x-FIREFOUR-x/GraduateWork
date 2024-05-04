@@ -40,13 +40,13 @@ namespace TowerDefense.Main.Map.Tiles
 
             if (Tower != null)
             {
-                towerBuildManager.SetTowerTile(this);
+                ActionWhenTowerBuilded();
                 return;
             }
 
             if (towerBuildManager.CanBuild())
             {
-                SuccessfulBuildTower();
+                BuildTower();
             }
             else
             {
@@ -71,10 +71,9 @@ namespace TowerDefense.Main.Map.Tiles
             DisactivateTowerRangeRing();
         }
 
-        private void SuccessfulBuildTower()
+        private void BuildTower()
         {
             DisactivateTowerRangeRing();
-
             towerBuildManager.BuildTower(this);
         }
 
@@ -84,6 +83,12 @@ namespace TowerDefense.Main.Map.Tiles
             render.material.color = failBuildColor;
         }
 
+        private void ActionWhenTowerBuilded()
+        {
+            DisactivateTowerRangeRing();
+            towerBuildManager.CloseOrOpenTowerSellerForTowerTile(this);
+        }
+
         private void ActivateTowerRangeRing()
         {
             float towerShootRange = towerBuildManager.GetShootRangeChosenTower();
@@ -91,7 +96,7 @@ namespace TowerDefense.Main.Map.Tiles
             towerRangeRing.SetActive(true);
         }
 
-        public void DisactivateTowerRangeRing()
+        private void DisactivateTowerRangeRing()
         {
             towerRangeRing.SetActive(false);
             towerRangeRing.transform.localScale = new Vector3(unitSize.x, unitSize.y, unitSize.z);

@@ -60,7 +60,7 @@ namespace TowerDefense.Main.Managers.TowerBuilders
         }
 
 
-        public void SetTowerTile(ClickableTowerTile towerTile)
+        public void CloseOrOpenTowerSellerForTowerTile(ClickableTowerTile towerTile)
         {
             if (chosenTowerTile == towerTile)
             {
@@ -83,7 +83,6 @@ namespace TowerDefense.Main.Managers.TowerBuilders
         public void DisetChosenTower()
         {
             chosenTower = null;
-            chosenTowerTile?.DisactivateTowerRangeRing();
             towerShop.AllComponentSetNotSelected();
         }
 
