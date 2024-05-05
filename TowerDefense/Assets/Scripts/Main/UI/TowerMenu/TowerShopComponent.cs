@@ -19,13 +19,15 @@ namespace TowerDefense.Main.UI.TowerMenu
         [SerializeField]
         private Image background;
         [field: SerializeField]
-        public Button buttonBuy { get; private set; }
+        public Button ButtonSelect{ get; private set; }
         [SerializeField]
         private TMPro.TextMeshProUGUI textName;
         [SerializeField]
         private TMPro.TextMeshProUGUI textPrice;
+        [SerializeField]
+        private Button ButtonCharacter;
 
-        [Header("Buttons Components")]
+        [Header("ButtonSelect Components")]
         [SerializeField]
         private GameObject characterTower;
         [SerializeField]
@@ -47,6 +49,7 @@ namespace TowerDefense.Main.UI.TowerMenu
 
             textName.color = colorText;
             textPrice.color = colorText;
+            ButtonCharacter.GetComponentInChildren<TMPro.TextMeshProUGUI>().color = colorText;
 
             textPrice.text = price.ToString() + "$";
 

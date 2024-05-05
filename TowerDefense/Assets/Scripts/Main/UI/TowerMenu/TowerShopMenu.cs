@@ -29,7 +29,7 @@ namespace TowerDefense.Main.UI.TowerMenu
             {
                 TowerType towerType = (TowerType)i;
                 towerShopComponents[i].Initialize(towerBuildManager.GetTowerPrefab(towerType).GetComponent<Tower>().Price, unitSizeTile);
-                towerShopComponents[i].buttonBuy.onClick.AddListener(() => ChooseTower(towerType));
+                towerShopComponents[i].ButtonSelect.onClick.AddListener(() => ChooseTower(towerType));
             }
         }
 
