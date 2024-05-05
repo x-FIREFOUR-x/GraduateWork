@@ -33,7 +33,27 @@ namespace TowerDefense.Main.Map.Tiles
             unitSize = new Vector3(towerRangeRing.transform.localScale.x, towerRangeRing.transform.localScale.y, towerRangeRing.transform.localScale.z);
         }
 
+        private void OnMouseEnter()
+        {
+            if (EventSystem.current.IsPointerOverGameObject())
+                return;
+
+            render.material.color = hoverColor;
+
+            ActivateTowerRangeRing();
+        }
+
         private void OnMouseDown()
+        {
+            if (EventSystem.current.IsPointerOverGameObject())
+                return;
+
+            render.material.color = hoverColor;
+
+            ActivateTowerRangeRing();
+        }
+
+        private void OnMouseUp()
         {
             if (EventSystem.current.IsPointerOverGameObject())
                 return;
@@ -52,16 +72,6 @@ namespace TowerDefense.Main.Map.Tiles
             {
                 FailedBuildTower();
             }
-        }
-
-        private void OnMouseEnter()
-        {
-            if (EventSystem.current.IsPointerOverGameObject())
-                return;
-
-            render.material.color = hoverColor;
-
-            ActivateTowerRangeRing();
         }
 
         private void OnMouseExit()
