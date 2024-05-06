@@ -23,6 +23,8 @@ namespace TowerDefense.Main.Map.Tiles
         private GameObject towerRangeRing;
         private Vector3 unitSize;
 
+        private bool wasSelectedThisTile = false;
+
 
         private void Awake()
         {
@@ -33,9 +35,30 @@ namespace TowerDefense.Main.Map.Tiles
             unitSize = new Vector3(towerRangeRing.transform.localScale.x, towerRangeRing.transform.localScale.y, towerRangeRing.transform.localScale.z);
         }
 
+            //Not Support in Mobile
+        private void OnMouseEnter()
+        {
+            if (EventSystem.current.IsPointerOverGameObject())
+                return;
+
+            render.material.color = hoverColor;
+            ActivateTowerRangeRing();
+        }
+
         private void OnMouseDown()
         {
             if (EventSystem.current.IsPointerOverGameObject())
+                return;
+
+            wasSelectedThisTile = true;
+
+            render.material.color = hoverColor;
+            ActivateTowerRangeRing();
+        }
+
+        private void OnMouseUp()
+        {
+            if (EventSystem.current.IsPointerOverGameObject() || !wasSelectedThisTile)
                 return;
 
             if (Tower != null)
@@ -54,22 +77,15 @@ namespace TowerDefense.Main.Map.Tiles
             }
         }
 
-        private void OnMouseEnter()
-        {
-            if (EventSystem.current.IsPointerOverGameObject())
-                return;
-
-            render.material.color = hoverColor;
-
-            ActivateTowerRangeRing();
-        }
-
+            //Not Support in Mobile
         private void OnMouseExit()
         {
-            render.material.color = unhoverColor;
+            wasSelectedThisTile = false;
 
+            render.material.color = unhoverColor;
             DisactivateTowerRangeRing();
         }
+
 
         private void BuildTower()
         {
