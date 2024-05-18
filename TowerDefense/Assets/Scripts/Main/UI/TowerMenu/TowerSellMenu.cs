@@ -18,6 +18,8 @@ namespace TowerDefense.Main.UI.TowerMenu
             transform.position = position;
             priceSellText.text = priceSell.ToString() + "$";
             ui.SetActive(true);
+
+            TowerBuildManager.instance.DisetChosenTower();
         }
 
         public void Hide()
@@ -33,7 +35,7 @@ namespace TowerDefense.Main.UI.TowerMenu
 
         public void Close()
         {
-            TowerBuildManager.instance.DisetTowerTile();
+            TowerBuildManager.instance.DisetChosenTowerTile();
             Hide();
         }
 

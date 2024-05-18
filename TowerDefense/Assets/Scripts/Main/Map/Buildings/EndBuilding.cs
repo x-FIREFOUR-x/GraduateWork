@@ -6,17 +6,17 @@ namespace TowerDefense.Main.Map.Buildings
     public class EndBuilding : Building
     {
         [field: SerializeField]
-        public int health { get; private set; } = 100;
+        public int Health { get; private set; } = 100;
 
         public static string endBuildingTag = "EndBuilding";
 
         public void TakeDamage(int damage)
         {
-            if (health > 0)
+            if (Health > 0)
             {
-                health -= damage;
-                if (health < 0)
-                    health = 0;
+                Health -= damage;
+                if (Health < 0)
+                    Health = 0;
             }
         }
     }

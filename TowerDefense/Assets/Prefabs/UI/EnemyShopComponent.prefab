@@ -939,15 +939,16 @@ MonoBehaviour:
   textName: {fileID: 3684437011186225682}
   textPrice: {fileID: 3684437011647253202}
   textCount: {fileID: 2543388858324868940}
+  colorText: {r: 0, g: 0, b: 0, a: 1}
+  characterEnemy: {fileID: 7072584932646027435}
+  textCharacter: {fileID: 789319239929110076}
+  colorCharacterText: {r: 0.22745098, g: 0, b: 1, a: 1}
   buttonSub: {fileID: 855581287730707141}
   button5Sub: {fileID: 8995423313086491402}
   buttonAdd: {fileID: 2421003568319312347}
   button5Add: {fileID: 8224521990732972914}
   failColorButtonsAddAndSub: {r: 1, g: 0, b: 0, a: 1}
   timeShowFail: 0.1
-  characterEnemy: {fileID: 7072584932646027435}
-  textCharacter: {fileID: 789319239929110076}
-  colorText: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1 &3684437011647253203
 GameObject:
   m_ObjectHideFlags: 0

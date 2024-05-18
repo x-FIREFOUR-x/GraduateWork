@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 using TowerDefense.Main.Map.Buildings;
+using TowerDefense.Main.Managers.WaveSpawners;
 
 
 namespace TowerDefense.Main.UI.Menu
@@ -12,23 +13,44 @@ namespace TowerDefense.Main.UI.Menu
         private string mainMenuScene = "MainMenuScene";
 
         [SerializeField]
-        private GameObject endBuildingPrefab;
+        private EndBuilding endBuilding;
         [SerializeField]
-        private GameObject gameOverMenuUI;
+        private WaveSpawner waveSpawner;
+
+        [SerializeField]
+        private int countWaveForWinDefender;
+
+        [Header("Windows End Game:")]
+        [SerializeField]
+        private GameObject gameWinAttackerMenuUI;
+        [SerializeField]
+        private GameObject gameWinDefenderMenuUI;
 
         void Update()
         {
-            if (endBuildingPrefab.GetComponent<EndBuilding>().health <= 0)
+            if (endBuilding.Health <= 0)
             {
-                GameOver();
+                GameWinAttacker();
+            }
+
+            if(waveSpawner.WaveNumber > countWaveForWinDefender)
+            {
+                GameWinDefender();
             }
         }
 
-        private void GameOver()
+        private void GameWinAttacker()
         {
             Time.timeScale = 0f;
 
-            gameOverMenuUI.SetActive(true);
+            gameWinAttackerMenuUI.SetActive(true);
+        }
+
+        private void GameWinDefender()
+        {
+            Time.timeScale = 0f;
+
+            gameWinDefenderMenuUI.SetActive(true);
         }
 
         public void GoToMenu()

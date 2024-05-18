@@ -8,17 +8,22 @@ namespace TowerDefense.Main.Map.Tiles
 {
     public class ClickableTowerTile : TowerTile
     {
-        [Header("Colors:")]
+        private TowerBuildManager towerBuildManager;
 
+        [Header("Colors:")]
         [SerializeField]
         private Color hoverColor;
         private Color unhoverColor;
 
         [SerializeField]
-        private Color notEnoughMoney;
+        private Color failBuildColor;
 
+        [Header("Tower Range:")]
+        [SerializeField]
+        private GameObject towerRangeRing;
+        private Vector3 unitSize;
 
-        private TowerBuildManager towerBuildManager;
+        private bool wasSelectedThisTile = false;
 
 
         private void Awake()
@@ -26,6 +31,18 @@ namespace TowerDefense.Main.Map.Tiles
             render = GetComponent<Renderer>();
             unhoverColor = render.material.color;
             towerBuildManager = TowerBuildManager.instance;
+
+            unitSize = new Vector3(towerRangeRing.transform.localScale.x, towerRangeRing.transform.localScale.y, towerRangeRing.transform.localScale.z);
+        }
+
+            //Not Support in Mobile
+        private void OnMouseEnter()
+        {
+            if (EventSystem.current.IsPointerOverGameObject())
+                return;
+
+            render.material.color = hoverColor;
+            ActivateTowerRangeRing();
         }
 
         private void OnMouseDown()
@@ -33,33 +50,72 @@ namespace TowerDefense.Main.Map.Tiles
             if (EventSystem.current.IsPointerOverGameObject())
                 return;
 
+            wasSelectedThisTile = true;
+
+            render.material.color = hoverColor;
+            ActivateTowerRangeRing();
+        }
+
+        private void OnMouseUp()
+        {
+            if (EventSystem.current.IsPointerOverGameObject() || !wasSelectedThisTile)
+                return;
+
             if (Tower != null)
             {
-                towerBuildManager.SetTowerTile(this);
+                ActionWhenTowerBuilded();
                 return;
             }
 
             if (towerBuildManager.CanBuild())
             {
-                towerBuildManager.BuildTower(this);
+                BuildTower();
             }
             else
             {
-                render.material.color = notEnoughMoney;
+                FailedBuildTower();
             }
         }
 
-        private void OnMouseEnter()
-        {
-            if (EventSystem.current.IsPointerOverGameObject())
-                return;
-
-            render.material.color = hoverColor;
-        }
-
+            //Not Support in Mobile
         private void OnMouseExit()
         {
+            wasSelectedThisTile = false;
+
             render.material.color = unhoverColor;
+            DisactivateTowerRangeRing();
+        }
+
+
+        private void BuildTower()
+        {
+            DisactivateTowerRangeRing();
+            towerBuildManager.BuildTower(this);
+        }
+
+        private void FailedBuildTower()
+        {
+            DisactivateTowerRangeRing();
+            render.material.color = failBuildColor;
+        }
+
+        private void ActionWhenTowerBuilded()
+        {
+            DisactivateTowerRangeRing();
+            towerBuildManager.CloseOrOpenTowerSellerForTowerTile(this);
+        }
+
+        private void ActivateTowerRangeRing()
+        {
+            float towerShootRange = towerBuildManager.GetShootRangeChosenTower();
+            towerRangeRing.transform.localScale = new Vector3(unitSize.x * towerShootRange, unitSize.y * towerShootRange, unitSize.z * towerShootRange);
+            towerRangeRing.SetActive(true);
+        }
+
+        private void DisactivateTowerRangeRing()
+        {
+            towerRangeRing.SetActive(false);
+            towerRangeRing.transform.localScale = new Vector3(unitSize.x, unitSize.y, unitSize.z);
         }
     }
 

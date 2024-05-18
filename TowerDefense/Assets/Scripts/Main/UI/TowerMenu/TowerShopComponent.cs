@@ -10,6 +10,8 @@ namespace TowerDefense.Main.UI.TowerMenu
 {
     public class TowerShopComponent : MonoBehaviour
     {
+        public bool IsSelected { get; private set; }
+
         [SerializeField]
         private Tower tower;
 
@@ -17,13 +19,15 @@ namespace TowerDefense.Main.UI.TowerMenu
         [SerializeField]
         private Image background;
         [field: SerializeField]
-        public Button buttonBuy { get; private set; }
+        public Button ButtonSelect{ get; private set; }
         [SerializeField]
         private TMPro.TextMeshProUGUI textName;
         [SerializeField]
         private TMPro.TextMeshProUGUI textPrice;
+        [SerializeField]
+        private Button ButtonCharacter;
 
-        [Header("Buttons Components")]
+        [Header("ButtonSelect Components")]
         [SerializeField]
         private GameObject characterTower;
         [SerializeField]
@@ -36,26 +40,33 @@ namespace TowerDefense.Main.UI.TowerMenu
         private Color colorUnselected;
         [SerializeField]
         private Color colorText;
+        [SerializeField]
+        private Color colorCharacterText;
 
-        public void Initialize(int price)
+        public void Initialize(int price, float sizeUnitTileInRange)
         {
+            IsSelected = false;
 
             textName.color = colorText;
             textPrice.color = colorText;
+            ButtonCharacter.GetComponentInChildren<TMPro.TextMeshProUGUI>().color = colorText;
 
             textPrice.text = price.ToString() + "$";
 
-            InitializetextCharacters();
+            InitializetextCharacters(sizeUnitTileInRange);
         }
 
-        private void InitializetextCharacters()
+        private void InitializetextCharacters(float sizeUniSizeUnitTileInRangetTile)
         {
+            float range = (tower.ShootRange - sizeUniSizeUnitTileInRangetTile / 2) / sizeUniSizeUnitTileInRangetTile ;
+
+            textCharacter.GetComponent<TMPro.TextMeshProUGUI>().color = colorCharacterText;
             textCharacter.GetComponent<TMPro.TextMeshProUGUI>().text =
-                "   Characters: \n" +
+                "\n   Characters: \n" +
                 " Count Bullet: " + tower.CountProjectileEntitys.ToString() + "\n" +
-                " Range: " + tower.ShootRange.ToString() + "\n" +
+                " Range: " + MathF.Round(range, 1).ToString() + "\n" +
                 " Cooldown: " + tower.TimeBetweenShoots.ToString() + "\n" +
-                " DPS: " + Math.Round(tower.DamageInSecond(), 1).ToString();
+                " DPS: " + MathF.Round(tower.DamageInSecond(), 1).ToString();
         }
 
         public void ChangeImageToCharacter()
@@ -75,7 +86,8 @@ namespace TowerDefense.Main.UI.TowerMenu
 
         public void SetComponentSelected(bool isSelected)
         {
-            if (isSelected)
+            IsSelected = isSelected;
+            if (IsSelected)
             {
                 background.color = colorSelected;
             }

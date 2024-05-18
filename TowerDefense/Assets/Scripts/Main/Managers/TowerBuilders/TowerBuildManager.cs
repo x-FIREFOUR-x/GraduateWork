@@ -13,7 +13,7 @@ namespace TowerDefense.Main.Managers.TowerBuilders
         public static TowerBuildManager instance;
 
         private Tower chosenTower;
-        private TowerTile chosenTowerTile;
+        private ClickableTowerTile chosenTowerTile;
 
         private TowersStorage towersStorage;
 
@@ -22,6 +22,12 @@ namespace TowerDefense.Main.Managers.TowerBuilders
         private TowerSellMenu towerSeller;
         [SerializeField]
         private TowerShopMenu towerShop;
+
+        [Header("Effect")]
+        [SerializeField]
+        private GameObject effectBuildingPrefab;
+        [SerializeField]
+        private float timeEffectBuilding;
 
 
         private void Awake()
@@ -54,7 +60,7 @@ namespace TowerDefense.Main.Managers.TowerBuilders
         }
 
 
-        public void SetTowerTile(TowerTile towerTile)
+        public void CloseOrOpenTowerSellerForTowerTile(ClickableTowerTile towerTile)
         {
             if (chosenTowerTile == towerTile)
             {
@@ -69,9 +75,14 @@ namespace TowerDefense.Main.Managers.TowerBuilders
             }
         }
 
-        public void DisetTowerTile()
+        public void DisetChosenTowerTile()
         {
             chosenTowerTile = null;
+        }
+
+        public void DisetChosenTower()
+        {
+            chosenTower = null;
             towerShop.AllComponentSetNotSelected();
         }
 
@@ -86,6 +97,9 @@ namespace TowerDefense.Main.Managers.TowerBuilders
             GameObject tower = Instantiate(chosenTower.gameObject, tile.GetTowerBuildPosition(), tile.transform.rotation);
             tile.Tower = tower;
 
+            GameObject effect = Instantiate(effectBuildingPrefab, tile.GetTowerBuildPosition(), tile.transform.rotation);
+            Destroy(effect, timeEffectBuilding);
+
             PlayerStats.AddPlayerMoney(-chosenTower.GetComponent<Tower>().Price);
         }
 
@@ -96,6 +110,10 @@ namespace TowerDefense.Main.Managers.TowerBuilders
             towerShop.AllComponentSetNotSelected();
         }
 
+        public float GetShootRangeChosenTower()
+        {
+            return chosenTower != null ? chosenTower.ShootRange : 0;
+        }
 
         private int PriceSell()
         {
