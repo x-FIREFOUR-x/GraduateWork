@@ -14,8 +14,6 @@ namespace TowerDefense.Main.Managers.WaveSpawners
         [SerializeField]
         private EnemyShopMenu enemyShopMenu;
 
-        private bool WaveToBeStarted = false;
-
         public override void Initialize(Transform spawn)
         {
             base.Initialize(spawn);
@@ -26,20 +24,16 @@ namespace TowerDefense.Main.Managers.WaveSpawners
 
         void Update()
         {
-            if (WaveNotFinished())
+            if (!WaveFinished())
             {
                 return;
             }
             else
             {
-                if (WaveToBeStarted)
+                if (AllCurrentWaveEnemiesSpawned)
                 {
-                    WaveNumber++;
-                    PlayerStats.IncreaseMoneyAfterWave();
-                    UpdateMoneyByWave();
-                    UpdateGameStats();
-
-                    WaveToBeStarted = false;
+                    OperationAfterFinishWave();
+                    AllCurrentWaveEnemiesSpawned = false;
                 }
             }
 
@@ -54,14 +48,16 @@ namespace TowerDefense.Main.Managers.WaveSpawners
 
         private IEnumerator SpawnWave()
         {
-            WaveToBeStarted = true;
-
             nextWave = enemyShopMenu.TakeEnemies();
+            OperationPrevStartWave();
+
             for (int i = 0; i < nextWave.Count; i++)
             {
                 SpawnEnemy(nextWave[i]);
                 yield return new WaitForSeconds(0.5f);
             }
+
+            AllCurrentWaveEnemiesSpawned = true;
         }
     }
 

@@ -49,7 +49,7 @@ namespace TowerDefense.Main.Managers.TowerBuilders
 
         private void Update()
         {
-            if(!waveSpawner.WaveNotFinished() && countBuildedTowerList != waveSpawner.WaveNumber)
+            if(waveSpawner.WaveFinished() && countBuildedTowerList != waveSpawner.WaveNumber)
             {
                 UpdateAvailableTower();
 

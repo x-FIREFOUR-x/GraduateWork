@@ -41,17 +41,16 @@ namespace TowerDefense.Main.Managers.WaveSpawners
 
         void Update()
         {
-            if (WaveNotFinished())
+            if (!WaveFinished())
             {
                 return;
             }
-            else
+            else 
             {
-                if (!isEnrolledhWave)
+                if (AllCurrentWaveEnemiesSpawned)
                 {
-                    WaveNumber++;
-                    PlayerStats.IncreaseMoneyAfterWave();
-                    isEnrolledhWave = true;
+                    OperationAfterFinishWave();
+                    AllCurrentWaveEnemiesSpawned = false;
                 }
             }
 
@@ -66,7 +65,6 @@ namespace TowerDefense.Main.Managers.WaveSpawners
 
             if (!waveGenerated && !isTaskRunning)
             {
-                UpdateGameStats();
                 UpdateAvailableEnemy();
 
                 EnemiesHeuristicsCalculator.instance.UpdateCurrentTower();
@@ -83,13 +81,15 @@ namespace TowerDefense.Main.Managers.WaveSpawners
             nextWave = taskGenerated.Result;
             nextWave = SortBalanceWave(nextWave);
 
-            isEnrolledhWave = false;
+            OperationPrevStartWave();
 
             for (int i = 0; i < nextWave.Count; i++)
             {
                 SpawnEnemy(nextWave[i]);
                 yield return new WaitForSeconds(0.5f);
             }
+
+            AllCurrentWaveEnemiesSpawned = true;
         }
 
         private Task<List<EnemyType>> GeneratedWave()
@@ -115,8 +115,6 @@ namespace TowerDefense.Main.Managers.WaveSpawners
 
         private void OperationsPostGeneratingWave()
         {
-            UpdateMoneyByWave();
-
             waveGenerated = true;
             isTaskRunning = false;
         }

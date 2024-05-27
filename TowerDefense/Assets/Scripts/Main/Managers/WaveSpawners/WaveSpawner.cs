@@ -20,28 +20,34 @@ namespace TowerDefense.Main.Managers.WaveSpawners
 
         public int WaveNumber { get; protected set; } = 1;
 
-
         protected List<EnemyType> availableEnemy;
         protected Dictionary<EnemyType, int> availablePrices;
 
         protected List<EnemyType> nextWave;
-        protected bool isEnrolledhWave = true;
-
+        
+        protected int countAllEnemiesCurrentWave;
+        protected int countSpawnedEnemiesInThisWave;
+        protected bool AllCurrentWaveEnemiesSpawned;
 
         public virtual void Initialize(Transform spawn)
         {
             SpawnPoint = spawn;
             enemiesStorage = Resources.Load<EnemiesStorage>($"{nameof(EnemiesStorage)}");
+
+            countAllEnemiesCurrentWave = 0;
+            countSpawnedEnemiesInThisWave = 0;
+            AllCurrentWaveEnemiesSpawned = false;
         }
 
 
-        public bool WaveNotFinished()
+        public bool WaveFinished()
         {
-            return GameObject.FindGameObjectsWithTag(Enemy.enemyTag).Length > 0;
+            return countSpawnedEnemiesInThisWave == countAllEnemiesCurrentWave && GameObject.FindGameObjectsWithTag(Enemy.enemyTag).Length == 0;
         }
 
         protected void SpawnEnemy(EnemyType enemyType)
         {
+            countSpawnedEnemiesInThisWave++;
             Instantiate(enemiesStorage.Enemies[(int)enemyType], SpawnPoint.position, SpawnPoint.rotation);
         }
 
@@ -65,6 +71,21 @@ namespace TowerDefense.Main.Managers.WaveSpawners
                 default:
                     break;
             }
+        }
+
+        protected void OperationPrevStartWave()
+        {
+            countSpawnedEnemiesInThisWave = 0;
+            countAllEnemiesCurrentWave = nextWave.Count;
+        }
+
+        protected void OperationAfterFinishWave()
+        {
+            WaveNumber++;
+            PlayerStats.IncreaseMoneyAfterWave();
+
+            UpdateMoneyByWave();
+            UpdateGameStats();
         }
 
         protected void UpdateMoneyByWave()
