@@ -66,7 +66,7 @@ namespace TowerDefense.Main.Enemies
             InitializeHealthBar();
         }
 
-        void Update()
+        void FixedUpdate()
         {
             Vector3 targetPosition = new Vector3(target.position.x, 0, target.position.z);
             Vector3 position = new Vector3(transform.position.x, 0, transform.position.z);
@@ -76,9 +76,9 @@ namespace TowerDefense.Main.Enemies
 
             movedDistance += (direction.normalized * speed * Time.deltaTime).magnitude;
 
-            if (Vector3.Distance(position, targetPosition) <= 0.2f)
+            if (Mathf.Abs(Vector3.Distance(position, targetPosition)) <= 0.2f)
             {
-                if (!GetNextWayPoint())
+                if (!TryGetNextWayPoint())
                 {
                     DamageEndBuilding();
                     Die();
@@ -90,7 +90,7 @@ namespace TowerDefense.Main.Enemies
             UpdateSpeed();
         }
 
-        private bool GetNextWayPoint()
+        private bool TryGetNextWayPoint()
         {
             WayPointIndex++;
             if (WayPointIndex > WayPoints.Points.Count - 1)
