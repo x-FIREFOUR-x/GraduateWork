@@ -1,3 +1,2 @@
 # Graduate Work
-National Technical University of Ukraine 'Kyiv Polytechnic Institute'​
-Pasalskyi Olexandr IP-01
+Student at National Technical University of Ukraine 'Kyiv Polytechnic Institute'​ Pasalskyi Olexandr IP-01
