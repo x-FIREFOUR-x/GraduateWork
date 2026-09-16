@@ -1,4 +1,4 @@
-﻿Shader "TextMeshPro/Distance Field SSD" {
+Shader "TextMeshPro/Distance Field SSD - SpaceWarp" {
 
 Properties {
     _FaceTex            ("Face Texture", 2D) = "white" {}
@@ -82,6 +82,8 @@ Properties {
 
     _CullMode           ("Cull Mode", Float) = 0
     _ColorMask          ("Color Mask", Float) = 15
+
+    _XRMotionVectorsPass("_XRMotionVectorsPass", Float) = 0.0
 }
 
 SubShader {
@@ -131,33 +133,32 @@ SubShader {
         struct vertex_t
         {
             UNITY_VERTEX_INPUT_INSTANCE_ID
-            float4	position        : POSITION;
-            float3	normal          : NORMAL;
-            float4	color           : COLOR;
-            float4	texcoord0       : TEXCOORD0;
-            float2	texcoord1       : TEXCOORD1;
+            float4 position        : POSITION;
+            float3 normal          : NORMAL;
+            float4 color           : COLOR;
+            float4 texcoord0       : TEXCOORD0;
+            float2 texcoord1       : TEXCOORD1;
         };
 
         struct pixel_t
         {
             UNITY_VERTEX_INPUT_INSTANCE_ID
             UNITY_VERTEX_OUTPUT_STEREO
-            float4	position        : SV_POSITION;
-            float4	color           : COLOR;
-            float2	atlas           : TEXCOORD0;
-            float	weight          : TEXCOORD1;
-            float2	mask            : TEXCOORD2;		// Position in object space(xy)
-            float3	viewDir         : TEXCOORD3;
+            float4 position        : SV_POSITION;
+            float4 color           : COLOR;
+            float2 atlas           : TEXCOORD0;
+            float  weight          : TEXCOORD1;
+            float2 mask            : TEXCOORD2;
+            float3 viewDir         : TEXCOORD3;
 
             #if (UNDERLAY_ON || UNDERLAY_INNER)
-            float2	texcoord2       : TEXCOORD4;
-            float4	underlayColor   : COLOR1;
+            float2 texcoord2       : TEXCOORD4;
+            float4 underlayColor   : COLOR1;
             #endif
 
-            float4 textures         : TEXCOORD5;
+            float4 textures        : TEXCOORD5;
         };
 
-        // Used by Unity internally to handle Texture Tiling and Offset.
         float4 _FaceTex_ST;
         float4 _OutlineTex_ST;
         float _UIMaskSoftnessX;
@@ -198,10 +199,8 @@ SubShader {
             float2 bOffset = float2(x, y);
             #endif
 
-            // Generate UV for the Masking Texture
             float4 clampedRect = clamp(_ClipRect, -2e10, 2e10);
 
-            // Support for texture tiling and offset
             float2 textureUV = input.texcoord1;
             float2 faceUV = TRANSFORM_TEX(textureUV, _FaceTex);
             float2 outlineUV = TRANSFORM_TEX(textureUV, _OutlineTex);
@@ -298,7 +297,6 @@ SubShader {
             faceColor.rgb += glowColor.rgb * glowColor.a;
             #endif
 
-            // Alternative implementation to UnityGet2DClipping with support for softness.
             #if UNITY_UI_CLIP_RECT
             half2 maskSoftness = half2(max(_UIMaskSoftnessX, _MaskSoftnessX), max(_UIMaskSoftnessY, _MaskSoftnessY));
             float2 maskZW = 0.25 / (0.25 * maskSoftness + 1 / scale);
@@ -311,6 +309,178 @@ SubShader {
             #endif
 
             return faceColor * input.color.a;
+        }
+        ENDCG
+    }
+
+    Pass
+    {
+        Name "XRMotionVectors"
+        Tags { "LightMode" = "XRMotionVectors" }
+        ZWrite On
+
+        CGPROGRAM
+        #pragma target 3.0
+        #pragma vertex VertShaderMotion
+        #pragma fragment PixShaderMotion
+        #pragma shader_feature __ UNDERLAY_ON UNDERLAY_INNER
+
+        #pragma multi_compile __ UNITY_UI_CLIP_RECT
+        #pragma multi_compile __ UNITY_UI_ALPHACLIP
+
+        #include "UnityCG.cginc"
+        #include "UnityUI.cginc"
+        #include "TMPro_Properties.cginc"
+        #include "TMPro.cginc"
+
+        float4x4 unity_MatrixPreviousM;
+        #define UNITY_MATRIX_M unity_ObjectToWorld
+        #define UNITY_PREV_MATRIX_M unity_MatrixPreviousM
+        float4x4 _PrevViewProjMatrixStereo[2];
+        float4x4 _NonJitteredViewProjMatrixStereo[2];
+        #define _PrevViewProjMatrix _PrevViewProjMatrixStereo[unity_StereoEyeIndex]
+        #define _NonJitteredViewProjMatrix _NonJitteredViewProjMatrixStereo[unity_StereoEyeIndex]
+        float _SpaceWarpNDCModifier;
+        float _XRMotionVectorsPass;
+
+        struct vertex_t
+        {
+            UNITY_VERTEX_INPUT_INSTANCE_ID
+            float4 position        : POSITION;
+            float3 normal          : NORMAL;
+            float4 color           : COLOR;
+            float4 texcoord0       : TEXCOORD0;
+            float2 texcoord1       : TEXCOORD1;
+            float4 oldvertex       : TEXCOORD4;
+        };
+
+        struct pixel_t
+        {
+            UNITY_VERTEX_INPUT_INSTANCE_ID
+            UNITY_VERTEX_OUTPUT_STEREO
+            float4 position                    : SV_POSITION;
+            float4 positionCSNoJitter          : POSITION_CS_NO_JITTER;
+            float4 previousPositionCSNoJitter  : PREV_POSITION_CS_NO_JITTER;
+            float4 color                       : COLOR;
+            float2 atlas                       : TEXCOORD0;
+            float  weight                      : TEXCOORD1;
+            float2 mask                        : TEXCOORD2;
+            #if (UNDERLAY_ON || UNDERLAY_INNER)
+            float2 texcoord2                   : TEXCOORD3;
+            #endif
+        };
+
+        float _UIMaskSoftnessX;
+        float _UIMaskSoftnessY;
+        int _UIVertexColorAlwaysGammaSpace;
+
+        pixel_t VertShaderMotion(vertex_t input)
+        {
+            pixel_t output;
+
+            UNITY_INITIALIZE_OUTPUT(pixel_t, output);
+            UNITY_SETUP_INSTANCE_ID(input);
+            UNITY_TRANSFER_INSTANCE_ID(input, output);
+            UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
+
+            float bold = step(input.texcoord0.w, 0);
+
+            float4 vert = input.position;
+            vert.x += _VertexOffsetX;
+            vert.y += _VertexOffsetY;
+
+            float4 oldvert = input.oldvertex;
+            oldvert.x += _VertexOffsetX;
+            oldvert.y += _VertexOffsetY;
+
+            float4 vPosition = mul(_NonJitteredViewProjMatrix, mul(UNITY_MATRIX_M, vert));
+            output.position = vPosition;
+            output.positionCSNoJitter = vPosition;
+            output.previousPositionCSNoJitter = mul(_PrevViewProjMatrix, mul(UNITY_PREV_MATRIX_M, oldvert));
+
+            float weight = lerp(_WeightNormal, _WeightBold, bold) / 4.0;
+            weight = (weight + _FaceDilate) * _ScaleRatioA * 0.5;
+
+            #if (UNDERLAY_ON || UNDERLAY_INNER)
+            float x = -(_UnderlayOffsetX * _ScaleRatioC) * _GradientScale / _TextureWidth;
+            float y = -(_UnderlayOffsetY * _ScaleRatioC) * _GradientScale / _TextureHeight;
+            float2 bOffset = float2(x, y);
+            #endif
+
+            float4 clampedRect = clamp(_ClipRect, -2e10, 2e10);
+
+            if (_UIVertexColorAlwaysGammaSpace && !IsGammaSpace())
+            {
+                input.color.rgb = UIGammaToLinear(input.color.rgb);
+            }
+
+            output.color = input.color;
+            output.atlas = input.texcoord0;
+            output.weight = weight;
+            output.mask = half2(vert.xy * 2 - clampedRect.xy - clampedRect.zw);
+            #if (UNDERLAY_ON || UNDERLAY_INNER)
+            output.texcoord2 = input.texcoord0 + bOffset;
+            #endif
+
+            return output;
+        }
+
+        float4 PixShaderMotion(pixel_t input) : SV_Target
+        {
+            UNITY_SETUP_INSTANCE_ID(input);
+
+            float c = tex2D(_MainTex, input.atlas).a;
+
+            float pixelSize = abs(ddx(input.atlas.y)) + abs(ddy(input.atlas.y));
+            pixelSize *= _TextureHeight * 0.75;
+            float scale = 1 / pixelSize * _GradientScale * (_Sharpness + 1);
+
+            float weight = input.weight;
+            float bias = (.5 - weight) + (.5 / scale);
+            float sd = (bias - c) * scale;
+
+            float outline = (_OutlineWidth * _ScaleRatioA) * scale;
+            float softness = (_OutlineSoftness * _ScaleRatioA) * scale;
+
+            half4 faceColor = _FaceColor;
+            half4 outlineColor = _OutlineColor;
+            faceColor.rgb *= input.color.rgb;
+            faceColor = GetColor(sd, faceColor, outlineColor, outline, softness);
+
+            #if (UNDERLAY_ON || UNDERLAY_INNER)
+            float bScale = scale;
+            bScale /= 1 + ((_UnderlaySoftness * _ScaleRatioC) * bScale);
+            float bBias = (0.5 - weight) * bScale - 0.5 - ((_UnderlayDilate * _ScaleRatioC) * 0.5 * bScale);
+            #endif
+
+            #if UNDERLAY_ON
+            float d = tex2D(_MainTex, input.texcoord2.xy).a * bScale;
+            faceColor += float4(_UnderlayColor.rgb * _UnderlayColor.a, _UnderlayColor.a) * saturate(d - bBias) * (1 - faceColor.a);
+            #endif
+
+            #if UNDERLAY_INNER
+            float d = tex2D(_MainTex, input.texcoord2.xy).a * bScale;
+            faceColor += float4(_UnderlayColor.rgb * _UnderlayColor.a, _UnderlayColor.a) * (1 - saturate(d - bBias)) * saturate(1 - sd) * (1 - faceColor.a);
+            #endif
+
+            #if UNITY_UI_CLIP_RECT
+            half2 maskSoftness = half2(max(_UIMaskSoftnessX, _MaskSoftnessX), max(_UIMaskSoftnessY, _MaskSoftnessY));
+            float2 maskZW = 0.25 / (0.25 * maskSoftness + 1 / scale);
+            half2 m = saturate((_ClipRect.zw - _ClipRect.xy - abs(input.mask.xy)) * maskZW);
+            faceColor *= m.x * m.y;
+            #endif
+
+            clip(faceColor.a * input.color.a * _XRMotionVectorsPass - 0.001);
+
+            float3 posNDC = input.positionCSNoJitter.xyz * rcp(input.positionCSNoJitter.w);
+            float3 prevPosNDC = input.previousPositionCSNoJitter.xyz * rcp(input.previousPositionCSNoJitter.w);
+            float3 velocity = posNDC - prevPosNDC;
+
+            #if UNITY_UV_STARTS_AT_TOP
+            velocity.y *= _SpaceWarpNDCModifier;
+            #endif
+
+            return float4(velocity, 1.0);
         }
         ENDCG
     }
