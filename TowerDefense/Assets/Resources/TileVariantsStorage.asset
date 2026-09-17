@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TileVariantsStorage
   m_EditorClassIdentifier: Assembly-CSharp::TowerDefense.Storage.TileVariantsStorage
   <TowerTiles>k__BackingField:
-  - BasePrefabName: TowerTile
+  - BasePrefabName: TowerTileBase
     Prefabs:
     - {fileID: 7500937990048573323, guid: 03933b8779095ba4990d190727b083a4, type: 3}
     - {fileID: 5232686392512021548, guid: 6480e17ae1a98f74f99feb8039535f89, type: 3}
@@ -23,7 +23,7 @@ MonoBehaviour:
     - {fileID: 4189141298157994365, guid: 47775f5258dd5d84ca2e2ac4dffefcb9, type: 3}
     - {fileID: 6417871754275737338, guid: 19ea4ce768a81c14389498826c2ad063, type: 3}
     - {fileID: 9070412339189514520, guid: 817e26f7eef7f394b874097fb37dac13, type: 3}
-  - BasePrefabName: ClickableTowerTile
+  - BasePrefabName: ClickableTowerTileBase
     Prefabs:
     - {fileID: 3588210273255167437, guid: 00b0580581951164182216d94f8f708e, type: 3}
     - {fileID: 1079901585807033513, guid: 63c9d63622e160247ae3d0d0767e441c, type: 3}

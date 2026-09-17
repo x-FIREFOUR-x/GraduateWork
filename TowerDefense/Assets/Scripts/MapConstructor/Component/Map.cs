@@ -1,6 +1,6 @@
 using UnityEngine;
 
-using TowerDefense.Main.Map.Tiles;
+using TowerDefense.Main.Map.Tile;
 
 
 namespace TowerDefense.MapConstructor.Component

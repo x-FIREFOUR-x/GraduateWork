@@ -3,11 +3,11 @@ using UnityEngine;
 using TowerDefense.Storage;
 
 
-namespace TowerDefense.Main.Map.Tiles
+namespace TowerDefense.Main.Map.Tile
 {
     public static class TileVariantSelector
     {
-        private const string lookTowerTileName = "TowerTile";
+        private const string lookTowerTileName = "TowerTileBase";
 
         private static TileVariantsStorage storage;
 

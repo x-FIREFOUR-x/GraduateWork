@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace TowerDefense.Main.Map.Tiles
+namespace TowerDefense.Main.Map.Tile
 {
     // Which sides of a path tile continue into a neighbor path tile, stored as bit flags (North | East | South | West)
     // It defines the path shape: straight, corner, end, junction. World directions: north = +Z, east = +X.

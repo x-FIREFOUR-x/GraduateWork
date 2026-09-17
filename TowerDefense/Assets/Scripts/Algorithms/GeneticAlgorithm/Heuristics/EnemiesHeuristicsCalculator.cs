@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-using TowerDefense.Main.Map.Tiles;
+using TowerDefense.Main.Map.Tile;
 using TowerDefense.Main.Enemies;
 using TowerDefense.Main.Towers;
 using TowerDefense.Main.Managers;

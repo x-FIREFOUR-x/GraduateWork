@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using TowerDefense.Storage;
-using TowerDefense.Main.Map.Tiles;
+using TowerDefense.Main.Map.Tile;
 using TowerDefense.Main.Map.Buildings;
 using TowerDefense.Main.Managers.WaveSpawners;
 

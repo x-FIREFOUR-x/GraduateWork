@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 using TowerDefense.Main.Managers.TowerBuilders;
 
 
-namespace TowerDefense.Main.Map.Tiles
+namespace TowerDefense.Main.Map.Tile
 {
     public class ClickableTowerTile : TowerTile
     {

@@ -6,7 +6,7 @@ using UnityEngine;
 using TowerDefense.Storage;
 using TowerDefense.Collections;
 using TowerDefense.Main.Map;
-using TowerDefense.Main.Map.Tiles;
+using TowerDefense.Main.Map.Tile;
 using TowerDefense.Main.Managers.WaveSpawners;
 using TowerDefense.Main.Towers;
 using TowerDefense.Algorithms.TowerSelectionAlgorithm;

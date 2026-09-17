@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace TowerDefense.Main.Map.Tiles
+namespace TowerDefense.Main.Map.Tile
 {
     public class TilesMap : MonoBehaviour
     {
