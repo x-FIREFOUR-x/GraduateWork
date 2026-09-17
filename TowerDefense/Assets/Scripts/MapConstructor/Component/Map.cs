@@ -1,5 +1,7 @@
 using UnityEngine;
 
+using TowerDefense.Main.Map.Tiles;
+
 
 namespace TowerDefense.MapConstructor.Component
 {
@@ -13,7 +15,7 @@ namespace TowerDefense.MapConstructor.Component
 
         private Vector3 offsetBuild;
 
-        private Vector3 sizeTile;
+        private Vector3 stepTile;
 
         [Header("Prefabs")]
         [SerializeField]
@@ -22,38 +24,73 @@ namespace TowerDefense.MapConstructor.Component
         private GameObject pathTilePrefab;
 
 
-        public void Initialize(int size, Vector3 startPosition, Vector3 offsetBuild)
+        public void Initialize(int size, Vector3 startPosition, Vector3 offsetBuild, Vector3 stepTile)
         {
             this.transform.position = startPosition;
             this.size = size;
             this.offsetBuild = offsetBuild;
-
-            sizeTile = towerTilePrefab.transform.localScale;
+            this.stepTile = stepTile;
 
             endBuilding = null;
             startBuilding = null;
 
             tilesMap = new GameObject[size, size];
 
-            Quaternion rotation = this.transform.rotation;
-
             for (int i = 0; i < size; i++)
             {
                 for (int j = 0; j < size; j++)
                 {
-                    Vector3 position = getCoordinate(i, j);
-                    tilesMap[i, j] = Instantiate(towerTilePrefab, position, rotation, this.transform);
+                    PlaceTile(i, j, false);
                 }
             }
         }
 
         public void SetTile(int i, int j, GameObject newTile)
         {
-            Vector3 position = getCoordinate(i, j);
-            Quaternion rotation = this.transform.rotation;
+            PlaceTile(i, j, newTile.GetComponent<ConstructorPathTile>() != null);
 
-            Destroy(tilesMap[i, j]);
-            tilesMap[i, j] = Instantiate(newTile, position, rotation, this.transform);
+            // Neighbor path tiles change shape when this cell becomes or stops being a path
+            RefreshPathTile(i + 1, j);
+            RefreshPathTile(i - 1, j);
+            RefreshPathTile(i, j + 1);
+            RefreshPathTile(i, j - 1);
+        }
+
+        // i grows along +X (east), j along +Z (north)
+        private void PlaceTile(int i, int j, bool isPath)
+        {
+            if (tilesMap[i, j] != null)
+                Destroy(tilesMap[i, j]);
+
+            GameObject tile = Instantiate(isPath ? pathTilePrefab : towerTilePrefab, getCoordinate(i, j), this.transform.rotation, this.transform);
+            tilesMap[i, j] = tile;
+
+            // Constructor tiles look the same as the game tiles on this cell
+            if (isPath)
+                TileVariantSelector.ApplyPathTileLook(tile, GetBitMaskForPathsConnections(i, j), j, i);
+            else
+                TileVariantSelector.ApplyTowerTileLook(tile, j, i);
+        }
+
+        private void RefreshPathTile(int i, int j)
+        {
+            if (IsPathTile(i, j))
+                PlaceTile(i, j, true);
+        }
+
+        private int GetBitMaskForPathsConnections(int i, int j)
+        {
+            return TilePathConnections.GetBitMaskFromConnectedSides(IsPathTile(i, j + 1), IsPathTile(i + 1, j), IsPathTile(i, j - 1), IsPathTile(i - 1, j));
+        }
+
+        private bool IsPathTile(int i, int j)
+        {
+            return IsInside(i, j) && tilesMap[i, j] != null && tilesMap[i, j].GetComponent<ConstructorPathTile>() != null;
+        }
+
+        private bool IsInside(int i, int j)
+        {
+            return i >= 0 && i < size && j >= 0 && j < size;
         }
 
         public GameObject GetTile(int i, int j)
@@ -109,15 +146,15 @@ namespace TowerDefense.MapConstructor.Component
 
         private Vector3 getCoordinate(int i, int j)
         {
-            return new Vector3(this.transform.position.x + (sizeTile.x + 1) * i,
+            return new Vector3(this.transform.position.x + stepTile.x * i,
                                this.transform.position.y,
-                               this.transform.position.z + (sizeTile.z + 1) * j);
+                               this.transform.position.z + stepTile.z * j);
         }
 
         private Vector2Int IndexsOfMapTile(GameObject mapTile)
         {
-            Vector2Int indexes = new((int)((mapTile.transform.position.x - this.transform.position.x) / (sizeTile.x + 1)),
-                                     (int)((mapTile.transform.position.z - this.transform.position.z) / (sizeTile.z + 1)));
+            Vector2Int indexes = new(Mathf.RoundToInt((mapTile.transform.position.x - this.transform.position.x) / stepTile.x),
+                                     Mathf.RoundToInt((mapTile.transform.position.z - this.transform.position.z) / stepTile.z));
 
             return indexes;
         }

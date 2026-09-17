@@ -15,7 +15,11 @@ namespace TowerDefense.MapConstructor.Component
         void Awake()
         {
             render = GetComponent<Renderer>();
-            unhoverColor = render.material.color;
+        }
+
+        void Start()
+        {
+            unhoverColor = render.sharedMaterial.color;
         }
 
         private void OnMouseDown()

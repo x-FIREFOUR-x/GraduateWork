@@ -39,7 +39,7 @@ namespace TowerDefense.MapConstructor
 
             mapSizeParams = Resources.Load<MapSizeParamsStorage>($"{nameof(MapSizeParamsStorage)}");
 
-            map.GetComponent<Map>().Initialize(mapSizeParams.CountTile, mapSizeParams.StartMap, mapSizeParams.OffsetBuilding);
+            map.GetComponent<Map>().Initialize(mapSizeParams.CountTile, mapSizeParams.StartMap, mapSizeParams.OffsetBuilding, StepTile());
         }
 
 
@@ -97,10 +97,15 @@ namespace TowerDefense.MapConstructor
 
         private Vector2Int IndexsOfMapTile(GameObject mapTile)
         {
-            Vector2Int indexes = new((int)((mapTile.transform.position.x - mapSizeParams.StartMap.x) / (mapTile.transform.localScale.x + 1)),
-                                     (int)((mapTile.transform.position.z - mapSizeParams.StartMap.z) / (mapTile.transform.localScale.z + 1)));
+            Vector2Int indexes = new(Mathf.RoundToInt((mapTile.transform.position.x - mapSizeParams.StartMap.x) / StepTile().x),
+                                     Mathf.RoundToInt((mapTile.transform.position.z - mapSizeParams.StartMap.z) / StepTile().z));
 
             return indexes;
+        }
+
+        private Vector3 StepTile()
+        {
+            return mapSizeParams.SizeTile + mapSizeParams.OffsetTile;
         }
     }
 

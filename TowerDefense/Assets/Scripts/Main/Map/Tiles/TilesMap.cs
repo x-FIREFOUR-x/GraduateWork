@@ -33,14 +33,18 @@ namespace TowerDefense.Main.Map.Tiles
 
                 for (int j = 0; j < Size; j++)
                 {
-                    if (generatedPath.Contains(new Vector2Int(i, j)))
+                    int indexInPath = generatedPath.IndexOf(new Vector2Int(i, j));
+                    if (indexInPath >= 0)
                     {
-                        GameObject tile = Instantiate(pathTilePrefab, position, rotation, this.transform);
+                        int bitMaskForPathsConnections = TilePathConnections.GetBitMaskFromPathNeighbors(generatedPath, indexInPath);
+                        GameObject prefab = TileVariantSelector.GetPathTile(pathTilePrefab, bitMaskForPathsConnections, i, j);
+                        GameObject tile = Instantiate(prefab, position, rotation, this.transform);
                         lineTiles.Add(tile);
                     }
                     else
                     {
-                        GameObject tile = Instantiate(towerTilePrefab, position, rotation, this.transform);
+                        GameObject prefab = TileVariantSelector.GetTowerTile(towerTilePrefab, i, j);
+                        GameObject tile = Instantiate(prefab, position, rotation, this.transform);
                         lineTiles.Add(tile);
                     }
 

@@ -29,10 +29,14 @@ namespace TowerDefense.Main.Map.Tiles
         private void Awake()
         {
             render = GetComponent<Renderer>();
-            unhoverColor = render.material.color;
             towerBuildManager = TowerBuildManager.instance;
 
             unitSize = new Vector3(towerRangeRing.transform.localScale.x, towerRangeRing.transform.localScale.y, towerRangeRing.transform.localScale.z);
+        }
+
+        private void Start()
+        {
+            unhoverColor = render.sharedMaterial.color;
         }
 
             //Not Support in Mobile
