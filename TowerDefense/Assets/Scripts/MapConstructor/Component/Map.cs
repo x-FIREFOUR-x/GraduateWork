@@ -9,7 +9,7 @@ namespace TowerDefense.MapConstructor.Component
     {
         private int size = 16;
 
-        private GameObject[,] tilesMap;
+        private GameObject[,] tiles;
         private GameObject endBuilding;
         private GameObject startBuilding;
 
@@ -34,7 +34,8 @@ namespace TowerDefense.MapConstructor.Component
             endBuilding = null;
             startBuilding = null;
 
-            tilesMap = new GameObject[size, size];
+            TileVariantSelector.Reseed();
+            tiles = new GameObject[size, size];
 
             for (int i = 0; i < size; i++)
             {
@@ -59,11 +60,11 @@ namespace TowerDefense.MapConstructor.Component
         // i grows along +X (east), j along +Z (north)
         private void PlaceTile(int i, int j, bool isPath)
         {
-            if (tilesMap[i, j] != null)
-                Destroy(tilesMap[i, j]);
+            if (tiles[i, j] != null)
+                Destroy(tiles[i, j]);
 
             GameObject tile = Instantiate(isPath ? pathTilePrefab : towerTilePrefab, getCoordinate(i, j), this.transform.rotation, this.transform);
-            tilesMap[i, j] = tile;
+            tiles[i, j] = tile;
 
             // Constructor tiles look the same as the game tiles on this cell
             if (isPath)
@@ -85,7 +86,7 @@ namespace TowerDefense.MapConstructor.Component
 
         private bool IsPathTile(int i, int j)
         {
-            return IsInside(i, j) && tilesMap[i, j] != null && tilesMap[i, j].GetComponent<ConstructorPathTile>() != null;
+            return IsInside(i, j) && tiles[i, j] != null && tiles[i, j].GetComponent<ConstructorPathTile>() != null;
         }
 
         private bool IsInside(int i, int j)
@@ -95,7 +96,7 @@ namespace TowerDefense.MapConstructor.Component
 
         public GameObject GetTile(int i, int j)
         {
-            return tilesMap[i, j];
+            return tiles[i, j];
         }
 
         public void SetStartBuilding(int i, int j, GameObject building)
@@ -172,7 +173,7 @@ namespace TowerDefense.MapConstructor.Component
             {
                 for (int j = 0; j < size; j++)
                 {
-                    if (tilesMap[i, j].name.Contains(towerTilePrefab.name))
+                    if (tiles[i, j].name.Contains(towerTilePrefab.name))
                         array[i, j] = 0;
                     else
                         array[i, j] = 1;

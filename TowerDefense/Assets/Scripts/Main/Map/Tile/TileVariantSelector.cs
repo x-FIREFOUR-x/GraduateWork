@@ -1,3 +1,5 @@
+using System;
+
 using UnityEngine;
 
 using TowerDefense.Storage;
@@ -11,6 +13,13 @@ namespace TowerDefense.Main.Map.Tile
 
         private static TileVariantsStorage storage;
 
+        private static int seedForRandomVariantSelection;
+
+
+        public static void Reseed()
+        {
+            seedForRandomVariantSelection = Environment.TickCount;
+        }
 
         public static GameObject GetTowerTile(GameObject basePrefab, int row, int column)
         {
@@ -47,7 +56,16 @@ namespace TowerDefense.Main.Map.Tile
 
         private static int Hash(int row, int column)
         {
-            return ((row * 73856093) ^ (column * 19349663)) & int.MaxValue;
+            unchecked
+            {
+                int hash = row * 73856093 ^ column * 19349663 ^ seedForRandomVariantSelection * 83492791;
+
+                hash ^= hash >> 16;
+                hash *= (int)0x85ebca6b;
+                hash ^= hash >> 13;
+
+                return hash & int.MaxValue;
+            }
         }
 
         private static TileVariantsStorage GetStorage()
