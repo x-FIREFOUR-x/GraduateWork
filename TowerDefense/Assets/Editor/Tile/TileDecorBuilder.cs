@@ -39,7 +39,6 @@ namespace TowerDefense.EditorTools.Tile
             int rows = paletteRamps.Length;
             Texture2D paletteTexture = new Texture2D(rampWidth, rows * rowHeight, TextureFormat.RGBA32, false)
             {
-                name = "TileDecorPalette",
                 filterMode = FilterMode.Bilinear,
                 wrapMode = TextureWrapMode.Clamp
             };
