@@ -17,7 +17,7 @@ namespace TowerDefense.EditorTools.Tile
     [InitializeOnLoad]
     public static class TilePrefabsBaker
     {
-        // Tower and path tile assets are kept in "TowerTile" and "PathTile" subfolders of these
+        // Tile assets are kept in a "TowerTile", "PathTile" or "BlockedTile" subfolder of these
         private const string texturesFolder = "Assets/Textures/Tile";
         private const string meshesFolder = "Assets/Models/Tile";
         private const string materialsFolder = "Assets/Materials/MapComponents/Tile";
@@ -28,6 +28,7 @@ namespace TowerDefense.EditorTools.Tile
 
         private const int grassVariants = 8;
         private const int pathTileVariants = 1;
+        private const int blockedVariants = TileDecorBuilder.BlockedVariants;
 
         // Texture and material names are the tile kind plus one of these
         private static readonly string[] grassTextureVariants = { "Grass_01", "Grass_02", "Grass_03" };
@@ -36,11 +37,14 @@ namespace TowerDefense.EditorTools.Tile
         // Side faces sample the dark groove in the texture corner
         private static readonly Vector2 sideUV = new Vector2(0.02f, 0.02f);
 
-        private static readonly (string prefabPath, bool isPath)[] baseTiles =
+        private enum TileKind { Tower, Path, Blocked }
+
+        private static readonly (string prefabPath, TileKind kind)[] baseTiles =
         {
-            ($"{prefabsFolder}/TowerTile/TowerTileBase.prefab", false),
-            ($"{prefabsFolder}/ClickableTowerTile/ClickableTowerTileBase.prefab", false),
-            ($"{prefabsFolder}/PathTile/PathTileBase.prefab", true),
+            ($"{prefabsFolder}/TowerTile/TowerTileBase.prefab", TileKind.Tower),
+            ($"{prefabsFolder}/ClickableTowerTile/ClickableTowerTileBase.prefab", TileKind.Tower),
+            ($"{prefabsFolder}/PathTile/PathTileBase.prefab", TileKind.Path),
+            ($"{prefabsFolder}/BlockedTile/BlockedTileBase.prefab", TileKind.Blocked),
         };
 
 
@@ -56,16 +60,19 @@ namespace TowerDefense.EditorTools.Tile
                 return;
 
             // Wait until the tile textures are imported
-            if (AssetDatabase.LoadAssetAtPath<Texture2D>($"{TileFolder(texturesFolder, false)}/{TileKind(false)}_{grassTextureVariants[0]}.png") == null)
+            if (AssetDatabase.LoadAssetAtPath<Texture2D>(TexturePath(TileKind.Tower, grassTextureVariants[0])) == null)
                 return;
 
             TileVariantsStorage storage = AssetDatabase.LoadAssetAtPath<TileVariantsStorage>(storagePath);
 
             foreach (var baseTile in baseTiles)
             {
-                bool isBaked = storage != null && (baseTile.isPath
-                    ? storage.PathTiles.Count > 0
-                    : storage.GetTowerTile(Path.GetFileNameWithoutExtension(baseTile.prefabPath), 0) != null);
+                bool isBaked = storage != null && baseTile.kind switch
+                {
+                    TileKind.Path => storage.PathTiles.Count > 0,
+                    TileKind.Blocked => storage.BlockedTiles.Count > 0,
+                    _ => storage.GetTowerTile(Path.GetFileNameWithoutExtension(baseTile.prefabPath), 0) != null
+                };
 
                 if (!isBaked)
                 {
@@ -80,24 +87,26 @@ namespace TowerDefense.EditorTools.Tile
         {
             HashSet<string> bakedPaths = new();
 
-            foreach (bool isPath in new[] { false, true })
+            foreach (TileKind kind in new[] { TileKind.Tower, TileKind.Path, TileKind.Blocked })
             {
-                EnsureFolder(TileFolder(meshesFolder, isPath));
-                EnsureFolder(TileFolder(materialsFolder, isPath));
+                EnsureFolder(TileFolder(meshesFolder, kind));
+                EnsureFolder(TileFolder(materialsFolder, kind));
             }
 
             Texture2D palette = BakePalette();
+            // Keyed by mesh path, so kinds that number their variants alike still get a mesh each
             Dictionary<string, Mesh> meshes = new();
             List<TileVariantsStorage.TowerTileVariants> towerTiles = new();
             List<TileVariantsStorage.PathTileVariants> pathTiles = new();
+            List<GameObject> blockedTiles = new();
+
+            // Base prefabs live next to their variants and must survive the cleanup
+            foreach (var baseTile in baseTiles)
+                bakedPaths.Add(baseTile.prefabPath);
 
             bool allBaked = true;
             foreach (var baseTile in baseTiles)
-            {
-                // A base prefab shares the folder with the variants baked from it, so the stale sweep below must spare it
-                bakedPaths.Add(baseTile.prefabPath);
-                allBaked &= BakeBaseTile(baseTile.prefabPath, baseTile.isPath, palette, meshes, bakedPaths, towerTiles, pathTiles);
-            }
+                allBaked &= BakeBaseTile(baseTile.prefabPath, baseTile.kind, palette, meshes, bakedPaths, towerTiles, pathTiles, blockedTiles);
 
             // Keep the previous storage and assets when something could not be baked
             if (!allBaked)
@@ -107,13 +116,13 @@ namespace TowerDefense.EditorTools.Tile
                 return;
             }
 
-            SaveStorage(towerTiles, pathTiles);
+            SaveStorage(towerTiles, pathTiles, blockedTiles);
 
             DeleteStaleAssets(new[]
             {
-                TileFolder(meshesFolder, false), TileFolder(meshesFolder, true),
-                TileFolder(materialsFolder, false), TileFolder(materialsFolder, true),
-                $"{prefabsFolder}/TowerTile", $"{prefabsFolder}/ClickableTowerTile", $"{prefabsFolder}/PathTile"
+                TileFolder(meshesFolder, TileKind.Tower), TileFolder(meshesFolder, TileKind.Path), TileFolder(meshesFolder, TileKind.Blocked),
+                TileFolder(materialsFolder, TileKind.Tower), TileFolder(materialsFolder, TileKind.Path), TileFolder(materialsFolder, TileKind.Blocked),
+                $"{prefabsFolder}/TowerTile", $"{prefabsFolder}/ClickableTowerTile", $"{prefabsFolder}/PathTile", $"{prefabsFolder}/BlockedTile"
             }, bakedPaths);
             if (AssetDatabase.IsValidFolder(legacyStoragesFolder))
                 AssetDatabase.DeleteAsset(legacyStoragesFolder);
@@ -123,8 +132,9 @@ namespace TowerDefense.EditorTools.Tile
         }
 
 
-        private static bool BakeBaseTile(string prefabPath, bool isPath, Texture2D palette, Dictionary<string, Mesh> meshes, HashSet<string> bakedPaths,
-                                         List<TileVariantsStorage.TowerTileVariants> towerTiles, List<TileVariantsStorage.PathTileVariants> pathTiles)
+        private static bool BakeBaseTile(string prefabPath, TileKind kind, Texture2D palette, Dictionary<string, Mesh> meshes, HashSet<string> bakedPaths,
+                                         List<TileVariantsStorage.TowerTileVariants> towerTiles, List<TileVariantsStorage.PathTileVariants> pathTiles,
+                                         List<GameObject> blockedTiles)
         {
             GameObject basePrefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
             if (basePrefab == null)
@@ -145,7 +155,7 @@ namespace TowerDefense.EditorTools.Tile
             string variantsFolder = $"{prefabsFolder}/{tileName}";
             EnsureFolder(variantsFolder);
 
-            if (isPath)
+            if (kind == TileKind.Path)
             {
                 for (int bitMaskForPathsConnections = 0; bitMaskForPathsConnections < TilePathConnections.CombinationCount; bitMaskForPathsConnections++)
                 {
@@ -155,6 +165,11 @@ namespace TowerDefense.EditorTools.Tile
 
                     pathTiles.Add(variants);
                 }
+            }
+            else if (kind == TileKind.Blocked)
+            {
+                for (int variant = 0; variant < blockedVariants; variant++)
+                    blockedTiles.Add(CreateVariant(TileShape.NoPath, variant));
             }
             else
             {
@@ -169,26 +184,26 @@ namespace TowerDefense.EditorTools.Tile
 
             GameObject CreateVariant(int bitMaskForPathsConnections, int variant)
             {
-                // Tower tiles differ only by the variant number, path tiles only by the shape
-                string variantName = isPath ? ShapeName(bitMaskForPathsConnections) : $"{variant:00}";
-                // A path tile has its own texture, the grass textures are shared between the tower tile variants
-                string textureVariant = isPath ? variantName : grassTextureVariants[variant % grassTextureVariants.Length];
+                // A path tile is told apart by its shape, a tower or blocked tile only by its variant number
+                string variantName = kind == TileKind.Path ? ShapeName(bitMaskForPathsConnections) : $"{variant:00}";
+                // A path tile has one texture per shape, tower and blocked tiles cycle through the grass textures
+                string textureVariant = kind == TileKind.Path ? variantName : grassTextureVariants[variant % grassTextureVariants.Length];
 
-                string texturePath = $"{TileFolder(texturesFolder, isPath)}/{TileKind(isPath)}_{textureVariant}.png";
+                string texturePath = TexturePath(kind, textureVariant);
                 Texture2D texture = AssetDatabase.LoadAssetAtPath<Texture2D>(texturePath);
                 if (texture == null)
                     Debug.LogWarning($"Tile texture not found: {texturePath}");
 
-                if (!meshes.TryGetValue(variantName, out Mesh mesh))
+                string meshPath = $"{TileFolder(meshesFolder, kind)}/{TileName(kind)}_{variantName}.asset";
+                if (!meshes.TryGetValue(meshPath, out Mesh mesh))
                 {
-                    string meshPath = $"{TileFolder(meshesFolder, isPath)}/{TileKind(isPath)}_{variantName}.asset";
-                    mesh = SaveAsset(BuildTileMesh(bitMaskForPathsConnections, variant, tileSize), meshPath);
-                    meshes[variantName] = mesh;
+                    mesh = SaveAsset(BuildTileMesh(bitMaskForPathsConnections, variant, tileSize, kind == TileKind.Blocked), meshPath);
+                    meshes[meshPath] = mesh;
                     bakedPaths.Add(meshPath);
                 }
 
-                Material tileMaterial = texture != null ? GetMaterial(baseMaterial, texture, textureVariant, isPath, bakedPaths) : baseMaterial;
-                Material decorMaterial = GetMaterial(baseMaterial, palette, decorPaletteName, isPath, bakedPaths);
+                Material tileMaterial = texture != null ? GetMaterial(baseMaterial, texture, textureVariant, kind, bakedPaths) : baseMaterial;
+                Material decorMaterial = GetMaterial(baseMaterial, palette, decorPaletteName, kind, bakedPaths);
 
                 GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(basePrefab);
                 try
@@ -207,18 +222,19 @@ namespace TowerDefense.EditorTools.Tile
             }
         }
 
-        private static void SaveStorage(List<TileVariantsStorage.TowerTileVariants> towerTiles, List<TileVariantsStorage.PathTileVariants> pathTiles)
+        private static void SaveStorage(List<TileVariantsStorage.TowerTileVariants> towerTiles, List<TileVariantsStorage.PathTileVariants> pathTiles,
+                                        List<GameObject> blockedTiles)
         {
             TileVariantsStorage storage = AssetDatabase.LoadAssetAtPath<TileVariantsStorage>(storagePath);
             if (storage == null)
             {
                 storage = ScriptableObject.CreateInstance<TileVariantsStorage>();
-                storage.SetTiles(towerTiles, pathTiles);
+                storage.SetTiles(towerTiles, pathTiles, blockedTiles);
                 AssetDatabase.CreateAsset(storage, storagePath);
             }
             else
             {
-                storage.SetTiles(towerTiles, pathTiles);
+                storage.SetTiles(towerTiles, pathTiles, blockedTiles);
                 EditorUtility.SetDirty(storage);
             }
 
@@ -227,10 +243,10 @@ namespace TowerDefense.EditorTools.Tile
 
         // Submesh 0 is the relief block with the tile texture, submesh 1 is the decor with the palette.
         // Decor is built in world units and converted to the unit block space of the scaled tile.
-        private static Mesh BuildTileMesh(int bitMaskForPathsConnections, int variant, Vector3 tileSize)
+        private static Mesh BuildTileMesh(int bitMaskForPathsConnections, int variant, Vector3 tileSize, bool isBlocked)
         {
             Mesh block = TileMeshBuilder.Build(bitMaskForPathsConnections, sideUV);
-            Mesh decor = TileDecorBuilder.Build(bitMaskForPathsConnections, variant, tileSize);
+            Mesh decor = TileDecorBuilder.Build(bitMaskForPathsConnections, variant, tileSize, isBlocked);
 
             List<Vector3> vertices = new(block.vertices);
             List<Vector3> normals = new(block.normals);
@@ -290,9 +306,9 @@ namespace TowerDefense.EditorTools.Tile
             return AssetDatabase.LoadAssetAtPath<Texture2D>(path);
         }
 
-        private static Material GetMaterial(Material baseMaterial, Texture texture, string variantName, bool isPath, HashSet<string> bakedPaths)
+        private static Material GetMaterial(Material baseMaterial, Texture texture, string variantName, TileKind kind, HashSet<string> bakedPaths)
         {
-            string path = $"{TileFolder(materialsFolder, isPath)}/{baseMaterial.name}_{variantName}.mat";
+            string path = $"{TileFolder(materialsFolder, kind)}/{baseMaterial.name}_{variantName}.mat";
             if (bakedPaths.Contains(path))
                 return AssetDatabase.LoadAssetAtPath<Material>(path);
 
@@ -373,14 +389,21 @@ namespace TowerDefense.EditorTools.Tile
             };
         }
 
-        private static string TileFolder(string folder, bool isPath)
+        private static string TileFolder(string folder, TileKind kind)
         {
-            return $"{folder}/{TileKind(isPath)}";
+            return $"{folder}/{TileName(kind)}";
         }
 
-        private static string TileKind(bool isPath)
+        // The enum name plus "Tile" names both the subfolder and the assets inside it: TowerTile, PathTile, BlockedTile
+        private static string TileName(TileKind kind)
         {
-            return isPath ? "PathTile" : "TowerTile";
+            return $"{kind}Tile";
+        }
+
+
+        private static string TexturePath(TileKind kind, string variantName)
+        {
+            return $"{TileFolder(texturesFolder, kind)}/{TileName(kind)}_{variantName}.png";
         }
 
         private static void EnsureFolder(string folder)
