@@ -82,3 +82,16 @@ MonoBehaviour:
   - BitMaskForPathsConnections: 15
     Prefabs:
     - {fileID: 453862827549779108, guid: 1c124d8b34ef8c94cae621a1e4a9ae35, type: 3}
+  <BlockedTiles>k__BackingField:
+  - {fileID: 7596563217813349914, guid: 91705e5017d7f4e42bda6ef20c556d3f, type: 3}
+  - {fileID: 8091912883274206152, guid: 2c9808e9769091548823dba1c28edfc2, type: 3}
+  - {fileID: 6299057650014896192, guid: 3b8edbd2f55d6d44da04a16694e3fbe1, type: 3}
+  - {fileID: 8491937667711665361, guid: 94bef09ad50652d4383d01bed5dadaa5, type: 3}
+  - {fileID: 6679577580013200119, guid: 9780c0e80183a3f4d946b4bd581ec6a5, type: 3}
+  - {fileID: 2998896399288656814, guid: fef961bd63ae0ca478bdef8269726cf7, type: 3}
+  - {fileID: 72624084531857113, guid: f14e4278df0ae4a4ba319284be8758d3, type: 3}
+  - {fileID: 5785307154918929501, guid: adea844cebdb6ea4a983a392fac836fd, type: 3}
+  - {fileID: 5640631065089225758, guid: 731cf23be77ea8c44865bb471c11afd0, type: 3}
+  - {fileID: 659045486174804444, guid: c668067737a3e974aafe482012210177, type: 3}
+  - {fileID: 7988751111765659351, guid: 4c181958b7c75b6408619bdfd0227460, type: 3}
+  - {fileID: 1220541675652035919, guid: 4333f00507aad4348a5c46552b330e26, type: 3}

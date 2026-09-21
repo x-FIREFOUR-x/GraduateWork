@@ -2,6 +2,8 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
+using TowerDefense.Main.Map.Tile;
+
 
 namespace TowerDefense.Main.Map
 {
@@ -84,7 +86,7 @@ namespace TowerDefense.Main.Map
             return countNeigbors == 1;
         }
 
-        public List<Vector2Int> GetPathWithMatrix(int[,] matrix, Vector2Int indexesStart, Vector2Int indexesEnd)
+        public List<Vector2Int> GetPathWithMatrix(TileKind[,] matrix, Vector2Int indexesStart, Vector2Int indexesEnd)
         {
             List<Vector2Int> path = new List<Vector2Int>();
 
@@ -101,7 +103,7 @@ namespace TowerDefense.Main.Map
                 {
                     Vector2Int newIndexes = new Vector2Int(currentIndexes.x + rowNum[i], currentIndexes.y + columnNum[i]);
 
-                    if (matrix[newIndexes.x, newIndexes.y] == 1 && newIndexes != prevIndexes)
+                    if (matrix[newIndexes.x, newIndexes.y] == TileKind.Path && newIndexes != prevIndexes)
                     {
                         prevIndexes = currentIndexes;
                         currentIndexes = newIndexes;

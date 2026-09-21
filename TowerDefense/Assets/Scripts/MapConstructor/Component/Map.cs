@@ -22,6 +22,8 @@ namespace TowerDefense.MapConstructor.Component
         private GameObject towerTilePrefab;
         [SerializeField]
         private GameObject pathTilePrefab;
+        [SerializeField]
+        private GameObject blockedTilePrefab;
 
 
         public void Initialize(int size, Vector3 startPosition, Vector3 offsetBuild, Vector3 stepTile)
@@ -41,14 +43,14 @@ namespace TowerDefense.MapConstructor.Component
             {
                 for (int j = 0; j < size; j++)
                 {
-                    PlaceTile(i, j, false);
+                    PlaceTile(i, j, TileKind.Tower);
                 }
             }
         }
 
         public void SetTile(int i, int j, GameObject newTile)
         {
-            PlaceTile(i, j, newTile.GetComponent<ConstructorPathTile>() != null);
+            PlaceTile(i, j, KindOfPrefab(newTile));
 
             // Neighbor path tiles change shape when this cell becomes or stops being a path
             RefreshPathTile(i + 1, j);
@@ -58,25 +60,48 @@ namespace TowerDefense.MapConstructor.Component
         }
 
         // i grows along +X (east), j along +Z (north)
-        private void PlaceTile(int i, int j, bool isPath)
+        private void PlaceTile(int i, int j, TileKind kind)
         {
             if (tiles[i, j] != null)
                 Destroy(tiles[i, j]);
 
-            GameObject tile = Instantiate(isPath ? pathTilePrefab : towerTilePrefab, getCoordinate(i, j), this.transform.rotation, this.transform);
+            GameObject prefab = kind switch
+            {
+                TileKind.Path => pathTilePrefab,
+                TileKind.Blocked => blockedTilePrefab,
+                _ => towerTilePrefab
+            };
+
+            GameObject tile = Instantiate(prefab, getCoordinate(i, j), this.transform.rotation, this.transform);
             tiles[i, j] = tile;
 
             // Constructor tiles look the same as the game tiles on this cell
-            if (isPath)
-                TileVariantSelector.ApplyPathTileLook(tile, GetBitMaskForPathsConnections(i, j), j, i);
-            else
-                TileVariantSelector.ApplyTowerTileLook(tile, j, i);
+            switch (kind)
+            {
+                case TileKind.Path:
+                    TileVariantSelector.ApplyPathTileLook(tile, GetBitMaskForPathsConnections(i, j), j, i);
+                    break;
+                case TileKind.Blocked:
+                    TileVariantSelector.ApplyBlockedTileLook(tile, j, i);
+                    break;
+                default:
+                    TileVariantSelector.ApplyTowerTileLook(tile, j, i);
+                    break;
+            }
+        }
+
+        private TileKind KindOfPrefab(GameObject prefab)
+        {
+            if (prefab.GetComponent<ConstructorPathTile>() != null)
+                return TileKind.Path;
+
+            return prefab.GetComponent<ConstructorBlockedTile>() != null ? TileKind.Blocked : TileKind.Tower;
         }
 
         private void RefreshPathTile(int i, int j)
         {
             if (IsPathTile(i, j))
-                PlaceTile(i, j, true);
+                PlaceTile(i, j, TileKind.Path);
         }
 
         private int GetBitMaskForPathsConnections(int i, int j)
@@ -165,18 +190,15 @@ namespace TowerDefense.MapConstructor.Component
             return startBuilding != null && endBuilding != null;
         }
 
-        public int[,] GetTileArray()
+        public TileKind[,] GetTileArray()
         {
-            int[,] array = new int[size, size];
+            TileKind[,] array = new TileKind[size, size];
 
             for (int i = 0; i < size; i++)
             {
                 for (int j = 0; j < size; j++)
                 {
-                    if (tiles[i, j].name.Contains(towerTilePrefab.name))
-                        array[i, j] = 0;
-                    else
-                        array[i, j] = 1;
+                    array[i, j] = KindOfPrefab(tiles[i, j]);
                 }
             }
 

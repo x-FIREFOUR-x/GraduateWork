@@ -9,12 +9,11 @@ namespace TowerDefense.Main.Map.Tile
 {
     public static class TileVariantSelector
     {
-        private const string lookTowerTileName = "TowerTileBase";
+        private const string towerTileBasePrefabName = "TowerTileBase";
 
         private static TileVariantsStorage storage;
 
         private static int seedForRandomVariantSelection;
-
 
         public static void Reseed()
         {
@@ -34,9 +33,21 @@ namespace TowerDefense.Main.Map.Tile
         }
 
 
+        public static GameObject GetBlockedTile(GameObject basePrefab, int row, int column)
+        {
+            GameObject variant = GetStorage() != null ? storage.GetBlockedTile(Hash(row, column)) : null;
+            return variant != null ? variant : basePrefab;
+        }
+
+
         public static void ApplyTowerTileLook(GameObject tile, int row, int column)
         {
-            CopyLook(GetStorage() != null ? storage.GetTowerTile(lookTowerTileName, Hash(row, column)) : null, tile);
+            CopyLook(GetStorage() != null ? storage.GetTowerTile(towerTileBasePrefabName, Hash(row, column)) : null, tile);
+        }
+
+        public static void ApplyBlockedTileLook(GameObject tile, int row, int column)
+        {
+            CopyLook(GetStorage() != null ? storage.GetBlockedTile(Hash(row, column)) : null, tile);
         }
 
         public static void ApplyPathTileLook(GameObject tile, int bitMaskForPathsConnections, int row, int column)

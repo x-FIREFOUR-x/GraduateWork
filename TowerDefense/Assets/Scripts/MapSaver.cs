@@ -1,5 +1,7 @@
 using UnityEngine;
 
+using TowerDefense.Main.Map.Tile;
+
 
 namespace TowerDefense
 {
@@ -7,7 +9,7 @@ namespace TowerDefense
     {
         public static MapSaver instance;
 
-        private int[,] tilesMatrix;
+        private TileKind[,] tilesMatrix;
         private Vector2Int indexesStart;
         private Vector2Int indexesEnd;
 
@@ -25,7 +27,7 @@ namespace TowerDefense
             DontDestroyOnLoad(this.gameObject);
         }
 
-        public bool SetData(int[,] tiles, Vector2Int start, Vector2Int end)
+        public bool SetData(TileKind[,] tiles, Vector2Int start, Vector2Int end)
         {
             tilesMatrix = tiles;
             indexesStart = start;
@@ -64,7 +66,7 @@ namespace TowerDefense
                 {
                     Vector2Int newIndexes = new Vector2Int(currentIndexes.x + rowNum[i], currentIndexes.y + columnNum[i]);
 
-                    if (tilesMatrix[newIndexes.x, newIndexes.y] == 1
+                    if (tilesMatrix[newIndexes.x, newIndexes.y] == TileKind.Path
                         && newIndexes != prevIndexes
                         && (newIndexes.x > 0 && newIndexes.x < tilesMatrix.Length - 1)
                         && (newIndexes.y > 0 && newIndexes.y < tilesMatrix.Length - 1))
@@ -86,7 +88,7 @@ namespace TowerDefense
             return isFull;
         }
 
-        public int[,] GetTileMatrix()
+        public TileKind[,] GetTileMatrix()
         {
             return tilesMatrix;
         }

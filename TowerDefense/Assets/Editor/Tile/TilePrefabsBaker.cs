@@ -37,8 +37,6 @@ namespace TowerDefense.EditorTools.Tile
         // Side faces sample the dark groove in the texture corner
         private static readonly Vector2 sideUV = new Vector2(0.02f, 0.02f);
 
-        private enum TileKind { Tower, Path, Blocked }
-
         private static readonly (string prefabPath, TileKind kind)[] baseTiles =
         {
             ($"{prefabsFolder}/TowerTile/TowerTileBase.prefab", TileKind.Tower),

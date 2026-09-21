@@ -1,0 +1,41 @@
+using UnityEngine;
+
+
+namespace TowerDefense.MapConstructor.Component
+{
+    public class ConstructorBlockedTile : MonoBehaviour
+    {
+        private Renderer render;
+
+        [Header("Attributes")]
+        [SerializeField]
+        private Color hoverColor;
+        private Color unhoverColor;
+
+        void Awake()
+        {
+            render = GetComponent<Renderer>();
+        }
+
+        void Start()
+        {
+            unhoverColor = render.sharedMaterial.color;
+        }
+
+        private void OnMouseDown()
+        {
+            MapConstructor.instance.GetComponent<MapConstructor>().BuildTowerTile(this.gameObject);
+        }
+
+        private void OnMouseEnter()
+        {
+            render.material.color = hoverColor;
+        }
+
+        private void OnMouseExit()
+        {
+            render.material.color = unhoverColor;
+        }
+    }
+
+}

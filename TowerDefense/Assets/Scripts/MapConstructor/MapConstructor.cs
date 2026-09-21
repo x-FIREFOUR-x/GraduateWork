@@ -24,6 +24,8 @@ namespace TowerDefense.MapConstructor
         [SerializeField]
         private GameObject pathTilePrefab;
         [SerializeField]
+        private GameObject blockedTilePrefab;
+        [SerializeField]
         private GameObject startBuildingPrefab;
         [SerializeField]
         private GameObject endBuildingPrefab;
@@ -57,6 +59,12 @@ namespace TowerDefense.MapConstructor
                 if (indexes.x > 0 && indexes.x < mapSizeParams.CountTile - 1 &&
                     indexes.y > 0 && indexes.y < mapSizeParams.CountTile - 1)
                 {
+                    if (selectedComponent == blockedTilePrefab)
+                    {
+                        map.GetComponent<Map>().SetTile(indexes.x, indexes.y, blockedTilePrefab);
+                        return;
+                    }
+
                     map.GetComponent<Map>().SetTile(indexes.x, indexes.y, pathTilePrefab);
 
                     if (selectedComponent == startBuildingPrefab)
@@ -73,7 +81,14 @@ namespace TowerDefense.MapConstructor
         {
             Vector2Int indexes = IndexsOfMapTile(mapTile);
 
-            if (map.GetComponent<Map>().GetTile(indexes.x, indexes.y).GetComponent<ConstructorPathTile>() != null)
+            GameObject tile = map.GetComponent<Map>().GetTile(indexes.x, indexes.y);
+            if (tile.GetComponent<ConstructorBlockedTile>() != null)
+            {
+                map.GetComponent<Map>().SetTile(indexes.x, indexes.y, towerTilePrefab);
+                return;
+            }
+
+            if (tile.GetComponent<ConstructorPathTile>() != null)
             {
                 map.GetComponent<Map>().SetTile(indexes.x, indexes.y, towerTilePrefab);
 

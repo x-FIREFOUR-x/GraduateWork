@@ -16,6 +16,8 @@ namespace TowerDefense.MapConstructor.UI
         [SerializeField]
         private GameObject pathTileButton;
         [SerializeField]
+        private GameObject blockedTileButton;
+        [SerializeField]
         private GameObject endBuildingButton;
         [SerializeField]
         private GameObject startBuildingButton;
@@ -23,6 +25,7 @@ namespace TowerDefense.MapConstructor.UI
         void Start()
         {
             pathTileButton.GetComponent<Image>().color = unactiveColor;
+            blockedTileButton.GetComponent<Image>().color = unactiveColor;
             endBuildingButton.GetComponent<Image>().color = unactiveColor;
             startBuildingButton.GetComponent<Image>().color = unactiveColor;
         }
@@ -31,6 +34,16 @@ namespace TowerDefense.MapConstructor.UI
         {
             pathTileButton.GetComponent<Image>().color = activeColor;
 
+            blockedTileButton.GetComponent<Image>().color = unactiveColor;
+            endBuildingButton.GetComponent<Image>().color = unactiveColor;
+            startBuildingButton.GetComponent<Image>().color = unactiveColor;
+        }
+
+        public void ActiveBlockedTileButton()
+        {
+            blockedTileButton.GetComponent<Image>().color = activeColor;
+
+            pathTileButton.GetComponent<Image>().color = unactiveColor;
             endBuildingButton.GetComponent<Image>().color = unactiveColor;
             startBuildingButton.GetComponent<Image>().color = unactiveColor;
         }
@@ -41,6 +54,7 @@ namespace TowerDefense.MapConstructor.UI
 
             endBuildingButton.GetComponent<Image>().color = unactiveColor;
             pathTileButton.GetComponent<Image>().color = unactiveColor;
+            blockedTileButton.GetComponent<Image>().color = unactiveColor;
         }
 
         public void ActiveEndBuildingButton()
@@ -49,6 +63,7 @@ namespace TowerDefense.MapConstructor.UI
 
             pathTileButton.GetComponent<Image>().color = unactiveColor;
             startBuildingButton.GetComponent<Image>().color = unactiveColor;
+            blockedTileButton.GetComponent<Image>().color = unactiveColor;
         }
     }
 

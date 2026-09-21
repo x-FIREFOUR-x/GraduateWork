@@ -12,12 +12,14 @@ namespace TowerDefense.Main.Map.Tile
         private GameObject towerTilePrefab;
         [SerializeField]
         private GameObject pathTilePrefab;
+        [SerializeField]
+        private GameObject blockedTilePrefab;
 
         private List<List<GameObject>> tiles;
         public int Size { get; private set; }
 
 
-        public void Initialize(int _size, List<Vector2Int> generatedPath, Vector3 offsetTile)
+        public void Initialize(int _size, List<Vector2Int> generatedPath, HashSet<Vector2Int> blockedTiles, Vector3 offsetTile)
         {
             Size = _size;
 
@@ -34,20 +36,9 @@ namespace TowerDefense.Main.Map.Tile
 
                 for (int j = 0; j < Size; j++)
                 {
-                    int indexInPath = generatedPath.IndexOf(new Vector2Int(i, j));
-                    if (indexInPath >= 0)
-                    {
-                        int bitMaskForPathsConnections = TilePathConnections.GetBitMaskFromPathNeighbors(generatedPath, indexInPath);
-                        GameObject prefab = TileVariantSelector.GetPathTile(pathTilePrefab, bitMaskForPathsConnections, i, j);
-                        GameObject tile = Instantiate(prefab, position, rotation, this.transform);
-                        lineTiles.Add(tile);
-                    }
-                    else
-                    {
-                        GameObject prefab = TileVariantSelector.GetTowerTile(towerTilePrefab, i, j);
-                        GameObject tile = Instantiate(prefab, position, rotation, this.transform);
-                        lineTiles.Add(tile);
-                    }
+                    GameObject prefab = PrefabForTile(i, j, generatedPath, blockedTiles);
+                    GameObject tile = Instantiate(prefab, position, rotation, this.transform);
+                    lineTiles.Add(tile);
 
                     position.x += towerTilePrefab.transform.localScale.x + offsetTile.z;
                 }
@@ -59,6 +50,27 @@ namespace TowerDefense.Main.Map.Tile
         public GameObject GetTileAt(int row, int column)
         {
             return tiles[row][column];
+        }
+
+        public TowerTile GetTowerTileAt(int row, int column)
+        {
+            return GetTileAt(row, column).GetComponent<TowerTile>();
+        }
+
+
+        private GameObject PrefabForTile(int row, int column, List<Vector2Int> generatedPath, HashSet<Vector2Int> blockedTiles)
+        {
+            int indexInPath = generatedPath.IndexOf(new Vector2Int(row, column));
+            if (indexInPath >= 0)
+            {
+                int bitMaskForPathsConnections = TilePathConnections.GetBitMaskFromPathNeighbors(generatedPath, indexInPath);
+                return TileVariantSelector.GetPathTile(pathTilePrefab, bitMaskForPathsConnections, row, column);
+            }
+
+            if (blockedTiles.Contains(new Vector2Int(row, column)))
+                return TileVariantSelector.GetBlockedTile(blockedTilePrefab, row, column);
+
+            return TileVariantSelector.GetTowerTile(towerTilePrefab, row, column);
         }
     }
 
