@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
 using TowerDefense.Main.Managers.TowerBuilders;
@@ -13,7 +13,6 @@ namespace TowerDefense.Main.Map.Tile
         [Header("Colors:")]
         [SerializeField]
         private Color hoverColor;
-        private Color unhoverColor;
 
         [SerializeField]
         private Color failBuildColor;
@@ -34,18 +33,13 @@ namespace TowerDefense.Main.Map.Tile
             unitSize = new Vector3(towerRangeRing.transform.localScale.x, towerRangeRing.transform.localScale.y, towerRangeRing.transform.localScale.z);
         }
 
-        private void Start()
-        {
-            unhoverColor = render.sharedMaterial.color;
-        }
-
             //Not Support in Mobile
         private void OnMouseEnter()
         {
             if (EventSystem.current.IsPointerOverGameObject())
                 return;
 
-            render.material.color = hoverColor;
+            TileHighlight.Apply(render, hoverColor);
             ActivateTowerRangeRing();
         }
 
@@ -56,7 +50,7 @@ namespace TowerDefense.Main.Map.Tile
 
             wasSelectedThisTile = true;
 
-            render.material.color = hoverColor;
+            TileHighlight.Apply(render, hoverColor);
             ActivateTowerRangeRing();
         }
 
@@ -86,7 +80,7 @@ namespace TowerDefense.Main.Map.Tile
         {
             wasSelectedThisTile = false;
 
-            render.material.color = unhoverColor;
+            TileHighlight.Clear(render);
             DisactivateTowerRangeRing();
         }
 
@@ -100,7 +94,7 @@ namespace TowerDefense.Main.Map.Tile
         private void FailedBuildTower()
         {
             DisactivateTowerRangeRing();
-            render.material.color = failBuildColor;
+            TileHighlight.Replace(render, failBuildColor);
         }
 
         private void ActionWhenTowerBuilded()

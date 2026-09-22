@@ -1,5 +1,7 @@
 using UnityEngine;
 
+using TowerDefense.Main.Map.Tile;
+
 
 namespace TowerDefense.MapConstructor.Component
 {
@@ -10,16 +12,10 @@ namespace TowerDefense.MapConstructor.Component
         [Header("Attributes")]
         [SerializeField]
         private Color hoverColor;
-        private Color unhoverColor;
 
         void Awake()
         {
             render = GetComponent<Renderer>();
-        }
-
-        void Start()
-        {
-            unhoverColor = render.sharedMaterial.color;
         }
 
 
@@ -30,12 +26,12 @@ namespace TowerDefense.MapConstructor.Component
 
         private void OnMouseEnter()
         {
-            render.material.color = hoverColor;
+            TileHighlight.Apply(render, hoverColor);
         }
 
         private void OnMouseExit()
         {
-            render.material.color = unhoverColor;
+            TileHighlight.Clear(render);
         }
     }
 }
