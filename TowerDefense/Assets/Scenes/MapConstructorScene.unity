@@ -640,9 +640,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0.9490196, g: 0.972549, b: 1, a: 1}
+    m_PressedColor: {r: 0.7176471, g: 0.7215686, b: 0.7411765, a: 1}
+    m_SelectedColor: {r: 1, g: 1, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -2223,9 +2223,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0.9490196, g: 0.972549, b: 1, a: 1}
+    m_PressedColor: {r: 0.7176471, g: 0.7215686, b: 0.7411765, a: 1}
+    m_SelectedColor: {r: 1, g: 1, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -2947,9 +2947,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0.9490196, g: 0.972549, b: 1, a: 1}
+    m_PressedColor: {r: 0.7176471, g: 0.7215686, b: 0.7411765, a: 1}
+    m_SelectedColor: {r: 1, g: 1, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -3080,9 +3080,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0.9490196, g: 0.972549, b: 1, a: 1}
+    m_PressedColor: {r: 0.7176471, g: 0.7215686, b: 0.7411765, a: 1}
+    m_SelectedColor: {r: 1, g: 1, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -3454,12 +3454,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c06a1a0f880b5e54e808bad7f3f6d6d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unactiveColor: {r: 0, g: 0.91153574, b: 1, a: 1}
-  activeColor: {r: 0.09803919, g: 0.55379784, b: 0.9137255, a: 1}
+  unactiveColor: {r: 0.4196078, g: 0.6588235, b: 0.6823529, a: 1}
+  activeColor: {r: 0.9764706, g: 0.6196079, b: 0.2039216, a: 1}
   pathTileButton: {fileID: 1885601782}
   blockedTileButton: {fileID: 1911394785}
   endBuildingButton: {fileID: 446825754}
   startBuildingButton: {fileID: 1251919997}
+  pathTileIcon: {fileID: 21300000, guid: 7ab8411fdea88fd4fb6713471b5f873a, type: 3}
+  blockedTileIcon: {fileID: 21300000, guid: 1eba97dc4807b6b4e80234232edbd78c, type: 3}
+  startBuildingIcon: {fileID: 21300000, guid: 148b1354de7a0e847a10474cdfa41dca, type: 3}
+  endBuildingIcon: {fileID: 21300000, guid: dafe9475e11f9e949b343aa26a8c28e9, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
