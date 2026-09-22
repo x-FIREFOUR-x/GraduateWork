@@ -52,68 +52,93 @@ namespace TowerDefense.MapConstructor
 
         public void BuildComponent(GameObject mapTile)
         {
-            Vector2Int indexes = IndexsOfMapTile(mapTile);
+            if (selectedComponent == null)
+                return;
 
-            if (selectedComponent != null)
+            Vector2Int indexes = IndexesOf(mapTile);
+
+            if (CellHoldsSelectedComponent(indexes))
             {
-                if (indexes.x > 0 && indexes.x < mapSizeParams.CountTile - 1 &&
-                    indexes.y > 0 && indexes.y < mapSizeParams.CountTile - 1)
-                {
-                    if (selectedComponent == blockedTilePrefab)
-                    {
-                        map.GetComponent<Map>().SetTile(indexes.x, indexes.y, blockedTilePrefab);
-                        return;
-                    }
-
-                    map.GetComponent<Map>().SetTile(indexes.x, indexes.y, pathTilePrefab);
-
-                    if (selectedComponent == startBuildingPrefab)
-                        map.GetComponent<Map>().SetStartBuilding(indexes.x, indexes.y, selectedComponent);
-
-                    if (selectedComponent == endBuildingPrefab)
-                        map.GetComponent<Map>().SetEndBuilding(indexes.x, indexes.y, selectedComponent);
-                }
-            }
-
-        }
-
-        public void BuildTowerTile(GameObject mapTile)
-        {
-            Vector2Int indexes = IndexsOfMapTile(mapTile);
-
-            GameObject tile = map.GetComponent<Map>().GetTile(indexes.x, indexes.y);
-            if (tile.GetComponent<ConstructorBlockedTile>() != null)
-            {
-                map.GetComponent<Map>().SetTile(indexes.x, indexes.y, towerTilePrefab);
+                ClearCell(indexes);
                 return;
             }
 
-            if (tile.GetComponent<ConstructorPathTile>() != null)
+            if (selectedComponent == blockedTilePrefab)
             {
-                map.GetComponent<Map>().SetTile(indexes.x, indexes.y, towerTilePrefab);
-
-                GameObject startBuilding = map.GetComponent<Map>().GetStartBuilding();
-                if (startBuilding != null)
-                {
-                    Vector2Int buildIndexes = IndexsOfMapTile(startBuilding);
-                    if (indexes == buildIndexes)
-                        Destroy(startBuilding);
-                }
-
-                GameObject endBuilding = map.GetComponent<Map>().GetEndBuilding();
-                if (endBuilding != null)
-                {
-                    Vector2Int buildIndexes = IndexsOfMapTile(endBuilding);
-                    if (indexes == buildIndexes)
-                        Destroy(endBuilding);
-                }
+                DestroyBuildingsAt(indexes);
+                map.GetComponent<Map>().SetTile(indexes.x, indexes.y, blockedTilePrefab);
+                return;
             }
+
+            if (!IsInsideBorder(indexes))
+                return;
+
+            DestroyBuildingsAt(indexes);
+
+            map.GetComponent<Map>().SetTile(indexes.x, indexes.y, pathTilePrefab);
+
+            if (selectedComponent == startBuildingPrefab)
+                map.GetComponent<Map>().SetStartBuilding(indexes.x, indexes.y, selectedComponent);
+
+            if (selectedComponent == endBuildingPrefab)
+                map.GetComponent<Map>().SetEndBuilding(indexes.x, indexes.y, selectedComponent);
         }
 
-        private Vector2Int IndexsOfMapTile(GameObject mapTile)
+
+        private bool CellHoldsSelectedComponent(Vector2Int indexes)
         {
-            Vector2Int indexes = new(Mathf.RoundToInt((mapTile.transform.position.x - mapSizeParams.StartMap.x) / StepTile().x),
-                                     Mathf.RoundToInt((mapTile.transform.position.z - mapSizeParams.StartMap.z) / StepTile().z));
+            GameObject startBuilding = map.GetComponent<Map>().GetStartBuilding();
+            GameObject endBuilding = map.GetComponent<Map>().GetEndBuilding();
+
+            if (selectedComponent == startBuildingPrefab)
+                return IsBuildingAt(startBuilding, indexes);
+
+            if (selectedComponent == endBuildingPrefab)
+                return IsBuildingAt(endBuilding, indexes);
+
+            if (IsBuildingAt(startBuilding, indexes) || IsBuildingAt(endBuilding, indexes))
+                return false;
+
+            GameObject tile = map.GetComponent<Map>().GetTile(indexes.x, indexes.y);
+
+            if (selectedComponent == blockedTilePrefab)
+                return tile.GetComponent<ConstructorBlockedTile>() != null;
+
+            return tile.GetComponent<ConstructorPathTile>() != null;
+        }
+
+        private void ClearCell(Vector2Int indexes)
+        {
+            map.GetComponent<Map>().SetTile(indexes.x, indexes.y, towerTilePrefab);
+            DestroyBuildingsAt(indexes);
+        }
+
+        private void DestroyBuildingsAt(Vector2Int indexes)
+        {
+            GameObject startBuilding = map.GetComponent<Map>().GetStartBuilding();
+            if (IsBuildingAt(startBuilding, indexes))
+                Destroy(startBuilding);
+
+            GameObject endBuilding = map.GetComponent<Map>().GetEndBuilding();
+            if (IsBuildingAt(endBuilding, indexes))
+                Destroy(endBuilding);
+        }
+
+        private bool IsBuildingAt(GameObject building, Vector2Int indexes)
+        {
+            return building != null && IndexesOf(building) == indexes;
+        }
+
+        private bool IsInsideBorder(Vector2Int indexes)
+        {
+            return indexes.x > 0 && indexes.x < mapSizeParams.CountTile - 1
+                && indexes.y > 0 && indexes.y < mapSizeParams.CountTile - 1;
+        }
+
+        private Vector2Int IndexesOf(GameObject mapObject)
+        {
+            Vector2Int indexes = new(Mathf.RoundToInt((mapObject.transform.position.x - mapSizeParams.StartMap.x) / StepTile().x),
+                                     Mathf.RoundToInt((mapObject.transform.position.z - mapSizeParams.StartMap.z) / StepTile().z));
 
             return indexes;
         }

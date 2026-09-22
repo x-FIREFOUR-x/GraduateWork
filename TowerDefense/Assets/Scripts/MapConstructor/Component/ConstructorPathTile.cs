@@ -24,7 +24,7 @@ namespace TowerDefense.MapConstructor.Component
 
         private void OnMouseDown()
         {
-            MapConstructor.instance.GetComponent<MapConstructor>().BuildTowerTile(this.gameObject);
+            MapConstructor.instance.GetComponent<MapConstructor>().BuildComponent(this.gameObject);
         }
 
         private void OnMouseEnter()

@@ -134,7 +134,7 @@ namespace TowerDefense.MapConstructor.Component
             }
             else
             {
-                Vector2Int indexesOld = IndexsOfMapTile(startBuilding);
+                Vector2Int indexesOld = IndexesOf(startBuilding);
                 SetTile(indexesOld.x, indexesOld.y, towerTilePrefab);
 
                 startBuilding.transform.position = position + offsetBuild;
@@ -157,7 +157,7 @@ namespace TowerDefense.MapConstructor.Component
             }
             else
             {
-                Vector2Int indexesOld = IndexsOfMapTile(endBuilding);
+                Vector2Int indexesOld = IndexesOf(endBuilding);
                 SetTile(indexesOld.x, indexesOld.y, towerTilePrefab);
 
                 endBuilding.transform.position = position + offsetBuild;
@@ -176,10 +176,10 @@ namespace TowerDefense.MapConstructor.Component
                                this.transform.position.z + stepTile.z * j);
         }
 
-        private Vector2Int IndexsOfMapTile(GameObject mapTile)
+        private Vector2Int IndexesOf(GameObject mapObject)
         {
-            Vector2Int indexes = new(Mathf.RoundToInt((mapTile.transform.position.x - this.transform.position.x) / stepTile.x),
-                                     Mathf.RoundToInt((mapTile.transform.position.z - this.transform.position.z) / stepTile.z));
+            Vector2Int indexes = new(Mathf.RoundToInt((mapObject.transform.position.x - this.transform.position.x) / stepTile.x),
+                                     Mathf.RoundToInt((mapObject.transform.position.z - this.transform.position.z) / stepTile.z));
 
             return indexes;
         }
@@ -206,12 +206,12 @@ namespace TowerDefense.MapConstructor.Component
 
         public Vector2Int GetIndexesStartBuild()
         {
-            return IndexsOfMapTile(startBuilding);
+            return IndexesOf(startBuilding);
         }
 
         public Vector2Int GetIndexesEndBuild()
         {
-            return IndexsOfMapTile(endBuilding);
+            return IndexesOf(endBuilding);
         }
     }
 
