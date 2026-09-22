@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+using TowerDefense.Main.Map.Tile;
+
 
 namespace TowerDefense.MainMenu
 {
@@ -12,6 +14,11 @@ namespace TowerDefense.MainMenu
         private string attackerGameScene = "AttackerGameScene";
         [SerializeField]
         private string mapConstrucorScene = "MapConstructorScene";
+
+        private void Awake()
+        {
+            TileVariantSelector.Reseed();
+        }
 
         public void PlayDefenderGame()
         {

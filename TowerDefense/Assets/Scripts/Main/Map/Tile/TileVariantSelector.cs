@@ -15,6 +15,7 @@ namespace TowerDefense.Main.Map.Tile
 
         private static int seedForRandomVariantSelection;
 
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         public static void Reseed()
         {
             seedForRandomVariantSelection = Environment.TickCount;

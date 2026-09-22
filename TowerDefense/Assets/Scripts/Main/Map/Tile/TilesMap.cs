@@ -26,7 +26,6 @@ namespace TowerDefense.Main.Map.Tile
             Vector3 position = this.transform.position;
             Quaternion rotation = this.transform.rotation;
 
-            TileVariantSelector.Reseed();
             tiles = new List<List<GameObject>>();
 
             for (int i = 0; i < Size; i++)

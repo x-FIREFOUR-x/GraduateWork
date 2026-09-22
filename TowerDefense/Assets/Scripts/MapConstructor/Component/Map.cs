@@ -36,7 +36,6 @@ namespace TowerDefense.MapConstructor.Component
             endBuilding = null;
             startBuilding = null;
 
-            TileVariantSelector.Reseed();
             tiles = new GameObject[size, size];
 
             for (int i = 0; i < size; i++)
