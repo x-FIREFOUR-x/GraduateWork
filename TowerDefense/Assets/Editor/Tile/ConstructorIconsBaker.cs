@@ -11,8 +11,11 @@ namespace TowerDefense.EditorTools.Tile
     // SelectMenu picks the baked sprites up through its inspector fields.
     public static class ConstructorIconsBaker
     {
-        private const string iconsFolder = "Assets/Textures/MapConstructor";
+        private const string iconsFolder = "Assets/Sprites/Icons/MapConstructor";
         private const int iconSize = 256;
+        // Rendered this many times larger and averaged down in code. Hardware anti aliasing resolves
+        // edge coverage a little differently from run to run, which rewrote the icons on every bake.
+        private const int supersample = 4;
 
         // Seen from above and off to the side, so the object shows a corner rather than a flat face
         private const float cameraPitch = 30f;
@@ -91,11 +94,16 @@ namespace TowerDefense.EditorTools.Tile
                 camera.farClipPlane = distance * 4f;
                 camera.enabled = false;
 
-                target = new RenderTexture(iconSize, iconSize, 24, RenderTextureFormat.ARGB32) { antiAliasing = 8 };
+                int renderSize = iconSize * supersample;
+                target = new RenderTexture(renderSize, renderSize, 24, RenderTextureFormat.ARGB32) { antiAliasing = 1 };
                 camera.targetTexture = target;
                 camera.Render();
 
-                SavePng(ReadPixels(target), $"{iconsFolder}/{iconName}.png");
+                Texture2D rendered = ReadPixels(target);
+                Texture2D icon = Downsample(rendered, iconSize);
+                Object.DestroyImmediate(rendered);
+
+                SavePng(icon, $"{iconsFolder}/{iconName}.png");
             }
             finally
             {
@@ -162,10 +170,56 @@ namespace TowerDefense.EditorTools.Tile
             return texture;
         }
 
+        // Averaged with premultiplied alpha, so transparent pixels do not bleed darkness into the edges
+        private static Texture2D Downsample(Texture2D source, int size)
+        {
+            int scale = source.width / size;
+            int samples = scale * scale;
+
+            Color32[] pixels = source.GetPixels32();
+            Color32[] result = new Color32[size * size];
+
+            for (int y = 0; y < size; y++)
+            {
+                for (int x = 0; x < size; x++)
+                {
+                    int r = 0, g = 0, b = 0, a = 0;
+                    for (int sampleY = 0; sampleY < scale; sampleY++)
+                    {
+                        int row = (y * scale + sampleY) * source.width + x * scale;
+                        for (int sampleX = 0; sampleX < scale; sampleX++)
+                        {
+                            Color32 pixel = pixels[row + sampleX];
+                            r += pixel.r * pixel.a;
+                            g += pixel.g * pixel.a;
+                            b += pixel.b * pixel.a;
+                            a += pixel.a;
+                        }
+                    }
+
+                    result[y * size + x] = a == 0
+                        ? new Color32(0, 0, 0, 0)
+                        : new Color32((byte)(r / a), (byte)(g / a), (byte)(b / a), (byte)(a / samples));
+                }
+            }
+
+            Texture2D downsampled = new Texture2D(size, size, TextureFormat.RGBA32, false);
+            downsampled.SetPixels32(result);
+            downsampled.Apply();
+
+            return downsampled;
+        }
+
         private static void SavePng(Texture2D texture, string path)
         {
-            File.WriteAllBytes(path, texture.EncodeToPNG());
+            byte[] png = texture.EncodeToPNG();
             Object.DestroyImmediate(texture);
+
+            // Leave the asset and its import settings alone when the icon comes out the same
+            if (Unchanged(path, png))
+                return;
+
+            File.WriteAllBytes(path, png);
 
             AssetDatabase.ImportAsset(path);
 
@@ -177,6 +231,24 @@ namespace TowerDefense.EditorTools.Tile
             importer.mipmapEnabled = false;
             importer.textureCompression = TextureImporterCompression.Uncompressed;
             importer.SaveAndReimport();
+        }
+
+        private static bool Unchanged(string path, byte[] png)
+        {
+            if (!File.Exists(path))
+                return false;
+
+            byte[] existing = File.ReadAllBytes(path);
+            if (existing.Length != png.Length)
+                return false;
+
+            for (int i = 0; i < png.Length; i++)
+            {
+                if (existing[i] != png[i])
+                    return false;
+            }
+
+            return true;
         }
 
         private static bool TryGetBounds(GameObject instance, out Bounds bounds)
