@@ -12,6 +12,8 @@ namespace TowerDefense.MapConstructor.UI
         [SerializeField]
         private GameObject pathTilePrefab;
         [SerializeField]
+        private GameObject blockedTilePrefab;
+        [SerializeField]
         private GameObject startBuildingPrefab;
         [SerializeField]
         private GameObject endBuildingPrefab;
@@ -20,6 +22,12 @@ namespace TowerDefense.MapConstructor.UI
         {
             MapConstructor.instance.GetComponent<MapConstructor>().SetSelectedComponent(pathTilePrefab);
             selectMenu.GetComponent<SelectMenu>().ActivePathTileButton();
+        }
+
+        public void SelectBlockedTile()
+        {
+            MapConstructor.instance.GetComponent<MapConstructor>().SetSelectedComponent(blockedTilePrefab);
+            selectMenu.GetComponent<SelectMenu>().ActiveBlockedTileButton();
         }
 
         public void SelectStartBuilding()

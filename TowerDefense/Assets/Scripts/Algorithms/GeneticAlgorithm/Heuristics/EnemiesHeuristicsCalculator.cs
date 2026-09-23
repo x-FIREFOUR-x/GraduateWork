@@ -2,10 +2,11 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-using TowerDefense.Main.Map.Tiles;
+using TowerDefense.Main.Map.Tile;
 using TowerDefense.Main.Enemies;
 using TowerDefense.Main.Towers;
 using TowerDefense.Main.Managers;
+using TowerDefense.Storage;
 
 
 namespace TowerDefense.Algorithms.GeneticAlgorithm.Heuristics
@@ -46,7 +47,8 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm.Heuristics
 
 
             GameObject[] pathTiles = GameObject.FindGameObjectsWithTag(PathTile.pathTileTag);
-            distancePath = (pathTiles.Length - 1) * (pathTiles[0].transform.localScale.x + 1);
+            MapSizeParamsStorage mapSizeParams = Resources.Load<MapSizeParamsStorage>($"{nameof(MapSizeParamsStorage)}");
+            distancePath = (pathTiles.Length - 1) * (mapSizeParams.SizeTile.x + mapSizeParams.OffsetTile.x);
             distanceMovedEnemies = new List<float>();
         }
         public void UpdateCurrentTower()

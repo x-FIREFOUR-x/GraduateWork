@@ -1,0 +1,97 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dd39006c68eabe4d9ced96a640b7a8c, type: 3}
+  m_Name: TileVariantsStorage
+  m_EditorClassIdentifier: Assembly-CSharp::TowerDefense.Storage.TileVariantsStorage
+  <TowerTiles>k__BackingField:
+  - BasePrefabName: TowerTileBase
+    Prefabs:
+    - {fileID: 7500937990048573323, guid: 03933b8779095ba4990d190727b083a4, type: 3}
+    - {fileID: 5232686392512021548, guid: 6480e17ae1a98f74f99feb8039535f89, type: 3}
+    - {fileID: 461040748888564473, guid: dba3dd11e181fd74183d99d8deb23256, type: 3}
+    - {fileID: 6027056001332175844, guid: 26abb4696d535d74f81c5688d632a19e, type: 3}
+    - {fileID: 1574752183847545804, guid: 7b85f1f71a72b124db30d9b9250e4e09, type: 3}
+    - {fileID: 4189141298157994365, guid: 47775f5258dd5d84ca2e2ac4dffefcb9, type: 3}
+    - {fileID: 6417871754275737338, guid: 19ea4ce768a81c14389498826c2ad063, type: 3}
+    - {fileID: 9070412339189514520, guid: 817e26f7eef7f394b874097fb37dac13, type: 3}
+  - BasePrefabName: ClickableTowerTileBase
+    Prefabs:
+    - {fileID: 3588210273255167437, guid: 00b0580581951164182216d94f8f708e, type: 3}
+    - {fileID: 1079901585807033513, guid: 63c9d63622e160247ae3d0d0767e441c, type: 3}
+    - {fileID: 3590318835598159862, guid: 4f9484cc19aaf014696c7e53a461486c, type: 3}
+    - {fileID: 964570959245441553, guid: 12610bc694618214ba72501b6511d7a9, type: 3}
+    - {fileID: 2571474202833376585, guid: 27fd3b48df2785540880fe8bc4eb1d9f, type: 3}
+    - {fileID: 6877675547075231765, guid: 6a05c344eb3c3ea4eb57891b68e08905, type: 3}
+    - {fileID: 6314635625697527550, guid: c7b8fc04748fa1242a655df6ac30de61, type: 3}
+    - {fileID: 7568563035220936589, guid: 521f345bb2d2305439a61098900ec5f2, type: 3}
+  <PathTiles>k__BackingField:
+  - BitMaskForPathsConnections: 0
+    Prefabs:
+    - {fileID: 5610088695677070667, guid: d79dbe14ca40e33459c720e6a04fb474, type: 3}
+  - BitMaskForPathsConnections: 1
+    Prefabs:
+    - {fileID: 391381969554373288, guid: 5f96a3fe55ec6f549a13f8f62eeeda33, type: 3}
+  - BitMaskForPathsConnections: 2
+    Prefabs:
+    - {fileID: 3158799595369501327, guid: 71d4d2539278b2143b53638bd64c847a, type: 3}
+  - BitMaskForPathsConnections: 3
+    Prefabs:
+    - {fileID: 5533509867990686761, guid: 15bd540e00db8044e9bdca1bf330dbfb, type: 3}
+  - BitMaskForPathsConnections: 4
+    Prefabs:
+    - {fileID: 4867277753459892967, guid: e3316edefbbe78a49a89308cd9122d35, type: 3}
+  - BitMaskForPathsConnections: 5
+    Prefabs:
+    - {fileID: 4944256753180297085, guid: 907bb3379d774614199b79a8beb7d250, type: 3}
+  - BitMaskForPathsConnections: 6
+    Prefabs:
+    - {fileID: 6072246967642048785, guid: c518238df2b3cd447831622fbbdd95c0, type: 3}
+  - BitMaskForPathsConnections: 7
+    Prefabs:
+    - {fileID: 5580552976805668252, guid: e839d4c0c6ee7554b95b99524b589cba, type: 3}
+  - BitMaskForPathsConnections: 8
+    Prefabs:
+    - {fileID: 9138210739889337633, guid: 7d9300435f21d054d858557425951516, type: 3}
+  - BitMaskForPathsConnections: 9
+    Prefabs:
+    - {fileID: 8950247635555279026, guid: 7a451f64e1f1c604fb797a046759995d, type: 3}
+  - BitMaskForPathsConnections: 10
+    Prefabs:
+    - {fileID: 8847899077548358195, guid: c894ddcce50982e47b156dc9adb78936, type: 3}
+  - BitMaskForPathsConnections: 11
+    Prefabs:
+    - {fileID: 6522634562346764120, guid: bad814d9f390fd74ca7efd6c554b800b, type: 3}
+  - BitMaskForPathsConnections: 12
+    Prefabs:
+    - {fileID: 4306463506811902078, guid: 7fdc92a143ed9974d8d0d5d9b9a67ba0, type: 3}
+  - BitMaskForPathsConnections: 13
+    Prefabs:
+    - {fileID: 3135536838638116898, guid: 8f15524c1af0fad47b6ccfce94153dd3, type: 3}
+  - BitMaskForPathsConnections: 14
+    Prefabs:
+    - {fileID: 2846275869417339976, guid: 9ffd83a9c4928f045a2f9687bf27e0d6, type: 3}
+  - BitMaskForPathsConnections: 15
+    Prefabs:
+    - {fileID: 453862827549779108, guid: 1c124d8b34ef8c94cae621a1e4a9ae35, type: 3}
+  <BlockedTiles>k__BackingField:
+  - {fileID: 7596563217813349914, guid: 91705e5017d7f4e42bda6ef20c556d3f, type: 3}
+  - {fileID: 8091912883274206152, guid: 2c9808e9769091548823dba1c28edfc2, type: 3}
+  - {fileID: 6299057650014896192, guid: 3b8edbd2f55d6d44da04a16694e3fbe1, type: 3}
+  - {fileID: 8491937667711665361, guid: 94bef09ad50652d4383d01bed5dadaa5, type: 3}
+  - {fileID: 6679577580013200119, guid: 9780c0e80183a3f4d946b4bd581ec6a5, type: 3}
+  - {fileID: 2998896399288656814, guid: fef961bd63ae0ca478bdef8269726cf7, type: 3}
+  - {fileID: 72624084531857113, guid: f14e4278df0ae4a4ba319284be8758d3, type: 3}
+  - {fileID: 5785307154918929501, guid: adea844cebdb6ea4a983a392fac836fd, type: 3}
+  - {fileID: 5640631065089225758, guid: 731cf23be77ea8c44865bb471c11afd0, type: 3}
+  - {fileID: 659045486174804444, guid: c668067737a3e974aafe482012210177, type: 3}
+  - {fileID: 7988751111765659351, guid: 4c181958b7c75b6408619bdfd0227460, type: 3}
+  - {fileID: 1220541675652035919, guid: 4333f00507aad4348a5c46552b330e26, type: 3}

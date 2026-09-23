@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <StartMap>k__BackingField: {x: 0, y: 0, z: 0}
   <CountTile>k__BackingField: 16
-  <SizeTile>k__BackingField: {x: 4, y: 1, z: 4}
-  <OffsetTile>k__BackingField: {x: 1, y: 0, z: 1}
+  <SizeTile>k__BackingField: {x: 5, y: 1, z: 5}
+  <OffsetTile>k__BackingField: {x: 0, y: 0, z: 0}
+  <BlockedTilesShare>k__BackingField: 0.12
   <IndexesStartBuilding>k__BackingField: {x: 1, y: 1}
   <IndexesEndBuilding>k__BackingField: {x: 14, y: 14}
   <OffsetBuilding>k__BackingField: {x: 0, y: 0.25, z: 0}

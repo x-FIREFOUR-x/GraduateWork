@@ -1,7 +1,7 @@
 using UnityEngine;
 
 using TowerDefense.Storage;
-using TowerDefense.Main.Map.Tiles;
+using TowerDefense.Main.Map.Tile;
 using TowerDefense.Main.Towers;
 using TowerDefense.Main.UI.TowerMenu;
 

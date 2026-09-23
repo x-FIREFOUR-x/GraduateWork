@@ -46,3 +46,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   towerTilePrefab: {fileID: 126904175936728566, guid: e7fe845d7e881b6409064e08aae79752, type: 3}
   pathTilePrefab: {fileID: 7074800604941558903, guid: 4c244a92ba9226b43ad4267689d620ba, type: 3}
+  blockedTilePrefab: {fileID: 126904175936728566, guid: c1bd95dae9fe4e7f84aac449d30a5eb1, type: 3}

@@ -1,5 +1,7 @@
 using UnityEngine;
 
+using TowerDefense.Main.Map.Tile;
+
 
 namespace TowerDefense.MapConstructor.Component
 {
@@ -7,58 +9,118 @@ namespace TowerDefense.MapConstructor.Component
     {
         private int size = 16;
 
-        private GameObject[,] tilesMap;
+        private GameObject[,] tiles;
         private GameObject endBuilding;
         private GameObject startBuilding;
 
         private Vector3 offsetBuild;
 
-        private Vector3 sizeTile;
+        private Vector3 stepTile;
 
         [Header("Prefabs")]
         [SerializeField]
         private GameObject towerTilePrefab;
         [SerializeField]
         private GameObject pathTilePrefab;
+        [SerializeField]
+        private GameObject blockedTilePrefab;
 
 
-        public void Initialize(int size, Vector3 startPosition, Vector3 offsetBuild)
+        public void Initialize(int size, Vector3 startPosition, Vector3 offsetBuild, Vector3 stepTile)
         {
             this.transform.position = startPosition;
             this.size = size;
             this.offsetBuild = offsetBuild;
-
-            sizeTile = towerTilePrefab.transform.localScale;
+            this.stepTile = stepTile;
 
             endBuilding = null;
             startBuilding = null;
 
-            tilesMap = new GameObject[size, size];
-
-            Quaternion rotation = this.transform.rotation;
+            tiles = new GameObject[size, size];
 
             for (int i = 0; i < size; i++)
             {
                 for (int j = 0; j < size; j++)
                 {
-                    Vector3 position = getCoordinate(i, j);
-                    tilesMap[i, j] = Instantiate(towerTilePrefab, position, rotation, this.transform);
+                    PlaceTile(i, j, TileKind.Tower);
                 }
             }
         }
 
         public void SetTile(int i, int j, GameObject newTile)
         {
-            Vector3 position = getCoordinate(i, j);
-            Quaternion rotation = this.transform.rotation;
+            PlaceTile(i, j, KindOfPrefab(newTile));
 
-            Destroy(tilesMap[i, j]);
-            tilesMap[i, j] = Instantiate(newTile, position, rotation, this.transform);
+            // Neighbor path tiles change shape when this cell becomes or stops being a path
+            RefreshPathTile(i + 1, j);
+            RefreshPathTile(i - 1, j);
+            RefreshPathTile(i, j + 1);
+            RefreshPathTile(i, j - 1);
+        }
+
+        // i grows along +X (east), j along +Z (north)
+        private void PlaceTile(int i, int j, TileKind kind)
+        {
+            if (tiles[i, j] != null)
+                Destroy(tiles[i, j]);
+
+            GameObject prefab = kind switch
+            {
+                TileKind.Path => pathTilePrefab,
+                TileKind.Blocked => blockedTilePrefab,
+                _ => towerTilePrefab
+            };
+
+            GameObject tile = Instantiate(prefab, getCoordinate(i, j), this.transform.rotation, this.transform);
+            tiles[i, j] = tile;
+
+            // Constructor tiles look the same as the game tiles on this cell
+            switch (kind)
+            {
+                case TileKind.Path:
+                    TileVariantSelector.ApplyPathTileLook(tile, GetBitMaskForPathsConnections(i, j), j, i);
+                    break;
+                case TileKind.Blocked:
+                    TileVariantSelector.ApplyBlockedTileLook(tile, j, i);
+                    break;
+                default:
+                    TileVariantSelector.ApplyTowerTileLook(tile, j, i);
+                    break;
+            }
+        }
+
+        private TileKind KindOfPrefab(GameObject prefab)
+        {
+            if (prefab.GetComponent<ConstructorPathTile>() != null)
+                return TileKind.Path;
+
+            return prefab.GetComponent<ConstructorBlockedTile>() != null ? TileKind.Blocked : TileKind.Tower;
+        }
+
+        private void RefreshPathTile(int i, int j)
+        {
+            if (IsPathTile(i, j))
+                PlaceTile(i, j, TileKind.Path);
+        }
+
+        private int GetBitMaskForPathsConnections(int i, int j)
+        {
+            return TilePathConnections.GetBitMaskFromConnectedSides(IsPathTile(i, j + 1), IsPathTile(i + 1, j), IsPathTile(i, j - 1), IsPathTile(i - 1, j));
+        }
+
+        private bool IsPathTile(int i, int j)
+        {
+            return IsInside(i, j) && tiles[i, j] != null && tiles[i, j].GetComponent<ConstructorPathTile>() != null;
+        }
+
+        private bool IsInside(int i, int j)
+        {
+            return i >= 0 && i < size && j >= 0 && j < size;
         }
 
         public GameObject GetTile(int i, int j)
         {
-            return tilesMap[i, j];
+            return tiles[i, j];
         }
 
         public void SetStartBuilding(int i, int j, GameObject building)
@@ -72,7 +134,7 @@ namespace TowerDefense.MapConstructor.Component
             }
             else
             {
-                Vector2Int indexesOld = IndexsOfMapTile(startBuilding);
+                Vector2Int indexesOld = IndexesOf(startBuilding);
                 SetTile(indexesOld.x, indexesOld.y, towerTilePrefab);
 
                 startBuilding.transform.position = position + offsetBuild;
@@ -95,7 +157,7 @@ namespace TowerDefense.MapConstructor.Component
             }
             else
             {
-                Vector2Int indexesOld = IndexsOfMapTile(endBuilding);
+                Vector2Int indexesOld = IndexesOf(endBuilding);
                 SetTile(indexesOld.x, indexesOld.y, towerTilePrefab);
 
                 endBuilding.transform.position = position + offsetBuild;
@@ -109,15 +171,15 @@ namespace TowerDefense.MapConstructor.Component
 
         private Vector3 getCoordinate(int i, int j)
         {
-            return new Vector3(this.transform.position.x + (sizeTile.x + 1) * i,
+            return new Vector3(this.transform.position.x + stepTile.x * i,
                                this.transform.position.y,
-                               this.transform.position.z + (sizeTile.z + 1) * j);
+                               this.transform.position.z + stepTile.z * j);
         }
 
-        private Vector2Int IndexsOfMapTile(GameObject mapTile)
+        private Vector2Int IndexesOf(GameObject mapObject)
         {
-            Vector2Int indexes = new((int)((mapTile.transform.position.x - this.transform.position.x) / (sizeTile.x + 1)),
-                                     (int)((mapTile.transform.position.z - this.transform.position.z) / (sizeTile.z + 1)));
+            Vector2Int indexes = new(Mathf.RoundToInt((mapObject.transform.position.x - this.transform.position.x) / stepTile.x),
+                                     Mathf.RoundToInt((mapObject.transform.position.z - this.transform.position.z) / stepTile.z));
 
             return indexes;
         }
@@ -127,18 +189,15 @@ namespace TowerDefense.MapConstructor.Component
             return startBuilding != null && endBuilding != null;
         }
 
-        public int[,] GetTileArray()
+        public TileKind[,] GetTileArray()
         {
-            int[,] array = new int[size, size];
+            TileKind[,] array = new TileKind[size, size];
 
             for (int i = 0; i < size; i++)
             {
                 for (int j = 0; j < size; j++)
                 {
-                    if (tilesMap[i, j].name.Contains(towerTilePrefab.name))
-                        array[i, j] = 0;
-                    else
-                        array[i, j] = 1;
+                    array[i, j] = KindOfPrefab(tiles[i, j]);
                 }
             }
 
@@ -147,12 +206,12 @@ namespace TowerDefense.MapConstructor.Component
 
         public Vector2Int GetIndexesStartBuild()
         {
-            return IndexsOfMapTile(startBuilding);
+            return IndexesOf(startBuilding);
         }
 
         public Vector2Int GetIndexesEndBuild()
         {
-            return IndexsOfMapTile(endBuilding);
+            return IndexesOf(endBuilding);
         }
     }
 

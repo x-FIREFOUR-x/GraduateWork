@@ -6,7 +6,7 @@ using UnityEngine;
 using TowerDefense.Storage;
 using TowerDefense.Collections;
 using TowerDefense.Main.Map;
-using TowerDefense.Main.Map.Tiles;
+using TowerDefense.Main.Map.Tile;
 using TowerDefense.Main.Managers.WaveSpawners;
 using TowerDefense.Main.Towers;
 using TowerDefense.Algorithms.TowerSelectionAlgorithm;
@@ -56,7 +56,7 @@ namespace TowerDefense.Main.Managers.TowerBuilders
                 List<Tuple<TowerType, Vector2Int>> towerList = towerSelectionAlgorithm.GenerateTowerList(availableTowersTypes, availableTowersPrices, PlayerStats.MoneyDefender);
                 foreach (var towerAndTile in towerList)
                 {
-                    TowerTile towerTile = tilesMap.GetTileAt(towerAndTile.Item2.x, towerAndTile.Item2.y).GetComponent<TowerTile>();
+                    TowerTile towerTile = tilesMap.GetTowerTileAt(towerAndTile.Item2.x, towerAndTile.Item2.y);
                     BuildTower(towerAndTile.Item1, towerTile);
                 }
 
@@ -127,7 +127,7 @@ namespace TowerDefense.Main.Managers.TowerBuilders
             {
                 for (int j = 0; j < tilesMap.Size; j++)
                 {
-                    TowerTile towerTile = tilesMap.GetTileAt(i, j).GetComponent<TowerTile>();
+                    TowerTile towerTile = tilesMap.GetTowerTileAt(i, j);
 
                     if (towerTile == null)
                         continue;
