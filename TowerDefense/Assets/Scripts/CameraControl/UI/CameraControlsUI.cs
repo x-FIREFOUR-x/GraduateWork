@@ -14,7 +14,7 @@ namespace TowerDefense.CameraControl.UI
         private const float TopOffsetPercent = 20f;
 
         private const float BackgroundWidthPercent = 16f;
-        private const float BackgroundHeightPercent = 24f;
+        private const float BackgroundHeightPercent = 28f;
 
         private const int Columns = 4;
         private const float MarginPercent = 1.25f;
@@ -49,10 +49,12 @@ namespace TowerDefense.CameraControl.UI
             float topOffset = TopOffsetPercent / 100f * canvasRect.height;
             float margin = MarginPercent / 100f * canvasRect.width;
 
-            CreateBackground(canvas, topOffset, canvasRect.width, canvasRect.height, margin, out float buttonSize, out float gap);
+            RectTransform background = CreateBackground(canvas, topOffset, canvasRect.width, canvasRect.height, margin, out float buttonSize, out float gap, out float padding);
 
-            RectTransform controlsRoot = BuildControlsRoot(canvas, topOffset);
-            BuildControlsCluster(controlsRoot, buttonSize, gap, margin);
+            BuildOpenCloseButton(canvas, background, buttonSize);
+
+            RectTransform controlsRoot = BuildControlsRoot(background, padding);
+            BuildControlsCluster(controlsRoot, buttonSize, gap);
         }
 
         private Canvas BuildCanvas()
@@ -74,13 +76,13 @@ namespace TowerDefense.CameraControl.UI
             return canvas;
         }
 
-        private static RectTransform CreateBackground(Transform canvas, float topOffset, float canvasWidth, float canvasHeight, float margin, out float buttonSize, out float gap)
+        private static RectTransform CreateBackground(Transform canvas, float topOffset, float canvasWidth, float canvasHeight, float margin, out float buttonSize, out float gap, out float padding)
         {
             float backgroundWidth = BackgroundWidthPercent / 100f * canvasWidth;
             float backgroundHeight = BackgroundHeightPercent / 100f * canvasHeight;
 
             gap = GapPercent / 100f * canvasWidth;
-            float padding = BackgroundPaddingPercent / 100f * canvasWidth;
+            padding = BackgroundPaddingPercent / 100f * canvasWidth;
 
             buttonSize = (backgroundWidth - padding * 2f - (Columns - 1) * gap) / Columns;
 
@@ -105,19 +107,48 @@ namespace TowerDefense.CameraControl.UI
             return rect;
         }
 
-        private static RectTransform BuildControlsRoot(Transform canvas, float topOffset)
+        private static RectTransform BuildControlsRoot(RectTransform background, float padding)
         {
             GameObject rootObject = new GameObject("ControlsRoot");
-            rootObject.transform.SetParent(canvas, false);
+            rootObject.transform.SetParent(background, false);
 
             RectTransform rect = rootObject.AddComponent<RectTransform>();
             rect.anchorMin = new Vector2(1f, 1f);
             rect.anchorMax = new Vector2(1f, 1f);
             rect.pivot = new Vector2(1f, 1f);
             rect.sizeDelta = Vector2.zero;
-            rect.anchoredPosition = new Vector2(0f, -topOffset);
+            rect.anchoredPosition = new Vector2(-padding, -3 * padding);
 
             return rect;
+        }
+
+        private static void BuildOpenCloseButton(Transform canvas, RectTransform background, float buttonSize)
+        {
+            GameObject buttonObject = new GameObject("OpenCloseButton");
+            buttonObject.transform.SetParent(canvas, false);
+
+            RectTransform rect = buttonObject.AddComponent<RectTransform>();
+            rect.anchorMin = new Vector2(1f, 1f);
+            rect.anchorMax = new Vector2(1f, 1f);
+            rect.pivot = new Vector2(1f, 1f);
+            rect.sizeDelta = new Vector2(buttonSize, buttonSize);
+            rect.anchoredPosition = background.anchoredPosition;
+
+            Image image = buttonObject.AddComponent<Image>();
+            image.color = new Color(0.05f, 0.20f, 0.25f, 0.6f);
+
+            Text label = CreateLabel(buttonObject.transform, "▾", buttonSize);
+
+            GameObject backgroundObject = background.gameObject;
+
+            Button button = buttonObject.AddComponent<Button>();
+            button.targetGraphic = image;
+            button.onClick.AddListener(() =>
+            {
+                bool nowOpen = !backgroundObject.activeSelf;
+                backgroundObject.SetActive(nowOpen);
+                label.text = nowOpen ? "▾" : "▸";
+            });
         }
 
         private static void EnsureEventSystem()
@@ -130,13 +161,13 @@ namespace TowerDefense.CameraControl.UI
             eventSystemObject.AddComponent<StandaloneInputModule>();
         }
 
-        private void BuildControlsCluster(Transform canvas, float buttonSize, float gap, float margin)
+        private void BuildControlsCluster(Transform canvas, float buttonSize, float gap)
         {
             float rowTop = 0f;
             float rowMid = rowTop - (buttonSize + gap);
             float rowBottom = rowMid - (buttonSize + gap);
 
-            float colRight = -margin;
+            float colRight = 0f;
             float colCenter = colRight - (buttonSize + gap);
             float colLeft = colCenter - (buttonSize + gap);
 
@@ -195,7 +226,7 @@ namespace TowerDefense.CameraControl.UI
             }
         }
 
-        private static void CreateLabel(Transform parent, string label, float size)
+        private static Text CreateLabel(Transform parent, string label, float size)
         {
             GameObject textObject = new GameObject("Label");
             textObject.transform.SetParent(parent, false);
@@ -213,6 +244,8 @@ namespace TowerDefense.CameraControl.UI
             text.alignment = TextAnchor.MiddleCenter;
             text.color = Color.white;
             text.raycastTarget = false;
+
+            return text;
         }
     }
 }
