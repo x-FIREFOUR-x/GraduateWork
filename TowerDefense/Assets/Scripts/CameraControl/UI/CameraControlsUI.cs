@@ -11,6 +11,15 @@ namespace TowerDefense.CameraControl.UI
         [SerializeField]
         private CameraController cameraController;
 
+        [SerializeField]
+        private Sprite zoomInIcon;
+        [SerializeField]
+        private Sprite zoomOutIcon;
+        [SerializeField]
+        private Sprite homeIcon;
+        [SerializeField]
+        private Sprite cameraIcon;
+
         private const float TopOffsetPercent = 20f;
 
         private const float BackgroundWidthPercent = 16f;
@@ -25,6 +34,7 @@ namespace TowerDefense.CameraControl.UI
         {
             public string Name;
             public string Label;
+            public Sprite Icon;
             public Vector2? MoveDirection;
             public float ZoomDirection;
             public bool IsHome;
@@ -51,7 +61,7 @@ namespace TowerDefense.CameraControl.UI
 
             RectTransform background = CreateBackground(canvas, topOffset, canvasRect.width, canvasRect.height, margin, out float buttonSize, out float gap, out float padding);
 
-            BuildOpenCloseButton(canvas, background, buttonSize);
+            BuildOpenCloseButton(canvas, background, buttonSize, cameraIcon);
 
             RectTransform controlsRoot = BuildControlsRoot(background, padding);
             BuildControlsCluster(controlsRoot, buttonSize, gap);
@@ -122,7 +132,7 @@ namespace TowerDefense.CameraControl.UI
             return rect;
         }
 
-        private static void BuildOpenCloseButton(Transform canvas, RectTransform background, float buttonSize)
+        private static void BuildOpenCloseButton(Transform canvas, RectTransform background, float buttonSize, Sprite cameraIcon)
         {
             GameObject buttonObject = new GameObject("OpenCloseButton");
             buttonObject.transform.SetParent(canvas, false);
@@ -137,7 +147,8 @@ namespace TowerDefense.CameraControl.UI
             Image image = buttonObject.AddComponent<Image>();
             image.color = new Color(0.05f, 0.20f, 0.25f, 0.6f);
 
-            Text label = CreateLabel(buttonObject.transform, "▾", buttonSize);
+            CreateIcon(buttonObject.transform, cameraIcon);
+            Text badge = CreateStateBadge(buttonObject.transform, buttonSize);
 
             GameObject backgroundObject = background.gameObject;
 
@@ -147,7 +158,7 @@ namespace TowerDefense.CameraControl.UI
             {
                 bool nowOpen = !backgroundObject.activeSelf;
                 backgroundObject.SetActive(nowOpen);
-                label.text = nowOpen ? "▾" : "▸";
+                badge.text = nowOpen ? "▼" : "▶";
             });
         }
 
@@ -171,20 +182,20 @@ namespace TowerDefense.CameraControl.UI
             float colCenter = colRight - (buttonSize + gap);
             float colLeft = colCenter - (buttonSize + gap);
 
-            CreateButton(canvas, new ButtonSpec { Name = "ArrowUp", Label = "↑", MoveDirection = Vector2.up }, new Vector2(colCenter, rowTop), buttonSize);
-            CreateButton(canvas, new ButtonSpec { Name = "ArrowLeft", Label = "←", MoveDirection = Vector2.left }, new Vector2(colLeft, rowMid), buttonSize);
-            CreateButton(canvas, new ButtonSpec { Name = "ArrowRight", Label = "→", MoveDirection = Vector2.right }, new Vector2(colRight, rowMid), buttonSize);
-            CreateButton(canvas, new ButtonSpec { Name = "ArrowDown", Label = "↓", MoveDirection = Vector2.down }, new Vector2(colCenter, rowBottom), buttonSize);
+            CreateButton(canvas, new ButtonSpec { Name = "ArrowUp", Label = "▲", MoveDirection = Vector2.up }, new Vector2(colCenter, rowTop), buttonSize);
+            CreateButton(canvas, new ButtonSpec { Name = "ArrowLeft", Label = "◀", MoveDirection = Vector2.left }, new Vector2(colLeft, rowMid), buttonSize);
+            CreateButton(canvas, new ButtonSpec { Name = "ArrowRight", Label = "▶", MoveDirection = Vector2.right }, new Vector2(colRight, rowMid), buttonSize);
+            CreateButton(canvas, new ButtonSpec { Name = "ArrowDown", Label = "▼", MoveDirection = Vector2.down }, new Vector2(colCenter, rowBottom), buttonSize);
 
             float colZoom = colLeft - (buttonSize + gap);
             float zoomInRow = rowMid + gap / 2f + buttonSize / 2f;
             float zoomOutRow = rowMid - buttonSize - gap / 2f + buttonSize / 2f;
 
-            CreateButton(canvas, new ButtonSpec { Name = "ZoomIn", Label = "+", ZoomDirection = 1f }, new Vector2(colZoom, zoomInRow), buttonSize);
-            CreateButton(canvas, new ButtonSpec { Name = "ZoomOut", Label = "-", ZoomDirection = -1f }, new Vector2(colZoom, zoomOutRow), buttonSize);
+            CreateButton(canvas, new ButtonSpec { Name = "ZoomIn", Icon = zoomInIcon, ZoomDirection = 1f }, new Vector2(colZoom, zoomInRow), buttonSize);
+            CreateButton(canvas, new ButtonSpec { Name = "ZoomOut", Icon = zoomOutIcon, ZoomDirection = -1f }, new Vector2(colZoom, zoomOutRow), buttonSize);
 
             Vector2 homePosition = new Vector2(colCenter, rowMid);
-            CreateButton(canvas, new ButtonSpec { Name = "HomeButton", Label = "⌂", IsHome = true }, homePosition, buttonSize);
+            CreateButton(canvas, new ButtonSpec { Name = "HomeButton", Icon = homeIcon, IsHome = true }, homePosition, buttonSize);
         }
 
         private void CreateButton(Transform parent, ButtonSpec spec, Vector2 topRightAnchoredPosition, float buttonSize)
@@ -202,7 +213,10 @@ namespace TowerDefense.CameraControl.UI
             Image image = buttonObject.AddComponent<Image>();
             image.color = new Color(0.10f, 0.45f, 0.55f, 0.5f);
 
-            CreateLabel(buttonObject.transform, spec.Label, buttonSize);
+            if (spec.Icon != null)
+                CreateIcon(buttonObject.transform, spec.Icon);
+            else
+                CreateLabel(buttonObject.transform, spec.Label, buttonSize);
 
             if (spec.IsHome)
             {
@@ -224,6 +238,46 @@ namespace TowerDefense.CameraControl.UI
                 float zoomDirection = spec.ZoomDirection;
                 holdButton.Initialize(held => cameraController.SetExternalZoom(held ? zoomDirection : 0f));
             }
+        }
+
+        private static Text CreateStateBadge(Transform parent, float buttonSize)
+        {
+            GameObject badgeObject = new GameObject("StateBadge");
+            badgeObject.transform.SetParent(parent, false);
+
+            RectTransform rect = badgeObject.AddComponent<RectTransform>();
+            rect.anchorMin = new Vector2(0.55f, 0f);
+            rect.anchorMax = new Vector2(1f, 0.45f);
+            rect.offsetMin = Vector2.zero;
+            rect.offsetMax = Vector2.zero;
+
+            Text text = badgeObject.AddComponent<Text>();
+            text.text = "▼";
+            text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            text.fontSize = Mathf.RoundToInt(buttonSize * 0.3f);
+            text.alignment = TextAnchor.MiddleCenter;
+            text.color = Color.white;
+            text.raycastTarget = false;
+
+            return text;
+        }
+
+        private static void CreateIcon(Transform parent, Sprite sprite)
+        {
+            GameObject iconObject = new GameObject("Icon");
+            iconObject.transform.SetParent(parent, false);
+
+            RectTransform rect = iconObject.AddComponent<RectTransform>();
+            rect.anchorMin = new Vector2(0.15f, 0.15f);
+            rect.anchorMax = new Vector2(0.85f, 0.85f);
+            rect.offsetMin = Vector2.zero;
+            rect.offsetMax = Vector2.zero;
+
+            Image image = iconObject.AddComponent<Image>();
+            image.sprite = sprite;
+            image.color = Color.white;
+            image.preserveAspect = true;
+            image.raycastTarget = false;
         }
 
         private static Text CreateLabel(Transform parent, string label, float size)

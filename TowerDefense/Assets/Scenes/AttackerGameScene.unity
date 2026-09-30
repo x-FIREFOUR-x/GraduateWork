@@ -368,8 +368,12 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a648cfef9f604c963d90fdaea23214c, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier:
   cameraController: {fileID: 265748725}
+  zoomInIcon: {fileID: 21300000, guid: 6caa8391d90166fd8e28e48a16c90919, type: 3}
+  zoomOutIcon: {fileID: 21300000, guid: d09dedd575420365f06891aa265e83d0, type: 3}
+  homeIcon: {fileID: 21300000, guid: 7cc2ef09bb627e89814a7c1fc0c6707a, type: 3}
+  cameraIcon: {fileID: 21300000, guid: 507bcccfd2af836b4b2be215076f8a34, type: 3}
 --- !u!114 &265748725
 MonoBehaviour:
   m_ObjectHideFlags: 0
