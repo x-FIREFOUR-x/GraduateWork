@@ -74,6 +74,37 @@ namespace TowerDefense.CameraControl.UI
             return canvas;
         }
 
+        private static RectTransform CreateBackground(Transform canvas, float topOffset, float canvasWidth, float canvasHeight, float margin, out float buttonSize, out float gap)
+        {
+            float backgroundWidth = BackgroundWidthPercent / 100f * canvasWidth;
+            float backgroundHeight = BackgroundHeightPercent / 100f * canvasHeight;
+
+            gap = GapPercent / 100f * canvasWidth;
+            float padding = BackgroundPaddingPercent / 100f * canvasWidth;
+
+            buttonSize = (backgroundWidth - padding * 2f - (Columns - 1) * gap) / Columns;
+
+            float topEdge = -topOffset + padding;
+            float rightEdge = -margin + padding;
+
+            GameObject backgroundObject = new GameObject("Background");
+            backgroundObject.transform.SetParent(canvas, false);
+            backgroundObject.transform.SetAsFirstSibling();
+
+            RectTransform rect = backgroundObject.AddComponent<RectTransform>();
+            rect.anchorMin = new Vector2(1f, 1f);
+            rect.anchorMax = new Vector2(1f, 1f);
+            rect.pivot = new Vector2(1f, 1f);
+            rect.sizeDelta = new Vector2(backgroundWidth, backgroundHeight);
+            rect.anchoredPosition = new Vector2(rightEdge, topEdge);
+
+            Image image = backgroundObject.AddComponent<Image>();
+            image.color = new Color(0.05f, 0.07f, 0.12f, 0.25f);
+            image.raycastTarget = false;
+
+            return rect;
+        }
+
         private static RectTransform BuildControlsRoot(Transform canvas, float topOffset)
         {
             GameObject rootObject = new GameObject("ControlsRoot");
@@ -123,37 +154,6 @@ namespace TowerDefense.CameraControl.UI
 
             Vector2 homePosition = new Vector2(colCenter, rowMid);
             CreateButton(canvas, new ButtonSpec { Name = "HomeButton", Label = "⌂", IsHome = true }, homePosition, buttonSize);
-        }
-
-        private static RectTransform CreateBackground(Transform canvas, float topOffset, float canvasWidth, float canvasHeight, float margin, out float buttonSize, out float gap)
-        {
-            float backgroundWidth = BackgroundWidthPercent / 100f * canvasWidth;
-            float backgroundHeight = BackgroundHeightPercent / 100f * canvasHeight;
-
-            gap = GapPercent / 100f * canvasWidth;
-            float padding = BackgroundPaddingPercent / 100f * canvasWidth;
-
-            buttonSize = (backgroundWidth - padding * 2f - (Columns - 1) * gap) / Columns;
-
-            float topEdge = -topOffset + padding;
-            float rightEdge = -margin + padding;
-
-            GameObject backgroundObject = new GameObject("Background");
-            backgroundObject.transform.SetParent(canvas, false);
-            backgroundObject.transform.SetAsFirstSibling();
-
-            RectTransform rect = backgroundObject.AddComponent<RectTransform>();
-            rect.anchorMin = new Vector2(1f, 1f);
-            rect.anchorMax = new Vector2(1f, 1f);
-            rect.pivot = new Vector2(1f, 1f);
-            rect.sizeDelta = new Vector2(backgroundWidth, backgroundHeight);
-            rect.anchoredPosition = new Vector2(rightEdge, topEdge);
-
-            Image image = backgroundObject.AddComponent<Image>();
-            image.color = new Color(0.05f, 0.07f, 0.12f, 0.25f);
-            image.raycastTarget = false;
-
-            return rect;
         }
 
         private void CreateButton(Transform parent, ButtonSpec spec, Vector2 topRightAnchoredPosition, float buttonSize)
