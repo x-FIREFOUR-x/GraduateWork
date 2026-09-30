@@ -11,11 +11,15 @@ namespace TowerDefense.CameraControl.UI
         [SerializeField]
         private CameraController cameraController;
 
-        private const float TopOffsetPercent = 25f;
+        private const float TopOffsetPercent = 20f;
 
-        private const float ButtonSize = 64f;
-        private const float Gap = 8f;
-        private const float Margin = 24f;
+        private const float BackgroundWidthPercent = 16f;
+        private const float BackgroundHeightPercent = 24f;
+
+        private const int Columns = 4;
+        private const float MarginPercent = 1.25f;
+        private const float GapPercent = 0.42f;
+        private const float BackgroundPaddingPercent = 0.73f;
 
         private struct ButtonSpec
         {
@@ -38,8 +42,17 @@ namespace TowerDefense.CameraControl.UI
             EnsureEventSystem();
 
             Transform canvas = BuildCanvas().transform;
-            RectTransform controlsRoot = BuildControlsRoot(canvas);
-            BuildControlsCluster(controlsRoot);
+
+            Canvas.ForceUpdateCanvases();
+            Rect canvasRect = canvas.GetComponent<RectTransform>().rect;
+
+            float topOffset = TopOffsetPercent / 100f * canvasRect.height;
+            float margin = MarginPercent / 100f * canvasRect.width;
+
+            CreateBackground(canvas, topOffset, canvasRect.width, canvasRect.height, margin, out float buttonSize, out float gap);
+
+            RectTransform controlsRoot = BuildControlsRoot(canvas, topOffset);
+            BuildControlsCluster(controlsRoot, buttonSize, gap, margin);
         }
 
         private Canvas BuildCanvas()
@@ -61,7 +74,7 @@ namespace TowerDefense.CameraControl.UI
             return canvas;
         }
 
-        private static RectTransform BuildControlsRoot(Transform canvas)
+        private static RectTransform BuildControlsRoot(Transform canvas, float topOffset)
         {
             GameObject rootObject = new GameObject("ControlsRoot");
             rootObject.transform.SetParent(canvas, false);
@@ -71,11 +84,6 @@ namespace TowerDefense.CameraControl.UI
             rect.anchorMax = new Vector2(1f, 1f);
             rect.pivot = new Vector2(1f, 1f);
             rect.sizeDelta = Vector2.zero;
-
-            Canvas.ForceUpdateCanvases();
-            float canvasHeight = canvas.GetComponent<RectTransform>().rect.height;
-
-            float topOffset = TopOffsetPercent / 100f * canvasHeight;
             rect.anchoredPosition = new Vector2(0f, -topOffset);
 
             return rect;
@@ -91,59 +99,64 @@ namespace TowerDefense.CameraControl.UI
             eventSystemObject.AddComponent<StandaloneInputModule>();
         }
 
-        private void BuildControlsCluster(Transform canvas)
+        private void BuildControlsCluster(Transform canvas, float buttonSize, float gap, float margin)
         {
             float rowTop = 0f;
-            float rowMid = rowTop - (ButtonSize + Gap);
-            float rowBottom = rowMid - (ButtonSize + Gap);
+            float rowMid = rowTop - (buttonSize + gap);
+            float rowBottom = rowMid - (buttonSize + gap);
 
-            float colRight = -Margin;
-            float colCenter = colRight - (ButtonSize + Gap);
-            float colLeft = colCenter - (ButtonSize + Gap);
+            float colRight = -margin;
+            float colCenter = colRight - (buttonSize + gap);
+            float colLeft = colCenter - (buttonSize + gap);
 
-            CreateButton(canvas, new ButtonSpec { Name = "ArrowUp", Label = "↑", MoveDirection = Vector2.up }, new Vector2(colCenter, rowTop));
-            CreateButton(canvas, new ButtonSpec { Name = "ArrowLeft", Label = "←", MoveDirection = Vector2.left }, new Vector2(colLeft, rowMid));
-            CreateButton(canvas, new ButtonSpec { Name = "ArrowRight", Label = "→", MoveDirection = Vector2.right }, new Vector2(colRight, rowMid));
-            CreateButton(canvas, new ButtonSpec { Name = "ArrowDown", Label = "↓", MoveDirection = Vector2.down }, new Vector2(colCenter, rowBottom));
+            CreateButton(canvas, new ButtonSpec { Name = "ArrowUp", Label = "↑", MoveDirection = Vector2.up }, new Vector2(colCenter, rowTop), buttonSize);
+            CreateButton(canvas, new ButtonSpec { Name = "ArrowLeft", Label = "←", MoveDirection = Vector2.left }, new Vector2(colLeft, rowMid), buttonSize);
+            CreateButton(canvas, new ButtonSpec { Name = "ArrowRight", Label = "→", MoveDirection = Vector2.right }, new Vector2(colRight, rowMid), buttonSize);
+            CreateButton(canvas, new ButtonSpec { Name = "ArrowDown", Label = "↓", MoveDirection = Vector2.down }, new Vector2(colCenter, rowBottom), buttonSize);
 
+            float colZoom = colLeft - (buttonSize + gap);
+            float zoomInRow = rowMid + gap / 2f + buttonSize / 2f;
+            float zoomOutRow = rowMid - buttonSize - gap / 2f + buttonSize / 2f;
 
-            float colZoom = colLeft - (ButtonSize + Gap);
-            float zoomInRow = rowMid + Gap / 2f + ButtonSize / 2f;
-            float zoomOutRow = rowMid - ButtonSize - Gap / 2f + ButtonSize / 2f;
-
-            CreateButton(canvas, new ButtonSpec { Name = "ZoomIn", Label = "+", ZoomDirection = 1f }, new Vector2(colZoom, zoomInRow));
-            CreateButton(canvas, new ButtonSpec { Name = "ZoomOut", Label = "-", ZoomDirection = -1f }, new Vector2(colZoom, zoomOutRow));
+            CreateButton(canvas, new ButtonSpec { Name = "ZoomIn", Label = "+", ZoomDirection = 1f }, new Vector2(colZoom, zoomInRow), buttonSize);
+            CreateButton(canvas, new ButtonSpec { Name = "ZoomOut", Label = "-", ZoomDirection = -1f }, new Vector2(colZoom, zoomOutRow), buttonSize);
 
             Vector2 homePosition = new Vector2(colCenter, rowMid);
-            CreateButton(canvas, new ButtonSpec { Name = "HomeButton", Label = "⌂", IsHome = true }, homePosition);
-
-            float left = colZoom - ButtonSize;
-            float top = rowTop;
-            float bottom = rowBottom - ButtonSize;
-            CreateBackground(canvas, left, colRight, top, bottom);
+            CreateButton(canvas, new ButtonSpec { Name = "HomeButton", Label = "⌂", IsHome = true }, homePosition, buttonSize);
         }
 
-        private static void CreateBackground(Transform parent, float left, float right, float top, float bottom)
+        private static RectTransform CreateBackground(Transform canvas, float topOffset, float canvasWidth, float canvasHeight, float margin, out float buttonSize, out float gap)
         {
-            const float padding = 14f;
+            float backgroundWidth = BackgroundWidthPercent / 100f * canvasWidth;
+            float backgroundHeight = BackgroundHeightPercent / 100f * canvasHeight;
+
+            gap = GapPercent / 100f * canvasWidth;
+            float padding = BackgroundPaddingPercent / 100f * canvasWidth;
+
+            buttonSize = (backgroundWidth - padding * 2f - (Columns - 1) * gap) / Columns;
+
+            float topEdge = -topOffset + padding;
+            float rightEdge = -margin + padding;
 
             GameObject backgroundObject = new GameObject("Background");
-            backgroundObject.transform.SetParent(parent, false);
+            backgroundObject.transform.SetParent(canvas, false);
             backgroundObject.transform.SetAsFirstSibling();
 
             RectTransform rect = backgroundObject.AddComponent<RectTransform>();
             rect.anchorMin = new Vector2(1f, 1f);
             rect.anchorMax = new Vector2(1f, 1f);
             rect.pivot = new Vector2(1f, 1f);
-            rect.sizeDelta = new Vector2(right - left + padding * 2f, top - bottom + padding * 2f);
-            rect.anchoredPosition = new Vector2(right + padding, top + padding);
+            rect.sizeDelta = new Vector2(backgroundWidth, backgroundHeight);
+            rect.anchoredPosition = new Vector2(rightEdge, topEdge);
 
             Image image = backgroundObject.AddComponent<Image>();
             image.color = new Color(0.05f, 0.07f, 0.12f, 0.25f);
             image.raycastTarget = false;
+
+            return rect;
         }
 
-        private void CreateButton(Transform parent, ButtonSpec spec, Vector2 topRightAnchoredPosition)
+        private void CreateButton(Transform parent, ButtonSpec spec, Vector2 topRightAnchoredPosition, float buttonSize)
         {
             GameObject buttonObject = new GameObject(spec.Name);
             buttonObject.transform.SetParent(parent, false);
@@ -152,13 +165,13 @@ namespace TowerDefense.CameraControl.UI
             rect.anchorMin = new Vector2(1f, 1f);
             rect.anchorMax = new Vector2(1f, 1f);
             rect.pivot = new Vector2(1f, 1f);
-            rect.sizeDelta = new Vector2(ButtonSize, ButtonSize);
+            rect.sizeDelta = new Vector2(buttonSize, buttonSize);
             rect.anchoredPosition = topRightAnchoredPosition;
 
             Image image = buttonObject.AddComponent<Image>();
             image.color = new Color(0.10f, 0.45f, 0.55f, 0.5f);
 
-            CreateLabel(buttonObject.transform, spec.Label, ButtonSize);
+            CreateLabel(buttonObject.transform, spec.Label, buttonSize);
 
             if (spec.IsHome)
             {
