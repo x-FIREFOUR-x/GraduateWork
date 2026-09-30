@@ -111,7 +111,7 @@ namespace TowerDefense.CameraControl.UI
             rect.anchoredPosition = new Vector2(rightEdge, topEdge);
 
             Image image = backgroundObject.AddComponent<Image>();
-            image.color = new Color(0.05f, 0.07f, 0.12f, 0.25f);
+            image.color = new Color(0.04f, 0.05f, 0.07f, 0.55f);
             image.raycastTarget = false;
 
             return rect;
@@ -145,7 +145,7 @@ namespace TowerDefense.CameraControl.UI
             rect.anchoredPosition = background.anchoredPosition;
 
             Image image = buttonObject.AddComponent<Image>();
-            image.color = new Color(0.05f, 0.20f, 0.25f, 0.6f);
+            image.color = new Color(1.0f, 0.78f, 0.16f, 0.95f);
 
             CreateIcon(buttonObject.transform, cameraIcon);
             Text badge = CreateStateBadge(buttonObject.transform, buttonSize);
@@ -211,7 +211,7 @@ namespace TowerDefense.CameraControl.UI
             rect.anchoredPosition = topRightAnchoredPosition;
 
             Image image = buttonObject.AddComponent<Image>();
-            image.color = new Color(0.10f, 0.45f, 0.55f, 0.5f);
+            image.color = new Color(0.149f, 0.176f, 0.251f, 0.85f);
 
             if (spec.Icon != null)
                 CreateIcon(buttonObject.transform, spec.Icon);
