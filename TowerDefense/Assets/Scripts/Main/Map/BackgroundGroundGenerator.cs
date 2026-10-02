@@ -38,6 +38,9 @@ namespace TowerDefense.Main.Map
         private const float tileSeamDrop = 0.2f;
         private const float outerStartRise = 0.05f;
 
+        // Multiplier applied only to the downward half of the noise, so dips are shallower than bumps are tall
+        private const float dipDepthScale = 0.5f;
+
         private const float baseAmplitude = 6f;
         private const float wiggleAmplitude = 3.5f;
         private const float fineAmplitude = 1.4f;
@@ -184,6 +187,9 @@ namespace TowerDefense.Main.Map
 
                 float noise = (wiggle * 2f * wiggleAmplitude + fine * 2f * fineAmplitude + micro * 2f * microAmplitude)
                               * noiseFalloff * ReliefMaskAt(x, z, edgeDistance) * nearBoost;
+
+                if (noise < 0f)
+                    noise *= dipDepthScale;
 
                 float lift = falloff * baseAmplitude + noise;
 
