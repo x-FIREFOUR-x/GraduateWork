@@ -7,7 +7,7 @@ using UnityEngine.Rendering;
 using Random = System.Random;
 
 
-namespace TowerDefense.Main.Map
+namespace TowerDefense.Main.Map.Background
 {
     // Low-poly details standing on the background ground, built the same way as the ones baked onto
     // TowerTile and BlockedTile: grass tufts and blades, stones, dandelion-like flowers, boulders with

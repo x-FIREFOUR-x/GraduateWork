@@ -896,7 +896,7 @@ GameObject:
   - component: {fileID: 705115994}
   - component: {fileID: 705115995}
   m_Layer: 0
-  m_Name: MapComponentsConroller
+  m_Name: MapController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4314,7 +4314,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff945479a8ed1ff4eb5bdd6a50301488, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapComponentController: {fileID: 705115995}
+  mapController: {fileID: 705115995}
   waveSpawner: {fileID: 1654633878}
   effectBuildingPrefab: {fileID: 358637981425055526, guid: 8eb503696b886e04faff8fc0f480d473, type: 3}
   timeEffectBuilding: 1

@@ -5,12 +5,13 @@ using UnityEngine;
 using TowerDefense.Storage;
 using TowerDefense.Main.Map.Tile;
 using TowerDefense.Main.Map.Buildings;
+using TowerDefense.Main.Map.Background;
 using TowerDefense.Main.Managers.WaveSpawners;
 
 
 namespace TowerDefense.Main.Map
 {
-    public class MapComponentsController : MonoBehaviour
+    public class MapController : MonoBehaviour
     {
         [SerializeField]
         private GameObject waveSpawner;
@@ -69,7 +70,7 @@ namespace TowerDefense.Main.Map
 
             List<Vector2Int> generatedPath;
             HashSet<Vector2Int> blockedTiles;
-            if (MapSaver.instance.IsSave)
+            if (MapSaver.instance != null && MapSaver.instance.IsSave)
             {
                 indexesStartBuilding = MapSaver.instance.GetIndexesStart();
                 indexesEndBuilding = MapSaver.instance.GetIndexesEnd();

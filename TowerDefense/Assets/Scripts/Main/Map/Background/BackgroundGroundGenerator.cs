@@ -6,7 +6,7 @@ using UnityEngine.Rendering;
 using Random = System.Random;
 
 
-namespace TowerDefense.Main.Map
+namespace TowerDefense.Main.Map.Background
 {
     public static class BackgroundGroundGenerator
     {

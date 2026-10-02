@@ -17,7 +17,7 @@ namespace TowerDefense.Main.Managers.TowerBuilders
     public class AITowerBuilder : MonoBehaviour
     {
         [SerializeField]
-        private MapComponentsController mapComponentController;
+        private MapController mapController;
         private TilesMap tilesMap;
 
         [SerializeField]
@@ -43,7 +43,7 @@ namespace TowerDefense.Main.Managers.TowerBuilders
         {
             towersStorage = Resources.Load<TowersStorage>($"{nameof(TowersStorage)}");
 
-            tilesMap = mapComponentController.TilesMap;
+            tilesMap = mapController.TilesMap;
             InitializeTowerSelectionAlgorithm();
         }
 

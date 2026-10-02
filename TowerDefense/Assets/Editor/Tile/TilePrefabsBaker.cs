@@ -18,10 +18,10 @@ namespace TowerDefense.EditorTools.Tile
     public static class TilePrefabsBaker
     {
         // Tile assets are kept in a "TowerTile", "PathTile" or "BlockedTile" subfolder of these
-        private const string texturesFolder = "Assets/Textures/Tile";
+        private const string texturesFolder = "Assets/Textures/Map/Tile";
         private const string meshesFolder = "Assets/Models/Tile";
-        private const string materialsFolder = "Assets/Materials/MapComponents/Tile";
-        private const string prefabsFolder = "Assets/Prefabs/MapComponents/Tile";
+        private const string materialsFolder = "Assets/Materials/Map/Tile";
+        private const string prefabsFolder = "Assets/Prefabs/Map/Tile";
         private const string storagePath = "Assets/Resources/" + nameof(TileVariantsStorage) + ".asset";
         // Earlier bakes kept one storage per base prefab here
         private const string legacyStoragesFolder = "Assets/Resources/TileVariants";
