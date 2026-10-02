@@ -34,7 +34,7 @@ namespace TowerDefense.Main.Map
         private MapSizeParamsStorage mapSizeParams;
 
 
-        [Header("Background mountains")]
+        [Header("Background")]
         [SerializeField]
         private Material backgroundMountainsMaterial;
         [SerializeField]
@@ -47,13 +47,15 @@ namespace TowerDefense.Main.Map
         private const float FarMountainsRingRadiusMultiplier = 1.05f;
         private const float FarMountainsScale = 1.8f;
 
-        [Header("Background ground")]
         [SerializeField]
         private Material backgroundGroundMaterial;
+        [SerializeField]
+        private Material backgroundGroundDecorMaterial;
 
-        // Largest possible spire radius among far mountains (Range(12,18) * FarMountainsScale), times the
-        // combined bulge+lean margin BackgroundMountainsGenerator allows a spire silhouette to drift by
+        private const float GroundDecorDistance = 35f;
+
         private const float FarMountainSpireMargin = 18f * FarMountainsScale * 1.8f;
+
 
         void Start()
         {
@@ -113,8 +115,12 @@ namespace TowerDefense.Main.Map
             float farRingRadius = gridSize * FarMountainsRingRadiusMultiplier;
             float coverageRadius = (farRingRadius * 1.05f + FarMountainSpireMargin + 10f) / 3f * 2f;
 
+            int seed = System.Environment.TickCount + 2;
             BackgroundGroundGenerator.Generate(TilesMap.transform, center, gridHalfWidth, sizeTile.y / 2f, coverageRadius,
-                                               backgroundGroundMaterial, System.Environment.TickCount + 2);
+                                               backgroundGroundMaterial, seed, out System.Func<float, float, float> groundHeight);
+
+            BackgroundGroundDecorGenerator.Generate(TilesMap.transform, backgroundGroundDecorMaterial, center, gridHalfWidth, sizeTile,
+                                                    GroundDecorDistance, groundHeight, seed + 1);
         }
 
         private void GenerateBackgroundMountains(int countTile, Vector3 sizeTile)

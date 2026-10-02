@@ -47,14 +47,14 @@ namespace TowerDefense.Main.Map
         private const float microAmplitude = 0.6f;
 
         public static GameObject Generate(Transform parent, Vector3 center, float gridHalfWidth, float groundY,
-                                           float coverageRadius, Material material, int seed)
+                                           float coverageRadius, Material material, int seed, out System.Func<float, float, float> heightAt)
         {
             Random rng = new Random(seed);
 
             GameObject terrain = new GameObject("BackgroundGround");
             terrain.transform.SetParent(parent, false);
 
-            Mesh mesh = BuildMesh(rng, center, gridHalfWidth, groundY, coverageRadius);
+            Mesh mesh = BuildMesh(rng, center, gridHalfWidth, groundY, coverageRadius, out heightAt);
             MeshFilter meshFilter = terrain.AddComponent<MeshFilter>();
             meshFilter.sharedMesh = mesh;
 
@@ -66,7 +66,8 @@ namespace TowerDefense.Main.Map
             return terrain;
         }
 
-        private static Mesh BuildMesh(Random rng, Vector3 center, float gridHalfWidth, float groundY, float coverageRadius)
+        private static Mesh BuildMesh(Random rng, Vector3 center, float gridHalfWidth, float groundY, float coverageRadius,
+                                       out System.Func<float, float, float> heightAt)
         {
             float offsetX = (float)Range(rng, 0, 10000);
             float offsetZ = (float)Range(rng, 0, 10000);
@@ -271,6 +272,8 @@ namespace TowerDefense.Main.Map
             mesh.SetUVs(0, uvs);
             mesh.SetTriangles(triangles, 0);
             mesh.RecalculateBounds();
+
+            heightAt = (x, z) => Height(x, z, true);
 
             return mesh;
         }
