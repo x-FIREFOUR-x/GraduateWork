@@ -47,6 +47,14 @@ namespace TowerDefense.Main.Map
         private const float FarMountainsRingRadiusMultiplier = 1.05f;
         private const float FarMountainsScale = 1.8f;
 
+        [Header("Background ground")]
+        [SerializeField]
+        private Material backgroundGroundMaterial;
+
+        // Largest possible spire radius among far mountains (Range(12,18) * FarMountainsScale), times the
+        // combined bulge+lean margin BackgroundMountainsGenerator allows a spire silhouette to drift by
+        private const float FarMountainSpireMargin = 18f * FarMountainsScale * 1.8f;
+
         void Start()
         {
             mapSizeParams = Resources.Load<MapSizeParamsStorage>($"{nameof(MapSizeParamsStorage)}");
@@ -78,6 +86,7 @@ namespace TowerDefense.Main.Map
                 .GetComponent<TilesMap>();
             TilesMap.Initialize(mapSizeParams.CountTile, generatedPath, blockedTiles, mapSizeParams.OffsetTile);
 
+            GenerateBackgroundGround(mapSizeParams.CountTile, mapSizeParams.SizeTile);
             GenerateBackgroundMountains(mapSizeParams.CountTile, mapSizeParams.SizeTile);
 
             wayPoints = Instantiate(wayPointsPrefab, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1))
@@ -94,6 +103,19 @@ namespace TowerDefense.Main.Map
             waveSpawner.GetComponent<WaveSpawner>().Initialize(startBuilding.transform);
         }
 
+
+        private void GenerateBackgroundGround(int countTile, Vector3 sizeTile)
+        {
+            Vector3 center = new Vector3((countTile - 1) * sizeTile.x / 2f, 0, (countTile - 1) * sizeTile.z / 2f);
+            float gridHalfWidth = countTile * sizeTile.x / 2f;
+            float gridSize = countTile * sizeTile.x;
+
+            float farRingRadius = gridSize * FarMountainsRingRadiusMultiplier;
+            float coverageRadius = (farRingRadius * 1.05f + FarMountainSpireMargin + 10f) / 3f * 2f;
+
+            BackgroundGroundGenerator.Generate(TilesMap.transform, center, gridHalfWidth, sizeTile.y / 2f, coverageRadius,
+                                               backgroundGroundMaterial, System.Environment.TickCount + 2);
+        }
 
         private void GenerateBackgroundMountains(int countTile, Vector3 sizeTile)
         {

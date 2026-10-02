@@ -936,6 +936,7 @@ MonoBehaviour:
   wayPointsPrefab: {fileID: 6370203059284023274, guid: b07a176a27d72dc4e8898d803c6b5310, type: 3}
   backgroundMountainsMaterial: {fileID: 2100000, guid: 1d6b2281bad654acd0defd6dd8252e38, type: 2}
   backgroundMountainsFarMaterial: {fileID: 2100000, guid: 71a3510140f41536555ad3d923ffc248, type: 2}
+  backgroundGroundMaterial: {fileID: 2100000, guid: 9173beaa18f6a184f5a4a02e833719e9, type: 2}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
