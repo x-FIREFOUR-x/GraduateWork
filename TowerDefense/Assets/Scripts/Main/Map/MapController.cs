@@ -5,12 +5,13 @@ using UnityEngine;
 using TowerDefense.Storage;
 using TowerDefense.Main.Map.Tile;
 using TowerDefense.Main.Map.Buildings;
+using TowerDefense.Main.Map.Background;
 using TowerDefense.Main.Managers.WaveSpawners;
 
 
 namespace TowerDefense.Main.Map
 {
-    public class MapComponentsController : MonoBehaviour
+    public class MapController : MonoBehaviour
     {
         [SerializeField]
         private GameObject waveSpawner;
@@ -33,6 +34,30 @@ namespace TowerDefense.Main.Map
 
         private MapSizeParamsStorage mapSizeParams;
 
+
+        [Header("Background")]
+        [SerializeField]
+        private Material backgroundMountainsMaterial;
+        [SerializeField]
+        private Material backgroundMountainsFarMaterial;
+
+        private const int MountainsCount = 16;
+        private const float MountainsRingRadiusMultiplier = 0.55f;
+
+        private const int FarMountainsCount = 10;
+        private const float FarMountainsRingRadiusMultiplier = 1.05f;
+        private const float FarMountainsScale = 1.8f;
+
+        [SerializeField]
+        private Material backgroundGroundMaterial;
+        [SerializeField]
+        private Material backgroundGroundDecorMaterial;
+
+        private const float GroundDecorDistance = 35f;
+
+        private const float FarMountainSpireMargin = 18f * FarMountainsScale * 1.8f;
+
+
         void Start()
         {
             mapSizeParams = Resources.Load<MapSizeParamsStorage>($"{nameof(MapSizeParamsStorage)}");
@@ -45,7 +70,7 @@ namespace TowerDefense.Main.Map
 
             List<Vector2Int> generatedPath;
             HashSet<Vector2Int> blockedTiles;
-            if (MapSaver.instance.IsSave)
+            if (MapSaver.instance != null && MapSaver.instance.IsSave)
             {
                 indexesStartBuilding = MapSaver.instance.GetIndexesStart();
                 indexesEndBuilding = MapSaver.instance.GetIndexesEnd();
@@ -64,6 +89,9 @@ namespace TowerDefense.Main.Map
                 .GetComponent<TilesMap>();
             TilesMap.Initialize(mapSizeParams.CountTile, generatedPath, blockedTiles, mapSizeParams.OffsetTile);
 
+            GenerateBackgroundGround(mapSizeParams.CountTile, mapSizeParams.SizeTile);
+            GenerateBackgroundMountains(mapSizeParams.CountTile, mapSizeParams.SizeTile);
+
             wayPoints = Instantiate(wayPointsPrefab, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1))
                 .GetComponent<WayPoints>();
             wayPoints.Initialize(generatedPath);
@@ -78,6 +106,40 @@ namespace TowerDefense.Main.Map
             waveSpawner.GetComponent<WaveSpawner>().Initialize(startBuilding.transform);
         }
 
+
+        private void GenerateBackgroundGround(int countTile, Vector3 sizeTile)
+        {
+            Vector3 center = new Vector3((countTile - 1) * sizeTile.x / 2f, 0, (countTile - 1) * sizeTile.z / 2f);
+            float gridHalfWidth = countTile * sizeTile.x / 2f;
+            float gridSize = countTile * sizeTile.x;
+
+            float farRingRadius = gridSize * FarMountainsRingRadiusMultiplier;
+            float coverageRadius = (farRingRadius * 1.05f + FarMountainSpireMargin + 10f) / 3f * 2f;
+
+            int seed = System.Environment.TickCount + 2;
+            BackgroundGroundGenerator.Generate(TilesMap.transform, center, gridHalfWidth, sizeTile.y / 2f, coverageRadius,
+                                               backgroundGroundMaterial, seed, out System.Func<float, float, float> groundHeight);
+
+            BackgroundGroundDecorGenerator.Generate(TilesMap.transform, backgroundGroundDecorMaterial, center, gridHalfWidth, sizeTile,
+                                                    GroundDecorDistance, groundHeight, seed + 1);
+        }
+
+        private void GenerateBackgroundMountains(int countTile, Vector3 sizeTile)
+        {
+            Vector3 center = new Vector3((countTile - 1) * sizeTile.x / 2f, 0, (countTile - 1) * sizeTile.z / 2f);
+            float gridHalfWidth = countTile * sizeTile.x / 2f;
+            float gridSize = countTile * sizeTile.x;
+
+            int seed = System.Environment.TickCount;
+
+            float farRingRadius = gridSize * FarMountainsRingRadiusMultiplier;
+            BackgroundMountainsGenerator.Generate(TilesMap.transform, center, gridHalfWidth, farRingRadius, FarMountainsCount, seed + 1,
+                                                   backgroundMountainsFarMaterial, FarMountainsScale);
+
+            float ringRadius = gridSize * MountainsRingRadiusMultiplier;
+            BackgroundMountainsGenerator.Generate(TilesMap.transform, center, gridHalfWidth, ringRadius, MountainsCount, seed,
+                                                   backgroundMountainsMaterial);
+        }
 
         private static HashSet<Vector2Int> BlockedTilesFromMatrix(TileKind[,] tileMatrix)
         {

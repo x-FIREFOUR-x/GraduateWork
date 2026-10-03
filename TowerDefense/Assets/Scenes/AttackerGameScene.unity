@@ -896,7 +896,7 @@ GameObject:
   - component: {fileID: 705115994}
   - component: {fileID: 705115995}
   m_Layer: 0
-  m_Name: MapComponentsConroller
+  m_Name: MapController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -934,6 +934,10 @@ MonoBehaviour:
   endBuilding: {fileID: 3497745517377867848}
   tilesMapPrefab: {fileID: 5839288057474732416, guid: c0330ab72ec7fc54bb2961a6cf932ff4, type: 3}
   wayPointsPrefab: {fileID: 6370203059284023274, guid: b07a176a27d72dc4e8898d803c6b5310, type: 3}
+  backgroundMountainsMaterial: {fileID: 2100000, guid: 1d6b2281bad654acd0defd6dd8252e38, type: 2}
+  backgroundMountainsFarMaterial: {fileID: 2100000, guid: 71a3510140f41536555ad3d923ffc248, type: 2}
+  backgroundGroundMaterial: {fileID: 2100000, guid: 9173beaa18f6a184f5a4a02e833719e9, type: 2}
+  backgroundGroundDecorMaterial: {fileID: 2100000, guid: c4a91f7e3d2b4e08b6f5a0d9712e8c35, type: 2}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -4310,7 +4314,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff945479a8ed1ff4eb5bdd6a50301488, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapComponentController: {fileID: 705115995}
+  mapController: {fileID: 705115995}
   waveSpawner: {fileID: 1654633878}
   effectBuildingPrefab: {fileID: 358637981425055526, guid: 8eb503696b886e04faff8fc0f480d473, type: 3}
   timeEffectBuilding: 1

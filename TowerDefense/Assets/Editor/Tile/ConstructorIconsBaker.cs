@@ -26,10 +26,10 @@ namespace TowerDefense.EditorTools.Tile
 
         private static readonly (string prefabPath, string iconName)[] icons =
         {
-            ("Assets/Prefabs/MapComponents/Tile/PathTile/PathTile_Straight_NS.prefab", "IconPathTile"),
-            ("Assets/Prefabs/MapComponents/Tile/BlockedTile/BlockedTile_00.prefab", "IconBlockedTile"),
-            ("Assets/Prefabs/MapComponents/Building/StartBuilding.prefab", "IconStartBuilding"),
-            ("Assets/Prefabs/MapComponents/Building/EndBuilding.prefab", "IconEndBuilding"),
+            ("Assets/Prefabs/Map/Tile/PathTile/PathTile_Straight_NS.prefab", "IconPathTile"),
+            ("Assets/Prefabs/Map/Tile/BlockedTile/BlockedTile_00.prefab", "IconBlockedTile"),
+            ("Assets/Prefabs/Map/Building/StartBuilding.prefab", "IconStartBuilding"),
+            ("Assets/Prefabs/Map/Building/EndBuilding.prefab", "IconEndBuilding"),
         };
 
 
