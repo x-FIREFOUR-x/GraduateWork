@@ -19,7 +19,7 @@ namespace TowerDefense.EditorTools.Tile
     {
         // Tile assets are kept in a "TowerTile", "PathTile" or "BlockedTile" subfolder of these
         private const string texturesFolder = "Assets/Textures/Map/Tile";
-        private const string meshesFolder = "Assets/Models/Tile";
+        private const string meshesFolder = "Assets/Models/Map/Tile";
         private const string materialsFolder = "Assets/Materials/Map/Tile";
         private const string prefabsFolder = "Assets/Prefabs/Map/Tile";
         private const string storagePath = "Assets/Resources/" + nameof(TileVariantsStorage) + ".asset";
