@@ -36,6 +36,8 @@ namespace TowerDefense.Main.Map.Background
             GameObject container = new GameObject("BackgroundMountains");
             container.transform.SetParent(parent, false);
 
+            List<CombineInstance> spires = new();
+
             float arcLength = ringRadius * (Mathf.PI * 2 / count);
 
             float densityFreq = (float)Range(rng, 2, 4);
@@ -54,13 +56,10 @@ namespace TowerDefense.Main.Map.Background
                 Vector3 tangent = new Vector3(-Mathf.Sin(angle), 0, Mathf.Cos(angle));
                 Vector3 clusterCenter = center + radial * radius;
 
-                GameObject cluster = new GameObject($"MountainCluster_{i}");
-                cluster.transform.SetParent(container.transform, false);
-
                 float mainHeight = (float)Range(rng, 17.4, 28) * scale;
                 float mainRadius = (float)Range(rng, 12, 18) * scale;
                 Vector3 mainPosition = ClearOfGrid(clusterCenter, center, gridHalfWidth, SpireClearance(mainRadius));
-                AddSpire(cluster.transform, material, rng, mainPosition, mainHeight, mainRadius);
+                AddSpire(spires, rng, mainPosition, mainHeight, mainRadius);
 
                 int satellites = rng.Next(3, 6);
                 for (int s = 0; s < satellites; s++)
@@ -75,11 +74,34 @@ namespace TowerDefense.Main.Map.Background
                     float baseRadius = (float)Range(rng, 6.9, 12) * scale;
 
                     Vector3 satellitePosition = ClearOfGrid(satellitePoint, center, gridHalfWidth, SpireClearance(baseRadius));
-                    AddSpire(cluster.transform, material, rng, satellitePosition, height, baseRadius);
+                    AddSpire(spires, rng, satellitePosition, height, baseRadius);
                 }
             }
 
+            CombineSpires(container, spires, material);
+
             return container;
+        }
+
+        // All spires of one ring are baked into a single mesh: one draw call and one renderer instead of
+        // one per spire, and the per-spire meshes are not kept around
+        private static void CombineSpires(GameObject container, List<CombineInstance> spires, Material material)
+        {
+            Mesh combined = new Mesh { indexFormat = IndexFormat.UInt32 };
+            combined.CombineMeshes(spires.ToArray(), true, true);
+            combined.RecalculateBounds();
+            combined.UploadMeshData(true);
+
+            foreach (CombineInstance spire in spires)
+                Object.Destroy(spire.mesh);
+
+            container.AddComponent<MeshFilter>().sharedMesh = combined;
+
+            MeshRenderer meshRenderer = container.AddComponent<MeshRenderer>();
+            if (material != null)
+                meshRenderer.sharedMaterial = material;
+
+            meshRenderer.shadowCastingMode = ShadowCastingMode.Off;
         }
 
         private static Vector3 ClearOfGrid(Vector3 point, Vector3 gridCenter, float gridHalfWidth, float clearance)
@@ -101,22 +123,13 @@ namespace TowerDefense.Main.Map.Background
             return gridCenter + new Vector3(cos, 0, sin) * requiredDistance;
         }
 
-        private static void AddSpire(Transform parent, Material material, Random rng, Vector3 position, float height, float baseRadius)
+        private static void AddSpire(List<CombineInstance> spires, Random rng, Vector3 position, float height, float baseRadius)
         {
-            GameObject spire = new GameObject("Spire");
-            spire.transform.SetParent(parent, false);
-            spire.transform.position = position;
-
-            Mesh mesh = new CliffMeshBuilder(rng).Build(height, baseRadius);
-
-            MeshFilter meshFilter = spire.AddComponent<MeshFilter>();
-            meshFilter.sharedMesh = mesh;
-
-            MeshRenderer meshRenderer = spire.AddComponent<MeshRenderer>();
-            if (material != null)
-                meshRenderer.sharedMaterial = material;
-
-            meshRenderer.shadowCastingMode = ShadowCastingMode.Off;
+            spires.Add(new CombineInstance
+            {
+                mesh = new CliffMeshBuilder(rng).Build(height, baseRadius),
+                transform = Matrix4x4.Translate(position)
+            });
         }
 
         private static double Range(Random rng, double min, double max)

@@ -86,7 +86,8 @@ namespace TowerDefense.Main.Map.Background
                     if (forest)
                         variant = cellRng.Next(0, boulderVariants);
 
-                    builder.BuildCell(cellX, cellZ, cellRng, obstacle, variant, forest);
+                    float detail = forest ? 1f : Mathf.Lerp(1f, 0.45f, edgeDistance / maxDistance);
+                    builder.BuildCell(cellX, cellZ, cellRng, obstacle, variant, forest, detail);
                 }
             }
 
@@ -109,16 +110,18 @@ namespace TowerDefense.Main.Map.Background
             private readonly Vector3 size;
             private readonly Func<float, float, float> groundHeight;
 
-            private readonly List<Vector3> vertices = new();
-            private readonly List<Vector3> normals = new();
-            private readonly List<Vector2> uvs = new();
-            private readonly List<int> triangles = new();
+            // Sized for a typical map up front: growing these lists by doubling copies hundreds of thousands of entries
+            private readonly List<Vector3> vertices = new(250000);
+            private readonly List<Vector3> normals = new(250000);
+            private readonly List<Vector2> uvs = new(250000);
+            private readonly List<int> triangles = new(750000);
 
             private Random rng;
             private float cellX;
             private float cellZ;
             private int variant;
             private bool forest;
+            private float detail = 1f;
 
             private static readonly float golden = (1 + Mathf.Sqrt(5)) / 2;
             private static readonly Vector3[] icoVertices =
@@ -143,18 +146,25 @@ namespace TowerDefense.Main.Map.Background
                 this.groundHeight = groundHeight;
             }
 
-            public void BuildCell(float cellX, float cellZ, Random cellRng, bool obstacle, int variant, bool forest)
+            public void BuildCell(float cellX, float cellZ, Random cellRng, bool obstacle, int variant, bool forest, float detail)
             {
                 this.cellX = cellX;
                 this.cellZ = cellZ;
                 this.variant = variant;
                 this.forest = forest;
+                this.detail = detail;
                 rng = cellRng;
 
                 if (obstacle)
                     BuildObstacleCell();
                 else
                     BuildGrassCell();
+            }
+
+            // Distant cells get fewer filler blades: they are small on screen and the ground behind is the same green
+            private int ScaledCount(int count)
+            {
+                return Mathf.Max(1, Mathf.RoundToInt(count * detail));
             }
 
             public Mesh ToMesh()
@@ -167,6 +177,9 @@ namespace TowerDefense.Main.Map.Background
                 mesh.SetUVs(0, uvs);
                 mesh.SetTriangles(triangles, 0);
                 mesh.RecalculateBounds();
+
+                // The decor never changes after this, so the CPU-side copy of the mesh is not kept
+                mesh.UploadMeshData(true);
 
                 return mesh;
             }
@@ -205,7 +218,7 @@ namespace TowerDefense.Main.Map.Background
                     }
                 }
 
-                for (int i = 0; i < 40; i++)
+                for (int i = 0, count = ScaledCount(40); i < count; i++)
                     ShortBlade(new Vector2(Range(0.06f, 0.94f), Range(0.06f, 0.94f)));
             }
 
@@ -255,7 +268,7 @@ namespace TowerDefense.Main.Map.Background
                         Tuft(p, 0.9f);
                 }
 
-                for (int i = 0; i < 30; i++)
+                for (int i = 0, count = ScaledCount(30); i < count; i++)
                     ShortBlade(new Vector2(Range(0.06f, 0.94f), Range(0.06f, 0.94f)));
             }
 
@@ -280,7 +293,7 @@ namespace TowerDefense.Main.Map.Background
                         Stone(Surface(p), Range(0.12f, 0.26f), Palette.Rock, Range(0.4f, 0.65f));
                 }
 
-                for (int i = 0; i < 16; i++)
+                for (int i = 0, count = ScaledCount(16); i < count; i++)
                     ShortBlade(new Vector2(Range(0.06f, 0.94f), Range(0.06f, 0.94f)));
             }
 
@@ -541,7 +554,8 @@ namespace TowerDefense.Main.Map.Background
                 AddVertex(c, normalBc, uv);
                 AddVertex(d, normalAd, uv);
 
-                triangles.AddRange(new[] { start, start + 2, start + 1, start, start + 3, start + 2 });
+                AddTriangle(start, start + 2, start + 1);
+                AddTriangle(start, start + 3, start + 2);
             }
 
             private static Vector3 Outward(Vector3 point, Vector3 center)
@@ -575,7 +589,7 @@ namespace TowerDefense.Main.Map.Background
                 AddVertex(a, normal, uv);
                 AddVertex(b, normal, uv);
                 AddVertex(c, normal, uv);
-                triangles.AddRange(new[] { start, start + 1, start + 2 });
+                AddTriangle(start, start + 1, start + 2);
             }
 
             private void Tuft(Vector2 center, float scale)
@@ -607,14 +621,15 @@ namespace TowerDefense.Main.Map.Background
                 Vector3 leanDirection = new Vector3(lean.x, 0, lean.y).normalized;
                 Vector3 side = Quaternion.AngleAxis(Range(-40, 40), Vector3.up) * new Vector3(-leanDirection.z, 0, leanDirection.x);
 
-                Vector3 Point(float t) => basePoint + Vector3.up * height * t + leanDirection * height * leanAmount * t * t;
+                Vector3 mid = basePoint + Vector3.up * height * 0.5f + leanDirection * height * leanAmount * 0.25f;
+                Vector3 tip = basePoint + Vector3.up * height + leanDirection * height * leanAmount;
 
                 int start = vertices.Count;
-                AddVertex(Point(0) - side * width * 0.5f, Vector3.up, UV(palette, 0.05f));
-                AddVertex(Point(0) + side * width * 0.5f, Vector3.up, UV(palette, 0.05f));
-                AddVertex(Point(0.5f) - side * width * 0.32f, Vector3.up, UV(palette, 0.35f + 0.25f * tone));
-                AddVertex(Point(0.5f) + side * width * 0.32f, Vector3.up, UV(palette, 0.35f + 0.25f * tone));
-                AddVertex(Point(1), Vector3.up, UV(palette, 0.7f + 0.3f * tone));
+                AddVertex(basePoint - side * width * 0.5f, Vector3.up, UV(palette, 0.05f));
+                AddVertex(basePoint + side * width * 0.5f, Vector3.up, UV(palette, 0.05f));
+                AddVertex(mid - side * width * 0.32f, Vector3.up, UV(palette, 0.35f + 0.25f * tone));
+                AddVertex(mid + side * width * 0.32f, Vector3.up, UV(palette, 0.35f + 0.25f * tone));
+                AddVertex(tip, Vector3.up, UV(palette, 0.7f + 0.3f * tone));
 
                 AddDoubleSided(start, start + 2, start + 3);
                 AddDoubleSided(start, start + 3, start + 1);
@@ -656,7 +671,7 @@ namespace TowerDefense.Main.Map.Background
                     AddVertex(a, normal, uv);
                     AddVertex(b, normal, uv);
                     AddVertex(c, normal, uv);
-                    triangles.AddRange(new[] { start, start + 1, start + 2 });
+                    AddTriangle(start, start + 1, start + 2);
                 }
             }
 
@@ -756,9 +771,17 @@ namespace TowerDefense.Main.Map.Background
                 uvs.Add(uv);
             }
 
+            private void AddTriangle(int a, int b, int c)
+            {
+                triangles.Add(a);
+                triangles.Add(b);
+                triangles.Add(c);
+            }
+
             private void AddDoubleSided(int a, int b, int c)
             {
-                triangles.AddRange(new[] { a, b, c, a, c, b });
+                AddTriangle(a, b, c);
+                AddTriangle(a, c, b);
             }
         }
     }

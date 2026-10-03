@@ -272,6 +272,7 @@ namespace TowerDefense.Main.Map.Background
             mesh.SetUVs(0, uvs);
             mesh.SetTriangles(triangles, 0);
             mesh.RecalculateBounds();
+            mesh.UploadMeshData(true);
 
             heightAt = (x, z) => Height(x, z, true);
 
