@@ -4,7 +4,7 @@
     {
         Turret = 0,
         PanelsTurret,
-        Catapult,
+        CatapultTower,
         IceMageTower
     }
 }

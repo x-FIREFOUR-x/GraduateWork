@@ -2571,7 +2571,7 @@ PrefabInstance:
       objectReference: {fileID: 869074694}
     - target: {fileID: 1489176578298873863, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ChooseCatapult
+      value: ChooseCatapultTower
       objectReference: {fileID: 0}
     - target: {fileID: 1489176578298873863, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -2655,7 +2655,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8789245203689632824, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Name
-      value: TextPriceCatapult
+      value: TextPriceCatapultTower
       objectReference: {fileID: 0}
     - target: {fileID: 8789245203689632825, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_ActiveFontFeatures.Array.size
@@ -2671,11 +2671,11 @@ PrefabInstance:
       objectReference: {fileID: 869074694}
     - target: {fileID: 8789245204352832281, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ChooseCatapult
+      value: ChooseCatapultTower
       objectReference: {fileID: 0}
     - target: {fileID: 8789245204352832283, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Name
-      value: ButtonBuyCatapult
+      value: ButtonBuyCatapultTower
       objectReference: {fileID: 0}
     - target: {fileID: 8789245204523515719, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: tower
@@ -2687,7 +2687,7 @@ PrefabInstance:
       objectReference: {fileID: 1236481852}
     - target: {fileID: 8789245204523515722, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Name
-      value: CatapultComponent
+      value: CatapultTowerComponent
       objectReference: {fileID: 0}
     - target: {fileID: 8789245204523515723, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Pivot.x
@@ -2795,7 +2795,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8789245204671376635, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Name
-      value: TextNameCatapult
+      value: TextNameCatapultTower
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3001,7 +3001,7 @@ PrefabInstance:
       objectReference: {fileID: 869074694}
     - target: {fileID: 1489176578298873863, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ChooseLaserTurret
+      value: ChooseIceMageTower
       objectReference: {fileID: 0}
     - target: {fileID: 1489176578298873863, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -3085,7 +3085,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8789245203689632824, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Name
-      value: TextPriceLaserTurret
+      value: TextPriceIceMageTower
       objectReference: {fileID: 0}
     - target: {fileID: 8789245203689632825, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_ActiveFontFeatures.Array.size
@@ -3101,11 +3101,11 @@ PrefabInstance:
       objectReference: {fileID: 869074694}
     - target: {fileID: 8789245204352832281, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ChooseLaserTurret
+      value: ChooseIceMageTower
       objectReference: {fileID: 0}
     - target: {fileID: 8789245204352832283, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Name
-      value: ButtonBuyLaserTurret
+      value: ButtonBuyIceMageTower
       objectReference: {fileID: 0}
     - target: {fileID: 8789245204523515719, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: tower
@@ -3117,7 +3117,7 @@ PrefabInstance:
       objectReference: {fileID: 1420801600}
     - target: {fileID: 8789245204523515722, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Name
-      value: LaserTurretComponent
+      value: IceMageTowerComponent
       objectReference: {fileID: 0}
     - target: {fileID: 8789245204523515723, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Pivot.x
@@ -3217,7 +3217,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8789245204671376633, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_text
-      value: Laser Turret
+      value: Ice Mage
       objectReference: {fileID: 0}
     - target: {fileID: 8789245204671376633, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_ActiveFontFeatures.Array.size
@@ -3225,7 +3225,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8789245204671376635, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Name
-      value: TextNameLaserTurret
+      value: TextNameIceMageTower
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4602,7 +4602,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerIsDefenderSerialize: 1
-  startMoney: 100
+  startMoney: 1000
 --- !u!4 &2110826532
 Transform:
   m_ObjectHideFlags: 0

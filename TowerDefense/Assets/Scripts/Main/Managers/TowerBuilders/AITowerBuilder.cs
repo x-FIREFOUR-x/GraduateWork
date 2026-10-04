@@ -70,7 +70,7 @@ namespace TowerDefense.Main.Managers.TowerBuilders
             Dictionary<TowerType, float> sharesTowerType = new Dictionary<TowerType, float> {
                 [TowerType.Turret] = 0.15f,
                 [TowerType.PanelsTurret] = 0.3f,
-                [TowerType.Catapult] = 0.3f,
+                [TowerType.CatapultTower] = 0.3f,
                 [TowerType.IceMageTower] = 0.25f,
             };
 
@@ -94,8 +94,8 @@ namespace TowerDefense.Main.Managers.TowerBuilders
                     availableTowersPrices[TowerType.PanelsTurret] = towersStorage.Towers[(int)TowerType.PanelsTurret].GetComponent<Tower>().Price;
                     break;
                 case 4:
-                    availableTowersTypes.Add(TowerType.Catapult);
-                    availableTowersPrices[TowerType.Catapult] = towersStorage.Towers[(int)TowerType.Catapult].GetComponent<Tower>().Price;
+                    availableTowersTypes.Add(TowerType.CatapultTower);
+                    availableTowersPrices[TowerType.CatapultTower] = towersStorage.Towers[(int)TowerType.CatapultTower].GetComponent<Tower>().Price;
                     break;
                 case 6:
                     availableTowersTypes.Add(TowerType.IceMageTower);

@@ -1,12 +1,12 @@
 using System.IO;
-using System.Security.Cryptography;
-using System.Text;
 
 using UnityEditor;
 using UnityEngine;
 
 using TowerDefense.Main.Projectiles;
 using TowerDefense.Main.Towers;
+
+using static TowerDefense.EditorTools.Towers.TowerBakeUtility;
 
 using MinMaxCurve = UnityEngine.ParticleSystem.MinMaxCurve;
 using MinMaxGradient = UnityEngine.ParticleSystem.MinMaxGradient;
@@ -19,15 +19,14 @@ namespace TowerDefense.EditorTools.Towers
     // tower prefab itself and its shop icon.
     // The tower prefab is rebuilt in place, so the TowersStorage and the shop keep pointing at it; its price,
     // range and fire rate are left as they are. The stone keeps the damage, speed and radius it was given
-    [InitializeOnLoad]
     public static class CatapultPrefabBaker
     {
-        private const string towerPrefabPath = "Assets/Prefabs/Towers/Catapult.prefab";
+        private const string towerPrefabPath = "Assets/Prefabs/Towers/CatapultTower.prefab";
         private const string stonePrefabPath = "Assets/Prefabs/Projectile/CatapultStone.prefab";
         private const string hitEffectPath = "Assets/Prefabs/Effects/ProjectileHit/StoneHitEffect.prefab";
-        private const string meshesFolder = "Assets/Models/Towers/Catapult";
-        private const string texturePath = "Assets/Textures/Towers/CatapultPalette.png";
-        private const string materialPath = "Assets/Materials/Tower/Catapult.mat";
+        private const string meshesFolder = "Assets/Models/Towers/CatapultTower";
+        private const string texturePath = "Assets/Textures/Towers/CatapultTowerPalette.png";
+        private const string materialPath = "Assets/Materials/Tower/CatapultTower/CatapultTower.mat";
 
         // Soft particle materials the tower building effect already uses
         private const string smokeMaterialPath = "Assets/Materials/Effects/BuildingTower/Smoke26.mat";
@@ -54,46 +53,6 @@ namespace TowerDefense.EditorTools.Towers
         private static readonly Color darkDustColor = new(0.48f, 0.43f, 0.37f, 0.85f);
 
 
-        // The bakers' own source, hashed: when it changes, the catapult is rebaked on the next script reload,
-        // so a change to the model shows up without running the menu item. Kept in Library, it is per machine
-        private const string bakerSourceFolder = "Assets/Editor/Towers";
-        private const string bakedHashPath = "Library/CatapultBake.hash";
-        // Taken when the scripts are loaded, so it belongs to the code that is running. Taken at bake time instead,
-        // a source edited after the last compile would be recorded as baked while the old code baked it
-        private static readonly string compiledSourceHash = BakerSourceHash();
-
-
-        static CatapultPrefabBaker()
-        {
-            EditorApplication.delayCall += BakeIfOutdated;
-        }
-
-        private static void BakeIfOutdated()
-        {
-            if (EditorApplication.isPlayingOrWillChangePlaymode)
-                return;
-
-            bool isMissing = AssetDatabase.LoadAssetAtPath<Mesh>(MeshPath("Frame")) == null
-                          || AssetDatabase.LoadAssetAtPath<GameObject>(stonePrefabPath) == null;
-            bool isOutdated = !File.Exists(bakedHashPath) || File.ReadAllText(bakedHashPath) != compiledSourceHash;
-
-            if (isMissing || isOutdated)
-                Bake();
-        }
-
-        private static string BakerSourceHash()
-        {
-            StringBuilder source = new();
-            string[] files = Directory.GetFiles(bakerSourceFolder, "*.cs", SearchOption.TopDirectoryOnly);
-            System.Array.Sort(files, System.StringComparer.Ordinal);
-            foreach (string file in files)
-                source.Append(File.ReadAllText(file));
-
-            using SHA1 sha = SHA1.Create();
-            byte[] hash = sha.ComputeHash(Encoding.UTF8.GetBytes(source.ToString()));
-            return System.BitConverter.ToString(hash).Replace("-", string.Empty);
-        }
-
         [MenuItem("Tools/Towers/Bake Catapult")]
         public static void Bake()
         {
@@ -111,9 +70,8 @@ namespace TowerDefense.EditorTools.Towers
                 return;
 
             EnsureFolder(meshesFolder);
-            EnsureFolder(Path.GetDirectoryName(texturePath).Replace('\\', '/'));
 
-            Material material = BakeMaterial(BakePalette());
+            Material material = BakePaletteMaterial(materialPath, BakePaletteTexture(texturePath, CatapultMeshBuilder.CreatePalette()));
 
             Mesh platformMesh = SaveAsset(CatapultMeshBuilder.BuildPlatform(), MeshPath("Platform"));
             Mesh frameMesh = SaveAsset(CatapultMeshBuilder.BuildFrame(), MeshPath("Frame"));
@@ -134,7 +92,6 @@ namespace TowerDefense.EditorTools.Towers
 
             AssetDatabase.SaveAssets();
 
-            File.WriteAllText(bakedHashPath, compiledSourceHash);
             Debug.Log("Catapult baked");
         }
 
@@ -356,9 +313,7 @@ namespace TowerDefense.EditorTools.Towers
         // A puff of dust kicked up around the wheels as the arm hits the stop bar. Rebuilt on every bake
         private static ParticleSystem BakeLaunchDust(Transform rotatePart, Material smoke)
         {
-            Transform existing = rotatePart.Find("LaunchDust");
-            if (existing != null)
-                Object.DestroyImmediate(existing.gameObject);
+            Remove(rotatePart, "LaunchDust");
 
             ParticleSystem launchDust = NewParticles("LaunchDust", rotatePart, smoke, 0.5f, 0.9f, 8);
             launchDust.transform.localPosition = Vector3.up * 0.1f;
@@ -382,61 +337,6 @@ namespace TowerDefense.EditorTools.Towers
         }
 
 
-        // A one shot system in world space; burst 0 leaves emission to the caller
-        private static ParticleSystem NewParticles(string name, Transform parent, Material material, float minLifetime, float maxLifetime, int burst)
-        {
-            GameObject particlesObject = new(name);
-            particlesObject.transform.SetParent(parent, false);
-
-            ParticleSystem particles = particlesObject.AddComponent<ParticleSystem>();
-            // The duration can only be changed on a system that is not playing
-            particles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-
-            ParticleSystem.MainModule main = particles.main;
-            main.duration = 1f;
-            main.loop = false;
-            main.playOnAwake = true;
-            main.startLifetime = new MinMaxCurve(minLifetime, maxLifetime);
-            main.simulationSpace = ParticleSystemSimulationSpace.World;
-            main.scalingMode = ParticleSystemScalingMode.Hierarchy;
-
-            ParticleSystem.EmissionModule emission = particles.emission;
-            emission.rateOverTime = 0f;
-            if (burst > 0)
-                emission.SetBursts(new[] { new ParticleSystem.Burst(0f, (short)burst) });
-
-            particlesObject.GetComponent<ParticleSystemRenderer>().sharedMaterial = material;
-
-            return particles;
-        }
-
-        // Cone opening upwards: a cone emits along its local Z, turned here to point at the sky
-        private static void ConeUp(ParticleSystem particles, float angle, float radius)
-        {
-            ParticleSystem.ShapeModule shape = particles.shape;
-            shape.shapeType = ParticleSystemShapeType.Cone;
-            shape.angle = angle;
-            shape.radius = radius;
-            shape.rotation = new Vector3(-90f, 0f, 0f);
-        }
-
-        // Grows from one size factor to another while fading in fast and out slowly
-        private static void GrowAndFade(ParticleSystem particles, float startSize, float endSize)
-        {
-            ParticleSystem.SizeOverLifetimeModule size = particles.sizeOverLifetime;
-            size.enabled = true;
-            size.size = new MinMaxCurve(1f, AnimationCurve.EaseInOut(0f, startSize, 1f, endSize));
-
-            Gradient fade = new();
-            fade.SetKeys(new[] { new GradientColorKey(Color.white, 0f), new GradientColorKey(Color.white, 1f) },
-                         new[] { new GradientAlphaKey(0f, 0f), new GradientAlphaKey(1f, 0.08f), new GradientAlphaKey(0f, 1f) });
-
-            ParticleSystem.ColorOverLifetimeModule color = particles.colorOverLifetime;
-            color.enabled = true;
-            color.color = fade;
-        }
-
-
         // A stone tuned in the inspector keeps its numbers through a rebake
         private static (float damage, float speed, float radius) StoneStats()
         {
@@ -451,158 +351,11 @@ namespace TowerDefense.EditorTools.Towers
                     serialized.FindProperty("explosionRadius").floatValue);
         }
 
-        private static Texture2D BakePalette()
-        {
-            Texture2D texture = CatapultMeshBuilder.CreatePalette();
-            File.WriteAllBytes(texturePath, texture.EncodeToPNG());
-            Object.DestroyImmediate(texture);
-
-            AssetDatabase.ImportAsset(texturePath);
-            TextureImporter importer = (TextureImporter)AssetImporter.GetAtPath(texturePath);
-            importer.textureType = TextureImporterType.Default;
-            importer.mipmapEnabled = false;
-            importer.wrapMode = TextureWrapMode.Clamp;
-            importer.filterMode = FilterMode.Bilinear;
-            importer.npotScale = TextureImporterNPOTScale.None;
-            importer.textureCompression = TextureImporterCompression.Uncompressed;
-            importer.sRGBTexture = true;
-            importer.SaveAndReimport();
-
-            return AssetDatabase.LoadAssetAtPath<Texture2D>(texturePath);
-        }
-
-        // Matte like the castle and the tiles: the look comes from the palette, not from highlights
-        private static Material BakeMaterial(Texture2D palette)
-        {
-            Material material = new(Shader.Find("Standard"))
-            {
-                color = Color.white,
-                mainTexture = palette,
-                enableInstancing = true
-            };
-            material.SetFloat("_Glossiness", 0f);
-            material.SetFloat("_Metallic", 0f);
-
-            return SaveAsset(material, materialPath);
-        }
-
-        private static Material LoadMaterial(string path)
-        {
-            Material material = AssetDatabase.LoadAssetAtPath<Material>(path);
-            if (material == null)
-                Debug.LogError($"Particle material not found: {path}");
-
-            return material;
-        }
-
-        // Child holding a mesh, reused when it is already there so the prefab keeps its objects
-        private static Transform MeshPart(Transform parent, string name, Mesh mesh, Material material)
-        {
-            Transform part = Child(parent, name);
-
-            MeshFilter filter = part.GetComponent<MeshFilter>();
-            if (filter == null)
-                filter = part.gameObject.AddComponent<MeshFilter>();
-            filter.sharedMesh = mesh;
-
-            MeshRenderer renderer = part.GetComponent<MeshRenderer>();
-            if (renderer == null)
-                renderer = part.gameObject.AddComponent<MeshRenderer>();
-            renderer.sharedMaterials = new[] { material };
-
-            return part;
-        }
-
-        // Child with a clean transform, found by name or created
-        private static Transform Child(Transform parent, string name)
-        {
-            Transform child = parent.Find(name);
-            if (child == null)
-            {
-                child = new GameObject(name).transform;
-                child.SetParent(parent, false);
-            }
-
-            child.localPosition = Vector3.zero;
-            child.localRotation = Quaternion.identity;
-            child.localScale = Vector3.one;
-
-            return child;
-        }
-
-        private static void KeepOnly(Transform parent, params string[] names)
-        {
-            for (int i = parent.childCount - 1; i >= 0; i--)
-            {
-                Transform child = parent.GetChild(i);
-                if (System.Array.IndexOf(names, child.name) < 0)
-                    Object.DestroyImmediate(child.gameObject);
-            }
-        }
-
-        // Creates the asset or overwrites the existing one in place, so references to it stay valid
-        private static T SaveAsset<T>(T asset, string path) where T : Object
-        {
-            T existing = AssetDatabase.LoadAssetAtPath<T>(path);
-            if (existing == null)
-            {
-                AssetDatabase.CreateAsset(asset, path);
-                return asset;
-            }
-
-            // A mesh copied over with CopySerialized changes on disk, but the editor keeps drawing the old one
-            // until it is restarted; filled through the mesh API it is drawn new right away
-            if (asset is Mesh mesh && existing is Mesh existingMesh)
-            {
-                CopyMesh(mesh, existingMesh);
-                EditorUtility.SetDirty(existingMesh);
-                Object.DestroyImmediate(mesh);
-
-                return existing;
-            }
-
-            string name = existing.name;
-            EditorUtility.CopySerialized(asset, existing);
-            existing.name = name;
-            EditorUtility.SetDirty(existing);
-            Object.DestroyImmediate(asset);
-
-            return existing;
-        }
-
-        private static void CopyMesh(Mesh source, Mesh target)
-        {
-            target.Clear();
-            target.indexFormat = source.indexFormat;
-            target.vertices = source.vertices;
-            target.normals = source.normals;
-            target.tangents = source.tangents;
-            target.uv = source.uv;
-
-            target.subMeshCount = source.subMeshCount;
-            for (int i = 0; i < source.subMeshCount; i++)
-                target.SetTriangles(source.GetTriangles(i), i);
-
-            target.RecalculateBounds();
-        }
-
         private static string MeshPath(string part)
         {
-            return $"{meshesFolder}/Catapult_{part}.asset";
+            return $"{meshesFolder}/CatapultTower_{part}.asset";
         }
 
-        private static void EnsureFolder(string folder)
-        {
-            string parent = "Assets";
-            foreach (string part in folder.Substring("Assets/".Length).Split('/'))
-            {
-                string current = $"{parent}/{part}";
-                if (!AssetDatabase.IsValidFolder(current))
-                    AssetDatabase.CreateFolder(parent, part);
-
-                parent = current;
-            }
-        }
     }
 
 }
