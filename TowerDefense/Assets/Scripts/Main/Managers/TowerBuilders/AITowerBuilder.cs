@@ -71,7 +71,7 @@ namespace TowerDefense.Main.Managers.TowerBuilders
                 [TowerType.Turret] = 0.15f,
                 [TowerType.PanelsTurret] = 0.3f,
                 [TowerType.Catapult] = 0.3f,
-                [TowerType.LaserTurret] = 0.25f,
+                [TowerType.IceMageTower] = 0.25f,
             };
 
             availableTowersTypes = new List<TowerType>();
@@ -98,8 +98,8 @@ namespace TowerDefense.Main.Managers.TowerBuilders
                     availableTowersPrices[TowerType.Catapult] = towersStorage.Towers[(int)TowerType.Catapult].GetComponent<Tower>().Price;
                     break;
                 case 6:
-                    availableTowersTypes.Add(TowerType.LaserTurret);
-                    availableTowersPrices[TowerType.LaserTurret] = towersStorage.Towers[(int)TowerType.LaserTurret].GetComponent<Tower>().Price;
+                    availableTowersTypes.Add(TowerType.IceMageTower);
+                    availableTowersPrices[TowerType.IceMageTower] = towersStorage.Towers[(int)TowerType.IceMageTower].GetComponent<Tower>().Price;
                     break;
 
                 default:

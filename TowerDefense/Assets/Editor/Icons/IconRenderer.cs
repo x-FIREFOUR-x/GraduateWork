@@ -275,11 +275,12 @@ namespace TowerDefense.EditorTools.Icons
         {
             bounds = new Bounds();
 
-            // Particle systems do not show in a still icon, and an idle one would only pull the framing off
+            // Only the models frame the icon. Particle systems do not show in a still icon, and lines such as a tower's
+            // beam are switched off and keep world positions, so they would stretch the framing far from the model
             bool hasBounds = false;
             foreach (Renderer renderer in instance.GetComponentsInChildren<Renderer>())
             {
-                if (renderer is ParticleSystemRenderer)
+                if (!renderer.enabled || !(renderer is MeshRenderer || renderer is SkinnedMeshRenderer))
                     continue;
 
                 if (hasBounds)

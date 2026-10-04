@@ -33,17 +33,17 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm.Heuristics
             advantagePoints[(EnemyType.Standard, TowerType.Turret)] = 5;
             advantagePoints[(EnemyType.Standard, TowerType.PanelsTurret)] = 0;
             advantagePoints[(EnemyType.Standard, TowerType.Catapult)] = 0;
-            advantagePoints[(EnemyType.Standard, TowerType.LaserTurret)] = 5;
+            advantagePoints[(EnemyType.Standard, TowerType.IceMageTower)] = 5;
 
             advantagePoints[(EnemyType.Fast, TowerType.Turret)] = 5;
             advantagePoints[(EnemyType.Fast, TowerType.PanelsTurret)] = 5;
             advantagePoints[(EnemyType.Fast, TowerType.Catapult)] = 10;
-            advantagePoints[(EnemyType.Fast, TowerType.LaserTurret)] = 0;
+            advantagePoints[(EnemyType.Fast, TowerType.IceMageTower)] = 0;
 
             advantagePoints[(EnemyType.Tank, TowerType.Turret)] = 5;
             advantagePoints[(EnemyType.Tank, TowerType.PanelsTurret)] = 0;
             advantagePoints[(EnemyType.Tank, TowerType.Catapult)] = 10;
-            advantagePoints[(EnemyType.Tank, TowerType.LaserTurret)] = 5;
+            advantagePoints[(EnemyType.Tank, TowerType.IceMageTower)] = 5;
 
 
             GameObject[] pathTiles = GameObject.FindGameObjectsWithTag(PathTile.pathTileTag);

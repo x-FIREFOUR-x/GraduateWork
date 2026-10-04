@@ -41,11 +41,12 @@ namespace TowerDefense.EditorTools.Towers
             Debug.Log("Tower icons baked");
         }
 
-        // The tower may be prefab contents its baker is still editing, so its own name gives the icon name
-        public static void BakeIcon(GameObject tower)
+        // The tower may be prefab contents its baker is still editing, so its own name gives the icon name.
+        // A tower much taller than wide fills more of its bounding box and may ask for less zoom, so it is not cut off
+        public static void BakeIcon(GameObject tower, float towerZoom = zoom)
         {
             IconRenderer.EnsureFolder(iconsFolder);
-            IconRenderer.Render(tower, IconPath(tower.name), cameraYaw, zoom);
+            IconRenderer.Render(tower, IconPath(tower.name), cameraYaw, towerZoom);
         }
 
         public static string IconPath(string towerName)

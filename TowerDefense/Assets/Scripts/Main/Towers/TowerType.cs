@@ -5,6 +5,6 @@
         Turret = 0,
         PanelsTurret,
         Catapult,
-        LaserTurret
+        IceMageTower
     }
 }
