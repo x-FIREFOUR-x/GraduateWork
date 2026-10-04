@@ -68,7 +68,7 @@ namespace TowerDefense.Main.Managers.TowerBuilders
         private void InitializeTowerSelectionAlgorithm()
         {
             Dictionary<TowerType, float> sharesTowerType = new Dictionary<TowerType, float> {
-                [TowerType.Turret] = 0.15f,
+                [TowerType.BallistaTower] = 0.15f,
                 [TowerType.PanelsTurret] = 0.3f,
                 [TowerType.CatapultTower] = 0.3f,
                 [TowerType.IceMageTower] = 0.25f,
@@ -86,8 +86,8 @@ namespace TowerDefense.Main.Managers.TowerBuilders
             switch (countBuildedTowerList)
             {
                 case 0:
-                    availableTowersTypes.Add(TowerType.Turret);
-                    availableTowersPrices[TowerType.Turret] = towersStorage.Towers[(int)TowerType.Turret].GetComponent<Tower>().Price;
+                    availableTowersTypes.Add(TowerType.BallistaTower);
+                    availableTowersPrices[TowerType.BallistaTower] = towersStorage.Towers[(int)TowerType.BallistaTower].GetComponent<Tower>().Price;
                     break;
                 case 2:
                     availableTowersTypes.Add(TowerType.PanelsTurret);

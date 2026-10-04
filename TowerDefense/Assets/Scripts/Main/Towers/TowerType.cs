@@ -2,7 +2,7 @@
 {
     public enum TowerType
     {
-        Turret = 0,
+        BallistaTower = 0,
         PanelsTurret,
         CatapultTower,
         IceMageTower

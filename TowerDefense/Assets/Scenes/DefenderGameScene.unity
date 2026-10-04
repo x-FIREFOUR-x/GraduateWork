@@ -4771,7 +4771,7 @@ PrefabInstance:
       objectReference: {fileID: 869074694}
     - target: {fileID: 1489176578298873863, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ChooseTurret
+      value: ChooseBallistaTower
       objectReference: {fileID: 0}
     - target: {fileID: 1489176578298873863, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -4843,7 +4843,7 @@ PrefabInstance:
       objectReference: {fileID: 8789245204320603152}
     - target: {fileID: 8789245204523515722, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Name
-      value: TurretComponent
+      value: BallistaTowerComponent
       objectReference: {fileID: 0}
     - target: {fileID: 8789245204523515723, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Pivot.x

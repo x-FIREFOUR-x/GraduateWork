@@ -5,10 +5,6 @@ using TowerDefense.Main.Enemies;
 
 namespace TowerDefense.Main.Towers
 {
-    // An ice mage on top of a frozen stone tower. In play it does what the laser turret did: while it has a target it
-    // holds a frost beam on it, dealing damage every second and slowing it down. The beam leaves from the crystal on
-    // the mage's staff, which he raises towards the target. The rest is acting: the crystal floats and turns and burns
-    // brighter while he casts, ice shards circle the top of the tower, and the mage breathes while he waits
     public class IceMageTower : Tower
     {
         [Header("Attributes")]
