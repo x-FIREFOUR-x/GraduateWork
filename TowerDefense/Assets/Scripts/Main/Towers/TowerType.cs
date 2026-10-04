@@ -4,7 +4,7 @@
     {
         Turret = 0,
         PanelsTurret,
-        RocketLauncher,
+        Catapult,
         LaserTurret
     }
 }

@@ -501,7 +501,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a648cfef9f604c963d90fdaea23214c, type: 3}
   m_Name: 
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
   cameraController: {fileID: 265748725}
   zoomInIcon: {fileID: 21300000, guid: 6caa8391d90166fd8e28e48a16c90919, type: 3}
   zoomOutIcon: {fileID: 21300000, guid: d09dedd575420365f06891aa265e83d0, type: 3}
@@ -520,14 +520,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetCamera: {fileID: 0}
+  zoomSpeed: 15
+  zoomWheelStep: 2
+  minY: 25
   moveSpeed: 20
   zoomedInMinX: 19
   zoomedInMaxX: 51
   zoomedInMinZ: -4.5
   zoomedInMaxZ: 30
-  zoomSpeed: 15
-  zoomWheelStep: 2
-  minY: 25
 --- !u!1 &332170618
 GameObject:
   m_ObjectHideFlags: 0
@@ -2571,7 +2571,7 @@ PrefabInstance:
       objectReference: {fileID: 869074694}
     - target: {fileID: 1489176578298873863, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ChooseRocketLauncher
+      value: ChooseCatapult
       objectReference: {fileID: 0}
     - target: {fileID: 1489176578298873863, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -2655,7 +2655,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8789245203689632824, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Name
-      value: TextPriceRocketLauncher
+      value: TextPriceCatapult
       objectReference: {fileID: 0}
     - target: {fileID: 8789245203689632825, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_ActiveFontFeatures.Array.size
@@ -2671,11 +2671,11 @@ PrefabInstance:
       objectReference: {fileID: 869074694}
     - target: {fileID: 8789245204352832281, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ChooseRocketLauncher
+      value: ChooseCatapult
       objectReference: {fileID: 0}
     - target: {fileID: 8789245204352832283, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Name
-      value: ButtonBuyRocketLauncher
+      value: ButtonBuyCatapult
       objectReference: {fileID: 0}
     - target: {fileID: 8789245204523515719, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: tower
@@ -2687,7 +2687,7 @@ PrefabInstance:
       objectReference: {fileID: 1236481852}
     - target: {fileID: 8789245204523515722, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Name
-      value: RocketLauncherComponent
+      value: CatapultComponent
       objectReference: {fileID: 0}
     - target: {fileID: 8789245204523515723, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Pivot.x
@@ -2787,7 +2787,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8789245204671376633, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_text
-      value: Rocket Launcher
+      value: Catapult
       objectReference: {fileID: 0}
     - target: {fileID: 8789245204671376633, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_ActiveFontFeatures.Array.size
@@ -2795,7 +2795,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8789245204671376635, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Name
-      value: TextNameRocketLauncher
+      value: TextNameCatapult
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
