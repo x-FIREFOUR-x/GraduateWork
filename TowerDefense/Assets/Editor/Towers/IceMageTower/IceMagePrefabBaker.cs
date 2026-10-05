@@ -42,9 +42,6 @@ namespace TowerDefense.EditorTools.Towers
         // The plinth stands on the tile top, which lies this far above the tile centre the tower is put on
         private static readonly Vector3 offsetTower = new(0f, 0.5f, 0f);
 
-        // The tower is tall and fills its bounding box, so its icon is zoomed less than a low, wide one
-        private const float iconZoom = 1.15f;
-
 
         [MenuItem("Tools/Towers/Bake Ice Mage Tower")]
         public static void Bake()
@@ -170,7 +167,7 @@ namespace TowerDefense.EditorTools.Towers
 
                 // Taken by the camera from the model just built, not from the prefab asset, which may still be
                 // the one loaded before this bake
-                TowerIconsBaker.BakeIcon(root, iconZoom);
+                TowerIconsBaker.BakeIcon(root);
             }
             finally
             {
@@ -204,11 +201,9 @@ namespace TowerDefense.EditorTools.Towers
 
         // The burst of frost where the beam hits: icy mist spraying back along the beam, splinters of ice flung off
         // and sparkles, with a cold light. It loops while the beam is on; the tower plays and stops it and moves it
-        // to the target. Rebuilt on every bake
+        // to the target.
         private static ParticleSystem BakeHitEffect(Transform root, Material glowMaterial, Mesh iceShard, Material smoke, Material point)
         {
-            Remove(root, "FrostHit");
-
             ParticleSystem mist = NewParticles("FrostHit", root, smoke, 0.5f, 0.8f, 0);
             Looping(mist, 14f, playOnAwake: false);
             ParticleSystem.MainModule mistMain = mist.main;
@@ -256,7 +251,7 @@ namespace TowerDefense.EditorTools.Towers
             sparklesShape.shapeType = ParticleSystemShapeType.Sphere;
             sparklesShape.radius = 0.3f;
 
-            Light light = mist.gameObject.AddComponent<Light>();
+            Light light = GetOrAdd<Light>(mist.gameObject);
             light.type = LightType.Point;
             light.color = frostLightColor;
             light.range = 5f;
@@ -269,8 +264,6 @@ namespace TowerDefense.EditorTools.Towers
         // Cold mist drifting low round the foot of the tower, always on
         private static void BakeFrostMist(Transform root, Material smoke)
         {
-            Remove(root, "FrostMist");
-
             ParticleSystem mist = NewParticles("FrostMist", root, smoke, 3f, 4.5f, 0);
             mist.transform.localPosition = Vector3.up * 0.15f;
             Looping(mist, 2.5f, playOnAwake: true);
@@ -292,8 +285,6 @@ namespace TowerDefense.EditorTools.Towers
         // Snow drifting down about the tower, always on
         private static void BakeSnowfall(Transform root, Material point)
         {
-            Remove(root, "Snowfall");
-
             ParticleSystem snow = NewParticles("Snowfall", root, point, 4f, 6f, 0);
             snow.transform.localPosition = Vector3.up * 6.5f;
             Looping(snow, 10f, playOnAwake: true);

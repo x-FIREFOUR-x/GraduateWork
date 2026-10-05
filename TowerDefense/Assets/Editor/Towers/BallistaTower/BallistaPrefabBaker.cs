@@ -226,10 +226,10 @@ namespace TowerDefense.EditorTools.Towers
 
         private static GameObject BakeBolt(Material material, Mesh boltMesh, Material point, GameObject hitEffect, float damage, float speed)
         {
-            GameObject root = new(Path.GetFileNameWithoutExtension(boltPrefabPath));
+            GameObject root = OpenPrefab(boltPrefabPath);
             try
             {
-                StraightProjectile bolt = root.AddComponent<StraightProjectile>();
+                StraightProjectile bolt = GetOrAdd<StraightProjectile>(root);
                 // As big as the one lying in the groove
                 Transform graphic = MeshPart(root.transform, "Graphic", boltMesh, material);
                 graphic.localScale = Vector3.one * BallistaMeshBuilder.BoltScale;
@@ -265,7 +265,7 @@ namespace TowerDefense.EditorTools.Towers
             }
             finally
             {
-                Object.DestroyImmediate(root);
+                ClosePrefab(root);
             }
         }
 
@@ -273,7 +273,7 @@ namespace TowerDefense.EditorTools.Towers
         // and up from there, a little dust hangs a moment
         private static GameObject BakeHitEffect(Material material, Mesh splinterMesh, Material smoke, Material point)
         {
-            GameObject root = new(Path.GetFileNameWithoutExtension(hitEffectPath));
+            GameObject root = OpenPrefab(hitEffectPath);
             try
             {
                 ParticleSystem splinters = NewParticles("Splinters", root.transform, material, 0.5f, 0.8f, 7);
@@ -323,7 +323,7 @@ namespace TowerDefense.EditorTools.Towers
             }
             finally
             {
-                Object.DestroyImmediate(root);
+                ClosePrefab(root);
             }
         }
 
@@ -337,11 +337,9 @@ namespace TowerDefense.EditorTools.Towers
             shape.rotation = new Vector3(-30f, 180f, 0f);
         }
 
-        // A puff of dust shaken off the front frame as the bow snaps forward. Rebuilt on every bake
+        // A puff of dust shaken off the front frame as the bow snaps forward
         private static ParticleSystem BakeReleaseDust(Transform ballista, Material smoke)
         {
-            Remove(ballista, "ReleaseDust");
-
             ParticleSystem releaseDust = NewParticles("ReleaseDust", ballista, smoke, 0.4f, 0.7f, 6);
             releaseDust.transform.localPosition = new Vector3(0f, BallistaMeshBuilder.StringHeight, BallistaMeshBuilder.FrameZ + 0.2f);
 

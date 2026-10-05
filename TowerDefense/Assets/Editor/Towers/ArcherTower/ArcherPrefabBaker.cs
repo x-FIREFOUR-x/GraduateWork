@@ -275,10 +275,10 @@ namespace TowerDefense.EditorTools.Towers
 
         private static GameObject BakeArrow(Material material, Mesh arrowMesh, Material point, GameObject hitEffect, float damage, float speed)
         {
-            GameObject root = new(Path.GetFileNameWithoutExtension(arrowPrefabPath));
+            GameObject root = OpenPrefab(arrowPrefabPath);
             try
             {
-                StraightProjectile arrow = root.AddComponent<StraightProjectile>();
+                StraightProjectile arrow = GetOrAdd<StraightProjectile>(root);
 
                 // As big as the one lying on the bow
                 Transform graphic = MeshPart(root.transform, "Graphic", arrowMesh, material);
@@ -315,7 +315,7 @@ namespace TowerDefense.EditorTools.Towers
             }
             finally
             {
-                Object.DestroyImmediate(root);
+                ClosePrefab(root);
             }
         }
 
@@ -323,7 +323,7 @@ namespace TowerDefense.EditorTools.Towers
         // its feathers drifting down, a little dust
         private static GameObject BakeHitEffect(Material material, Mesh splinterMesh, Material smoke, Material point)
         {
-            GameObject root = new(Path.GetFileNameWithoutExtension(hitEffectPath));
+            GameObject root = OpenPrefab(hitEffectPath);
             try
             {
                 ParticleSystem splinters = NewParticles("Splinters", root.transform, material, 0.4f, 0.7f, 4);
@@ -369,7 +369,7 @@ namespace TowerDefense.EditorTools.Towers
             }
             finally
             {
-                Object.DestroyImmediate(root);
+                ClosePrefab(root);
             }
         }
 

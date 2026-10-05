@@ -206,11 +206,11 @@ namespace TowerDefense.EditorTools.Icons
 
         private static void SavePng(Texture2D texture, string path)
         {
+            // Leave the asset and its import settings alone when the icon comes out the same
+            bool unchanged = Unchanged(path, texture);
             byte[] png = texture.EncodeToPNG();
             Object.DestroyImmediate(texture);
-
-            // Leave the asset and its import settings alone when the icon comes out the same
-            if (Unchanged(path, png))
+            if (unchanged)
                 return;
 
             if (!TryWrite(path, png))
@@ -253,22 +253,45 @@ namespace TowerDefense.EditorTools.Icons
             }
         }
 
-        private static bool Unchanged(string path, byte[] png)
+        // The GPU rounds a few pixels a step up or down from one render to the next, so a pixel counts as the same
+        // while no channel of it moves by more than this
+        private const int pixelTolerance = 2;
+        // Now and then one of the supersamples on a sharp edge flips, which moves its pixel by up to a sixteenth of
+        // the full range. A change to the object itself moves far more pixels than this, so up to this many may
+        // differ and the icon still counts as the same
+        private const int changedPixelsAllowed = 16;
+
+        private static bool Unchanged(string path, Texture2D icon)
         {
             if (!File.Exists(path))
                 return false;
 
-            byte[] existing = File.ReadAllBytes(path);
-            if (existing.Length != png.Length)
-                return false;
-
-            for (int i = 0; i < png.Length; i++)
+            Texture2D existing = new(2, 2, TextureFormat.RGBA32, false);
+            try
             {
-                if (existing[i] != png[i])
+                if (!existing.LoadImage(File.ReadAllBytes(path)) || existing.width != icon.width || existing.height != icon.height)
                     return false;
-            }
 
-            return true;
+                Color32[] before = existing.GetPixels32();
+                Color32[] after = icon.GetPixels32();
+                int changed = 0;
+                for (int i = 0; i < after.Length; i++)
+                {
+                    if (Mathf.Abs(before[i].r - after[i].r) > pixelTolerance || Mathf.Abs(before[i].g - after[i].g) > pixelTolerance ||
+                        Mathf.Abs(before[i].b - after[i].b) > pixelTolerance || Mathf.Abs(before[i].a - after[i].a) > pixelTolerance)
+                        changed++;
+                }
+
+                if (changed <= changedPixelsAllowed)
+                    return true;
+
+                Debug.Log($"Icon {path} changed in {changed} pixels, written anew");
+                return false;
+            }
+            finally
+            {
+                Object.DestroyImmediate(existing);
+            }
         }
 
         private static bool TryGetBounds(GameObject instance, out Bounds bounds)

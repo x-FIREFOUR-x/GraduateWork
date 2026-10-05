@@ -1,6 +1,7 @@
 using System.IO;
 
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 using MinMaxCurve = UnityEngine.ParticleSystem.MinMaxCurve;
@@ -20,15 +21,17 @@ namespace TowerDefense.EditorTools.Towers
                 list.GetArrayElementAtIndex(i).objectReferenceValue = points[i];
         }
 
-        // A one shot system in world space; burst 0 leaves emission to the caller
+        // A one shot system in world space; burst 0 leaves emission to the caller. One built on an earlier bake is
+        // set up again rather than made anew, and its seed comes from its name, so a bake that changes nothing
+        // leaves the prefab file as it was
         public static ParticleSystem NewParticles(string name, Transform parent, Material material, float minLifetime, float maxLifetime, int burst)
         {
-            GameObject particlesObject = new(name);
-            particlesObject.transform.SetParent(parent, false);
+            GameObject particlesObject = Child(parent, name).gameObject;
 
-            ParticleSystem particles = particlesObject.AddComponent<ParticleSystem>();
-            // The duration can only be changed on a system that is not playing
+            ParticleSystem particles = GetOrAdd<ParticleSystem>(particlesObject);
+            // The duration and the seed can only be changed on a system that is not playing
             particles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            particles.randomSeed = StableSeed(name);
 
             ParticleSystem.MainModule main = particles.main;
             main.duration = 1f;
@@ -177,12 +180,40 @@ namespace TowerDefense.EditorTools.Towers
             }
         }
 
-        // Removes a child built on an earlier bake, so it can be built afresh
-        public static void Remove(Transform parent, string name)
+
+        // The prefab at the path opened for rebuilding in place, or a new object for it when there is none yet.
+        // Rebuilt in place its objects keep their file ids, so the file only changes where the bake changes something
+        public static GameObject OpenPrefab(string path)
         {
-            Transform existing = parent.Find(name);
-            if (existing != null)
-                Object.DestroyImmediate(existing.gameObject);
+            if (AssetDatabase.LoadAssetAtPath<GameObject>(path) != null)
+                return PrefabUtility.LoadPrefabContents(path);
+
+            return new GameObject(Path.GetFileNameWithoutExtension(path));
+        }
+
+        // Lets go of what OpenPrefab handed out, once it is saved
+        public static void ClosePrefab(GameObject root)
+        {
+            if (root.scene.IsValid() && EditorSceneManager.IsPreviewScene(root.scene))
+                PrefabUtility.UnloadPrefabContents(root);
+            else
+                Object.DestroyImmediate(root);
+        }
+
+        public static T GetOrAdd<T>(GameObject target) where T : Component
+        {
+            T component = target.GetComponent<T>();
+            return component != null ? component : target.AddComponent<T>();
+        }
+
+        // The same seed on every bake: string.GetHashCode may differ from run to run
+        private static uint StableSeed(string name)
+        {
+            uint hash = 2166136261;
+            foreach (char letter in name)
+                hash = (hash ^ letter) * 16777619;
+
+            return hash;
         }
 
 

@@ -171,10 +171,10 @@ namespace TowerDefense.EditorTools.Towers
 
         private static GameObject BakeStone(Material material, Mesh stoneMesh, Material smoke, GameObject hitEffect, float damage, float speed, float radius)
         {
-            GameObject root = new(Path.GetFileNameWithoutExtension(stonePrefabPath));
+            GameObject root = OpenPrefab(stonePrefabPath);
             try
             {
-                CatapultStone stone = root.AddComponent<CatapultStone>();
+                CatapultStone stone = GetOrAdd<CatapultStone>(root);
                 Transform graphic = MeshPart(root.transform, "Graphic", stoneMesh, material);
                 graphic.localScale = Vector3.one * catapultScale;
 
@@ -211,7 +211,7 @@ namespace TowerDefense.EditorTools.Towers
             }
             finally
             {
-                Object.DestroyImmediate(root);
+                ClosePrefab(root);
             }
         }
 
@@ -220,7 +220,7 @@ namespace TowerDefense.EditorTools.Towers
         {
             const float ground = -0.45f;
 
-            GameObject root = new(Path.GetFileNameWithoutExtension(hitEffectPath));
+            GameObject root = OpenPrefab(hitEffectPath);
             try
             {
                 // Dust cloud thrown up and out, slowing down as it spreads
@@ -306,15 +306,13 @@ namespace TowerDefense.EditorTools.Towers
             }
             finally
             {
-                Object.DestroyImmediate(root);
+                ClosePrefab(root);
             }
         }
 
-        // A puff of dust kicked up around the wheels as the arm hits the stop bar. Rebuilt on every bake
+        // A puff of dust kicked up around the wheels as the arm hits the stop bar
         private static ParticleSystem BakeLaunchDust(Transform rotatePart, Material smoke)
         {
-            Remove(rotatePart, "LaunchDust");
-
             ParticleSystem launchDust = NewParticles("LaunchDust", rotatePart, smoke, 0.5f, 0.9f, 8);
             launchDust.transform.localPosition = Vector3.up * 0.1f;
 
