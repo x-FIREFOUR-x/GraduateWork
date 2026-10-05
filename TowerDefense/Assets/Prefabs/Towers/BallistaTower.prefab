@@ -802,13 +802,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Type>k__BackingField: 0
-  countProjectileEntitys: 1
   timeBetweenShoots: 0.7
   timeToNextFire: 0
   shootRange: 15
   rotateSpeed: 8
   <Price>k__BackingField: 100
-  pointStartFire: {fileID: 9069229935690751401}
+  pointStartFire:
+  - {fileID: 9069229935690751401}
   rotatePart: {fileID: 2072572219788389484}
   offsetTower: {x: 0, y: 0.5, z: 0}
   offsetTarget: {x: 0, y: 1.5, z: 0}

@@ -181,7 +181,7 @@ namespace TowerDefense.EditorTools.Towers
                 tower.FindProperty("dwarf").objectReferenceValue = dwarf;
                 tower.FindProperty("dwarfArmLeft").objectReferenceValue = dwarfArmLeft;
                 tower.FindProperty("dwarfArmRight").objectReferenceValue = dwarfArmRight;
-                tower.FindProperty("pointStartFire").objectReferenceValue = pointStartFire;
+                SetFirePoints(tower.FindProperty("pointStartFire"), pointStartFire);
                 tower.FindProperty("rotatePart").objectReferenceValue = rotatePart;
                 tower.FindProperty("offsetTower").vector3Value = offsetTower;
                 tower.ApplyModifiedPropertiesWithoutUndo();
@@ -229,7 +229,7 @@ namespace TowerDefense.EditorTools.Towers
             GameObject root = new(Path.GetFileNameWithoutExtension(boltPrefabPath));
             try
             {
-                BallistaBolt bolt = root.AddComponent<BallistaBolt>();
+                StraightProjectile bolt = root.AddComponent<StraightProjectile>();
                 // As big as the one lying in the groove
                 Transform graphic = MeshPart(root.transform, "Graphic", boltMesh, material);
                 graphic.localScale = Vector3.one * BallistaMeshBuilder.BoltScale;
@@ -258,6 +258,7 @@ namespace TowerDefense.EditorTools.Towers
                 serialized.FindProperty("speed").floatValue = speed;
                 serialized.FindProperty("<Damage>k__BackingField").floatValue = damage;
                 serialized.FindProperty("trail").objectReferenceValue = trail;
+                serialized.FindProperty("effectLifetime").floatValue = 1.5f;
                 serialized.ApplyModifiedPropertiesWithoutUndo();
 
                 return PrefabUtility.SaveAsPrefabAsset(root, boltPrefabPath);
@@ -366,7 +367,7 @@ namespace TowerDefense.EditorTools.Towers
         private static (float damage, float speed) BoltStats()
         {
             GameObject existing = AssetDatabase.LoadAssetAtPath<GameObject>(boltPrefabPath);
-            BallistaBolt bolt = existing != null ? existing.GetComponent<BallistaBolt>() : null;
+            StraightProjectile bolt = existing != null ? existing.GetComponent<StraightProjectile>() : null;
             if (bolt == null)
                 return (defaultDamage, defaultSpeed);
 

@@ -150,7 +150,7 @@ namespace TowerDefense.EditorTools.Towers
                 tower.FindProperty("gnomeArm").objectReferenceValue = gnomeArm;
                 tower.FindProperty("armRestAngle").floatValue = CatapultMeshBuilder.ArmRestAngle;
                 tower.FindProperty("armFireAngle").floatValue = CatapultMeshBuilder.ArmFireAngle;
-                tower.FindProperty("pointStartFire").objectReferenceValue = pointStartFire;
+                SetFirePoints(tower.FindProperty("pointStartFire"), pointStartFire);
                 tower.FindProperty("rotatePart").objectReferenceValue = rotatePart;
                 tower.FindProperty("offsetTower").vector3Value = offsetTower;
                 tower.ApplyModifiedPropertiesWithoutUndo();

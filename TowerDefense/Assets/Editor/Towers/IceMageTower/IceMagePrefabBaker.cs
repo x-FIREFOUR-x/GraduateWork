@@ -159,7 +159,7 @@ namespace TowerDefense.EditorTools.Towers
                 tower.FindProperty("staffArm").objectReferenceValue = staffArm;
                 tower.FindProperty("staffCrystal").objectReferenceValue = staffCrystal;
                 tower.FindProperty("shards").objectReferenceValue = shards;
-                tower.FindProperty("pointStartFire").objectReferenceValue = pointStartFire;
+                SetFirePoints(tower.FindProperty("pointStartFire"), pointStartFire);
                 tower.FindProperty("rotatePart").objectReferenceValue = rotatePart;
                 tower.FindProperty("offsetTower").vector3Value = offsetTower;
                 tower.ApplyModifiedPropertiesWithoutUndo();

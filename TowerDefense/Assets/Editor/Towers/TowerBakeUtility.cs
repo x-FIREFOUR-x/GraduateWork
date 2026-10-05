@@ -12,6 +12,14 @@ namespace TowerDefense.EditorTools.Towers
     // particle systems. A baker brings its own meshes and decides what goes where
     public static class TowerBakeUtility
     {
+        // Fills a tower's list of fire points; the tower fires one projectile from each
+        public static void SetFirePoints(SerializedProperty list, params Transform[] points)
+        {
+            list.arraySize = points.Length;
+            for (int i = 0; i < points.Length; i++)
+                list.GetArrayElementAtIndex(i).objectReferenceValue = points[i];
+        }
+
         // A one shot system in world space; burst 0 leaves emission to the caller
         public static ParticleSystem NewParticles(string name, Transform parent, Material material, float minLifetime, float maxLifetime, int burst)
         {

@@ -73,7 +73,7 @@ namespace TowerDefense.Main.Towers
                 RotateToTarget();
                 ActivateBeam();
 
-                Vector3 direction = pointStartFire.position - (target.position + offsetTarget);
+                Vector3 direction = pointStartFire[0].position - (target.position + offsetTarget);
                 hitEffect.transform.position = (target.position + offsetTarget) + direction.normalized;
                 hitEffect.transform.rotation = Quaternion.LookRotation(direction);
 
@@ -98,7 +98,7 @@ namespace TowerDefense.Main.Towers
                 hitLight.enabled = true;
             }
 
-            frostBeam.SetPosition(0, pointStartFire.position);
+            frostBeam.SetPosition(0, pointStartFire[0].position);
             frostBeam.SetPosition(1, target.position + offsetTarget);
             frostBeam.widthMultiplier = 1f + 0.2f * Mathf.Sin(Time.time * 23f) + 0.1f * Mathf.Sin(Time.time * 41f);
         }

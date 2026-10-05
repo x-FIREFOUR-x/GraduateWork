@@ -149,7 +149,7 @@ namespace TowerDefense.Main.Towers
             isReloading = true;
 
             // Release: the bolt leaves, the string snaps forward, the ballista kicks back and the dwarf flinches
-            StartCoroutine(Fire());
+            Fire();
             if (loadedBolt != null)
                 loadedBolt.SetActive(false);
             if (releaseDust != null)
@@ -195,17 +195,18 @@ namespace TowerDefense.Main.Towers
             isReloading = false;
         }
 
-        private IEnumerator Fire()
+        private void Fire()
         {
-            for (int i = 0; i < countProjectileEntitys; i++)
+            foreach (Transform start in pointStartFire)
             {
-                GameObject boltObject = Instantiate(boltPrefab, pointStartFire.position, pointStartFire.rotation);
+                if (start == null)
+                    continue;
+
+                GameObject boltObject = Instantiate(boltPrefab, start.position, start.rotation);
                 Projectile bolt = boltObject.GetComponent<Projectile>();
 
                 if (bolt != null)
                     bolt.Seek(target, offsetTarget);
-
-                yield return new WaitForSeconds(0.2f);
             }
         }
 
@@ -259,7 +260,7 @@ namespace TowerDefense.Main.Towers
 
         public override float DamageInSecond()
         {
-            return boltPrefab.GetComponent<Projectile>().Damage * countProjectileEntitys / timeBetweenShoots;
+            return boltPrefab.GetComponent<Projectile>().Damage * CountProjectileEntitys / timeBetweenShoots;
         }
     }
 

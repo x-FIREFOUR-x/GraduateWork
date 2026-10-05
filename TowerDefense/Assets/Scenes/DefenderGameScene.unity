@@ -3695,7 +3695,7 @@ PrefabInstance:
       objectReference: {fileID: 869074694}
     - target: {fileID: 1489176578298873863, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ChoosePanelsTurret
+      value: ChooseArcherTower
       objectReference: {fileID: 0}
     - target: {fileID: 1489176578298873863, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -3779,7 +3779,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8789245203689632824, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Name
-      value: TextPricePanelsTurret
+      value: TextPriceArcherTower
       objectReference: {fileID: 0}
     - target: {fileID: 8789245203689632825, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_ActiveFontFeatures.Array.size
@@ -3795,11 +3795,11 @@ PrefabInstance:
       objectReference: {fileID: 869074694}
     - target: {fileID: 8789245204352832281, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ChoosePanelsTurret
+      value: ChooseArcherTower
       objectReference: {fileID: 0}
     - target: {fileID: 8789245204352832283, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Name
-      value: ButtonBuyPanelsTurret
+      value: ButtonBuyArcherTower
       objectReference: {fileID: 0}
     - target: {fileID: 8789245204523515719, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: tower
@@ -3811,7 +3811,7 @@ PrefabInstance:
       objectReference: {fileID: 1798182451}
     - target: {fileID: 8789245204523515722, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Name
-      value: PanelsTurretComponent
+      value: ArcherTowerComponent
       objectReference: {fileID: 0}
     - target: {fileID: 8789245204523515723, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Pivot.x
@@ -3911,7 +3911,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8789245204671376633, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_text
-      value: PanelsTurret
+      value: Archers
       objectReference: {fileID: 0}
     - target: {fileID: 8789245204671376633, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_ActiveFontFeatures.Array.size
@@ -3919,7 +3919,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8789245204671376635, guid: ffad9946b7be11e4587bde86b93d34a9, type: 3}
       propertyPath: m_Name
-      value: TextNamePanelsTurret
+      value: TextNameArcherTower
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

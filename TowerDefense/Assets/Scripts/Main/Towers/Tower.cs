@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 using UnityEngine;
 
 using TowerDefense.Main.Enemies;
@@ -13,9 +15,6 @@ namespace TowerDefense.Main.Towers
         public TowerType Type { get; private set; }
 
         [Header("Attributes")]
-        [SerializeField]
-        protected int countProjectileEntitys = 1;
-
         [SerializeField]
         protected float timeBetweenShoots = 1f;
         [SerializeField]
@@ -33,7 +32,7 @@ namespace TowerDefense.Main.Towers
 
         [Header("Setup Fields")]
         [SerializeField]
-        protected Transform pointStartFire;
+        protected List<Transform> pointStartFire = new();
         [SerializeField]
         protected Transform rotatePart;
         [SerializeField]
@@ -44,7 +43,7 @@ namespace TowerDefense.Main.Towers
         public static string towerTag = "Tower";
 
 
-        public float CountProjectileEntitys { get { return countProjectileEntitys; } }
+        public int CountProjectileEntitys { get { return pointStartFire.Count; } }
         public float ShootRange { get { return shootRange; } }
         public float TimeBetweenShoots { get { return timeBetweenShoots; } }
 

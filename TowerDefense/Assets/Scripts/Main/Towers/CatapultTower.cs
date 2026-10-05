@@ -165,7 +165,7 @@ namespace TowerDefense.Main.Towers
 
         public override float DamageInSecond()
         {
-            return stonePrefab.GetComponent<Projectile>().Damage * countProjectileEntitys / timeBetweenShoots;
+            return stonePrefab.GetComponent<Projectile>().Damage * CountProjectileEntitys / timeBetweenShoots;
         }
     }
 
