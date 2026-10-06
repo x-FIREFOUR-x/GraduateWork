@@ -9,10 +9,6 @@ namespace TowerDefense.Main.Towers
 {
     public class CatapultTower : Tower
     {
-        [Header("Prefabs")]
-        [SerializeField]
-        private GameObject stonePrefab;
-
         [Header("Catapult Parts")]
         [SerializeField]
         private Transform arm;
@@ -30,8 +26,6 @@ namespace TowerDefense.Main.Towers
         private float swingTime = 0.22f;
         [SerializeField]
         private float reloadTime = 1.1f;
-
-        private bool isSwinging;
 
         [Header("Gnome")]
         [SerializeField]
@@ -65,26 +59,14 @@ namespace TowerDefense.Main.Towers
 
         void Update()
         {
-            if (target != null)
-            {
-                RotateToTarget();
+            AimAndShoot();
 
-                if (timeToNextFire <= 0f && !isSwinging)
-                {
-                    StartCoroutine(Shoot());
-                    timeToNextFire = timeBetweenShoots;
-                }
-            }
-            timeToNextFire -= Time.deltaTime;
-
-            if (!isSwinging)
+            if (!isReloading)
                 PoseGnome(0f, Mathf.Sin(Time.time * 3f) * 0.03f, 0f, 0f);
         }
 
-        private IEnumerator Shoot()
+        protected override IEnumerator Shoot()
         {
-            isSwinging = true;
-
             Vector3 aimPoint = target.position + offsetTarget;
             float swingStarted = Time.time;
 
@@ -108,7 +90,7 @@ namespace TowerDefense.Main.Towers
             }
             SetArmAngle(armFireAngle);
 
-            Shoot(aimPoint, Time.time - swingStarted);
+            Launch(aimPoint, Time.time - swingStarted);
 
             //Reload
             for (float t = 0f; t < 1f; t += Time.deltaTime / reloadTime)
@@ -133,17 +115,17 @@ namespace TowerDefense.Main.Towers
             PoseGnome(0f, 0f, 0f, 0f);
 
             loadedStone.SetActive(true);
-            isSwinging = false;
         }
 
-        private void Shoot(Vector3 aimPoint, float timeSpent)
+        // The stone leaves from the arm, not from a fire point, and is thrown at the point aimed at on the wind-up
+        private void Launch(Vector3 aimPoint, float timeSpent)
         {
             loadedStone.SetActive(false);
 
             if (launchDust != null)
                 launchDust.Play();
 
-            GameObject stoneObject = Instantiate(stonePrefab, loadedStone.transform.position, loadedStone.transform.rotation);
+            GameObject stoneObject = Instantiate(projectilePrefab, loadedStone.transform.position, loadedStone.transform.rotation);
             stoneObject.GetComponent<CatapultStone>().Launch(aimPoint, timeSpent);
         }
 
@@ -161,11 +143,6 @@ namespace TowerDefense.Main.Towers
             gnome.localScale = new Vector3(gnomeSize.x * (1f + squash * 0.5f), gnomeSize.y * (1f - squash), gnomeSize.z * (1f + squash * 0.5f));
             gnome.localRotation = gnomeFacing * Quaternion.Euler(0f, spin, 0f);
             gnomeArm.localRotation = Quaternion.Euler(wrenchAngle, 0f, 0f);
-        }
-
-        public override float DamageInSecond()
-        {
-            return stonePrefab.GetComponent<Projectile>().Damage * CountProjectileEntitys / timeBetweenShoots;
         }
     }
 

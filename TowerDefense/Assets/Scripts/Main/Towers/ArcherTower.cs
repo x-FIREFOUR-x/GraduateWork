@@ -2,17 +2,11 @@ using System.Collections;
 
 using UnityEngine;
 
-using TowerDefense.Main.Projectiles;
-
 
 namespace TowerDefense.Main.Towers
 {
     public class ArcherTower : Tower
     {
-        [Header("Prefabs")]
-        [SerializeField]
-        private GameObject arrowPrefab;
-
         [Header("Archers")]
         [SerializeField]
         private Archer leftArcher;
@@ -124,8 +118,6 @@ namespace TowerDefense.Main.Towers
             public Vector3 size;
         }
 
-        private bool isReloading;
-
         private bool hasArchers;
         private bool hasCaptain;
         private Vector3 captainSize;
@@ -160,26 +152,14 @@ namespace TowerDefense.Main.Towers
 
         void Update()
         {
-            if (target != null)
-            {
-                RotateToTarget();
-
-                if (timeToNextFire <= 0f && !isReloading)
-                {
-                    StartCoroutine(Shoot());
-                    timeToNextFire = timeBetweenShoots;
-                }
-            }
-            timeToNextFire -= Time.deltaTime;
+            AimAndShoot();
 
             Walk();
             Breathe();
         }
 
-        private IEnumerator Shoot()
+        protected override IEnumerator Shoot()
         {
-            isReloading = true;
-
             // The signal and the loose: the sword comes down, both arrows leave, the strings snap forward
             Fire();
             SetArrowsShown(false);
@@ -209,22 +189,6 @@ namespace TowerDefense.Main.Towers
             }
             SetDraw(1f);
             SetCommand(1f);
-
-            isReloading = false;
-        }
-
-        private void Fire()
-        {
-            foreach (Transform start in pointStartFire)
-            {
-                if (start == null)
-                    continue;
-
-                GameObject arrowObject = Instantiate(arrowPrefab, start.position, start.rotation);
-                Projectile arrow = arrowObject.GetComponent<Projectile>();
-                if (arrow != null)
-                    arrow.Seek(target, offsetTarget);
-            }
         }
 
         private void SetDraw(float draw)
@@ -338,23 +302,10 @@ namespace TowerDefense.Main.Towers
             nock = wrist + aim * nockFromWrist.z + Vector3.up * nockFromWrist.y;
         }
 
-        private static void Stretch(Transform piece, Vector3 from, Vector3 to)
-        {
-            Vector3 span = to - from;
-            piece.localPosition = from;
-            piece.localRotation = Quaternion.LookRotation(span);
-            piece.localScale = new Vector3(1f, 1f, span.magnitude);
-        }
-
         private static bool IsComplete(Archer archer)
         {
             return archer != null && archer.body != null && archer.upperArm != null && archer.forearm != null && archer.stringTop != null && archer.stringBottom != null
                 && archer.loadedArrow != null;
-        }
-
-        public override float DamageInSecond()
-        {
-            return arrowPrefab.GetComponent<Projectile>().Damage * CountProjectileEntitys / timeBetweenShoots;
         }
     }
 

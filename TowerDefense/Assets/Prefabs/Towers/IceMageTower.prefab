@@ -12406,6 +12406,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Type>k__BackingField: 3
+  projectilePrefab: {fileID: 0}
   timeBetweenShoots: 0
   timeToNextFire: 0
   shootRange: 15

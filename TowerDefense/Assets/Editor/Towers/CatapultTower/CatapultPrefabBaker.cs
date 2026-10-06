@@ -142,7 +142,7 @@ namespace TowerDefense.EditorTools.Towers
                 KeepOnly(arm, "LoadedStone");
 
                 SerializedObject tower = new(root.GetComponent<CatapultTower>());
-                tower.FindProperty("stonePrefab").objectReferenceValue = stone;
+                tower.FindProperty("projectilePrefab").objectReferenceValue = stone;
                 tower.FindProperty("arm").objectReferenceValue = arm;
                 tower.FindProperty("loadedStone").objectReferenceValue = loadedStone.gameObject;
                 tower.FindProperty("launchDust").objectReferenceValue = launchDust;
@@ -205,6 +205,7 @@ namespace TowerDefense.EditorTools.Towers
                 serialized.FindProperty("explosionRadius").floatValue = radius;
                 serialized.FindProperty("graphic").objectReferenceValue = graphic;
                 serialized.FindProperty("trail").objectReferenceValue = trail;
+                serialized.FindProperty("effectLifetime").floatValue = 2.5f;
                 serialized.ApplyModifiedPropertiesWithoutUndo();
 
                 return PrefabUtility.SaveAsPrefabAsset(root, stonePrefabPath);

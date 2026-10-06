@@ -29,10 +29,6 @@ namespace TowerDefense.Main.Projectiles
         [Header("Components")]
         [SerializeField]
         private Transform graphic;
-        [SerializeField]
-        private ParticleSystem trail;
-
-        private const float effectLifetime = 2.5f;
 
 
         public override void Seek(Transform target, Vector3 offsetTarget)
@@ -78,13 +74,11 @@ namespace TowerDefense.Main.Projectiles
 
         protected override void HitTarget()
         {
-            GameObject effect = Instantiate(effectHitPrefab, aimPoint, Quaternion.identity);
-            Destroy(effect, effectLifetime);
+            SpawnHitEffect(aimPoint, Quaternion.identity);
 
             ExplodeDamage();
-            ReleaseTrail();
 
-            Destroy(gameObject);
+            Disappear();
         }
 
         private void ExplodeDamage()
@@ -95,16 +89,6 @@ namespace TowerDefense.Main.Projectiles
                 if (hitItem.tag == Enemy.enemyTag)
                     hitItem.transform.GetComponent<Enemy>().TakeDamage(Damage);
             }
-        }
-
-        private void ReleaseTrail()
-        {
-            if (trail == null)
-                return;
-
-            trail.transform.SetParent(null, true);
-            trail.Stop(true, ParticleSystemStopBehavior.StopEmitting);
-            Destroy(trail.gameObject, trail.main.startLifetime.constantMax);
         }
 
         private static float HorizontalDistance(Vector3 from, Vector3 to)

@@ -157,7 +157,7 @@ namespace TowerDefense.EditorTools.Towers
                 KeepOnly(dwarf, "ArmLeft", "ArmRight");
 
                 SerializedObject tower = new(root.GetComponent<BallistaTower>());
-                tower.FindProperty("boltPrefab").objectReferenceValue = bolt;
+                tower.FindProperty("projectilePrefab").objectReferenceValue = bolt;
                 tower.FindProperty("ballista").objectReferenceValue = ballista;
                 tower.FindProperty("bowArmLeft").objectReferenceValue = bowArmLeft;
                 tower.FindProperty("bowArmRight").objectReferenceValue = bowArmRight;

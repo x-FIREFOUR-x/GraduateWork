@@ -139,7 +139,7 @@ namespace TowerDefense.EditorTools.Towers
                 KeepOnly(rotatePart, "ArcherLeft", "ArcherRight", "Captain");
 
                 SerializedObject tower = new(root.GetComponent<ArcherTower>());
-                tower.FindProperty("arrowPrefab").objectReferenceValue = arrow;
+                tower.FindProperty("projectilePrefab").objectReferenceValue = arrow;
                 SetArcher(tower.FindProperty("leftArcher"), leftArcher);
                 SetArcher(tower.FindProperty("rightArcher"), rightArcher);
                 SetFirePoints(tower.FindProperty("pointStartFire"), leftArcher.Find("PointStartFire"), rightArcher.Find("PointStartFire"));

@@ -2293,6 +2293,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Type>k__BackingField: 1
+  projectilePrefab: {fileID: 2467782955295742148, guid: f52fc59a2934be746955a2f231720c30, type: 3}
   timeBetweenShoots: 0.7
   timeToNextFire: 1
   shootRange: 15
@@ -2304,7 +2305,6 @@ MonoBehaviour:
   rotatePart: {fileID: 8783616735096190435}
   offsetTower: {x: 0, y: 0.5, z: 0}
   offsetTarget: {x: 0, y: 1.5, z: 0}
-  arrowPrefab: {fileID: 2467782955295742148, guid: f52fc59a2934be746955a2f231720c30, type: 3}
   leftArcher:
     body: {fileID: 3196212982825007107}
     upperArm: {fileID: 2147341586099943591}

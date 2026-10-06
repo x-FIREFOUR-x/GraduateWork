@@ -7,14 +7,6 @@ namespace TowerDefense.Main.Projectiles
 {
     public class StraightProjectile : Projectile
     {
-        [Header("Components")]
-        [SerializeField]
-        private ParticleSystem trail;
-
-        [Header("Effect")]
-        [SerializeField]
-        private float effectLifetime = 1.5f;
-
         private Transform targetEnemy;
         private Vector3 offsetTarget;
 
@@ -46,36 +38,23 @@ namespace TowerDefense.Main.Projectiles
             }
             else
             {
-                ReleaseTrail();
-                Destroy(gameObject);
+                Disappear();
             }
         }
 
 
         protected override void HitTarget()
         {
-            GameObject effect = Instantiate(effectHitPrefab, transform.position, transform.rotation);
-            Destroy(effect, effectLifetime);
+            SpawnHitEffect(transform.position, transform.rotation);
 
             targetEnemy.GetComponent<Enemy>().TakeDamage(Damage);
 
-            ReleaseTrail();
-            Destroy(gameObject);
+            Disappear();
         }
 
         private Vector3 GetDirectionToTarget()
         {
             return targetEnemy.position + offsetTarget - transform.position;
-        }
-
-        private void ReleaseTrail()
-        {
-            if (trail == null)
-                return;
-
-            trail.transform.SetParent(null, true);
-            trail.Stop(true, ParticleSystemStopBehavior.StopEmitting);
-            Destroy(trail.gameObject, trail.main.startLifetime.constantMax);
         }
     }
 

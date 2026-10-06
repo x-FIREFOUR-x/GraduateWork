@@ -2437,9 +2437,10 @@ MonoBehaviour:
   effectHitPrefab: {fileID: 7314232444623315399, guid: db492c08f4dee2949a16074691aa7805, type: 3}
   speed: 20
   <Damage>k__BackingField: 40
+  trail: {fileID: 8272484961572574614}
+  effectLifetime: 2.5
   explosionRadius: 4
   arcHeightPerDistance: 0.3
   minArcHeight: 2
   tumbleSpeed: 400
   graphic: {fileID: 7086973609607614749}
-  trail: {fileID: 8272484961572574614}

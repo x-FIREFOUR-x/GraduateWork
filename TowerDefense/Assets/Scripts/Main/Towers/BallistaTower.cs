@@ -2,17 +2,11 @@ using System.Collections;
 
 using UnityEngine;
 
-using TowerDefense.Main.Projectiles;
-
 
 namespace TowerDefense.Main.Towers
 {
     public class BallistaTower : Tower
     {
-        [Header("Prefabs")]
-        [SerializeField]
-        private GameObject boltPrefab;
-
         [Header("Ballista Parts")]
         // Everything that kicks back on the shot
         [SerializeField]
@@ -83,7 +77,6 @@ namespace TowerDefense.Main.Towers
         private float draw = 1f;
         // 1 right after a shot, falling back to 0 as the ballista settles
         private float recoil;
-        private bool isReloading;
 
         private bool hasParts;
         private bool hasDwarf;
@@ -120,17 +113,7 @@ namespace TowerDefense.Main.Towers
 
         void Update()
         {
-            if (target != null)
-            {
-                RotateToTarget();
-
-                if (timeToNextFire <= 0f && !isReloading)
-                {
-                    StartCoroutine(Shoot());
-                    timeToNextFire = timeBetweenShoots;
-                }
-            }
-            timeToNextFire -= Time.deltaTime;
+            AimAndShoot();
 
             if (!isReloading)
                 PoseDwarf(0f, Mathf.Sin(Time.time * 2.4f) * 0.015f, 0f, 0f);
@@ -144,10 +127,8 @@ namespace TowerDefense.Main.Towers
             }
         }
 
-        private IEnumerator Shoot()
+        protected override IEnumerator Shoot()
         {
-            isReloading = true;
-
             // Release: the bolt leaves, the string snaps forward, the ballista kicks back and the dwarf flinches
             Fire();
             if (loadedBolt != null)
@@ -191,23 +172,6 @@ namespace TowerDefense.Main.Towers
                 yield return null;
             }
             SetBoltLength(1f);
-
-            isReloading = false;
-        }
-
-        private void Fire()
-        {
-            foreach (Transform start in pointStartFire)
-            {
-                if (start == null)
-                    continue;
-
-                GameObject boltObject = Instantiate(boltPrefab, start.position, start.rotation);
-                Projectile bolt = boltObject.GetComponent<Projectile>();
-
-                if (bolt != null)
-                    bolt.Seek(target, offsetTarget);
-            }
         }
 
         private void SetDraw(float value)
@@ -232,14 +196,6 @@ namespace TowerDefense.Main.Towers
                 winch.localRotation = Quaternion.Euler(-draw * winchTurns * 360f, 0f, 0f);
         }
 
-        private static void Stretch(Transform piece, Vector3 from, Vector3 to)
-        {
-            Vector3 span = to - from;
-            piece.localPosition = from;
-            piece.localRotation = Quaternion.LookRotation(span);
-            piece.localScale = new Vector3(1f, 1f, span.magnitude);
-        }
-
         private void SetBoltLength(float length)
         {
             if (loadedBolt != null)
@@ -256,11 +212,6 @@ namespace TowerDefense.Main.Towers
             dwarf.localRotation = dwarfFacing * Quaternion.Euler(lean, 0f, 0f);
             dwarfArmLeft.localRotation = Quaternion.Euler(armsDown, 0f, -armsOut);
             dwarfArmRight.localRotation = Quaternion.Euler(armsDown, 0f, armsOut);
-        }
-
-        public override float DamageInSecond()
-        {
-            return boltPrefab.GetComponent<Projectile>().Damage * CountProjectileEntitys / timeBetweenShoots;
         }
     }
 
