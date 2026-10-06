@@ -20,9 +20,9 @@ namespace TowerDefense.EditorTools.Towers
     // and fire rate are left as they are. The bolt keeps the damage and speed it was given
     public static class BallistaPrefabBaker
     {
-        private const string towerPrefabPath = "Assets/Prefabs/Towers/BallistaTower.prefab";
-        private const string boltPrefabPath = "Assets/Prefabs/Projectile/BallistaBolt.prefab";
-        private const string hitEffectPath = "Assets/Prefabs/Effects/ProjectileHit/BoltHitEffect.prefab";
+        private const string towerPrefabPath = "Assets/Prefabs/Towers/BallistaTower/BallistaTower.prefab";
+        private const string boltPrefabPath = "Assets/Prefabs/Towers/BallistaTower/BallistaBolt.prefab";
+        private const string hitEffectPath = "Assets/Prefabs/Towers/BallistaTower/BoltHitEffect.prefab";
         private const string meshesFolder = "Assets/Models/Towers/BallistaTower";
         private const string materialsFolder = "Assets/Materials/Tower/BallistaTower";
         private const string texturePath = "Assets/Textures/Towers/BallistaTowerPalette.png";

@@ -21,9 +21,9 @@ namespace TowerDefense.EditorTools.Towers
     // range and fire rate are left as they are. The stone keeps the damage, speed and radius it was given
     public static class CatapultPrefabBaker
     {
-        private const string towerPrefabPath = "Assets/Prefabs/Towers/CatapultTower.prefab";
-        private const string stonePrefabPath = "Assets/Prefabs/Projectile/CatapultStone.prefab";
-        private const string hitEffectPath = "Assets/Prefabs/Effects/ProjectileHit/StoneHitEffect.prefab";
+        private const string towerPrefabPath = "Assets/Prefabs/Towers/CatapultTower/CatapultTower.prefab";
+        private const string stonePrefabPath = "Assets/Prefabs/Towers/CatapultTower/CatapultStone.prefab";
+        private const string hitEffectPath = "Assets/Prefabs/Towers/CatapultTower/StoneHitEffect.prefab";
         private const string meshesFolder = "Assets/Models/Towers/CatapultTower";
         private const string texturePath = "Assets/Textures/Towers/CatapultTowerPalette.png";
         private const string materialPath = "Assets/Materials/Tower/CatapultTower/CatapultTower.mat";

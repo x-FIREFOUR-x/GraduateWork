@@ -21,9 +21,9 @@ namespace TowerDefense.EditorTools.Towers
     // and fire rate are left as they are. The arrow keeps the damage and speed it was given
     public static class ArcherPrefabBaker
     {
-        private const string towerPrefabPath = "Assets/Prefabs/Towers/ArcherTower.prefab";
-        private const string arrowPrefabPath = "Assets/Prefabs/Projectile/ArcherArrow.prefab";
-        private const string hitEffectPath = "Assets/Prefabs/Effects/ProjectileHit/ArrowHitEffect.prefab";
+        private const string towerPrefabPath = "Assets/Prefabs/Towers/ArcherTower/ArcherTower.prefab";
+        private const string arrowPrefabPath = "Assets/Prefabs/Towers/ArcherTower/ArcherArrow.prefab";
+        private const string hitEffectPath = "Assets/Prefabs/Towers/ArcherTower/ArrowHitEffect.prefab";
         private const string meshesFolder = "Assets/Models/Towers/ArcherTower";
         private const string materialsFolder = "Assets/Materials/Tower/ArcherTower";
         private const string texturePath = "Assets/Textures/Towers/ArcherTowerPalette.png";

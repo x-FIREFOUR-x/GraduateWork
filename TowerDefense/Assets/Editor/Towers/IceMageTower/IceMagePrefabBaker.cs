@@ -20,7 +20,7 @@ namespace TowerDefense.EditorTools.Towers
     // damage and slowing are left as they are
     public static class IceMagePrefabBaker
     {
-        private const string towerPrefabPath = "Assets/Prefabs/Towers/IceMageTower.prefab";
+        private const string towerPrefabPath = "Assets/Prefabs/Towers/IceMageTower/IceMageTower.prefab";
         private const string meshesFolder = "Assets/Models/Towers/IceMageTower";
         private const string materialsFolder = "Assets/Materials/Tower/IceMageTower";
         private const string texturePath = "Assets/Textures/Towers/IceMageTowerPalette.png";
