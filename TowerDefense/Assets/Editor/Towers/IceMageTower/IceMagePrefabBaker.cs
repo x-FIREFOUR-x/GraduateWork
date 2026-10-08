@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 
 using TowerDefense.Main.Towers;
-
+using TowerDefense.EditorTools.Icons;
 using static TowerDefense.EditorTools.Towers.TowerBakeUtility;
 
 using MinMaxCurve = UnityEngine.ParticleSystem.MinMaxCurve;

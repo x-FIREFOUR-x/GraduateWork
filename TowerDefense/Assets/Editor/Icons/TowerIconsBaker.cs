@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-using TowerDefense.EditorTools.Icons;
 using TowerDefense.Storage;
 
 
-namespace TowerDefense.EditorTools.Towers
+namespace TowerDefense.EditorTools.Icons
 {
     // Renders the towers of the TowersStorage into the sprites of the tower shop, one per tower, named after its
     // prefab: Icon<Prefab name>.png. Towers are seen from the front left, so the side facing the enemies shows.

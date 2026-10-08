@@ -1,10 +1,8 @@
 using UnityEditor;
 using UnityEngine;
 
-using TowerDefense.EditorTools.Icons;
 
-
-namespace TowerDefense.EditorTools.Tile
+namespace TowerDefense.EditorTools.Icons
 {
     // Renders the components the map constructor offers into sprites for its buttons, so a button shows what
     // the cell will look like. SelectMenu picks the baked sprites up through its inspector fields.
