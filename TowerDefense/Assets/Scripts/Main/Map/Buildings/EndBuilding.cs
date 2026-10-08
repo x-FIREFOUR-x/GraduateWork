@@ -7,8 +7,14 @@ namespace TowerDefense.Main.Map.Buildings
     {
         [field: SerializeField]
         public int Health { get; private set; } = 100;
+        public int MaxHealth { get; private set; }
 
         public static string endBuildingTag = "EndBuilding";
+
+        private void Awake()
+        {
+            MaxHealth = Health;
+        }
 
         public void TakeDamage(int damage)
         {

@@ -17,6 +17,7 @@ namespace TowerDefense.Main.Managers.WaveSpawners
         [SerializeField]
         protected float timeBetweenWaves = 5f;
         public float timeToNextSpawn { get; protected set; } = 5f;
+        public float TimeBetweenWaves { get { return timeBetweenWaves; } }
 
         public int WaveNumber { get; protected set; } = 1;
 
