@@ -68,10 +68,10 @@ namespace TowerDefense.Main.Managers.TowerBuilders
         private void InitializeTowerSelectionAlgorithm()
         {
             Dictionary<TowerType, float> sharesTowerType = new Dictionary<TowerType, float> {
-                [TowerType.Turret] = 0.15f,
-                [TowerType.PanelsTurret] = 0.3f,
-                [TowerType.RocketLauncher] = 0.3f,
-                [TowerType.LaserTurret] = 0.25f,
+                [TowerType.BallistaTower] = 0.15f,
+                [TowerType.ArcherTower] = 0.3f,
+                [TowerType.CatapultTower] = 0.3f,
+                [TowerType.IceMageTower] = 0.25f,
             };
 
             availableTowersTypes = new List<TowerType>();
@@ -86,20 +86,20 @@ namespace TowerDefense.Main.Managers.TowerBuilders
             switch (countBuildedTowerList)
             {
                 case 0:
-                    availableTowersTypes.Add(TowerType.Turret);
-                    availableTowersPrices[TowerType.Turret] = towersStorage.Towers[(int)TowerType.Turret].GetComponent<Tower>().Price;
+                    availableTowersTypes.Add(TowerType.BallistaTower);
+                    availableTowersPrices[TowerType.BallistaTower] = towersStorage.Towers[(int)TowerType.BallistaTower].GetComponent<Tower>().Price;
                     break;
                 case 2:
-                    availableTowersTypes.Add(TowerType.PanelsTurret);
-                    availableTowersPrices[TowerType.PanelsTurret] = towersStorage.Towers[(int)TowerType.PanelsTurret].GetComponent<Tower>().Price;
+                    availableTowersTypes.Add(TowerType.ArcherTower);
+                    availableTowersPrices[TowerType.ArcherTower] = towersStorage.Towers[(int)TowerType.ArcherTower].GetComponent<Tower>().Price;
                     break;
                 case 4:
-                    availableTowersTypes.Add(TowerType.RocketLauncher);
-                    availableTowersPrices[TowerType.RocketLauncher] = towersStorage.Towers[(int)TowerType.RocketLauncher].GetComponent<Tower>().Price;
+                    availableTowersTypes.Add(TowerType.CatapultTower);
+                    availableTowersPrices[TowerType.CatapultTower] = towersStorage.Towers[(int)TowerType.CatapultTower].GetComponent<Tower>().Price;
                     break;
                 case 6:
-                    availableTowersTypes.Add(TowerType.LaserTurret);
-                    availableTowersPrices[TowerType.LaserTurret] = towersStorage.Towers[(int)TowerType.LaserTurret].GetComponent<Tower>().Price;
+                    availableTowersTypes.Add(TowerType.IceMageTower);
+                    availableTowersPrices[TowerType.IceMageTower] = towersStorage.Towers[(int)TowerType.IceMageTower].GetComponent<Tower>().Price;
                     break;
 
                 default:

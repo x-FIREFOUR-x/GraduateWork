@@ -30,20 +30,20 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm.Heuristics
 
             advantagePoints = new Dictionary<(EnemyType, TowerType), int>();
 
-            advantagePoints[(EnemyType.Standard, TowerType.Turret)] = 5;
-            advantagePoints[(EnemyType.Standard, TowerType.PanelsTurret)] = 0;
-            advantagePoints[(EnemyType.Standard, TowerType.RocketLauncher)] = 0;
-            advantagePoints[(EnemyType.Standard, TowerType.LaserTurret)] = 5;
+            advantagePoints[(EnemyType.Standard, TowerType.BallistaTower)] = 5;
+            advantagePoints[(EnemyType.Standard, TowerType.ArcherTower)] = 0;
+            advantagePoints[(EnemyType.Standard, TowerType.CatapultTower)] = 0;
+            advantagePoints[(EnemyType.Standard, TowerType.IceMageTower)] = 5;
 
-            advantagePoints[(EnemyType.Fast, TowerType.Turret)] = 5;
-            advantagePoints[(EnemyType.Fast, TowerType.PanelsTurret)] = 5;
-            advantagePoints[(EnemyType.Fast, TowerType.RocketLauncher)] = 10;
-            advantagePoints[(EnemyType.Fast, TowerType.LaserTurret)] = 0;
+            advantagePoints[(EnemyType.Fast, TowerType.BallistaTower)] = 5;
+            advantagePoints[(EnemyType.Fast, TowerType.ArcherTower)] = 5;
+            advantagePoints[(EnemyType.Fast, TowerType.CatapultTower)] = 10;
+            advantagePoints[(EnemyType.Fast, TowerType.IceMageTower)] = 0;
 
-            advantagePoints[(EnemyType.Tank, TowerType.Turret)] = 5;
-            advantagePoints[(EnemyType.Tank, TowerType.PanelsTurret)] = 0;
-            advantagePoints[(EnemyType.Tank, TowerType.RocketLauncher)] = 10;
-            advantagePoints[(EnemyType.Tank, TowerType.LaserTurret)] = 5;
+            advantagePoints[(EnemyType.Tank, TowerType.BallistaTower)] = 5;
+            advantagePoints[(EnemyType.Tank, TowerType.ArcherTower)] = 0;
+            advantagePoints[(EnemyType.Tank, TowerType.CatapultTower)] = 10;
+            advantagePoints[(EnemyType.Tank, TowerType.IceMageTower)] = 5;
 
 
             GameObject[] pathTiles = GameObject.FindGameObjectsWithTag(PathTile.pathTileTag);

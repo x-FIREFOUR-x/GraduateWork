@@ -2,9 +2,9 @@
 {
     public enum TowerType
     {
-        Turret = 0,
-        PanelsTurret,
-        RocketLauncher,
-        LaserTurret
+        BallistaTower = 0,
+        ArcherTower,
+        CatapultTower,
+        IceMageTower
     }
 }

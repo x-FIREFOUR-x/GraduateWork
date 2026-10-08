@@ -14,7 +14,6 @@ namespace TowerDefense.EditorTools.Tile
     // as two submeshes), materials, the decor palette texture, prefab variants of the game base tile prefabs
     // and one TileVariantsStorage that the game uses to pick them.
     // Files left in the output folders from earlier bakes are deleted.
-    [InitializeOnLoad]
     public static class TilePrefabsBaker
     {
         // Tile assets are kept in a "TowerTile", "PathTile" or "BlockedTile" subfolder of these
@@ -45,40 +44,6 @@ namespace TowerDefense.EditorTools.Tile
             ($"{prefabsFolder}/BlockedTile/BlockedTileBase.prefab", TileKind.Blocked),
         };
 
-
-        static TilePrefabsBaker()
-        {
-            EditorApplication.delayCall += BakeIfMissing;
-        }
-
-        // Also rebakes when some variants are missing (an unfinished earlier bake)
-        private static void BakeIfMissing()
-        {
-            if (EditorApplication.isPlayingOrWillChangePlaymode)
-                return;
-
-            // Wait until the tile textures are imported
-            if (AssetDatabase.LoadAssetAtPath<Texture2D>(TexturePath(TileKind.Tower, grassTextureVariants[0])) == null)
-                return;
-
-            TileVariantsStorage storage = AssetDatabase.LoadAssetAtPath<TileVariantsStorage>(storagePath);
-
-            foreach (var baseTile in baseTiles)
-            {
-                bool isBaked = storage != null && baseTile.kind switch
-                {
-                    TileKind.Path => storage.PathTiles.Count > 0,
-                    TileKind.Blocked => storage.BlockedTiles.Count > 0,
-                    _ => storage.GetTowerTile(Path.GetFileNameWithoutExtension(baseTile.prefabPath), 0) != null
-                };
-
-                if (!isBaked)
-                {
-                    Bake();
-                    return;
-                }
-            }
-        }
 
         [MenuItem("Tools/Tile/Bake Tile Prefabs")]
         public static void Bake()
