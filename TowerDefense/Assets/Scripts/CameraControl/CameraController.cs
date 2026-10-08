@@ -17,7 +17,7 @@ namespace TowerDefense.CameraControl
         private float zoomWheelStep = 2f;
 
         [SerializeField]
-        private float minY = 25f;
+        private float minY = 20f;
 
         // Zooming in dollies forward along baseForward, which also lowers Y (the camera looks down);
         // convert the Y floor into a cap on how far that dolly may go.

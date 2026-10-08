@@ -479,7 +479,7 @@ MonoBehaviour:
   zoomedInMaxZ: 30
   zoomSpeed: 15
   zoomWheelStep: 2
-  minY: 25
+  minY: 20
 --- !u!1 &358185606
 GameObject:
   m_ObjectHideFlags: 0

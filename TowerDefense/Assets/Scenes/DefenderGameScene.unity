@@ -522,7 +522,7 @@ MonoBehaviour:
   targetCamera: {fileID: 0}
   zoomSpeed: 15
   zoomWheelStep: 2
-  minY: 25
+  minY: 20
   moveSpeed: 20
   zoomedInMinX: 19
   zoomedInMaxX: 51
