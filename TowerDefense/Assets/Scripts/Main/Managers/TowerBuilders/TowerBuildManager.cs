@@ -54,7 +54,7 @@ namespace TowerDefense.Main.Managers.TowerBuilders
         public void SetChosenTower(GameObject tower)
         {
             chosenTower = tower.GetComponent<Tower>();
-            chosenTowerTile = null;
+            SetChosenTowerTile(null);
 
             towerSeller.Hide();
         }
@@ -68,7 +68,7 @@ namespace TowerDefense.Main.Managers.TowerBuilders
             }
             else
             {
-                chosenTowerTile = towerTile;
+                SetChosenTowerTile(towerTile);
                 chosenTower = null;
 
                 towerSeller.ActiveSellMenu(chosenTowerTile.GetTowerBuildPosition(), PriceSell());
@@ -77,7 +77,18 @@ namespace TowerDefense.Main.Managers.TowerBuilders
 
         public void DisetChosenTowerTile()
         {
-            chosenTowerTile = null;
+            SetChosenTowerTile(null);
+        }
+
+        private void SetChosenTowerTile(ClickableTowerTile towerTile)
+        {
+            if (chosenTowerTile != null)
+                chosenTowerTile.HideTowerRange();
+
+            chosenTowerTile = towerTile;
+
+            if (chosenTowerTile != null)
+                chosenTowerTile.ShowTowerRange();
         }
 
         public void DisetChosenTower()
@@ -107,6 +118,7 @@ namespace TowerDefense.Main.Managers.TowerBuilders
         {
             PlayerStats.AddPlayerMoney(PriceSell());
             Destroy(chosenTowerTile.Tower);
+            SetChosenTowerTile(null);
             towerShop.AllComponentSetNotSelected();
         }
 
