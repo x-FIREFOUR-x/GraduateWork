@@ -4602,7 +4602,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerIsDefenderSerialize: 1
-  startMoney: 1000
+  startMoney: 100
 --- !u!4 &2110826532
 Transform:
   m_ObjectHideFlags: 0
