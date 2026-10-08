@@ -33,9 +33,9 @@ namespace TowerDefense.EditorTools.Towers
         private const string smokeMaterialPath = "Assets/Materials/Effects/BuildingTower/Smoke26.mat";
         private const string pointMaterialPath = "Assets/Materials/Effects/BuildingTower/Point.mat";
 
-        // What a new arrow starts with: half the panels turret's bullet, since two arrows fly where one bullet did, so
-        // the damage the tower balance and the genetic algorithm were tuned for stays the same
-        private const float defaultDamage = 25f;
+        // What a new arrow starts with. Two fly per volley, so the archers outdo the ballista a little, which pays
+        // for their higher price
+        private const float defaultDamage = 35f;
         private const float defaultSpeed = 70f;
 
         // The tower stands on the tile top, which lies this far above the tile centre the tower is put on

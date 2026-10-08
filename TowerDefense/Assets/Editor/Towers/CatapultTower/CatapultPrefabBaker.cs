@@ -36,7 +36,7 @@ namespace TowerDefense.EditorTools.Towers
         // What a new stone starts with: the numbers the tower balance and the genetic algorithm were tuned for
         private const float defaultDamage = 40f;
         private const float defaultSpeed = 20f;
-        private const float defaultRadius = 4f;
+        private const float defaultRadius = 5f;
 
         // The catapult and its stone are drawn this much larger than the meshes are built. The stone is
         // scaled alike, so the one thrown matches the one lying in the bucket

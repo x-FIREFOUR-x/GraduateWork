@@ -48,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TowerDefense.Main.Projectiles.StraightProjectile
   effectHitPrefab: {fileID: 2759673596501218358, guid: f6b70fff4403e464e9cf6efdacecb896, type: 3}
   speed: 70
-  <Damage>k__BackingField: 25
+  <Damage>k__BackingField: 35
   trail: {fileID: 6307351529572922676}
   effectLifetime: 1
 --- !u!1 &3267416413347448657

@@ -2439,7 +2439,7 @@ MonoBehaviour:
   <Damage>k__BackingField: 40
   trail: {fileID: 8272484961572574614}
   effectLifetime: 2.5
-  explosionRadius: 4
+  explosionRadius: 5
   arcHeightPerDistance: 0.3
   minArcHeight: 2
   tumbleSpeed: 400
