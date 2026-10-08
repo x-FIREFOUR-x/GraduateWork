@@ -12,7 +12,8 @@ namespace TowerDefense.EditorTools.Tile
 {
     // Bakes 3D tiles into regular assets: one model per tile variant (relief block + grass, stones, flowers
     // as two submeshes), materials, the decor palette texture, prefab variants of the game base tile prefabs
-    // and one TileVariantsStorage that the game uses to pick them.
+    // and one TileVariantsStorage that the game uses to pick them. The base prefabs carry no materials of their
+    // own: every material is made here.
     // Files left in the output folders from earlier bakes are deleted.
     public static class TilePrefabsBaker
     {
@@ -32,6 +33,10 @@ namespace TowerDefense.EditorTools.Tile
         // Texture and material names are the tile kind plus one of these
         private static readonly string[] grassTextureVariants = { "Grass_01", "Grass_02", "Grass_03" };
         private const string decorPaletteName = "DecorPalette";
+
+        // The tile look comes from its textures; a touch of metal darkens the grass a little the way the tiles
+        // were tuned
+        private const float tileMetallic = 0.5f;
 
         // Side faces sample the dark groove in the texture corner
         private static readonly Vector2 sideUV = new Vector2(0.02f, 0.02f);
@@ -106,13 +111,6 @@ namespace TowerDefense.EditorTools.Tile
                 return false;
             }
 
-            Material baseMaterial = basePrefab.GetComponent<Renderer>().sharedMaterial;
-            if (baseMaterial == null)
-            {
-                Debug.LogError($"Base tile prefab has no material: {prefabPath}");
-                return false;
-            }
-
             Vector3 tileSize = basePrefab.transform.localScale;
             string tileName = basePrefab.name.Replace("Base", string.Empty);
             string variantsFolder = $"{prefabsFolder}/{tileName}";
@@ -165,8 +163,8 @@ namespace TowerDefense.EditorTools.Tile
                     bakedPaths.Add(meshPath);
                 }
 
-                Material tileMaterial = texture != null ? GetMaterial(baseMaterial, texture, textureVariant, kind, bakedPaths) : baseMaterial;
-                Material decorMaterial = GetMaterial(baseMaterial, palette, decorPaletteName, kind, bakedPaths);
+                Material tileMaterial = GetMaterial(texture, textureVariant, kind, bakedPaths);
+                Material decorMaterial = GetMaterial(palette, decorPaletteName, kind, bakedPaths);
 
                 GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(basePrefab);
                 try
@@ -269,20 +267,22 @@ namespace TowerDefense.EditorTools.Tile
             return AssetDatabase.LoadAssetAtPath<Texture2D>(path);
         }
 
-        private static Material GetMaterial(Material baseMaterial, Texture texture, string variantName, TileKind kind, HashSet<string> bakedPaths)
+        // One material per texture and tile kind, named Material<Kind>Tile_<variant>. A missing texture leaves
+        // the material plain white rather than failing the bake
+        private static Material GetMaterial(Texture texture, string variantName, TileKind kind, HashSet<string> bakedPaths)
         {
-            string path = $"{TileFolder(materialsFolder, kind)}/{baseMaterial.name}_{variantName}.mat";
+            string path = $"{TileFolder(materialsFolder, kind)}/Material{TileName(kind)}_{variantName}.mat";
             if (bakedPaths.Contains(path))
                 return AssetDatabase.LoadAssetAtPath<Material>(path);
 
-            Material material = new Material(baseMaterial)
+            Material material = new Material(Shader.Find("Standard"))
             {
                 color = Color.white,
                 mainTexture = texture,
                 enableInstancing = true
             };
-            if (material.HasProperty("_Glossiness"))
-                material.SetFloat("_Glossiness", 0);
+            material.SetFloat("_Glossiness", 0f);
+            material.SetFloat("_Metallic", tileMetallic);
 
             bakedPaths.Add(path);
             return SaveAsset(material, path);
