@@ -26,6 +26,8 @@ namespace TowerDefense.Main.UI.TowerMenu
         private TMPro.TextMeshProUGUI textPrice;
         [SerializeField]
         private Button ButtonCharacter;
+        [SerializeField]
+        private GameObject selectedFrame;
 
         [Header("ButtonSelect Components")]
         [SerializeField]
@@ -42,6 +44,8 @@ namespace TowerDefense.Main.UI.TowerMenu
         private Color colorText;
         [SerializeField]
         private Color colorCharacterText;
+        [SerializeField]
+        private Color colorHighlightText;
 
         public void Initialize(int price, float sizeUnitTileInRange)
         {
@@ -51,7 +55,7 @@ namespace TowerDefense.Main.UI.TowerMenu
             textPrice.color = colorText;
             ButtonCharacter.GetComponentInChildren<TMPro.TextMeshProUGUI>().color = colorText;
 
-            textPrice.text = price.ToString() + "$";
+            textPrice.text = price.ToString();
 
             InitializetextCharacters(sizeUnitTileInRange);
         }
@@ -62,11 +66,15 @@ namespace TowerDefense.Main.UI.TowerMenu
 
             textCharacter.GetComponent<TMPro.TextMeshProUGUI>().color = colorCharacterText;
             textCharacter.GetComponent<TMPro.TextMeshProUGUI>().text =
-                "\n   Characters: \n" +
-                " Count Bullet: " + tower.CountProjectileEntitys.ToString() + "\n" +
-                " Range: " + MathF.Round(range, 1).ToString() + "\n" +
-                " Cooldown: " + tower.TimeBetweenShoots.ToString() + "\n" +
-                " DPS: " + MathF.Round(tower.DamageInSecond(), 1).ToString();
+                "Bullets " + Highlight(tower.CountProjectileEntitys.ToString()) + "\n" +
+                "Range " + Highlight(MathF.Round(range, 1).ToString()) + "\n" +
+                "Cooldown " + Highlight(tower.TimeBetweenShoots.ToString()) + "\n" +
+                "DPS " + Highlight(MathF.Round(tower.DamageInSecond(), 1).ToString());
+        }
+
+        private string Highlight(string value)
+        {
+            return "<color=#" + ColorUtility.ToHtmlStringRGB(colorHighlightText) + ">" + value + "</color>";
         }
 
         public void ChangeImageToCharacter()
@@ -87,6 +95,7 @@ namespace TowerDefense.Main.UI.TowerMenu
         public void SetComponentSelected(bool isSelected)
         {
             IsSelected = isSelected;
+            selectedFrame.SetActive(isSelected);
             if (IsSelected)
             {
                 background.color = colorSelected;

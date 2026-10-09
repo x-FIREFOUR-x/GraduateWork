@@ -39,6 +39,8 @@ namespace TowerDefense.Main.UI.EnemyMenu
         private GameObject textCharacter;
         [SerializeField]
         private Color colorCharacterText;
+        [SerializeField]
+        private Color colorHighlightText;
 
 
         [Header("Add and Sub Buttons Settings")]
@@ -64,7 +66,7 @@ namespace TowerDefense.Main.UI.EnemyMenu
             textName.color = colorText;
 
             textPrice.color = colorText;
-            textPrice.text = enemy.Price.ToString() + "$";
+            textPrice.text = enemy.Price.ToString();
 
             textCount.color = colorText;
             textCount.text = "0";
@@ -82,10 +84,14 @@ namespace TowerDefense.Main.UI.EnemyMenu
         {
             textCharacter.GetComponent<TMPro.TextMeshProUGUI>().color = colorCharacterText;
             textCharacter.GetComponent<TMPro.TextMeshProUGUI>().text =
-                "\n  Characters: \n" +
-                " Health: " + enemy.StartHealth.ToString() + "\n" +
-                " Speed: " + enemy.StartSpeed.ToString() + "\n" +
-                " Damage: " + enemy.Damage.ToString();
+                "Health " + Highlight(enemy.StartHealth.ToString()) + "\n" +
+                "Speed " + Highlight(enemy.StartSpeed.ToString()) + "\n" +
+                "Damage " + Highlight(enemy.Damage.ToString());
+        }
+
+        private string Highlight(string value)
+        {
+            return "<color=#" + ColorUtility.ToHtmlStringRGB(colorHighlightText) + ">" + value + "</color>";
         }
 
         public void ChangeImageToCharacter()
