@@ -28,7 +28,9 @@ namespace TowerDefense.EditorTools.UI
     {
         private const string towerCardPath = "Assets/Prefabs/UI/TowerShopComponent.prefab";
         private const string enemyCardPath = "Assets/Prefabs/UI/EnemyShopComponent.prefab";
-        private const string spriteFolder = "Assets/Sprites/UI/Shop/";
+        // The sprites the shop shares with the menu of the map constructor, and the ones only the shop has
+        private const string sideMenuFolder = "Assets/Sprites/UI/SideMenu/";
+        private const string shopFolder = "Assets/Sprites/UI/SideMenu/Shop/";
         private static readonly string[] scenePaths = { "Assets/Scenes/DefenderGameScene.unity", "Assets/Scenes/AttackerGameScene.unity" };
         private const string shopName = "MenuShop";
 
@@ -115,7 +117,7 @@ namespace TowerDefense.EditorTools.UI
             raster.Draw(_ => -1f, all, Solid(columnColor));
             raster.Draw(p => Mathf.Abs(p.x - (size - 0.75f)) - 0.75f, all, Solid(gold));
             raster.Draw(p => Mathf.Abs(p.x - (size - 4.2f)) - 0.4f, all, Solid(darkGold));
-            return raster.Save(spriteFolder + "ShopColumn.png", pixels * 100f, new Vector4(3f, 3f, 8f * pixels, 3f));
+            return raster.Save(sideMenuFolder + "Column.png", pixels * 100f, new Vector4(3f, 3f, 8f * pixels, 3f));
         }
 
         private static float CardDistance(Vector2 p, float inset)
@@ -131,7 +133,7 @@ namespace TowerDefense.EditorTools.UI
             raster.Draw(p => CardDistance(p, 0f), all, Solid(cardColor));
             raster.Draw(p => Mathf.Abs(CardDistance(p, 0.6f)) - 0.6f, all, Solid(darkGold));
             float border = 10f * pixels;
-            return raster.Save(spriteFolder + "Card.png", pixels * 100f, new Vector4(border, border, border, border));
+            return raster.Save(sideMenuFolder + "Card.png", pixels * 100f, new Vector4(border, border, border, border));
         }
 
         // The frame of a chosen card: a golden line with a thin one inside, and a soft golden light round it
@@ -149,7 +151,7 @@ namespace TowerDefense.EditorTools.UI
             raster.Draw(p => Mathf.Abs(CardDistance(p, 1f)) - 1f, all, Solid(gold));
             raster.Draw(p => Mathf.Abs(CardDistance(p, 3.5f)) - 0.3f, all, Solid(darkGold));
             float border = (10f + glowMargin) * pixels;
-            return raster.Save(spriteFolder + "CardSelected.png", pixels * 100f, new Vector4(border, border, border, border));
+            return raster.Save(sideMenuFolder + "CardSelected.png", pixels * 100f, new Vector4(border, border, border, border));
         }
 
         private static Sprite BakeDiamond()
@@ -158,7 +160,7 @@ namespace TowerDefense.EditorTools.UI
             List<Vector2> diamond = Points(7, 0.3f, 13.7f, 4.5f, 7, 8.7f, 0.3f, 4.5f);
             raster.Fill(diamond, Vertical(0f, 9f, polishedGold));
             raster.Stroke(diamond, 0.4f, Solid(goldEdge), true);
-            return raster.Save(spriteFolder + "SelectedDiamond.png", 100f);
+            return raster.Save(sideMenuFolder + "SelectedDiamond.png", 100f);
         }
 
         // A golden line fading out at both ends
@@ -172,7 +174,7 @@ namespace TowerDefense.EditorTools.UI
                 c.a = Mathf.Pow(1f - Mathf.Abs(p.x - 33f) / 33f, 1.5f);
                 return c;
             });
-            return raster.Save(spriteFolder + "NameLine.png", 100f);
+            return raster.Save(sideMenuFolder + "NameLine.png", 100f);
         }
 
         // The arched window the icon shows through: round at the top, nearly square at the bottom
@@ -192,7 +194,7 @@ namespace TowerDefense.EditorTools.UI
                 raster.Draw(p => Mathf.Abs(WindowDistance(p) + 0.6f) - 0.6f, all, Vertical(0f, 84f, polishedGold));
             else
                 raster.Draw(WindowDistance, all, Solid(windowColor));
-            return raster.Save(spriteFolder + name + ".png", 100f);
+            return raster.Save(sideMenuFolder + name + ".png", 100f);
         }
 
         private static Sprite BakePill()
@@ -203,7 +205,7 @@ namespace TowerDefense.EditorTools.UI
             raster.Draw(Pill, all, Solid(pillColor));
             raster.Draw(p => Mathf.Abs(Pill(p) + 0.5f) - 0.5f, all, Solid(darkGold));
             float border = 15f * pixels;
-            return raster.Save(spriteFolder + "Pill.png", pixels * 100f, new Vector4(border, border, border, border));
+            return raster.Save(sideMenuFolder + "Pill.png", pixels * 100f, new Vector4(border, border, border, border));
         }
 
         private static Sprite BakeCoin()
@@ -214,7 +216,7 @@ namespace TowerDefense.EditorTools.UI
             raster.Draw(p => (p - centre).magnitude - 5.4f, all, Radial(new Rect(0.6f, 0.6f, 10.8f, 10.8f), new Vector2(0.35f, 0.3f), 0.8f, coinFace));
             raster.Draw(p => Mathf.Abs((p - centre).magnitude - 5.4f) - 0.3f, all, Solid(Hex("4a3010")));
             raster.Draw(p => Mathf.Abs((p - centre).magnitude - 3.2f) - 0.2f, all, Solid(Hex("9a6a1a")));
-            return raster.Save(spriteFolder + "Coin.png", 100f);
+            return raster.Save(shopFolder + "Coin.png", 100f);
         }
 
         private static Sprite BakeToken()
@@ -224,7 +226,7 @@ namespace TowerDefense.EditorTools.UI
             Vector2 centre = new(10f, 10f);
             raster.Draw(p => (p - centre).magnitude - 10f, all, Radial(all, new Vector2(0.35f, 0.3f), 0.8f, tokenFace));
             raster.Draw(p => Mathf.Abs((p - centre).magnitude - 9.4f) - 0.6f, all, Solid(gold));
-            return raster.Save(spriteFolder + "Token.png", 100f);
+            return raster.Save(shopFolder + "Token.png", 100f);
         }
 
         private static Sprite BakeCountShield()
@@ -234,7 +236,7 @@ namespace TowerDefense.EditorTools.UI
             float Shield(Vector2 p) => RoundBoxDistance(p - new Vector2(12f, 14f), new Vector2(12f, 14f), 3f, 3f, 12f, 12f);
             raster.Draw(Shield, all, Solid(shieldColor));
             raster.Draw(p => Mathf.Abs(Shield(p) + 0.6f) - 0.6f, all, Solid(gold));
-            return raster.Save(spriteFolder + "CountShield.png", 100f);
+            return raster.Save(shopFolder + "CountShield.png", 100f);
         }
 
         private static Sprite BakeWhite()
@@ -242,7 +244,7 @@ namespace TowerDefense.EditorTools.UI
             Rect all = new(0f, 0f, 4f, 4f);
             SpriteRaster raster = new(all, 2f);
             raster.Draw(_ => -1f, all, Solid(Color.white));
-            return raster.Save(spriteFolder + "White.png", 100f);
+            return raster.Save(shopFolder + "White.png", 100f);
         }
 
 
