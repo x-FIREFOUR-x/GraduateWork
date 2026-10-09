@@ -15,12 +15,11 @@ namespace TowerDefense.EditorTools.UI
 {
     // Dresses the menu of the map constructor as the shop of the game: the dark columns with a golden edge, the play
     // and back buttons as golden pills, and each component a card with its name over a golden line, its icon in an
-    // arched window and a golden frame when it is chosen. The sprites are the ones it shares with the shop, which the
-    // shop builder draws, so the shop is built first
+    // arched window and a golden frame when it is chosen. The sprites are the ones it shares with the shop and the rest
+    // of the UI, baked through SideMenuSprites and CommonSprites
     public static class ConstructorMenuBuilder
     {
         private const string scenePath = "Assets/Scenes/MapConstructorScene.unity";
-        private const string sideMenuFolder = "Assets/Sprites/UI/SideMenu/";
         private const string menuName = "Menu";
         private const string selectMenuName = "SelectMenu";
         private static readonly string[] menuButtonNames = { "StartPlayDefender", "StartPlayAttacker", "BackMainMenu" };
@@ -28,7 +27,7 @@ namespace TowerDefense.EditorTools.UI
         // Low enough for all four cards to fit the column, which does not scroll
         private const float cardWidth = 136f;
         private const float cardHeight = 112f;
-        private const float glowMargin = 6f;
+        private const float glowMargin = SideMenuSprites.GlowMargin;
         private const float menuButtonHeight = 34f;
 
         private static readonly Color ink = SpriteRaster.Hex("f3e6c0");
@@ -47,12 +46,7 @@ namespace TowerDefense.EditorTools.UI
         [MenuItem("Tools/UI/Build Constructor Menu")]
         public static void Build()
         {
-            Sprites sprites = LoadSprites();
-            if (sprites == null)
-            {
-                Debug.LogError($"The side menu sprites are not in {sideMenuFolder}, build them first with Tools/UI/Build Shop");
-                return;
-            }
+            Sprites sprites = BakeSprites();
 
             Scene scene = SceneManager.GetSceneByPath(scenePath);
             bool openedHere = !scene.isLoaded;
@@ -80,25 +74,19 @@ namespace TowerDefense.EditorTools.UI
             public Sprite Column, Card, Selected, Diamond, NameLine, WindowBack, WindowFrame, Pill;
         }
 
-        private static Sprites LoadSprites()
+        private static Sprites BakeSprites()
         {
-            Sprite Load(string name) => AssetDatabase.LoadAssetAtPath<Sprite>(sideMenuFolder + name + ".png");
-
-            Sprites sprites = new()
+            return new Sprites
             {
-                Column = Load("Column"),
-                Card = Load("Card"),
-                Selected = Load("CardSelected"),
-                Diamond = Load("SelectedDiamond"),
-                NameLine = Load("NameLine"),
-                WindowBack = Load("WindowBack"),
-                WindowFrame = Load("WindowFrame"),
-                Pill = Load("Pill"),
+                Column = SideMenuSprites.Column(),
+                Card = CommonSprites.Card(),
+                Selected = SideMenuSprites.Selected(),
+                Diamond = SideMenuSprites.Diamond(),
+                NameLine = SideMenuSprites.NameLine(),
+                WindowBack = SideMenuSprites.WindowBack(),
+                WindowFrame = SideMenuSprites.WindowFrame(),
+                Pill = CommonSprites.Pill(),
             };
-
-            bool complete = sprites.Column && sprites.Card && sprites.Selected && sprites.Diamond && sprites.NameLine &&
-                sprites.WindowBack && sprites.WindowFrame && sprites.Pill;
-            return complete ? sprites : null;
         }
 
 

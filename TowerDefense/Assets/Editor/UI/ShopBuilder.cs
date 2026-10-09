@@ -28,26 +28,21 @@ namespace TowerDefense.EditorTools.UI
     {
         private const string towerCardPath = "Assets/Prefabs/UI/TowerShopComponent.prefab";
         private const string enemyCardPath = "Assets/Prefabs/UI/EnemyShopComponent.prefab";
-        // The sprites the shop shares with the menu of the map constructor, and the ones only the shop has
-        private const string sideMenuFolder = "Assets/Sprites/UI/SideMenu/";
-        private const string shopFolder = "Assets/Sprites/UI/SideMenu/Shop/";
+        // The sprites only the shop has; the ones it shares are baked by CommonSprites and SideMenuSprites
+        private const string shopFolder = SideMenuSprites.Folder + "Shop/";
         private static readonly string[] scenePaths = { "Assets/Scenes/DefenderGameScene.unity", "Assets/Scenes/AttackerGameScene.unity" };
         private const string shopName = "MenuShop";
 
-        private const float pixels = 3f;
+        private const float pixels = CommonSprites.Pixels;
         private const float cardWidth = 126f;
         private const float towerCardHeight = 204f;
         private const float enemyCardHeight = 229f;
-        private const float glowMargin = 6f;
+        private const float glowMargin = SideMenuSprites.GlowMargin;
         private const float tokenSize = 26f;
         private const float tokenGap = 1f;
         private const float counterHeight = tokenSize * 2f + tokenGap;
         private const float priceRowHeight = 22f;
 
-        private static readonly Color columnColor = Hex("141f17", 0.94f);
-        private static readonly Color cardColor = Hex("1c2a1f");
-        private static readonly Color windowColor = Hex("0f1912");
-        private static readonly Color pillColor = Hex("16201a");
         private static readonly Color shieldColor = Hex("22301f");
         private static readonly Color gold = Hex("e2c172");
         private static readonly Color darkGold = Hex("8a6a2e");
@@ -63,7 +58,6 @@ namespace TowerDefense.EditorTools.UI
             (0f, Hex("fff2c0")), (0.35f, Hex("e6bf62")), (0.62f, Hex("9a6e22")), (1f, Hex("f0d488")),
         };
         private static readonly (float, Color)[] coinFace = { (0f, Hex("fff8dc")), (0.45f, Hex("ecc25a")), (1f, Hex("8a5a12")) };
-        private static readonly (float, Color)[] tokenFace = { (0f, Hex("3a4a34")), (1f, Hex("141f17")) };
 
         // The parts of the cards the scenes moved and sized while the cards were laid out by a layout group
         private static readonly string[] layoutProperties = { "m_SizeDelta", "m_AnchoredPosition", "m_AnchorMin", "m_AnchorMax", "m_Pivot" };
@@ -93,119 +87,19 @@ namespace TowerDefense.EditorTools.UI
         {
             return new Sprites
             {
-                Column = BakeColumn(),
-                Card = BakeCard(),
-                Selected = BakeSelected(),
-                Diamond = BakeDiamond(),
-                NameLine = BakeNameLine(),
-                WindowBack = BakeWindow("WindowBack", false),
-                WindowFrame = BakeWindow("WindowFrame", true),
-                Pill = BakePill(),
+                Column = SideMenuSprites.Column(),
+                Card = CommonSprites.Card(),
+                Selected = SideMenuSprites.Selected(),
+                Diamond = SideMenuSprites.Diamond(),
+                NameLine = SideMenuSprites.NameLine(),
+                WindowBack = SideMenuSprites.WindowBack(),
+                WindowFrame = SideMenuSprites.WindowFrame(),
+                Pill = CommonSprites.Pill(),
                 Coin = BakeCoin(),
-                Token = BakeToken(),
+                Token = CommonSprites.Token(),
                 CountShield = BakeCountShield(),
                 White = BakeWhite(),
             };
-        }
-
-        // Dark, with a golden line down its right edge and a thin one inside it
-        private static Sprite BakeColumn()
-        {
-            const float size = 64f;
-            Rect all = new(0f, 0f, size, size);
-            SpriteRaster raster = new(all, pixels);
-            raster.Draw(_ => -1f, all, Solid(columnColor));
-            raster.Draw(p => Mathf.Abs(p.x - (size - 0.75f)) - 0.75f, all, Solid(gold));
-            raster.Draw(p => Mathf.Abs(p.x - (size - 4.2f)) - 0.4f, all, Solid(darkGold));
-            return raster.Save(sideMenuFolder + "Column.png", pixels * 100f, new Vector4(3f, 3f, 8f * pixels, 3f));
-        }
-
-        private static float CardDistance(Vector2 p, float inset)
-        {
-            return RoundBoxDistance(p - new Vector2(32f, 32f), Vector2.one * (32f - inset),
-                Mathf.Max(7f - inset, 0.5f), Mathf.Max(2f - inset, 0.5f), Mathf.Max(7f - inset, 0.5f), Mathf.Max(2f - inset, 0.5f));
-        }
-
-        private static Sprite BakeCard()
-        {
-            Rect all = new(0f, 0f, 64f, 64f);
-            SpriteRaster raster = new(all, pixels);
-            raster.Draw(p => CardDistance(p, 0f), all, Solid(cardColor));
-            raster.Draw(p => Mathf.Abs(CardDistance(p, 0.6f)) - 0.6f, all, Solid(darkGold));
-            float border = 10f * pixels;
-            return raster.Save(sideMenuFolder + "Card.png", pixels * 100f, new Vector4(border, border, border, border));
-        }
-
-        // The frame of a chosen card: a golden line with a thin one inside, and a soft golden light round it
-        private static Sprite BakeSelected()
-        {
-            Rect all = new(-glowMargin, -glowMargin, 64f + glowMargin * 2f, 64f + glowMargin * 2f);
-            SpriteRaster raster = new(all, pixels);
-            raster.Draw(p => CardDistance(p, -glowMargin), all, p =>
-            {
-                float d = CardDistance(p, 0f);
-                Color c = gold;
-                c.a = d <= 0f ? 0f : 0.4f * Mathf.Pow(1f - Mathf.Clamp01(d / glowMargin), 2f);
-                return c;
-            });
-            raster.Draw(p => Mathf.Abs(CardDistance(p, 1f)) - 1f, all, Solid(gold));
-            raster.Draw(p => Mathf.Abs(CardDistance(p, 3.5f)) - 0.3f, all, Solid(darkGold));
-            float border = (10f + glowMargin) * pixels;
-            return raster.Save(sideMenuFolder + "CardSelected.png", pixels * 100f, new Vector4(border, border, border, border));
-        }
-
-        private static Sprite BakeDiamond()
-        {
-            SpriteRaster raster = new(new Rect(0f, 0f, 14f, 9f), pixels);
-            List<Vector2> diamond = Points(7, 0.3f, 13.7f, 4.5f, 7, 8.7f, 0.3f, 4.5f);
-            raster.Fill(diamond, Vertical(0f, 9f, polishedGold));
-            raster.Stroke(diamond, 0.4f, Solid(goldEdge), true);
-            return raster.Save(sideMenuFolder + "SelectedDiamond.png", 100f);
-        }
-
-        // A golden line fading out at both ends
-        private static Sprite BakeNameLine()
-        {
-            Rect all = new(0f, 0f, 66f, 2f);
-            SpriteRaster raster = new(all, pixels);
-            raster.Draw(p => Mathf.Abs(p.y - 1f) - 0.5f, all, p =>
-            {
-                Color c = gold;
-                c.a = Mathf.Pow(1f - Mathf.Abs(p.x - 33f) / 33f, 1.5f);
-                return c;
-            });
-            return raster.Save(sideMenuFolder + "NameLine.png", 100f);
-        }
-
-        // The arched window the icon shows through: round at the top, nearly square at the bottom
-        private static float WindowDistance(Vector2 p)
-        {
-            const float radius = 45f;
-            float arch = (p - new Vector2(radius, radius)).magnitude - radius;
-            float box = RoundBoxDistance(p - new Vector2(radius, (radius + 84f) / 2f), new Vector2(radius, (84f - radius) / 2f), 0.5f, 0.5f, 4f, 4f);
-            return Mathf.Min(arch, box);
-        }
-
-        private static Sprite BakeWindow(string name, bool frame)
-        {
-            Rect all = new(0f, 0f, 90f, 84f);
-            SpriteRaster raster = new(all, pixels);
-            if (frame)
-                raster.Draw(p => Mathf.Abs(WindowDistance(p) + 0.6f) - 0.6f, all, Vertical(0f, 84f, polishedGold));
-            else
-                raster.Draw(WindowDistance, all, Solid(windowColor));
-            return raster.Save(sideMenuFolder + name + ".png", 100f);
-        }
-
-        private static Sprite BakePill()
-        {
-            Rect all = new(0f, 0f, 40f, 30f);
-            SpriteRaster raster = new(all, pixels);
-            float Pill(Vector2 p) => RoundBoxDistance(p - new Vector2(20f, 15f), new Vector2(20f, 15f), 15f, 15f, 15f, 15f);
-            raster.Draw(Pill, all, Solid(pillColor));
-            raster.Draw(p => Mathf.Abs(Pill(p) + 0.5f) - 0.5f, all, Solid(darkGold));
-            float border = 15f * pixels;
-            return raster.Save(sideMenuFolder + "Pill.png", pixels * 100f, new Vector4(border, border, border, border));
         }
 
         private static Sprite BakeCoin()
@@ -217,16 +111,6 @@ namespace TowerDefense.EditorTools.UI
             raster.Draw(p => Mathf.Abs((p - centre).magnitude - 5.4f) - 0.3f, all, Solid(Hex("4a3010")));
             raster.Draw(p => Mathf.Abs((p - centre).magnitude - 3.2f) - 0.2f, all, Solid(Hex("9a6a1a")));
             return raster.Save(shopFolder + "Coin.png", 100f);
-        }
-
-        private static Sprite BakeToken()
-        {
-            Rect all = new(0f, 0f, 20f, 20f);
-            SpriteRaster raster = new(all, pixels * 2f);
-            Vector2 centre = new(10f, 10f);
-            raster.Draw(p => (p - centre).magnitude - 10f, all, Radial(all, new Vector2(0.35f, 0.3f), 0.8f, tokenFace));
-            raster.Draw(p => Mathf.Abs((p - centre).magnitude - 9.4f) - 0.6f, all, Solid(gold));
-            return raster.Save(shopFolder + "Token.png", 100f);
         }
 
         private static Sprite BakeCountShield()
