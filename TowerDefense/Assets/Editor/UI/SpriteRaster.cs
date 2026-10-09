@@ -120,16 +120,38 @@ namespace TowerDefense.EditorTools.UI
         // Colour stops down the height of a shape, from its top to its bottom
         public static Func<Vector2, Color> Vertical(float top, float bottom, params (float at, Color color)[] stops)
         {
+            return p => Sample(stops, Mathf.InverseLerp(top, bottom, p.y));
+        }
+
+        public static Func<Vector2, Color> Horizontal(float left, float right, params (float at, Color color)[] stops)
+        {
+            return p => Sample(stops, Mathf.InverseLerp(left, right, p.x));
+        }
+
+        // Colour stops out from a centre to an ellipse round it, the light falling on a rounded thing
+        public static Func<Vector2, Color> Radial(Vector2 centre, Vector2 radius, params (float at, Color color)[] stops)
+        {
             return p =>
             {
-                float t = Mathf.InverseLerp(top, bottom, p.y);
-                for (int i = 1; i < stops.Length; i++)
-                {
-                    if (t <= stops[i].at)
-                        return Color.Lerp(stops[i - 1].color, stops[i].color, Mathf.InverseLerp(stops[i - 1].at, stops[i].at, t));
-                }
-                return stops[stops.Length - 1].color;
+                Vector2 d = p - centre;
+                return Sample(stops, Mathf.Clamp01(new Vector2(d.x / radius.x, d.y / radius.y).magnitude));
             };
+        }
+
+        // The same light for a shape within these bounds, placed as a part of their size the way an svg places it
+        public static Func<Vector2, Color> Radial(Rect bounds, Vector2 centre, float radius, params (float at, Color color)[] stops)
+        {
+            return Radial(bounds.min + Vector2.Scale(bounds.size, centre), bounds.size * radius, stops);
+        }
+
+        private static Color Sample((float at, Color color)[] stops, float t)
+        {
+            for (int i = 1; i < stops.Length; i++)
+            {
+                if (t <= stops[i].at)
+                    return Color.Lerp(stops[i - 1].color, stops[i].color, Mathf.InverseLerp(stops[i - 1].at, stops[i].at, t));
+            }
+            return stops[stops.Length - 1].color;
         }
 
         public static Color Hex(string hex, float alpha = 1f)
@@ -196,6 +218,35 @@ namespace TowerDefense.EditorTools.UI
             return Mathf.Min(Mathf.Max(q.x, q.y), 0f) + Vector2.Max(q, Vector2.zero).magnitude - radius;
         }
 
+
+        // Close to the distance to an ellipse turned by an angle in degrees, near enough for its soft edge
+        public static float EllipseDistance(Vector2 p, Vector2 centre, Vector2 radius, float degrees = 0f)
+        {
+            Vector2 q = Rotate(p - centre, -degrees);
+            float k0 = new Vector2(q.x / radius.x, q.y / radius.y).magnitude;
+            float k1 = new Vector2(q.x / (radius.x * radius.x), q.y / (radius.y * radius.y)).magnitude;
+            return k1 > 0f ? k0 * (k0 - 1f) / k1 : -Mathf.Min(radius.x, radius.y);
+        }
+
+        public static Rect EllipseBounds(Vector2 centre, Vector2 radius)
+        {
+            float r = Mathf.Max(radius.x, radius.y);
+            return new Rect(centre.x - r, centre.y - r, r * 2f, r * 2f);
+        }
+
+        public static Vector2 Rotate(Vector2 p, float degrees)
+        {
+            float a = degrees * Mathf.Deg2Rad;
+            return new Vector2(p.x * Mathf.Cos(a) - p.y * Mathf.Sin(a), p.x * Mathf.Sin(a) + p.y * Mathf.Cos(a));
+        }
+
+        public static List<Vector2> Rotate(List<Vector2> points, Vector2 around, float degrees)
+        {
+            List<Vector2> turned = new();
+            foreach (Vector2 p in points)
+                turned.Add(around + Rotate(p - around, degrees));
+            return turned;
+        }
 
         // Curves laid out as lines of short segments, each starting where the path is, as in an svg path
         public static void Quad(List<Vector2> path, Vector2 control, Vector2 to, int segments = 12)
