@@ -22,7 +22,7 @@ namespace TowerDefense.EditorTools.UI
     public static class MoneyPlaqueBuilder
     {
         private const string prefabPath = "Assets/Prefabs/UI/MoneyPlaque.prefab";
-        private const string spriteFolder = "Assets/Sprites/UI/Money/";
+        private const string spriteFolder = "Assets/Sprites/UI/Shop/";
         private static readonly string[] scenePaths = { "Assets/Scenes/DefenderGameScene.unity", "Assets/Scenes/AttackerGameScene.unity" };
         private const string shopName = "MenuShop";
         private const string oldMoneyName = "CountMoney";
