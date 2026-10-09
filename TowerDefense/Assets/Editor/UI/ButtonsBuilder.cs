@@ -6,14 +6,18 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+using TowerDefense.CameraControl.UI;
+
 using static TowerDefense.EditorTools.UI.UILayout;
 
 
 namespace TowerDefense.EditorTools.UI
 {
     // Gives the buttons outside the side menus its look: the golden pill with the lettering of the shop for the main
-    // menu, the pause, the end of the game and the messages, and a golden token to close the menu that sells a tower.
-    // The sprites are the ones all of the UI shares, baked through CommonSprites
+    // menu, the pause, the end of the game and the messages, the same pill for the camera controls on a dark card the
+    // map shows through, with a broad golden frame on the button that opens them, and a golden token to close the menu that
+    // sells a tower. The sprites are the ones all of the UI shares, baked
+    // through CommonSprites
     public static class ButtonsBuilder
     {
         private const string sellMenuPath = "Assets/Prefabs/UI/UITowerTile.prefab";
@@ -30,6 +34,8 @@ namespace TowerDefense.EditorTools.UI
         };
 
         private static readonly Color ink = SpriteRaster.Hex("f3e6c0");
+        // The card behind the camera controls, let through so the map shows under it
+        private static readonly Color cameraBackgroundTint = new(1f, 1f, 1f, 0.5f);
         private static readonly Color highlighted = new(1f, 0.93f, 0.78f, 1f);
         private static readonly Color pressed = new(0.78f, 0.72f, 0.6f, 1f);
         private static readonly Color disabled = new(0.6f, 0.6f, 0.6f, 0.6f);
@@ -40,12 +46,14 @@ namespace TowerDefense.EditorTools.UI
         public static void Build()
         {
             Sprite pill = CommonSprites.Pill();
+            Sprite card = CommonSprites.Card();
+            Sprite highlightedPill = CommonSprites.PillHighlighted();
             Sprite token = CommonSprites.Token();
 
             TMP_FontAsset font = FindFont();
 
             foreach ((string scenePath, string[] buttons) in sceneButtons)
-                EditScene(scenePath, scene => DressScene(scene, buttons, pill, font));
+                EditScene(scenePath, scene => DressScene(scene, buttons, pill, highlightedPill, card, font));
 
             DressSellMenu(pill, token, font);
 
@@ -63,7 +71,7 @@ namespace TowerDefense.EditorTools.UI
         }
 
 
-        private static void DressScene(Scene scene, string[] buttons, Sprite pill, TMP_FontAsset font)
+        private static void DressScene(Scene scene, string[] buttons, Sprite pill, Sprite highlightedPill, Sprite card, TMP_FontAsset font)
         {
             foreach (string path in buttons)
             {
@@ -74,6 +82,21 @@ namespace TowerDefense.EditorTools.UI
                     continue;
                 }
                 Pill(button, pill, font);
+            }
+
+            // The camera controls make their buttons as the game starts, so they are only handed the look to make them with
+            foreach (GameObject root in scene.GetRootGameObjects())
+            {
+                foreach (CameraControlsUI controls in root.GetComponentsInChildren<CameraControlsUI>(true))
+                {
+                    SerializedObject serialized = new(controls);
+                    serialized.FindProperty("buttonSprite").objectReferenceValue = pill;
+                    serialized.FindProperty("backgroundSprite").objectReferenceValue = card;
+                    serialized.FindProperty("backgroundColor").colorValue = cameraBackgroundTint;
+                    serialized.FindProperty("labelColor").colorValue = ink;
+                    serialized.FindProperty("openCloseButtonSprite").objectReferenceValue = highlightedPill;
+                    serialized.ApplyModifiedPropertiesWithoutUndo();
+                }
             }
         }
 

@@ -18,6 +18,10 @@ namespace TowerDefense.EditorTools.UI
         private static readonly Color gold = Hex("e2c172");
         private static readonly Color darkGold = Hex("8a6a2e");
         private static readonly (float, Color)[] tokenFace = { (0f, Hex("3a4a34")), (1f, Hex("141f17")) };
+        private static readonly (float, Color)[] polishedGold =
+        {
+            (0f, Hex("fff2c0")), (0.35f, Hex("e6bf62")), (0.62f, Hex("9a6e22")), (1f, Hex("f0d488")),
+        };
 
 
         // The card is 64 units square, rounded at the top left and the bottom right; inset brings it in by that much
@@ -46,6 +50,20 @@ namespace TowerDefense.EditorTools.UI
             raster.Draw(p => Mathf.Abs(Shape(p) + 0.5f) - 0.5f, all, Solid(darkGold));
             float border = 15f * Pixels;
             return raster.Save(Folder + "Pill.png", Pixels * 100f, new Vector4(border, border, border, border));
+        }
+
+        // The pill of a button that has to stand out among the others: a broad polished golden frame with a thin line
+        // inside it
+        public static Sprite PillHighlighted()
+        {
+            Rect all = new(0f, 0f, 40f, 30f);
+            SpriteRaster raster = new(all, Pixels);
+            float Shape(Vector2 p) => RoundBoxDistance(p - new Vector2(20f, 15f), new Vector2(20f, 15f), 15f, 15f, 15f, 15f);
+            raster.Draw(Shape, all, Solid(pillColor));
+            raster.Draw(p => Mathf.Abs(Shape(p) + 1.25f) - 1.25f, all, Vertical(0f, 30f, polishedGold));
+            raster.Draw(p => Mathf.Abs(Shape(p) + 3.4f) - 0.35f, all, Solid(darkGold));
+            float border = 15f * Pixels;
+            return raster.Save(Folder + "PillHighlighted.png", Pixels * 100f, new Vector4(border, border, border, border));
         }
 
         public static Sprite Token()

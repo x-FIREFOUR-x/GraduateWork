@@ -20,6 +20,21 @@ namespace TowerDefense.CameraControl.UI
         [SerializeField]
         private Sprite cameraIcon;
 
+        [SerializeField]
+        private bool startOpen = false;
+
+        [Header("Style")]
+        [SerializeField]
+        private Sprite buttonSprite;
+        [SerializeField]
+        private Sprite openCloseButtonSprite;
+        [SerializeField]
+        private Sprite backgroundSprite;
+        [SerializeField]
+        private Color backgroundColor = new Color(0.04f, 0.05f, 0.07f, 0.55f);
+        [SerializeField]
+        private Color labelColor = Color.white;
+
         private const float TopOffsetPercent = 20f;
 
         private const float BackgroundWidthPercent = 16f;
@@ -59,9 +74,9 @@ namespace TowerDefense.CameraControl.UI
             float topOffset = TopOffsetPercent / 100f * canvasRect.height;
             float margin = MarginPercent / 100f * canvasRect.width;
 
-            RectTransform background = CreateBackground(canvas, topOffset, canvasRect.width, canvasRect.height, margin, out float buttonSize, out float gap, out float padding);
+            RectTransform background = CreateBackground(canvas, topOffset, canvasRect.width, canvasRect.height, margin, backgroundSprite, backgroundColor, out float buttonSize, out float gap, out float padding);
 
-            BuildOpenCloseButton(canvas, background, buttonSize, cameraIcon);
+            BuildOpenCloseButton(canvas, background, buttonSize, cameraIcon, openCloseButtonSprite != null ? openCloseButtonSprite : buttonSprite, labelColor, startOpen);
 
             RectTransform controlsRoot = BuildControlsRoot(background, padding);
             BuildControlsCluster(controlsRoot, buttonSize, gap);
@@ -86,7 +101,7 @@ namespace TowerDefense.CameraControl.UI
             return canvas;
         }
 
-        private static RectTransform CreateBackground(Transform canvas, float topOffset, float canvasWidth, float canvasHeight, float margin, out float buttonSize, out float gap, out float padding)
+        private static RectTransform CreateBackground(Transform canvas, float topOffset, float canvasWidth, float canvasHeight, float margin, Sprite sprite, Color color, out float buttonSize, out float gap, out float padding)
         {
             float backgroundWidth = BackgroundWidthPercent / 100f * canvasWidth;
             float backgroundHeight = BackgroundHeightPercent / 100f * canvasHeight;
@@ -111,7 +126,8 @@ namespace TowerDefense.CameraControl.UI
             rect.anchoredPosition = new Vector2(rightEdge, topEdge);
 
             Image image = backgroundObject.AddComponent<Image>();
-            image.color = new Color(0.04f, 0.05f, 0.07f, 0.55f);
+            Paint(image, sprite, color);
+            image.color = color;
             image.raycastTarget = false;
 
             return rect;
@@ -132,7 +148,7 @@ namespace TowerDefense.CameraControl.UI
             return rect;
         }
 
-        private static void BuildOpenCloseButton(Transform canvas, RectTransform background, float buttonSize, Sprite cameraIcon)
+        private static void BuildOpenCloseButton(Transform canvas, RectTransform background, float buttonSize, Sprite cameraIcon, Sprite sprite, Color labelColor, bool startOpen)
         {
             GameObject buttonObject = new GameObject("OpenCloseButton");
             buttonObject.transform.SetParent(canvas, false);
@@ -145,12 +161,14 @@ namespace TowerDefense.CameraControl.UI
             rect.anchoredPosition = background.anchoredPosition;
 
             Image image = buttonObject.AddComponent<Image>();
-            image.color = new Color(1.0f, 0.78f, 0.16f, 0.95f);
+            Paint(image, sprite, new Color(1.0f, 0.78f, 0.16f, 0.95f));
 
             CreateIcon(buttonObject.transform, cameraIcon);
-            Text badge = CreateStateBadge(buttonObject.transform, buttonSize);
+            Text badge = CreateStateBadge(buttonObject.transform, buttonSize, labelColor);
 
             GameObject backgroundObject = background.gameObject;
+            backgroundObject.SetActive(startOpen);
+            badge.text = startOpen ? "▼" : "▶";
 
             Button button = buttonObject.AddComponent<Button>();
             button.targetGraphic = image;
@@ -211,12 +229,12 @@ namespace TowerDefense.CameraControl.UI
             rect.anchoredPosition = topRightAnchoredPosition;
 
             Image image = buttonObject.AddComponent<Image>();
-            image.color = new Color(0.149f, 0.176f, 0.251f, 0.85f);
+            Paint(image, buttonSprite, new Color(0.149f, 0.176f, 0.251f, 0.85f));
 
             if (spec.Icon != null)
                 CreateIcon(buttonObject.transform, spec.Icon);
             else
-                CreateLabel(buttonObject.transform, spec.Label, buttonSize);
+                CreateLabel(buttonObject.transform, spec.Label, buttonSize, labelColor);
 
             if (spec.IsHome)
             {
@@ -240,7 +258,7 @@ namespace TowerDefense.CameraControl.UI
             }
         }
 
-        private static Text CreateStateBadge(Transform parent, float buttonSize)
+        private static Text CreateStateBadge(Transform parent, float buttonSize, Color color)
         {
             GameObject badgeObject = new GameObject("StateBadge");
             badgeObject.transform.SetParent(parent, false);
@@ -256,10 +274,23 @@ namespace TowerDefense.CameraControl.UI
             text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             text.fontSize = Mathf.RoundToInt(buttonSize * 0.3f);
             text.alignment = TextAnchor.MiddleCenter;
-            text.color = Color.white;
+            text.color = color;
             text.raycastTarget = false;
 
             return text;
+        }
+
+        private static void Paint(Image image, Sprite sprite, Color fallbackColor)
+        {
+            if (sprite == null)
+            {
+                image.color = fallbackColor;
+                return;
+            }
+
+            image.sprite = sprite;
+            image.type = sprite.border != Vector4.zero ? Image.Type.Sliced : Image.Type.Simple;
+            image.color = Color.white;
         }
 
         private static void CreateIcon(Transform parent, Sprite sprite)
@@ -280,7 +311,7 @@ namespace TowerDefense.CameraControl.UI
             image.raycastTarget = false;
         }
 
-        private static Text CreateLabel(Transform parent, string label, float size)
+        private static Text CreateLabel(Transform parent, string label, float size, Color color)
         {
             GameObject textObject = new GameObject("Label");
             textObject.transform.SetParent(parent, false);
@@ -296,7 +327,7 @@ namespace TowerDefense.CameraControl.UI
             text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             text.fontSize = Mathf.RoundToInt(size * 0.45f);
             text.alignment = TextAnchor.MiddleCenter;
-            text.color = Color.white;
+            text.color = color;
             text.raycastTarget = false;
 
             return text;
