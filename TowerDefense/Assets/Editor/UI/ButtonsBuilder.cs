@@ -14,7 +14,7 @@ using static TowerDefense.EditorTools.UI.UILayout;
 namespace TowerDefense.EditorTools.UI
 {
     // Gives the buttons outside the side menus its look: the golden pill with the lettering of the shop for the main
-    // menu, the pause, the end of the game and the messages, the same pill for the camera controls on a dark card the
+    // menu, the pause and the end of the game, the same pill for the camera controls on a dark card the
     // map shows through, with a broad golden frame on the button that opens them, and a golden token to close the menu that
     // sells a tower. The sprites are the ones all of the UI shares, baked
     // through CommonSprites
@@ -30,7 +30,7 @@ namespace TowerDefense.EditorTools.UI
             }),
             ("Assets/Scenes/DefenderGameScene.unity", GameButtons()),
             ("Assets/Scenes/AttackerGameScene.unity", GameButtons()),
-            ("Assets/Scenes/MapConstructorScene.unity", new[] { "Canvas/Message/Panel/Button" }),
+            ("Assets/Scenes/MapConstructorScene.unity", new string[0]),
         };
 
         private static readonly Color ink = SpriteRaster.Hex("f3e6c0");

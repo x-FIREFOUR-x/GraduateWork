@@ -476,6 +476,7 @@ MonoBehaviour:
   zoomOutIcon: {fileID: 21300000, guid: d09dedd575420365f06891aa265e83d0, type: 3}
   homeIcon: {fileID: 21300000, guid: 7cc2ef09bb627e89814a7c1fc0c6707a, type: 3}
   cameraIcon: {fileID: 21300000, guid: 507bcccfd2af836b4b2be215076f8a34, type: 3}
+  startOpen: 0
   buttonSprite: {fileID: 21300000, guid: a8beb583c087b3e489b0ca3669ae620e, type: 3}
   openCloseButtonSprite: {fileID: 21300000, guid: 1bebc09657c7a344892d48684e61be97, type: 3}
   backgroundSprite: {fileID: 21300000, guid: e4338756a70418647b0f608fb1bb5ae4, type: 3}

@@ -15,6 +15,7 @@ namespace TowerDefense.EditorTools.UI
 
         private static readonly Color cardColor = Hex("1c2a1f");
         private static readonly Color pillColor = Hex("16201a");
+        private static readonly Color dialogColor = Hex("141f17", 0.97f);
         private static readonly Color gold = Hex("e2c172");
         private static readonly Color darkGold = Hex("8a6a2e");
         private static readonly (float, Color)[] tokenFace = { (0f, Hex("3a4a34")), (1f, Hex("141f17")) };
@@ -50,6 +51,24 @@ namespace TowerDefense.EditorTools.UI
             raster.Draw(p => Mathf.Abs(Shape(p) + 0.5f) - 0.5f, all, Solid(darkGold));
             float border = 15f * Pixels;
             return raster.Save(Folder + "Pill.png", Pixels * 100f, new Vector4(border, border, border, border));
+        }
+
+        // A window over the game, such as a message: dark, with a polished golden frame and a thin line inside it, rounded
+        // at the top left and the bottom right and nearly sharp at the other two corners
+        public static Sprite Dialog()
+        {
+            const float size = 64f;
+            Rect all = new(0f, 0f, size, size);
+            SpriteRaster raster = new(all, Pixels);
+            Vector2 centre = new(size / 2f, size / 2f);
+            float Shape(Vector2 p, float inset) => RoundBoxDistance(p - centre, Vector2.one * (size / 2f - inset),
+                16f - inset, Mathf.Max(3f - inset, 0.5f), 16f - inset, Mathf.Max(3f - inset, 0.5f));
+
+            raster.Draw(p => Shape(p, 0f), all, Solid(dialogColor));
+            raster.Draw(p => Mathf.Abs(Shape(p, 0.8f)) - 0.8f, all, Vertical(0f, size, polishedGold));
+            raster.Draw(p => Mathf.Abs(Shape(p, 4.9f)) - 0.4f, all, Solid(darkGold));
+            float border = 20f * Pixels;
+            return raster.Save(Folder + "Dialog.png", Pixels * 100f, new Vector4(border, border, border, border));
         }
 
         // The pill of a button that has to stand out among the others: a broad polished golden frame with a thin line

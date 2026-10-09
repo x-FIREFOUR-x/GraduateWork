@@ -15,13 +15,15 @@ namespace TowerDefense.EditorTools.UI
 {
     // Dresses the menu of the map constructor as the shop of the game: the dark columns with a golden edge, the play
     // and back buttons as golden pills, and each component a card with its name over a golden line, its icon in an
-    // arched window and a golden frame when it is chosen. The sprites are the ones it shares with the shop and the rest
+    // arched window and a golden frame when it is chosen; and the message that the map cannot be played a dark window
+    // with a golden frame. The sprites are the ones it shares with the shop and the rest
     // of the UI, baked through SideMenuSprites and CommonSprites
     public static class ConstructorMenuBuilder
     {
         private const string scenePath = "Assets/Scenes/MapConstructorScene.unity";
         private const string menuName = "Menu";
         private const string selectMenuName = "SelectMenu";
+        private const string messageName = "Message";
         private static readonly string[] menuButtonNames = { "StartPlayDefender", "StartPlayAttacker", "BackMainMenu" };
 
         // Low enough for all four cards to fit the column, which does not scroll
@@ -29,9 +31,13 @@ namespace TowerDefense.EditorTools.UI
         private const float cardHeight = 112f;
         private const float glowMargin = SideMenuSprites.GlowMargin;
         private const float menuButtonHeight = 34f;
+        private const float messageWidth = 500f;
+        private const float messageHeight = 170f;
 
         private static readonly Color ink = SpriteRaster.Hex("f3e6c0");
         private static readonly Color unchosenTint = new(0.8f, 0.8f, 0.8f, 1f);
+        // Darkens the map behind a message and keeps the clicks off it
+        private static readonly Color messageBackdrop = new(0.02f, 0.03f, 0.02f, 0.6f);
 
         // The buttons of the components and their icons, as the select menu holds them
         private static readonly (string button, string icon)[] components =
@@ -71,7 +77,7 @@ namespace TowerDefense.EditorTools.UI
 
         private class Sprites
         {
-            public Sprite Column, Card, Selected, Diamond, NameLine, WindowBack, WindowFrame, Pill;
+            public Sprite Column, Card, Selected, Diamond, NameLine, WindowBack, WindowFrame, Pill, Dialog;
         }
 
         private static Sprites BakeSprites()
@@ -86,6 +92,7 @@ namespace TowerDefense.EditorTools.UI
                 WindowBack = SideMenuSprites.WindowBack(),
                 WindowFrame = SideMenuSprites.WindowFrame(),
                 Pill = CommonSprites.Pill(),
+                Dialog = CommonSprites.Dialog(),
             };
         }
 
@@ -105,6 +112,10 @@ namespace TowerDefense.EditorTools.UI
                         MenuButton(button, sprites, font);
                 }
             }
+
+            Transform message = FindInScene(scene, messageName);
+            if (message != null)
+                DressMessage(message, sprites, font);
 
             Transform select = FindInScene(scene, selectMenuName);
             SelectMenu selectMenu = select != null ? select.GetComponent<SelectMenu>() : null;
@@ -183,6 +194,45 @@ namespace TowerDefense.EditorTools.UI
             selected.gameObject.SetActive(false);
 
             RemoveLeftOvers(card.transform);
+        }
+
+        // The message that the map cannot be played: a dark window with a golden frame over the darkened map, the text
+        // under a diamond on its frame, a golden line under the text and the close button under that
+        private static void DressMessage(Transform message, Sprites sprites, TMP_FontAsset font)
+        {
+            Image backdrop = GetOrAdd<Image>(message.gameObject);
+            backdrop.color = messageBackdrop;
+            backdrop.raycastTarget = true;
+
+            Transform panel = message.Find("Panel");
+            if (panel == null)
+                return;
+
+            Begin(panel);
+            RectTransform panelRect = (RectTransform)panel;
+            panelRect.sizeDelta = new Vector2(messageWidth, messageHeight);
+
+            Image window = GetOrAdd<Image>(panel.gameObject);
+            window.sprite = sprites.Dialog;
+            window.type = Image.Type.Sliced;
+            window.color = Color.white;
+
+            AddImage(Place("Diamond", panel, (messageWidth - 14f) / 2f, -4f, 14f, 9f), sprites.Diamond, Color.white);
+
+            TextMeshProUGUI text = GetOrAdd<TextMeshProUGUI>(Place("Text (TMP)", panel, 30f, 26f, messageWidth - 60f, 64f).gameObject);
+            Style(text, font, 26f);
+            text.textWrappingMode = TextWrappingModes.Normal;
+
+            AddImage(Place("Divider", panel, (messageWidth - 200f) / 2f, 98f, 200f, 2f), sprites.NameLine, Color.white);
+
+            RectTransform button = Place("Button", panel, (messageWidth - 160f) / 2f, 114f, 160f, 40f);
+            Image pill = GetOrAdd<Image>(button.gameObject);
+            pill.sprite = sprites.Pill;
+            pill.type = Image.Type.Sliced;
+            pill.color = Color.white;
+            Style(GetOrAdd<TextMeshProUGUI>(Stretch("Text (TMP)", button).gameObject), font, 18f);
+
+            RemoveLeftOvers(panel);
         }
 
         private static void Style(TextMeshProUGUI label, TMP_FontAsset font, float size)
