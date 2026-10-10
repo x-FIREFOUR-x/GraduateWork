@@ -2,6 +2,7 @@
 using UnityEngine.EventSystems;
 
 using TowerDefense.Main.Managers.TowerBuilders;
+using TowerDefense.Main.Towers;
 
 
 namespace TowerDefense.Main.Map.Tile
@@ -20,9 +21,11 @@ namespace TowerDefense.Main.Map.Tile
         [Header("Tower Range:")]
         [SerializeField]
         private GameObject towerRangeRing;
+        private TowerRangeRing rangeRing;
         private Vector3 unitSize;
 
         private bool wasSelectedThisTile = false;
+        private bool isShowingTowerRange = false;
 
 
         private void Awake()
@@ -30,6 +33,7 @@ namespace TowerDefense.Main.Map.Tile
             render = GetComponent<Renderer>();
             towerBuildManager = TowerBuildManager.instance;
 
+            rangeRing = towerRangeRing.GetComponent<TowerRangeRing>();
             unitSize = new Vector3(towerRangeRing.transform.localScale.x, towerRangeRing.transform.localScale.y, towerRangeRing.transform.localScale.z);
         }
 
@@ -103,15 +107,37 @@ namespace TowerDefense.Main.Map.Tile
             towerBuildManager.CloseOrOpenTowerSellerForTowerTile(this);
         }
 
+        public void ShowTowerRange()
+        {
+            if (Tower == null)
+                return;
+
+            isShowingTowerRange = true;
+            rangeRing.FitRange(Tower.GetComponent<Tower>().ShootRange);
+            towerRangeRing.SetActive(true);
+        }
+
+        public void HideTowerRange()
+        {
+            isShowingTowerRange = false;
+            DisactivateTowerRangeRing();
+        }
+
         private void ActivateTowerRangeRing()
         {
+            if (isShowingTowerRange)
+                return;
+
             float towerShootRange = towerBuildManager.GetShootRangeChosenTower();
-            towerRangeRing.transform.localScale = new Vector3(unitSize.x * towerShootRange, unitSize.y * towerShootRange, unitSize.z * towerShootRange);
+            rangeRing.FitRange(towerShootRange);
             towerRangeRing.SetActive(true);
         }
 
         private void DisactivateTowerRangeRing()
         {
+            if (isShowingTowerRange)
+                return;
+
             towerRangeRing.SetActive(false);
             towerRangeRing.transform.localScale = new Vector3(unitSize.x, unitSize.y, unitSize.z);
         }

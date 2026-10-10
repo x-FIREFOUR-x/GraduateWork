@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace TowerDefense.CameraControl
 {
@@ -16,7 +17,7 @@ namespace TowerDefense.CameraControl
         private float zoomWheelStep = 2f;
 
         [SerializeField]
-        private float minY = 25f;
+        private float minY = 20f;
 
         // Zooming in dollies forward along baseForward, which also lowers Y (the camera looks down);
         // convert the Y floor into a cap on how far that dolly may go.
@@ -78,7 +79,7 @@ namespace TowerDefense.CameraControl
 
             // Mouse wheel ticks are discrete events, so they are applied directly (not scaled by
             // deltaTime); held mobile zoom buttons are continuous, so they are deltaTime-scaled.
-            float wheelZoom = Input.mouseScrollDelta.y * zoomWheelStep;
+            float wheelZoom = IsPointerOverUI() ? 0f : Input.mouseScrollDelta.y * zoomWheelStep;
             float heldZoom = externalZoomInput * zoomSpeed * Time.deltaTime;
             zoomOffset = Mathf.Clamp(zoomOffset + wheelZoom + heldZoom, 0f, zoomOffsetMax);
 
@@ -98,6 +99,11 @@ namespace TowerDefense.CameraControl
             moveOffset = targetPosition - basePosition - baseForward * zoomOffset;
 
             cam.SetPositionAndRotation(targetPosition, baseRotation);
+        }
+
+        private static bool IsPointerOverUI()
+        {
+            return EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
         }
 
         private static Vector2 ReadKeyboardMove()

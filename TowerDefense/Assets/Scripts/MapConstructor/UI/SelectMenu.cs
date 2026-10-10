@@ -6,6 +6,9 @@ namespace TowerDefense.MapConstructor.UI
 {
     public class SelectMenu : MonoBehaviour
     {
+        public const string iconPath = "Window/Icon";
+        public const string selectedFramePath = "SelectedFrame";
+
         [Header("Attributes")]
         [SerializeField]
         private Color unactiveColor;
@@ -41,10 +44,10 @@ namespace TowerDefense.MapConstructor.UI
 
         void Start()
         {
-            pathTileButton.GetComponent<Image>().color = unactiveColor;
-            blockedTileButton.GetComponent<Image>().color = unactiveColor;
-            endBuildingButton.GetComponent<Image>().color = unactiveColor;
-            startBuildingButton.GetComponent<Image>().color = unactiveColor;
+            SetButtonActive(pathTileButton, false);
+            SetButtonActive(blockedTileButton, false);
+            SetButtonActive(endBuildingButton, false);
+            SetButtonActive(startBuildingButton, false);
 
             AddIcon(pathTileButton, pathTileIcon);
             AddIcon(blockedTileButton, blockedTileIcon);
@@ -57,6 +60,13 @@ namespace TowerDefense.MapConstructor.UI
             if (sprite == null)
             {
                 Debug.LogWarning($"{button.name} has no icon assigned, bake them with Tools/Tile/Bake Constructor Icons and drop them on this menu");
+                return;
+            }
+
+            Transform laidOutIcon = button.transform.Find(iconPath);
+            if (laidOutIcon != null)
+            {
+                laidOutIcon.GetComponent<Image>().sprite = sprite;
                 return;
             }
 
@@ -93,38 +103,47 @@ namespace TowerDefense.MapConstructor.UI
 
         public void ActivePathTileButton()
         {
-            pathTileButton.GetComponent<Image>().color = activeColor;
+            SetButtonActive(pathTileButton, true);
 
-            blockedTileButton.GetComponent<Image>().color = unactiveColor;
-            endBuildingButton.GetComponent<Image>().color = unactiveColor;
-            startBuildingButton.GetComponent<Image>().color = unactiveColor;
+            SetButtonActive(blockedTileButton, false);
+            SetButtonActive(endBuildingButton, false);
+            SetButtonActive(startBuildingButton, false);
         }
 
         public void ActiveBlockedTileButton()
         {
-            blockedTileButton.GetComponent<Image>().color = activeColor;
+            SetButtonActive(blockedTileButton, true);
 
-            pathTileButton.GetComponent<Image>().color = unactiveColor;
-            endBuildingButton.GetComponent<Image>().color = unactiveColor;
-            startBuildingButton.GetComponent<Image>().color = unactiveColor;
+            SetButtonActive(pathTileButton, false);
+            SetButtonActive(endBuildingButton, false);
+            SetButtonActive(startBuildingButton, false);
         }
 
         public void ActiveStartBuildingButton()
         {
-            startBuildingButton.GetComponent<Image>().color = activeColor;
+            SetButtonActive(startBuildingButton, true);
 
-            endBuildingButton.GetComponent<Image>().color = unactiveColor;
-            pathTileButton.GetComponent<Image>().color = unactiveColor;
-            blockedTileButton.GetComponent<Image>().color = unactiveColor;
+            SetButtonActive(endBuildingButton, false);
+            SetButtonActive(pathTileButton, false);
+            SetButtonActive(blockedTileButton, false);
         }
 
         public void ActiveEndBuildingButton()
         {
-            endBuildingButton.GetComponent<Image>().color = activeColor;
+            SetButtonActive(endBuildingButton, true);
 
-            pathTileButton.GetComponent<Image>().color = unactiveColor;
-            startBuildingButton.GetComponent<Image>().color = unactiveColor;
-            blockedTileButton.GetComponent<Image>().color = unactiveColor;
+            SetButtonActive(pathTileButton, false);
+            SetButtonActive(startBuildingButton, false);
+            SetButtonActive(blockedTileButton, false);
+        }
+
+        private void SetButtonActive(GameObject button, bool isActive)
+        {
+            button.GetComponent<Image>().color = isActive ? activeColor : unactiveColor;
+
+            Transform selectedFrame = button.transform.Find(selectedFramePath);
+            if (selectedFrame != null)
+                selectedFrame.gameObject.SetActive(isActive);
         }
     }
 

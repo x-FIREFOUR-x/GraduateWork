@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 
 using TowerDefense.Main.Projectiles;
+using TowerDefense.EditorTools.Icons;
 using TowerDefense.Main.Towers;
 
 using static TowerDefense.EditorTools.Towers.TowerBakeUtility;

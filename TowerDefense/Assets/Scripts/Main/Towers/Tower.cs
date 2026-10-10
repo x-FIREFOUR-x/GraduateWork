@@ -67,7 +67,7 @@ namespace TowerDefense.Main.Towers
                 transform.position.y + offsetTower.y,
                 transform.position.z + offsetTower.z);
 
-            InvokeRepeating("UpdateTarget", 0f, 0.5f);
+            InvokeRepeating("UpdateTarget", 0f, 0.1f);
         }
 
         protected void UpdateTarget()
