@@ -5,6 +5,7 @@ using TowerDefense.Main.Map.Path;
 using TowerDefense.Main.Map.Buildings;
 using TowerDefense.Algorithms.GeneticAlgorithm.Heuristics;
 
+
 namespace TowerDefense.Main.Enemies
 {
     public class Enemy : MonoBehaviour
@@ -35,7 +36,7 @@ namespace TowerDefense.Main.Enemies
         public int Price { get; private set; } = 25;
 
 
-        private WayPointNode target;
+        private PathGraphNode target;
         private float movedDistance = 0;
 
         public static string enemyTag = "Enemy";
@@ -54,7 +55,7 @@ namespace TowerDefense.Main.Enemies
 
         void Start()
         {
-            target = WayPoints.Graph.Start;
+            target = ChooseNextPathNode(PathGraphHolder.Graph.Start);
             health = StartHealth;
             speed = StartSpeed;
 
@@ -77,7 +78,7 @@ namespace TowerDefense.Main.Enemies
 
             if (Mathf.Abs(Vector3.Distance(position, targetPosition)) <= 0.2f)
             {
-                if (!TryGetNextWayPoint())
+                if (!TryGetNextPathNode())
                 {
                     DamageEndBuilding();
                     Die();
@@ -89,7 +90,7 @@ namespace TowerDefense.Main.Enemies
             UpdateSpeed();
         }
 
-        private bool TryGetNextWayPoint()
+        private bool TryGetNextPathNode()
         {
             if (target.IsEnd)
             {
@@ -97,9 +98,14 @@ namespace TowerDefense.Main.Enemies
             }
             else
             {
-                target = target.Next[0];
+                target = ChooseNextPathNode(target);
                 return true;
             }
+        }
+
+        private PathGraphNode ChooseNextPathNode(PathGraphNode currentNode)
+        {
+            return currentNode.IsFork ? currentNode.Next[Random.Range(0, currentNode.Next.Count)] : currentNode.Next[0];
         }
 
         private void Die()

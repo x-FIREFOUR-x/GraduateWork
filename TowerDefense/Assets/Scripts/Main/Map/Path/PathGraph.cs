@@ -5,12 +5,12 @@ namespace TowerDefense.Main.Map.Path
 {
     public class PathGraph
     {
-        public WayPointNode Start { get; }
-        public WayPointNode End { get; }
-        public IReadOnlyList<WayPointNode> Nodes { get; }
+        public PathGraphNode Start { get; }
+        public PathGraphNode End { get; }
+        public IReadOnlyList<PathGraphNode> Nodes { get; }
 
 
-        public PathGraph(WayPointNode start, WayPointNode end, IReadOnlyList<WayPointNode> nodes)
+        public PathGraph(PathGraphNode start, PathGraphNode end, IReadOnlyList<PathGraphNode> nodes)
         {
             Start = start;
             End = end;

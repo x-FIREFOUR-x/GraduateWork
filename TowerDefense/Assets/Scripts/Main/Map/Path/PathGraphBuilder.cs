@@ -31,11 +31,11 @@ namespace TowerDefense.Main.Map.Path
             if (HasCellsOutsideRoutes(routesPathSegments, cells))
                 return false;
 
-            Dictionary<Vector2Int, WayPointNode> nodes = CreateNodes(routesPathSegments, cellToPosition);
+            Dictionary<Vector2Int, PathGraphNode> nodes = CreateNodes(routesPathSegments, cellToPosition);
             if (HasCycle(nodes.Values, nodes.Count))
                 return false;
 
-            graph = new PathGraph(nodes[start], nodes[end], new List<WayPointNode>(nodes.Values));
+            graph = new PathGraph(nodes[start], nodes[end], new List<PathGraphNode>(nodes.Values));
             return true;
         }
 
@@ -171,19 +171,19 @@ namespace TowerDefense.Main.Map.Path
 
         
 
-        private static Dictionary<Vector2Int, WayPointNode> CreateNodes(HashSet<List<Vector2Int>> routesPathSegments, Func<Vector2Int, Vector3> cellToPosition)
+        private static Dictionary<Vector2Int, PathGraphNode> CreateNodes(HashSet<List<Vector2Int>> routesPathSegments, Func<Vector2Int, Vector3> cellToPosition)
         {
-            Dictionary<Vector2Int, WayPointNode> nodes = new();
+            Dictionary<Vector2Int, PathGraphNode> nodes = new();
 
             foreach (List<Vector2Int> pathSegment in routesPathSegments)
             {
-                WayPointNode previousNode = GetOrCreateNode(nodes, pathSegment[0], cellToPosition);
+                PathGraphNode previousNode = GetOrCreateNode(nodes, pathSegment[0], cellToPosition);
 
                 for (int i = 1; i < pathSegment.Count - 1; i++)
                 {
                     if (pathSegment[i - 1].x != pathSegment[i + 1].x && pathSegment[i - 1].y != pathSegment[i + 1].y)
                     {
-                        WayPointNode cornerNode = GetOrCreateNode(nodes, pathSegment[i], cellToPosition);
+                        PathGraphNode cornerNode = GetOrCreateNode(nodes, pathSegment[i], cellToPosition);
                         previousNode.ConnectTo(cornerNode);
                         previousNode = cornerNode;
                     }
@@ -195,23 +195,23 @@ namespace TowerDefense.Main.Map.Path
             return nodes;
         }
 
-        private static WayPointNode GetOrCreateNode(Dictionary<Vector2Int, WayPointNode> nodes, Vector2Int cell, Func<Vector2Int, Vector3> cellToPosition)
+        private static PathGraphNode GetOrCreateNode(Dictionary<Vector2Int, PathGraphNode> nodes, Vector2Int cell, Func<Vector2Int, Vector3> cellToPosition)
         {
-            if (!nodes.TryGetValue(cell, out WayPointNode node))
+            if (!nodes.TryGetValue(cell, out PathGraphNode node))
             {
-                node = new WayPointNode(cell, cellToPosition(cell));
+                node = new PathGraphNode(cell, cellToPosition(cell));
                 nodes[cell] = node;
             }
 
             return node;
         }
 
-        private static bool HasCycle(IEnumerable<WayPointNode> nodes, int nodesCount)
+        private static bool HasCycle(IEnumerable<PathGraphNode> nodes, int nodesCount)
         {
-            Dictionary<WayPointNode, int> countUnvisitedPrevious = new();
-            Queue<WayPointNode> readyNodes = new();
+            Dictionary<PathGraphNode, int> countUnvisitedPrevious = new();
+            Queue<PathGraphNode> readyNodes = new();
 
-            foreach (WayPointNode node in nodes)
+            foreach (PathGraphNode node in nodes)
             {
                 countUnvisitedPrevious[node] = node.Previous.Count;
                 if (node.Previous.Count == 0)
@@ -221,10 +221,10 @@ namespace TowerDefense.Main.Map.Path
             int countVisited = 0;
             while (readyNodes.Count > 0)
             {
-                WayPointNode node = readyNodes.Dequeue();
+                PathGraphNode node = readyNodes.Dequeue();
                 countVisited++;
 
-                foreach (WayPointNode nextNode in node.Next)
+                foreach (PathGraphNode nextNode in node.Next)
                 {
                     countUnvisitedPrevious[nextNode]--;
                     if (countUnvisitedPrevious[nextNode] == 0)

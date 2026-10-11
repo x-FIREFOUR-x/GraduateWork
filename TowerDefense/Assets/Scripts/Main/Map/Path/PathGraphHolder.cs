@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace TowerDefense.Main.Map.Path
 {
-    public class WayPoints : MonoBehaviour
+    public class PathGraphHolder : MonoBehaviour
     {
         [Header("Prefabs")]
         [SerializeField]
-        private GameObject wayPointRefab;
+        private GameObject wayPointPrefab;
 
         public static PathGraph Graph { get; private set; }
 
@@ -15,9 +15,9 @@ namespace TowerDefense.Main.Map.Path
         {
             Graph = graph;
 
-            foreach (WayPointNode node in graph.Nodes)
+            foreach (PathGraphNode node in graph.Nodes)
             {
-                Instantiate(wayPointRefab, node.Position, new Quaternion(0, 0, 0, 1), this.transform);
+                Instantiate(wayPointPrefab, node.Position, new Quaternion(0, 0, 0, 1), this.transform);
             }
         }
 

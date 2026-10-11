@@ -22,13 +22,13 @@ namespace TowerDefense.Main.Map
         private GameObject endBuilding;
 
         public TilesMap TilesMap { get; private set; }
-        private WayPoints wayPoints;
+        private PathGraphHolder pathGraphHolder;
 
         [Header("Prefabs")]
         [SerializeField]
         private GameObject tilesMapPrefab;
         [SerializeField]
-        private GameObject wayPointsPrefab;
+        private GameObject pathGraphHolderPrefab;
 
         private PathGenerator pathGenerator;
         private BlockedTilesGenerator blockedTilesGenerator;
@@ -101,9 +101,9 @@ namespace TowerDefense.Main.Map
             GenerateBackgroundGround(mapSizeParams.CountTile, mapSizeParams.SizeTile);
             GenerateBackgroundMountains(mapSizeParams.CountTile, mapSizeParams.SizeTile);
 
-            wayPoints = Instantiate(wayPointsPrefab, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1))
-                .GetComponent<WayPoints>();
-            wayPoints.Initialize(pathGraph);
+            pathGraphHolder = Instantiate(pathGraphHolderPrefab, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1))
+                .GetComponent<PathGraphHolder>();
+            pathGraphHolder.Initialize(pathGraph);
 
             startBuilding.GetComponent<Building>().Initialize(
                 startCell, mapSizeParams.SizeTile, mapSizeParams.OffsetTile, mapSizeParams.OffsetBuilding, pathGraph.Start.Next[0].Position);
