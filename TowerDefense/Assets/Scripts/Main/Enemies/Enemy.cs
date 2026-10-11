@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-using TowerDefense.Main.Map;
+using TowerDefense.Main.Map.Path;
 using TowerDefense.Main.Map.Buildings;
 using TowerDefense.Algorithms.GeneticAlgorithm.Heuristics;
 
@@ -35,8 +35,7 @@ namespace TowerDefense.Main.Enemies
         public int Price { get; private set; } = 25;
 
 
-        private Transform target;
-        public int WayPointIndex { get; private set; } = 0;
+        private WayPointNode target;
         private float movedDistance = 0;
 
         public static string enemyTag = "Enemy";
@@ -55,7 +54,7 @@ namespace TowerDefense.Main.Enemies
 
         void Start()
         {
-            target = WayPoints.Points[0];
+            target = WayPoints.Graph.Start;
             health = StartHealth;
             speed = StartSpeed;
 
@@ -68,7 +67,7 @@ namespace TowerDefense.Main.Enemies
 
         void FixedUpdate()
         {
-            Vector3 targetPosition = new Vector3(target.position.x, 0, target.position.z);
+            Vector3 targetPosition = new Vector3(target.Position.x, 0, target.Position.z);
             Vector3 position = new Vector3(transform.position.x, 0, transform.position.z);
 
             Vector3 direction = targetPosition - position;
@@ -92,14 +91,13 @@ namespace TowerDefense.Main.Enemies
 
         private bool TryGetNextWayPoint()
         {
-            WayPointIndex++;
-            if (WayPointIndex > WayPoints.Points.Count - 1)
+            if (target.IsEnd)
             {
                 return false;
             }
             else
             {
-                target = WayPoints.Points[WayPointIndex];
+                target = target.Next[0];
                 return true;
             }
         }
@@ -144,7 +142,7 @@ namespace TowerDefense.Main.Enemies
 
         private void Rotate()
         {
-            Vector3 dir = target.position - model.position;
+            Vector3 dir = target.Position - model.position;
             dir.Normalize();
             Quaternion quaternion = Quaternion.LookRotation(dir, Vector3.up);
             model.rotation = quaternion;

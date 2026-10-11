@@ -4,6 +4,7 @@ using UnityEngine;
 
 using TowerDefense.Storage;
 using TowerDefense.Main.Map.Tile;
+using TowerDefense.Main.Map.Path;
 using TowerDefense.Main.Map.Buildings;
 using TowerDefense.Main.Map.Background;
 using TowerDefense.Main.Managers.WaveSpawners;
@@ -62,46 +63,54 @@ namespace TowerDefense.Main.Map
         {
             mapSizeParams = Resources.Load<MapSizeParamsStorage>($"{nameof(MapSizeParamsStorage)}");
 
-            Vector2Int indexesStartBuilding = mapSizeParams.IndexesStartBuilding;
-            Vector2Int indexesEndBuilding = mapSizeParams.IndexesEndBuilding;
-
             pathGenerator = new PathGenerator();
             blockedTilesGenerator = new BlockedTilesGenerator();
 
-            List<Vector2Int> generatedPath;
+            HashSet<Vector2Int> pathCells;
             HashSet<Vector2Int> blockedTiles;
+            Vector2Int startCell;
+            Vector2Int endCell;
             if (MapSaver.instance != null && MapSaver.instance.IsSave)
             {
-                indexesStartBuilding = MapSaver.instance.GetIndexesStart();
-                indexesEndBuilding = MapSaver.instance.GetIndexesEnd();
+                startCell = MapSaver.instance.GetStartCell();
+                endCell = MapSaver.instance.GetEndCell();
 
-                TileKind[,] tileMatrix = MapSaver.instance.GetTileMatrix();
-                generatedPath = pathGenerator.GetPathWithMatrix(tileMatrix, indexesStartBuilding, indexesEndBuilding);
-                blockedTiles = BlockedTilesFromMatrix(tileMatrix);
+                pathCells = MapSaver.instance.GetCells(TileKind.Path);
+                blockedTiles = MapSaver.instance.GetCells(TileKind.Blocked);
             }
             else
             {
-                generatedPath = pathGenerator.GeneratePath(mapSizeParams.CountTile, indexesStartBuilding, indexesEndBuilding);
-                blockedTiles = blockedTilesGenerator.Generate(mapSizeParams.CountTile, generatedPath, mapSizeParams.BlockedTilesShare);
+                startCell = mapSizeParams.IndexesStartBuilding;
+                endCell = mapSizeParams.IndexesEndBuilding;
+
+                pathCells = pathGenerator.GenerateBranchedPath(mapSizeParams.CountTile, startCell, endCell,
+                                                               mapSizeParams.MinPathBranchesCount, mapSizeParams.MaxPathBranchesCount, mapSizeParams.MinPathBranchStartEndDistance, mapSizeParams.MaxPathBranchLength);
+                blockedTiles = blockedTilesGenerator.Generate(mapSizeParams.CountTile, pathCells, mapSizeParams.BlockedTilesShare);
+            }
+
+            if (!PathGraphBuilder.TryBuild(pathCells, startCell, endCell, mapSizeParams.CellToPosition, out PathGraph pathGraph))
+            {
+                Debug.LogError("Path graph can not be built from the path cells");
+                return;
             }
 
             TilesMap = Instantiate(tilesMapPrefab, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1))
                 .GetComponent<TilesMap>();
-            TilesMap.Initialize(mapSizeParams.CountTile, generatedPath, blockedTiles, mapSizeParams.OffsetTile);
+            TilesMap.Initialize(mapSizeParams.CountTile, pathCells, blockedTiles, mapSizeParams.OffsetTile);
 
             GenerateBackgroundGround(mapSizeParams.CountTile, mapSizeParams.SizeTile);
             GenerateBackgroundMountains(mapSizeParams.CountTile, mapSizeParams.SizeTile);
 
             wayPoints = Instantiate(wayPointsPrefab, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 1))
                 .GetComponent<WayPoints>();
-            wayPoints.Initialize(generatedPath);
+            wayPoints.Initialize(pathGraph);
 
             startBuilding.GetComponent<Building>().Initialize(
-                indexesStartBuilding, mapSizeParams.SizeTile, mapSizeParams.OffsetTile, mapSizeParams.OffsetBuilding, WayPoints.Points[0].localPosition);
+                startCell, mapSizeParams.SizeTile, mapSizeParams.OffsetTile, mapSizeParams.OffsetBuilding, pathGraph.Start.Next[0].Position);
 
-            Vector3 targetDirEndBuilding = WayPoints.Points.Count > 1 ? WayPoints.Points[WayPoints.Points.Count - 2].localPosition : startBuilding.transform.position;
+            Vector3 targetDirEndBuilding = pathGraph.End.Previous.Count > 0 ? pathGraph.End.Previous[0].Position : startBuilding.transform.position;
             endBuilding.GetComponent<EndBuilding>().Initialize(
-                indexesEndBuilding, mapSizeParams.SizeTile, mapSizeParams.OffsetTile, mapSizeParams.OffsetBuilding, targetDirEndBuilding);
+                endCell, mapSizeParams.SizeTile, mapSizeParams.OffsetTile, mapSizeParams.OffsetBuilding, targetDirEndBuilding);
 
             waveSpawner.GetComponent<WaveSpawner>().Initialize(startBuilding.transform);
         }
@@ -139,22 +148,6 @@ namespace TowerDefense.Main.Map
             float ringRadius = gridSize * MountainsRingRadiusMultiplier;
             BackgroundMountainsGenerator.Generate(TilesMap.transform, center, gridHalfWidth, ringRadius, MountainsCount, seed,
                                                    backgroundMountainsMaterial);
-        }
-
-        private static HashSet<Vector2Int> BlockedTilesFromMatrix(TileKind[,] tileMatrix)
-        {
-            HashSet<Vector2Int> blockedTiles = new();
-
-            for (int x = 0; x < tileMatrix.GetLength(0); x++)
-            {
-                for (int y = 0; y < tileMatrix.GetLength(1); y++)
-                {
-                    if (tileMatrix[x, y] == TileKind.Blocked)
-                        blockedTiles.Add(new Vector2Int(y, x));
-                }
-            }
-
-            return blockedTiles;
         }
     }
 
