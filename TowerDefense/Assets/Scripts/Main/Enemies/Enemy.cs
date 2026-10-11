@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+using TowerDefense.Main.Enemies.ForkPathChoice;
 using TowerDefense.Main.Map.Path;
 using TowerDefense.Main.Map.Buildings;
 using TowerDefense.Algorithms.GeneticAlgorithm.Heuristics;
@@ -37,6 +38,7 @@ namespace TowerDefense.Main.Enemies
 
 
         private PathGraphNode target;
+        private IForkPathChoiceStrategy forkPathChoiceStrategy;
         private float movedDistance = 0;
 
         public static string enemyTag = "Enemy";
@@ -55,6 +57,7 @@ namespace TowerDefense.Main.Enemies
 
         void Start()
         {
+            forkPathChoiceStrategy = ForkPathChoiceStrategies.GetByEnemyType(EnemyType);
             target = ChooseNextPathNode(PathGraphHolder.Graph.Start);
             health = StartHealth;
             speed = StartSpeed;
@@ -105,7 +108,7 @@ namespace TowerDefense.Main.Enemies
 
         private PathGraphNode ChooseNextPathNode(PathGraphNode currentNode)
         {
-            return currentNode.IsFork ? currentNode.Next[Random.Range(0, currentNode.Next.Count)] : currentNode.Next[0];
+            return currentNode.IsFork ? forkPathChoiceStrategy.ChooseNextNodeAtFork(this, currentNode) : currentNode.Next[0];
         }
 
         private void Die()
