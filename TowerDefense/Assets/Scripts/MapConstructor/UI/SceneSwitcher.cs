@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+using TowerDefense.Main.Map.Path;
 using TowerDefense.MapConstructor.Component;
 
 
@@ -22,40 +23,37 @@ namespace TowerDefense.MapConstructor.UI
 
         public void PlayDefenderGame()
         {
-            if (!map.IsAllBuilds())
-            {
-                messageManager.OpenUncorrectMapMessage();
-                return;
-            }
-
-            if (MapSaver.instance.SetData(map.GetTileArray(), map.GetIndexesStartBuild(), map.GetIndexesEndBuild()))
+            if (TrySaveMap())
             {
                 Time.timeScale = 1f;
                 SceneManager.LoadScene(defenderGameScene);
-            }
-            else
-            {
-                messageManager.OpenUncorrectMapMessage();
             }
         }
 
         public void PlayAttackerGame()
         {
-            if (!map.IsAllBuilds())
-            {
-                messageManager.OpenUncorrectMapMessage();
-                return;
-            }
-
-            if (MapSaver.instance.SetData(map.GetTileArray(), map.GetIndexesStartBuild(), map.GetIndexesEndBuild()))
+            if (TrySaveMap())
             {
                 Time.timeScale = 1f;
                 SceneManager.LoadScene(attackerGameScene);
             }
-            else
+        }
+
+        private bool TrySaveMap()
+        {
+            if (!map.IsAllBuilds())
             {
-                messageManager.OpenUncorrectMapMessage();
+                messageManager.OpenUncorrectMapMessage(UncorrectMapDescriptions.GetMissingBuildings(map.GetStartBuilding() != null, map.GetEndBuilding() != null));
+                return false;
             }
+
+            if (!MapSaver.instance.SetData(map.GetTileArray(), map.GetIndexesStartBuild(), map.GetIndexesEndBuild(), out PathGraphBuildError error))
+            {
+                messageManager.OpenUncorrectMapMessage(UncorrectMapDescriptions.GetPathGraphBuildErrorDescription(error));
+                return false;
+            }
+
+            return true;
         }
 
         public void Back()

@@ -31,13 +31,13 @@ namespace TowerDefense
             DontDestroyOnLoad(this.gameObject);
         }
 
-        public bool SetData(TileKind[,] tiles, Vector2Int start, Vector2Int end)
+        public bool SetData(TileKind[,] tiles, Vector2Int start, Vector2Int end, out PathGraphBuildError error)
         {
             tilesMatrix = tiles;
             indexesStart = start;
             indexesEnd = end;
 
-            if (ConstructedMapIsCorrect())
+            if (ConstructedMapIsCorrect(out error))
             {
                 IsSave = true;
                 return true;
@@ -78,11 +78,11 @@ namespace TowerDefense
             return ToGameIndexes(indexesEnd);
         }
 
-        private bool ConstructedMapIsCorrect()
+        private bool ConstructedMapIsCorrect(out PathGraphBuildError error)
         {
             MapSizeParamsStorage mapSizeParams = Resources.Load<MapSizeParamsStorage>($"{nameof(MapSizeParamsStorage)}");
 
-            return PathGraphBuilder.TryBuild(GetCells(TileKind.Path), GetStartCell(), GetEndCell(), mapSizeParams.CellToPosition, out _);
+            return PathGraphBuilder.TryBuild(GetCells(TileKind.Path), GetStartCell(), GetEndCell(), mapSizeParams.CellToPosition, out _, out error);
         }
 
         private static Vector2Int ToGameIndexes(Vector2Int constructorIndexes)

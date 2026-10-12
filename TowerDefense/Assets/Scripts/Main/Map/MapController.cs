@@ -88,9 +88,9 @@ namespace TowerDefense.Main.Map
                 blockedTiles = blockedTilesGenerator.Generate(mapSizeParams.CountTile, pathCells, mapSizeParams.BlockedTilesShare);
             }
 
-            if (!PathGraphBuilder.TryBuild(pathCells, startCell, endCell, mapSizeParams.CellToPosition, out PathGraph pathGraph))
+            if (!PathGraphBuilder.TryBuild(pathCells, startCell, endCell, mapSizeParams.CellToPosition, out PathGraph pathGraph, out PathGraphBuildError error))
             {
-                Debug.LogError("Path graph can not be built from the path cells");
+                Debug.LogError($"Path graph can not be built from the path cells: {error}");
                 return;
             }
 

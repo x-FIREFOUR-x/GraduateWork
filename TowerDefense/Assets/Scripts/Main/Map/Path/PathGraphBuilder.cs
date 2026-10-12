@@ -13,29 +13,40 @@ namespace TowerDefense.Main.Map.Path
         private static readonly Vector2Int[] Directions = { new(1, 0), new(0, 1), new(-1, 0), new(0, -1) };
 
 
-        public static bool TryBuild(HashSet<Vector2Int> pathCells, Vector2Int start, Vector2Int end, Func<Vector2Int, Vector3> cellToPosition, out PathGraph graph)
+        public static bool TryBuild(HashSet<Vector2Int> pathCells, Vector2Int start, Vector2Int end, Func<Vector2Int, Vector3> cellToPosition,
+                                    out PathGraph graph, out PathGraphBuildError error)
         {
             graph = null;
 
             if (start == end)
+            {
+                error = PathGraphBuildError.StartIsEnd;
                 return false;
+            }
 
             HashSet<Vector2Int> cells = new(pathCells) { start, end };
             HashSet<Vector2Int> branchingCells = FindBranchingCells(cells, start, end);
             Dictionary<Vector2Int, List<List<Vector2Int>>> pathSegments = FindPathSegments(cells, branchingCells);
 
             HashSet<List<Vector2Int>> routesPathSegments = new();
-            if (!TryCollectRoutesFromPathSegments(pathSegments, start, end, routesPathSegments))
+            if (!TryCollectRoutesFromPathSegments(pathSegments, start, end, routesPathSegments, out error))
                 return false;
 
             if (HasCellsOutsideRoutes(routesPathSegments, cells))
+            {
+                error = PathGraphBuildError.CellsOutsideRoutes;
                 return false;
+            }
 
             Dictionary<Vector2Int, PathGraphNode> nodes = CreateNodes(routesPathSegments, cellToPosition);
             if (HasCycle(nodes.Values, nodes.Count))
+            {
+                error = PathGraphBuildError.Cycle;
                 return false;
+            }
 
             graph = new PathGraph(nodes[start], nodes[end], new List<PathGraphNode>(nodes.Values));
+            error = PathGraphBuildError.None;
             return true;
         }
 
@@ -116,7 +127,7 @@ namespace TowerDefense.Main.Map.Path
         }
 
         private static bool TryCollectRoutesFromPathSegments(Dictionary<Vector2Int, List<List<Vector2Int>>> pathSegmentsByBranchingCell, Vector2Int start, Vector2Int end,
-                                                     HashSet<List<Vector2Int>> routesPathSegments)
+                                                     HashSet<List<Vector2Int>> routesPathSegments, out PathGraphBuildError error)
         {
             int routesCount = 0;
             HashSet<Vector2Int> visitedBranchingCells = new() { start };
@@ -124,7 +135,14 @@ namespace TowerDefense.Main.Map.Path
 
             bool isWithinLimit = CollectRoutes(start, end, pathSegmentsByBranchingCell, visitedBranchingCells, currentRoute, routesPathSegments, ref routesCount);
 
-            return isWithinLimit && routesCount > 0;
+            if (!isWithinLimit)
+                error = PathGraphBuildError.TooManyRoutes;
+            else if (routesCount == 0)
+                error = PathGraphBuildError.NoRoute;
+            else
+                error = PathGraphBuildError.None;
+
+            return error == PathGraphBuildError.None;
         }
 
         private static bool CollectRoutes(Vector2Int currentBranchingCell, Vector2Int end, Dictionary<Vector2Int, List<List<Vector2Int>>> pathSegmentsByBranchingCell,
