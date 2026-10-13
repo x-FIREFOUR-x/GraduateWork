@@ -156,9 +156,6 @@ namespace TowerDefense.Main.Map.Path
             Vector2Int start = mainPath[startIndex];
             Vector2Int end = mainPath[endIndex];
 
-            if (CountOccupiedNeighbors(start, pathCells) != 2 || CountOccupiedNeighbors(end, pathCells) != 2)
-                return false;
-
             List<Vector2Int> branch = TryBuildPathByBacktracking(size, start, end, true, pathCells, MinBranchLength, maxBranchLength);
             if (branch == null)
                 return false;
@@ -166,19 +163,6 @@ namespace TowerDefense.Main.Map.Path
             pathCells.UnionWith(branch);
             branchesStartEndIndexes.Add((startIndex, endIndex));
             return true;
-        }
-
-        private int CountOccupiedNeighbors(Vector2Int node, HashSet<Vector2Int> pathCells)
-        {
-            int countNeighbors = 0;
-
-            foreach (Vector2Int direction in Directions)
-            {
-                if (pathCells.Contains(node + direction))
-                    countNeighbors++;
-            }
-
-            return countNeighbors;
         }
 
     }
