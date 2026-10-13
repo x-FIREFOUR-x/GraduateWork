@@ -37,6 +37,10 @@ namespace TowerDefense.Main.Enemies
         public int Price { get; private set; } = 25;
 
 
+        [SerializeField]
+        private float maxPathOffset = 0.7f;
+        private Vector3 pathOffset;
+
         private PathGraphNode target;
         private IForkPathChoiceStrategy forkPathChoiceStrategy;
         private float movedDistance = 0;
@@ -59,6 +63,9 @@ namespace TowerDefense.Main.Enemies
         {
             forkPathChoiceStrategy = ForkPathChoiceStrategies.GetByEnemyType(EnemyType);
             target = ChooseNextPathNode(PathGraphHolder.Graph.Start);
+
+            Vector2 randomPathOffset = Random.insideUnitCircle * maxPathOffset;
+            pathOffset = new Vector3(randomPathOffset.x, 0, randomPathOffset.y);
             health = StartHealth;
             speed = StartSpeed;
 
@@ -71,7 +78,7 @@ namespace TowerDefense.Main.Enemies
 
         void FixedUpdate()
         {
-            Vector3 targetPosition = new Vector3(target.Position.x, 0, target.Position.z);
+            Vector3 targetPosition = new Vector3(target.Position.x + pathOffset.x, 0, target.Position.z + pathOffset.z);
             Vector3 position = new Vector3(transform.position.x, 0, transform.position.z);
 
             Vector3 direction = targetPosition - position;
@@ -151,7 +158,7 @@ namespace TowerDefense.Main.Enemies
 
         private void Rotate()
         {
-            Vector3 dir = target.Position - model.position;
+            Vector3 dir = target.Position + pathOffset - model.position;
             dir.Normalize();
             Quaternion quaternion = Quaternion.LookRotation(dir, Vector3.up);
             model.rotation = quaternion;
