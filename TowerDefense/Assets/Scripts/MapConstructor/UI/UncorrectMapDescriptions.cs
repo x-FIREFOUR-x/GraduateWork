@@ -21,7 +21,7 @@ namespace TowerDefense.MapConstructor.UI
                 PathGraphBuildError.NoRoute => "The path tiles do not connect the start building with the end building.",
                 PathGraphBuildError.TooManyRoutes => "The path has too many forks. Remove some branches.",
                 PathGraphBuildError.CellsOutsideRoutes => "Some path tiles do not lead from the start to the end. Remove dead ends and path tiles that are not connected to the path.",
-                PathGraphBuildError.Cycle => "Enemies could walk in circles: some part of the path can be passed in both directions. Remove the loop.",
+                PathGraphBuildError.Cycle => "Some path tiles can be passed only by walking back towards the start. Remove them or connect them so that enemies move forward.",
                 _ => "The path is built incorrectly."
             };
         }

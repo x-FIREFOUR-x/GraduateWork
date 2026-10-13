@@ -1,11 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using UnityEngine;
+
+using Route = System.Collections.Generic.List<System.Collections.Generic.List<UnityEngine.Vector2Int>>;
 
 
 namespace TowerDefense.Main.Map.Path
 {
+    // Path - the whole road on the map with all its branches (all path cells).
+    // Branching cell - a path cell where a path segment ends: the start, the end, and every cell whose count of neighboring path cells is not 2 (forks, merges, dead ends).
+    // Path segment - a part of the path between two neighboring branching cells, its cells go in order from one end to the other.
+    // Route - one way to pass the path from the start to the end, a sequence of path segments. The path contains several routes.
     public static class PathGraphBuilder
     {
         private const int MaxRoutesCount = 1000;
@@ -26,24 +33,26 @@ namespace TowerDefense.Main.Map.Path
 
             HashSet<Vector2Int> cells = new(pathCells) { start, end };
             HashSet<Vector2Int> branchingCells = FindBranchingCells(cells, start, end);
-            Dictionary<Vector2Int, List<List<Vector2Int>>> pathSegments = FindPathSegments(cells, branchingCells);
+            Dictionary<Vector2Int, List<List<Vector2Int>>> pathSegmentsByBranchingCell = FindPathSegments(cells, branchingCells);
 
-            HashSet<List<Vector2Int>> routesPathSegments = new();
-            if (!TryCollectRoutesFromPathSegments(pathSegments, start, end, routesPathSegments, out error))
+            List<Route> routes = new();
+            if (!TryCollectRoutesFromPathSegments(pathSegmentsByBranchingCell, start, end, routes, out error))
                 return false;
 
-            if (HasCellsOutsideRoutes(routesPathSegments, cells))
+            if (HasCellsOutsideRoutes(CollectUniquePathSegments(routes), cells))
             {
                 error = PathGraphBuildError.CellsOutsideRoutes;
                 return false;
             }
 
-            Dictionary<Vector2Int, PathGraphNode> nodes = CreateNodes(routesPathSegments, cellToPosition);
-            if (HasCycle(nodes.Values, nodes.Count))
+            HashSet<List<Vector2Int>> pathSegments = CollectUniquePathSegments(SelectRoutesWithoutCycles(routes));
+            if (HasCellsOutsideRoutes(pathSegments, cells))
             {
                 error = PathGraphBuildError.Cycle;
                 return false;
             }
+
+            Dictionary<Vector2Int, PathGraphNode> nodes = CreateNodes(pathSegments, cellToPosition);
 
             graph = new PathGraph(nodes[start], nodes[end], new List<PathGraphNode>(nodes.Values));
             error = PathGraphBuildError.None;
@@ -127,17 +136,16 @@ namespace TowerDefense.Main.Map.Path
         }
 
         private static bool TryCollectRoutesFromPathSegments(Dictionary<Vector2Int, List<List<Vector2Int>>> pathSegmentsByBranchingCell, Vector2Int start, Vector2Int end,
-                                                     HashSet<List<Vector2Int>> routesPathSegments, out PathGraphBuildError error)
+                                                     List<Route> routes, out PathGraphBuildError error)
         {
-            int routesCount = 0;
             HashSet<Vector2Int> visitedBranchingCells = new() { start };
-            List<List<Vector2Int>> currentRoute = new();
+            Route currentRoute = new();
 
-            bool isWithinLimit = CollectRoutes(start, end, pathSegmentsByBranchingCell, visitedBranchingCells, currentRoute, routesPathSegments, ref routesCount);
+            bool isWithinLimit = CollectRoutes(start, end, pathSegmentsByBranchingCell, visitedBranchingCells, currentRoute, routes);
 
             if (!isWithinLimit)
                 error = PathGraphBuildError.TooManyRoutes;
-            else if (routesCount == 0)
+            else if (routes.Count == 0)
                 error = PathGraphBuildError.NoRoute;
             else
                 error = PathGraphBuildError.None;
@@ -146,14 +154,12 @@ namespace TowerDefense.Main.Map.Path
         }
 
         private static bool CollectRoutes(Vector2Int currentBranchingCell, Vector2Int end, Dictionary<Vector2Int, List<List<Vector2Int>>> pathSegmentsByBranchingCell,
-                                          HashSet<Vector2Int> visitedBranchingCells, List<List<Vector2Int>> currentRoute, HashSet<List<Vector2Int>> routesPathSegments,
-                                          ref int routesCount)
+                                          HashSet<Vector2Int> visitedBranchingCells, Route currentRoute, List<Route> routes)
         {
             if (currentBranchingCell == end)
             {
-                routesCount++;
-                routesPathSegments.UnionWith(currentRoute);
-                return routesCount <= MaxRoutesCount;
+                routes.Add(new Route(currentRoute));
+                return routes.Count <= MaxRoutesCount;
             }
 
             foreach (List<Vector2Int> pathSegment in pathSegmentsByBranchingCell[currentBranchingCell])
@@ -165,7 +171,7 @@ namespace TowerDefense.Main.Map.Path
                 visitedBranchingCells.Add(nextBranchingCell);
                 currentRoute.Add(pathSegment);
 
-                bool isWithinLimit = CollectRoutes(nextBranchingCell, end, pathSegmentsByBranchingCell, visitedBranchingCells, currentRoute, routesPathSegments, ref routesCount);
+                bool isWithinLimit = CollectRoutes(nextBranchingCell, end, pathSegmentsByBranchingCell, visitedBranchingCells, currentRoute, routes);
 
                 currentRoute.RemoveAt(currentRoute.Count - 1);
                 visitedBranchingCells.Remove(nextBranchingCell);
@@ -224,33 +230,101 @@ namespace TowerDefense.Main.Map.Path
             return node;
         }
 
-        private static bool HasCycle(IEnumerable<PathGraphNode> nodes, int nodesCount)
+        private static HashSet<List<Vector2Int>> CollectUniquePathSegments(IEnumerable<Route> routes)
         {
-            Dictionary<PathGraphNode, int> countUnvisitedPrevious = new();
-            Queue<PathGraphNode> readyNodes = new();
+            HashSet<List<Vector2Int>> pathSegments = new();
 
-            foreach (PathGraphNode node in nodes)
+            foreach (Route route in routes)
+                pathSegments.UnionWith(route);
+
+            return pathSegments;
+        }
+
+        private static List<Route> SelectRoutesWithoutCycles(List<Route> routes)
+        {
+            List<Route> selectedRoutes = new();
+            Dictionary<Vector2Int, HashSet<Vector2Int>> connectionsByBranchingCell = new();
+
+            foreach (Route route in routes.OrderBy(CountRouteCells))
             {
-                countUnvisitedPrevious[node] = node.Previous.Count;
-                if (node.Previous.Count == 0)
-                    readyNodes.Enqueue(node);
+                List<(Vector2Int From, Vector2Int To)> addedConnections = new();
+
+                foreach (List<Vector2Int> pathSegment in route)
+                {
+                    Vector2Int from = pathSegment[0];
+                    Vector2Int to = pathSegment[pathSegment.Count - 1];
+
+                    if (!connectionsByBranchingCell.TryGetValue(from, out HashSet<Vector2Int> nextCells))
+                    {
+                        nextCells = new HashSet<Vector2Int>();
+                        connectionsByBranchingCell[from] = nextCells;
+                    }
+
+                    if (nextCells.Add(to))
+                        addedConnections.Add((from, to));
+                }
+
+                if (HasCycle(connectionsByBranchingCell))
+                {
+                    foreach ((Vector2Int from, Vector2Int to) in addedConnections)
+                        connectionsByBranchingCell[from].Remove(to);
+
+                    continue;
+                }
+
+                selectedRoutes.Add(route);
+            }
+
+            return selectedRoutes;
+        }
+
+        private static int CountRouteCells(Route route)
+        {
+            int countCells = 0;
+
+            foreach (List<Vector2Int> pathSegment in route)
+                countCells += pathSegment.Count;
+
+            return countCells;
+        }
+
+        private static bool HasCycle(Dictionary<Vector2Int, HashSet<Vector2Int>> connectionsByBranchingCell)
+        {
+            Dictionary<Vector2Int, int> countUnvisitedPrevious = new();
+
+            foreach (KeyValuePair<Vector2Int, HashSet<Vector2Int>> branchingCell in connectionsByBranchingCell)
+            {
+                countUnvisitedPrevious.TryAdd(branchingCell.Key, 0);
+
+                foreach (Vector2Int nextBranchingCell in branchingCell.Value)
+                    countUnvisitedPrevious[nextBranchingCell] = countUnvisitedPrevious.GetValueOrDefault(nextBranchingCell) + 1;
+            }
+
+            Queue<Vector2Int> branchingCellsWithVisitedPrevious = new();
+            foreach (KeyValuePair<Vector2Int, int> branchingCell in countUnvisitedPrevious)
+            {
+                if (branchingCell.Value == 0)
+                    branchingCellsWithVisitedPrevious.Enqueue(branchingCell.Key);
             }
 
             int countVisited = 0;
-            while (readyNodes.Count > 0)
+            while (branchingCellsWithVisitedPrevious.Count > 0)
             {
-                PathGraphNode node = readyNodes.Dequeue();
+                Vector2Int branchingCell = branchingCellsWithVisitedPrevious.Dequeue();
                 countVisited++;
 
-                foreach (PathGraphNode nextNode in node.Next)
+                if (!connectionsByBranchingCell.TryGetValue(branchingCell, out HashSet<Vector2Int> nextCells))
+                    continue;
+
+                foreach (Vector2Int nextBranchingCell in nextCells)
                 {
-                    countUnvisitedPrevious[nextNode]--;
-                    if (countUnvisitedPrevious[nextNode] == 0)
-                        readyNodes.Enqueue(nextNode);
+                    countUnvisitedPrevious[nextBranchingCell]--;
+                    if (countUnvisitedPrevious[nextBranchingCell] == 0)
+                        branchingCellsWithVisitedPrevious.Enqueue(nextBranchingCell);
                 }
             }
 
-            return countVisited != nodesCount;
+            return countVisited != countUnvisitedPrevious.Count;
         }
     }
 
