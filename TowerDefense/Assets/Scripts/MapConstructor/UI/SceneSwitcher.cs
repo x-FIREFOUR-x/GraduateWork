@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-using TowerDefense.Main.Map.Path;
 using TowerDefense.MapConstructor.Component;
 
 
@@ -41,15 +40,14 @@ namespace TowerDefense.MapConstructor.UI
 
         private bool TrySaveMap()
         {
-            if (!map.IsAllBuilds())
-            {
-                messageManager.OpenUncorrectMapMessage(UncorrectMapDescriptions.GetMissingBuildings(map.GetStartBuilding() != null, map.GetEndBuilding() != null));
-                return false;
-            }
+            MapValidationError error = ConstructedMapRules.CheckBuildingsExist(map.GetStartBuilding() != null, map.GetEndBuilding() != null);
 
-            if (!MapSaver.instance.SetData(map.GetTileArray(), map.GetIndexesStartBuild(), map.GetIndexesEndBuild(), out PathGraphBuildError error))
+            if (error == MapValidationError.None)
+                MapSaver.instance.SetData(map.GetTileArray(), map.GetIndexesStartBuild(), map.GetIndexesEndBuild(), out error);
+
+            if (error != MapValidationError.None)
             {
-                messageManager.OpenUncorrectMapMessage(UncorrectMapDescriptions.GetPathGraphBuildErrorDescription(error));
+                messageManager.OpenUncorrectMapMessage(UncorrectMapDescriptions.GetMapValidationErrorDescription(error));
                 return false;
             }
 

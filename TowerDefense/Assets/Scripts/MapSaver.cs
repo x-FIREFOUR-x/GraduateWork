@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using TowerDefense.Storage;
+using TowerDefense.MapConstructor;
 using TowerDefense.Main.Map.Path;
 using TowerDefense.Main.Map.Tile;
 
@@ -31,7 +32,7 @@ namespace TowerDefense
             DontDestroyOnLoad(this.gameObject);
         }
 
-        public bool SetData(TileKind[,] tiles, Vector2Int start, Vector2Int end, out PathGraphBuildError error)
+        public bool SetData(TileKind[,] tiles, Vector2Int start, Vector2Int end, out MapValidationError error)
         {
             tilesMatrix = tiles;
             indexesStart = start;
@@ -78,11 +79,23 @@ namespace TowerDefense
             return ToGameIndexes(indexesEnd);
         }
 
-        private bool ConstructedMapIsCorrect(out PathGraphBuildError error)
+        private bool ConstructedMapIsCorrect(out MapValidationError error)
         {
+            HashSet<Vector2Int> pathCells = GetCells(TileKind.Path);
+
+            error = ConstructedMapRules.CheckPathLayout(pathCells.Contains, GetStartCell(), GetEndCell(), pathCells);
+            if (error != MapValidationError.None)
+                return false;
+
             MapSizeParamsStorage mapSizeParams = Resources.Load<MapSizeParamsStorage>($"{nameof(MapSizeParamsStorage)}");
 
-            return PathGraphBuilder.TryBuild(GetCells(TileKind.Path), GetStartCell(), GetEndCell(), mapSizeParams.CellToPosition, out _, out error);
+            if (!PathGraphBuilder.TryBuild(pathCells, GetStartCell(), GetEndCell(), mapSizeParams.CellToPosition, out _, out PathGraphBuildError pathGraphBuildError))
+            {
+                error = ConstructedMapRules.ConvertToMapValidationError(pathGraphBuildError);
+                return false;
+            }
+
+            return true;
         }
 
         private static Vector2Int ToGameIndexes(Vector2Int constructorIndexes)

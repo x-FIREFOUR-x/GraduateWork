@@ -108,7 +108,7 @@ namespace TowerDefense.MapConstructor.Component
             return TilePathConnections.GetBitMaskFromConnectedSides(IsPathTile(i, j + 1), IsPathTile(i + 1, j), IsPathTile(i, j - 1), IsPathTile(i - 1, j));
         }
 
-        private bool IsPathTile(int i, int j)
+        public bool IsPathTile(int i, int j)
         {
             return IsInside(i, j) && tiles[i, j] != null && tiles[i, j].GetComponent<ConstructorPathTile>() != null;
         }
