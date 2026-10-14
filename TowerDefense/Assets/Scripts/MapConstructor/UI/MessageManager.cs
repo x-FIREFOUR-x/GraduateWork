@@ -9,51 +9,33 @@ namespace TowerDefense.MapConstructor.UI
 {
     public class MessageManager : MonoBehaviour
     {
-        private const string UncorrectMapTitle = "Created map is incorrect";
-
-        [Header("DialogBoxMessage")]
+        [Header("NotificationMessage")]
         [SerializeField]
         private GameObject uncorrectMapMessage;
         [SerializeField]
         private TMP_Text uncorrectMapMessageText;
-
-        [Header("NotificationMessage")]
         [SerializeField]
-        private GameObject placementMessage;
-        [SerializeField]
-        private TMP_Text placementMessageText;
-        [SerializeField]
-        private float placementMessageDuration = 2.5f;
+        private float uncorrectMapMessageDuration = 2.5f;
 
-        private Coroutine hidePlacementMessageCoroutine;
+        private Coroutine hideUncorrectMapMessageCoroutine;
 
-        public void CloseUncorrectMapMessage()
+        public void ShowUncorrectMapMessage(string description)
         {
-            uncorrectMapMessage.SetActive(false);
-        }
-        public void OpenUncorrectMapMessage(string description)
-        {
-            uncorrectMapMessageText.text = $"{UncorrectMapTitle}\n<size=70%>{description}</size>";
+            uncorrectMapMessageText.text = description;
             uncorrectMapMessage.SetActive(true);
+
+            if (hideUncorrectMapMessageCoroutine != null)
+                StopCoroutine(hideUncorrectMapMessageCoroutine);
+
+            hideUncorrectMapMessageCoroutine = StartCoroutine(HideUncorrectMapMessageAfterDelay());
         }
 
-        public void ShowPlacementMessage(string description)
+        private IEnumerator HideUncorrectMapMessageAfterDelay()
         {
-            placementMessageText.text = description;
-            placementMessage.SetActive(true);
+            yield return new WaitForSecondsRealtime(uncorrectMapMessageDuration);
 
-            if (hidePlacementMessageCoroutine != null)
-                StopCoroutine(hidePlacementMessageCoroutine);
-
-            hidePlacementMessageCoroutine = StartCoroutine(HidePlacementMessageAfterDelay());
-        }
-
-        private IEnumerator HidePlacementMessageAfterDelay()
-        {
-            yield return new WaitForSecondsRealtime(placementMessageDuration);
-
-            placementMessage.SetActive(false);
-            hidePlacementMessageCoroutine = null;
+            uncorrectMapMessage.SetActive(false);
+            hideUncorrectMapMessageCoroutine = null;
         }
     }
 }

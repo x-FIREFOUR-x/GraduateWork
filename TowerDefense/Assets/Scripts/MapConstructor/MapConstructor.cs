@@ -82,7 +82,7 @@ namespace TowerDefense.MapConstructor
             if (error != MapValidationError.None)
             {
                 mapTile.GetComponent<ConstructorTile>().HighlightRejected();
-                messageManager.ShowPlacementMessage(UncorrectMapDescriptions.GetMapValidationErrorDescription(error));
+                messageManager.ShowUncorrectMapMessage(UncorrectMapDescriptions.GetMapValidationErrorDescription(error));
                 return;
             }
 

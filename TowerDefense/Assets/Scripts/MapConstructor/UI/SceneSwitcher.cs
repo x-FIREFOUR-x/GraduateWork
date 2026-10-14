@@ -47,7 +47,7 @@ namespace TowerDefense.MapConstructor.UI
 
             if (error != MapValidationError.None)
             {
-                messageManager.OpenUncorrectMapMessage(UncorrectMapDescriptions.GetMapValidationErrorDescription(error));
+                messageManager.ShowUncorrectMapMessage(UncorrectMapDescriptions.GetMapValidationErrorDescription(error));
                 return false;
             }
 
