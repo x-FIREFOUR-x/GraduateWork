@@ -19,7 +19,7 @@ namespace TowerDefense.Main.Map.Tile
         public int Size { get; private set; }
 
 
-        public void Initialize(int _size, List<Vector2Int> generatedPath, HashSet<Vector2Int> blockedTiles, Vector3 offsetTile)
+        public void Initialize(int _size, HashSet<Vector2Int> pathCells, HashSet<Vector2Int> blockedTiles, Vector3 offsetTile)
         {
             Size = _size;
 
@@ -35,7 +35,7 @@ namespace TowerDefense.Main.Map.Tile
 
                 for (int j = 0; j < Size; j++)
                 {
-                    GameObject prefab = PrefabForTile(i, j, generatedPath, blockedTiles);
+                    GameObject prefab = PrefabForTile(i, j, pathCells, blockedTiles);
                     GameObject tile = Instantiate(prefab, position, rotation, this.transform);
                     lineTiles.Add(tile);
 
@@ -57,12 +57,12 @@ namespace TowerDefense.Main.Map.Tile
         }
 
 
-        private GameObject PrefabForTile(int row, int column, List<Vector2Int> generatedPath, HashSet<Vector2Int> blockedTiles)
+        private GameObject PrefabForTile(int row, int column, HashSet<Vector2Int> pathCells, HashSet<Vector2Int> blockedTiles)
         {
-            int indexInPath = generatedPath.IndexOf(new Vector2Int(row, column));
-            if (indexInPath >= 0)
+            Vector2Int cell = new(row, column);
+            if (pathCells.Contains(cell))
             {
-                int bitMaskForPathsConnections = TilePathConnections.GetBitMaskFromPathNeighbors(generatedPath, indexInPath);
+                int bitMaskForPathsConnections = TilePathConnections.GetBitMaskFromPathCells(pathCells, cell);
                 return TileVariantSelector.GetPathTile(pathTilePrefab, bitMaskForPathsConnections, row, column);
             }
 

@@ -21,26 +21,12 @@ namespace TowerDefense.Main.Map.Tile
             return (isNorthConnection ? North : 0) | (isEastConnection ? East : 0) | (isSouthConnection ? South : 0) | (isWestConnection ? West : 0);
         }
 
-        public static int GetBitMaskFromPathNeighbors(List<Vector2Int> path, int indexInPath)
+        public static int GetBitMaskFromPathCells(HashSet<Vector2Int> pathCells, Vector2Int cell)
         {
-            bool isNorthConnection = false;
-            bool isSouthConnection = false;
-            bool isEastConnection = false;
-            bool isWestConnection = false;
-
-            foreach (int neighborIndex in new[] { indexInPath - 1, indexInPath + 1 })
-            {
-                if (neighborIndex < 0 || neighborIndex >= path.Count)
-                    continue;
-
-                Vector2Int delta = path[neighborIndex] - path[indexInPath];
-                isNorthConnection |= delta == new Vector2Int(1, 0);
-                isSouthConnection |= delta == new Vector2Int(-1, 0);
-                isEastConnection |= delta == new Vector2Int(0, 1);
-                isWestConnection |= delta == new Vector2Int(0, -1);
-            }
-
-            return GetBitMaskFromConnectedSides(isNorthConnection, isEastConnection, isSouthConnection, isWestConnection);
+            return GetBitMaskFromConnectedSides(pathCells.Contains(cell + new Vector2Int(1, 0)),
+                                                pathCells.Contains(cell + new Vector2Int(0, 1)),
+                                                pathCells.Contains(cell + new Vector2Int(-1, 0)),
+                                                pathCells.Contains(cell + new Vector2Int(0, -1)));
         }
     }
 

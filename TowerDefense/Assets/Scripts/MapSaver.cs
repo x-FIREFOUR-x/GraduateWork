@@ -1,5 +1,10 @@
+using System.Collections.Generic;
+
 using UnityEngine;
 
+using TowerDefense.Storage;
+using TowerDefense.MapConstructor;
+using TowerDefense.Main.Map.Path;
 using TowerDefense.Main.Map.Tile;
 
 
@@ -27,13 +32,13 @@ namespace TowerDefense
             DontDestroyOnLoad(this.gameObject);
         }
 
-        public bool SetData(TileKind[,] tiles, Vector2Int start, Vector2Int end)
+        public bool SetData(TileKind[,] tiles, Vector2Int start, Vector2Int end, out MapValidationError error)
         {
             tilesMatrix = tiles;
             indexesStart = start;
             indexesEnd = end;
 
-            if (ConstructedMapIsCorrect())
+            if (ConstructedMapIsCorrect(out error))
             {
                 IsSave = true;
                 return true;
@@ -48,59 +53,54 @@ namespace TowerDefense
 
         }
 
-
-        private bool ConstructedMapIsCorrect()
+        public HashSet<Vector2Int> GetCells(TileKind kind)
         {
-            bool isFull = true;
+            HashSet<Vector2Int> cells = new();
 
-            int[] rowNum = new[] { 1, 0, -1, 0 };
-            int[] columnNum = new[] { 0, 1, 0, -1 };
-
-            Vector2Int prevIndexes = new Vector2Int(-1, -1);
-            Vector2Int currentIndexes = indexesStart;
-            while (isFull && currentIndexes != indexesEnd)
+            for (int i = 0; i < tilesMatrix.GetLength(0); i++)
             {
-                int countNeighbor = 0;
-                Vector2Int nextIndexes = new Vector2Int(-1, -1);
-                for (int i = 0; i < rowNum.Length; i++)
+                for (int j = 0; j < tilesMatrix.GetLength(1); j++)
                 {
-                    Vector2Int newIndexes = new Vector2Int(currentIndexes.x + rowNum[i], currentIndexes.y + columnNum[i]);
-
-                    if (tilesMatrix[newIndexes.x, newIndexes.y] == TileKind.Path
-                        && newIndexes != prevIndexes
-                        && (newIndexes.x > 0 && newIndexes.x < tilesMatrix.Length - 1)
-                        && (newIndexes.y > 0 && newIndexes.y < tilesMatrix.Length - 1))
-                    {
-                        nextIndexes = newIndexes;
-                        countNeighbor++;
-                    }
-                }
-
-                prevIndexes = currentIndexes;
-                currentIndexes = nextIndexes;
-
-                if (countNeighbor != 1)
-                {
-                    isFull = false;
+                    if (tilesMatrix[i, j] == kind)
+                        cells.Add(ToGameIndexes(new Vector2Int(i, j)));
                 }
             }
 
-            return isFull;
+            return cells;
         }
 
-        public TileKind[,] GetTileMatrix()
+        public Vector2Int GetStartCell()
         {
-            return tilesMatrix;
+            return ToGameIndexes(indexesStart);
         }
 
-        public Vector2Int GetIndexesStart()
+        public Vector2Int GetEndCell()
         {
-            return indexesStart;
+            return ToGameIndexes(indexesEnd);
         }
 
-        public Vector2Int GetIndexesEnd()
+        private bool ConstructedMapIsCorrect(out MapValidationError error)
         {
-            return indexesEnd;
+            HashSet<Vector2Int> pathCells = GetCells(TileKind.Path);
+
+            error = ConstructedMapRules.CheckPathLayout(pathCells.Contains, GetStartCell(), GetEndCell(), pathCells);
+            if (error != MapValidationError.None)
+                return false;
+
+            MapSizeParamsStorage mapSizeParams = Resources.Load<MapSizeParamsStorage>($"{nameof(MapSizeParamsStorage)}");
+
+            if (!PathGraphBuilder.TryBuild(pathCells, GetStartCell(), GetEndCell(), mapSizeParams.CellToPosition, out _, out PathGraphBuildError pathGraphBuildError))
+            {
+                error = ConstructedMapRules.ConvertToMapValidationError(pathGraphBuildError);
+                return false;
+            }
+
+            return true;
+        }
+
+        private static Vector2Int ToGameIndexes(Vector2Int constructorIndexes)
+        {
+            return new Vector2Int(constructorIndexes.y, constructorIndexes.x);
         }
     }
 

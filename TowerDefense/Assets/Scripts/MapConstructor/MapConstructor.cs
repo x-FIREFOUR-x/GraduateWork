@@ -1,6 +1,7 @@
 using UnityEngine;
 
 using TowerDefense.Storage;
+using TowerDefense.MapConstructor.UI;
 using TowerDefense.MapConstructor.Component;
 
 
@@ -17,6 +18,10 @@ namespace TowerDefense.MapConstructor
         [Header("Map")]
         [SerializeField]
         private GameObject map;
+
+        [Header("UI")]
+        [SerializeField]
+        private MessageManager messageManager;
 
         [Header("Prefabs")]
         [SerializeField]
@@ -73,6 +78,14 @@ namespace TowerDefense.MapConstructor
             if (!IsInsideBorder(indexes))
                 return;
 
+            MapValidationError error = CheckPlacement(indexes);
+            if (error != MapValidationError.None)
+            {
+                mapTile.GetComponent<ConstructorTile>().HighlightRejected();
+                messageManager.ShowUncorrectMapMessage(UncorrectMapDescriptions.GetMapValidationErrorDescription(error));
+                return;
+            }
+
             DestroyBuildingsAt(indexes);
 
             map.GetComponent<Map>().SetTile(indexes.x, indexes.y, pathTilePrefab);
@@ -84,6 +97,47 @@ namespace TowerDefense.MapConstructor
                 map.GetComponent<Map>().SetEndBuilding(indexes.x, indexes.y, selectedComponent);
         }
 
+
+        private MapValidationError CheckPlacement(Vector2Int indexes)
+        {
+            Map mapComponent = map.GetComponent<Map>();
+
+            Vector2Int? startCell = BuildingCell(mapComponent.GetStartBuilding());
+            Vector2Int? endCell = BuildingCell(mapComponent.GetEndBuilding());
+            Vector2Int? freedCell = null;
+
+            if (selectedComponent == startBuildingPrefab)
+            {
+                freedCell = startCell;
+                startCell = indexes;
+            }
+            else if (startCell == indexes)
+            {
+                startCell = null;
+            }
+
+            if (selectedComponent == endBuildingPrefab)
+            {
+                freedCell = endCell;
+                endCell = indexes;
+            }
+            else if (endCell == indexes)
+            {
+                endCell = null;
+            }
+
+            bool IsPathCellAfterPlacement(Vector2Int cell)
+            {
+                return cell == indexes || (cell != freedCell && mapComponent.IsPathTile(cell.x, cell.y));
+            }
+
+            return ConstructedMapRules.CheckPathLayout(IsPathCellAfterPlacement, startCell, endCell, new[] { indexes });
+        }
+
+        private Vector2Int? BuildingCell(GameObject building)
+        {
+            return building != null ? IndexesOf(building) : null;
+        }
 
         private bool CellHoldsSelectedComponent(Vector2Int indexes)
         {

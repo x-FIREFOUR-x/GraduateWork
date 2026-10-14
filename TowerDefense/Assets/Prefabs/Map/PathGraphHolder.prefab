@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6370203059284023276}
   - component: {fileID: 6370203059284023275}
   m_Layer: 0
-  m_Name: WayPoints
+  m_Name: PathGraphHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,4 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 986ae7dbf7372e243a88b6ca278ba93e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wayPointRefab: {fileID: 8668652347035694423, guid: 98ee3bec5acc2a8429ca482f5b7c6019, type: 3}
+  wayPointPrefab: {fileID: 8668652347035694423, guid: 98ee3bec5acc2a8429ca482f5b7c6019, type: 3}
