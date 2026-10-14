@@ -170,6 +170,8 @@ MonoBehaviour:
   mainMenuScene: MainMenuScene
   map: {fileID: 1738640359}
   messageManager: {fileID: 12596567}
+  defenderGameButtonImage: {fileID: 945173610}
+  attackerGameButtonImage: {fileID: 1580990574}
 --- !u!114 &12596566
 MonoBehaviour:
   m_ObjectHideFlags: 0
