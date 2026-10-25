@@ -3,6 +3,7 @@
     public enum EnemyType
     {
         Standard = 0,
+        Bat,
         Fast,
         Tank
     }

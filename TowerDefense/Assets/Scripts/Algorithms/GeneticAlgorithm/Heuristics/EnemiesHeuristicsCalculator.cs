@@ -35,6 +35,11 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm.Heuristics
             advantagePoints[(EnemyType.Standard, TowerType.CatapultTower)] = 0;
             advantagePoints[(EnemyType.Standard, TowerType.IceMageTower)] = 5;
 
+            advantagePoints[(EnemyType.Bat, TowerType.BallistaTower)] = 5;
+            advantagePoints[(EnemyType.Bat, TowerType.ArcherTower)] = 0;
+            advantagePoints[(EnemyType.Bat, TowerType.CatapultTower)] = 10;
+            advantagePoints[(EnemyType.Bat, TowerType.IceMageTower)] = 5;
+
             advantagePoints[(EnemyType.Fast, TowerType.BallistaTower)] = 5;
             advantagePoints[(EnemyType.Fast, TowerType.ArcherTower)] = 5;
             advantagePoints[(EnemyType.Fast, TowerType.CatapultTower)] = 10;

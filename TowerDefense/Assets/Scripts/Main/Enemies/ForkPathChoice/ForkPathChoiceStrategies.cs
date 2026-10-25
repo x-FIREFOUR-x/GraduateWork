@@ -10,6 +10,7 @@ namespace TowerDefense.Main.Enemies.ForkPathChoice
             return enemyType switch
             {
                 EnemyType.Standard => RandomStrategy,
+                EnemyType.Bat => RandomStrategy,
                 EnemyType.Fast => RandomStrategy,
                 EnemyType.Tank => RandomStrategy,
                 _ => RandomStrategy

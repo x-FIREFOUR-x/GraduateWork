@@ -12,7 +12,7 @@ namespace TowerDefense.Main.Enemies
     public class Enemy : MonoBehaviour
     {
         [SerializeField]
-        private Transform model;
+        protected Transform model;
 
         [field: SerializeField]
         public EnemyType EnemyType { get; private set; }
@@ -36,10 +36,12 @@ namespace TowerDefense.Main.Enemies
         [field: SerializeField]
         public int Price { get; private set; } = 25;
 
-
+        [Header("Position")]
         [SerializeField]
-        private float maxPathOffset = 0.7f;
+        private float maxRandomPathOffset = 0.7f;
         private Vector3 pathOffset;
+        [SerializeField]
+        private float offsetStartPosY;
 
         private PathGraphNode target;
         private IForkPathChoiceStrategy forkPathChoiceStrategy;
@@ -47,9 +49,12 @@ namespace TowerDefense.Main.Enemies
 
         public static string enemyTag = "Enemy";
 
-        [Header("SetUpHealthBar")]
+        [Header("Effects")]
         [SerializeField]
-        private float startPosY;
+        private GameObject deathEffect;
+        private bool isDead;
+
+        protected float SpeedFactor { get { return speed / StartSpeed; } }
 
         [Header("SetUpHealthBar")]
         [SerializeField]
@@ -59,21 +64,26 @@ namespace TowerDefense.Main.Enemies
         [SerializeField]
         private float angleX;
 
-        void Start()
+        protected virtual void Start()
         {
             forkPathChoiceStrategy = ForkPathChoiceStrategies.GetByEnemyType(EnemyType);
             target = ChooseNextPathNode(PathGraphHolder.Graph.Start);
 
-            Vector2 randomPathOffset = Random.insideUnitCircle * maxPathOffset;
+            Vector2 randomPathOffset = Random.insideUnitCircle * maxRandomPathOffset;
             pathOffset = new Vector3(randomPathOffset.x, 0, randomPathOffset.y);
             health = StartHealth;
             speed = StartSpeed;
 
             transform.SetPositionAndRotation(
-                new Vector3(transform.position.x, startPosY, transform.position.z),
+                new Vector3(transform.position.x + pathOffset.x, transform.position.y + pathOffset.y + offsetStartPosY, transform.position.z + pathOffset.z),
                 transform.rotation);
 
             InitializeHealthBar();
+        }
+
+        void Update()
+        {
+            Animate();
         }
 
         void FixedUpdate()
@@ -118,8 +128,19 @@ namespace TowerDefense.Main.Enemies
             return currentNode.IsFork ? forkPathChoiceStrategy.ChooseNextNodeAtFork(this, currentNode) : currentNode.Next[0];
         }
 
+        protected virtual void Animate()
+        {
+        }
+
+        protected virtual void OnKilled()
+        {
+            if (deathEffect != null)
+                Instantiate(deathEffect, model.position, model.rotation);
+        }
+
         private void Die()
         {
+            isDead = true;
             Destroy(gameObject);
 
             if (EnemiesHeuristicsCalculator.instance != null)
@@ -159,6 +180,7 @@ namespace TowerDefense.Main.Enemies
         private void Rotate()
         {
             Vector3 dir = target.Position + pathOffset - model.position;
+            dir.y = 0;
             dir.Normalize();
             Quaternion quaternion = Quaternion.LookRotation(dir, Vector3.up);
             model.rotation = quaternion;
@@ -171,8 +193,9 @@ namespace TowerDefense.Main.Enemies
 
             healthBar.fillAmount = health / StartHealth;
 
-            if (health <= 0)
+            if (health <= 0 && !isDead)
             {
+                OnKilled();
                 Die();
             }
         }

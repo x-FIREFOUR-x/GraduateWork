@@ -1,6 +1,7 @@
 using UnityEngine;
 
-using static TowerDefense.EditorTools.Towers.MeshSculpting;
+using TowerDefense.EditorTools.Baking;
+using static TowerDefense.EditorTools.Baking.MeshSculpting;
 
 using Random = System.Random;
 

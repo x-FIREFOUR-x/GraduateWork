@@ -5,6 +5,7 @@ using UnityEngine;
 
 using TowerDefense.Main.Towers;
 using TowerDefense.EditorTools.Icons;
+using static TowerDefense.EditorTools.Baking.BakeUtility;
 using static TowerDefense.EditorTools.Towers.TowerBakeUtility;
 
 using MinMaxCurve = UnityEngine.ParticleSystem.MinMaxCurve;
@@ -303,18 +304,6 @@ namespace TowerDefense.EditorTools.Towers
             noise.enabled = true;
             noise.strength = 0.3f;
             noise.frequency = 0.4f;
-        }
-
-        // Makes a one shot system loop at a steady rate, filled from the start when it plays on its own
-        private static void Looping(ParticleSystem particles, float rate, bool playOnAwake)
-        {
-            ParticleSystem.MainModule main = particles.main;
-            main.loop = true;
-            main.playOnAwake = playOnAwake;
-            main.prewarm = playOnAwake;
-
-            ParticleSystem.EmissionModule emission = particles.emission;
-            emission.rateOverTime = rate;
         }
 
         private static Light BakeLight(Transform parent, string name, float range, float intensity)

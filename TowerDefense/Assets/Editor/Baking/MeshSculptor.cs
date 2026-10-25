@@ -5,11 +5,11 @@ using UnityEngine;
 using Random = System.Random;
 
 
-namespace TowerDefense.EditorTools.Towers
+namespace TowerDefense.EditorTools.Baking
 {
-    // Sculpting tools shared by the tower bakers: smooth tubes, rings, sculpted lumps, balls, beams, boxes, rocks and
+    // Sculpting tools shared by the model bakers: smooth tubes, rings, sculpted lumps, balls, beams, boxes, rocks and
     // cups, written into one mesh. Colours come from a palette texture of gradient rows: a part names its row by a
-    // value of the tower's own palette enum and picks a shade along it, and ToMesh lets every vertex drift along its
+    // value of the model's own palette enum and picks a shade along it, and ToMesh lets every vertex drift along its
     // row by smooth noise, so surfaces show shades rather than one flat paint
     public class MeshSculptor<TPalette> where TPalette : struct, System.Enum
     {
@@ -60,7 +60,7 @@ namespace TowerDefense.EditorTools.Towers
         {
             ShadeVertices();
 
-            // A tower part with many fine details may pass the 65535 vertices a 16 bit index can reach
+            // A part with many fine details may pass the 65535 vertices a 16 bit index can reach
             Mesh mesh = new Mesh { indexFormat = vertices.Count > 65535 ? UnityEngine.Rendering.IndexFormat.UInt32 : UnityEngine.Rendering.IndexFormat.UInt16 };
             mesh.SetVertices(vertices);
             mesh.SetNormals(normals);
@@ -548,7 +548,7 @@ namespace TowerDefense.EditorTools.Towers
         // across the ring, and its ends are left open. waviness lets the ring wander along the axis, unevenly,
         // so a belt or a hem sags and rises like a real one instead of reading as a perfect hoop
         public void Torus(Vector3 center, Vector3 axis, Vector2 ringRadii, float thickness, TPalette palette, float tone, int segments = 20, int sides = 8,
-                          float arcStart = 0f, float arcDegrees = 360f, float waviness = 0f)
+                          float arcStart = 0f, float arcDegrees = 360f, float waviness = 0f, float heightShade = 0f)
         {
             bool isClosed = arcDegrees >= 360f;
             int ringCount = isClosed ? segments : segments + 1;
@@ -570,7 +570,7 @@ namespace TowerDefense.EditorTools.Towers
                 {
                     float tubeAngle = k * Mathf.PI * 2 / sides;
                     Vector3 normal = outward * Mathf.Cos(tubeAngle) + axis * Mathf.Sin(tubeAngle);
-                    AddVertex(ringPoint + normal * thickness, normal, UV(palette, Mathf.Clamp01(tone + normal.y * 0.12f)));
+                    AddVertex(ringPoint + normal * thickness, normal, UV(palette, Mathf.Clamp01(tone + normal.y * 0.12f + heightShade * outward.y)));
                 }
             }
 
@@ -749,7 +749,7 @@ namespace TowerDefense.EditorTools.Towers
     }
 
 
-    // Helpers for sculpting and palettes that do not depend on a tower's palette
+    // Helpers for sculpting and palettes that do not depend on a model's palette
     public static class MeshSculpting
     {
         // How strongly a feature centred on one direction shows at another: 1 on it, fading off smoothly with the angle
