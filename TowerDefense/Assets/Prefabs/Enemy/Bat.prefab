@@ -70,11 +70,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TowerDefense.Main.Enemies.Bat
   model: {fileID: 3894285832836318636}
   <EnemyType>k__BackingField: 1
-  <StartHealth>k__BackingField: 150
-  <StartSpeed>k__BackingField: 14
+  <StartHealth>k__BackingField: 100
+  <StartSpeed>k__BackingField: 10
   timeReturnSpeed: 1
   <Damage>k__BackingField: 10
-  <Price>k__BackingField: 40
+  <Price>k__BackingField: 25
   maxRandomPathOffset: 0.7
   offsetStartPosY: 4
   deathEffect: {fileID: 758981756685564097, guid: e77938cc53a4c7f4bbbcfe503a992a17, type: 3}

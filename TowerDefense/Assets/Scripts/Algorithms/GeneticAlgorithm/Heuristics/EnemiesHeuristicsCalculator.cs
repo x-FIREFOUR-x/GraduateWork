@@ -24,6 +24,9 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm.Heuristics
 
         private Dictionary<(EnemyType, TowerType), int> advantagePoints;
 
+        private const int maxAdvantagePoints = 50;
+        private const int minAdvantagePoints = 0;
+
         public EnemiesHeuristicsCalculator()
         {
             instance = this;
@@ -31,23 +34,23 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm.Heuristics
             advantagePoints = new Dictionary<(EnemyType, TowerType), int>();
 
             advantagePoints[(EnemyType.Standard, TowerType.BallistaTower)] = 5;
-            advantagePoints[(EnemyType.Standard, TowerType.ArcherTower)] = 0;
-            advantagePoints[(EnemyType.Standard, TowerType.CatapultTower)] = 0;
+            advantagePoints[(EnemyType.Standard, TowerType.ArcherTower)] = 2;
+            advantagePoints[(EnemyType.Standard, TowerType.CatapultTower)] = minAdvantagePoints;
             advantagePoints[(EnemyType.Standard, TowerType.IceMageTower)] = 5;
 
-            advantagePoints[(EnemyType.Bat, TowerType.BallistaTower)] = 5;
-            advantagePoints[(EnemyType.Bat, TowerType.ArcherTower)] = 0;
-            advantagePoints[(EnemyType.Bat, TowerType.CatapultTower)] = 10;
-            advantagePoints[(EnemyType.Bat, TowerType.IceMageTower)] = 5;
+            advantagePoints[(EnemyType.Bat, TowerType.BallistaTower)] = maxAdvantagePoints;
+            advantagePoints[(EnemyType.Bat, TowerType.ArcherTower)] = minAdvantagePoints;
+            advantagePoints[(EnemyType.Bat, TowerType.CatapultTower)] = maxAdvantagePoints;
+            advantagePoints[(EnemyType.Bat, TowerType.IceMageTower)] = minAdvantagePoints;
 
             advantagePoints[(EnemyType.Fast, TowerType.BallistaTower)] = 5;
             advantagePoints[(EnemyType.Fast, TowerType.ArcherTower)] = 5;
-            advantagePoints[(EnemyType.Fast, TowerType.CatapultTower)] = 10;
-            advantagePoints[(EnemyType.Fast, TowerType.IceMageTower)] = 0;
+            advantagePoints[(EnemyType.Fast, TowerType.CatapultTower)] = 15;
+            advantagePoints[(EnemyType.Fast, TowerType.IceMageTower)] = minAdvantagePoints;
 
             advantagePoints[(EnemyType.Tank, TowerType.BallistaTower)] = 5;
-            advantagePoints[(EnemyType.Tank, TowerType.ArcherTower)] = 0;
-            advantagePoints[(EnemyType.Tank, TowerType.CatapultTower)] = 10;
+            advantagePoints[(EnemyType.Tank, TowerType.ArcherTower)] = 5;
+            advantagePoints[(EnemyType.Tank, TowerType.CatapultTower)] = 5;
             advantagePoints[(EnemyType.Tank, TowerType.IceMageTower)] = 5;
 
 

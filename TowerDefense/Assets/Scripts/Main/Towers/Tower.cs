@@ -33,6 +33,10 @@ namespace TowerDefense.Main.Towers
         [SerializeField]
         protected float rotateSpeed = 8f;
 
+        [Header("Targets")]
+        [SerializeField]
+        protected List<EnemyType> targetableEnemyTypes = new((EnemyType[])System.Enum.GetValues(typeof(EnemyType)));
+
         [field: SerializeField]
         public int Price { get; private set; } = 100;
 
@@ -80,6 +84,9 @@ namespace TowerDefense.Main.Towers
 
             foreach (GameObject enemy in enemies)
             {
+                if (!IsTargetable(enemy.GetComponent<Enemy>()))
+                    continue;
+
                 float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
                 if (shortestDistance > distanceToEnemy)
                 {
@@ -147,7 +154,10 @@ namespace TowerDefense.Main.Towers
                 GameObject projectileObject = Instantiate(projectilePrefab, start.position, start.rotation);
                 Projectile projectile = projectileObject.GetComponent<Projectile>();
                 if (projectile != null)
+                {
+                    projectile.SetTargetFilter(IsTargetable);
                     projectile.Seek(target, offsetTarget);
+                }
             }
         }
 
@@ -165,6 +175,11 @@ namespace TowerDefense.Main.Towers
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, shootRange);
+        }
+
+        public bool IsTargetable(Enemy enemy)
+        {
+            return enemy != null && targetableEnemyTypes.Contains(enemy.EnemyType);
         }
 
         public virtual float DamageInSecond()

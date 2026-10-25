@@ -1,5 +1,7 @@
 using UnityEngine;
 
+using TowerDefense.Main.Enemies;
+
 
 namespace TowerDefense.Main.Projectiles
 {
@@ -21,8 +23,20 @@ namespace TowerDefense.Main.Projectiles
         [SerializeField]
         protected float effectLifetime = 1.5f;
 
+        private System.Predicate<Enemy> targetFilter;
+
 
         public abstract void Seek(Transform target, Vector3 offsetTarget);
+
+        public void SetTargetFilter(System.Predicate<Enemy> filter)
+        {
+            targetFilter = filter;
+        }
+
+        protected bool IsTargetable(Enemy enemy)
+        {
+            return enemy != null && (targetFilter == null || targetFilter(enemy));
+        }
 
         protected abstract void HitTarget();
 

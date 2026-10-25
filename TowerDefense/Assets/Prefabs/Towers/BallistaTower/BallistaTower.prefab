@@ -807,6 +807,7 @@ MonoBehaviour:
   timeToNextFire: 0
   shootRange: 15
   rotateSpeed: 8
+  targetableEnemyTypes: 000000000200000003000000i
   <Price>k__BackingField: 100
   pointStartFire:
   - {fileID: 9069229935690751401}

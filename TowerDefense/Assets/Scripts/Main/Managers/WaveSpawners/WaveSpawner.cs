@@ -60,15 +60,15 @@ namespace TowerDefense.Main.Managers.WaveSpawners
                     availableEnemy.Add(EnemyType.Standard);
                     availablePrices[EnemyType.Standard] = enemiesStorage.Enemies[(int)EnemyType.Standard].GetComponent<Enemy>().Price;
                     break;
-                case 3:
+                case 4:
                     availablePrices[EnemyType.Bat] = enemiesStorage.Enemies[(int)EnemyType.Bat].GetComponent<Enemy>().Price;
                     availableEnemy.Add(EnemyType.Bat);
                     break;
-                case 4:
+                case 6:
                     availablePrices[EnemyType.Fast] = enemiesStorage.Enemies[(int)EnemyType.Fast].GetComponent<Enemy>().Price;
                     availableEnemy.Add(EnemyType.Fast);
                     break;
-                case 5:
+                case 8:
                     availablePrices[EnemyType.Tank] = enemiesStorage.Enemies[(int)EnemyType.Tank].GetComponent<Enemy>().Price;
                     availableEnemy.Add(EnemyType.Tank);
                     break;

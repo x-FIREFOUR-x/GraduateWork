@@ -86,8 +86,12 @@ namespace TowerDefense.Main.Projectiles
             Collider[] hitItems = Physics.OverlapSphere(aimPoint, explosionRadius);
             foreach (Collider hitItem in hitItems)
             {
-                if (hitItem.tag == Enemy.enemyTag)
-                    hitItem.transform.GetComponent<Enemy>().TakeDamage(Damage);
+                if (hitItem.tag != Enemy.enemyTag)
+                    continue;
+
+                Enemy enemy = hitItem.transform.GetComponent<Enemy>();
+                if (IsTargetable(enemy))
+                    enemy.TakeDamage(Damage);
             }
         }
 

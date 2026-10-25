@@ -126,7 +126,9 @@ namespace TowerDefense.Main.Towers
                 launchDust.Play();
 
             GameObject stoneObject = Instantiate(projectilePrefab, loadedStone.transform.position, loadedStone.transform.rotation);
-            stoneObject.GetComponent<CatapultStone>().Launch(aimPoint, timeSpent);
+            CatapultStone stone = stoneObject.GetComponent<CatapultStone>();
+            stone.SetTargetFilter(IsTargetable);
+            stone.Launch(aimPoint, timeSpent);
         }
 
         private void SetArmAngle(float angle)
