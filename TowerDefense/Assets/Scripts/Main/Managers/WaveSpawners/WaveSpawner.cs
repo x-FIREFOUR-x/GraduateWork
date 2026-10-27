@@ -57,8 +57,8 @@ namespace TowerDefense.Main.Managers.WaveSpawners
             switch (WaveNumber)
             {
                 case 1:
-                    availableEnemy.Add(EnemyType.Standard);
-                    availablePrices[EnemyType.Standard] = enemiesStorage.Enemies[(int)EnemyType.Standard].GetComponent<Enemy>().Price;
+                    availableEnemy.Add(EnemyType.Goblin);
+                    availablePrices[EnemyType.Goblin] = enemiesStorage.Enemies[(int)EnemyType.Goblin].GetComponent<Enemy>().Price;
                     break;
                 case 4:
                     availablePrices[EnemyType.Bat] = enemiesStorage.Enemies[(int)EnemyType.Bat].GetComponent<Enemy>().Price;

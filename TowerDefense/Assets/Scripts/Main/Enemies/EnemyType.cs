@@ -2,7 +2,7 @@
 {
     public enum EnemyType
     {
-        Standard = 0,
+        Goblin = 0,
         Bat,
         Fast,
         Tank

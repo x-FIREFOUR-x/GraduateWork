@@ -33,10 +33,10 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm.Heuristics
 
             advantagePoints = new Dictionary<(EnemyType, TowerType), int>();
 
-            advantagePoints[(EnemyType.Standard, TowerType.BallistaTower)] = 5;
-            advantagePoints[(EnemyType.Standard, TowerType.ArcherTower)] = 2;
-            advantagePoints[(EnemyType.Standard, TowerType.CatapultTower)] = minAdvantagePoints;
-            advantagePoints[(EnemyType.Standard, TowerType.IceMageTower)] = 5;
+            advantagePoints[(EnemyType.Goblin, TowerType.BallistaTower)] = 5;
+            advantagePoints[(EnemyType.Goblin, TowerType.ArcherTower)] = 2;
+            advantagePoints[(EnemyType.Goblin, TowerType.CatapultTower)] = minAdvantagePoints;
+            advantagePoints[(EnemyType.Goblin, TowerType.IceMageTower)] = 5;
 
             advantagePoints[(EnemyType.Bat, TowerType.BallistaTower)] = maxAdvantagePoints;
             advantagePoints[(EnemyType.Bat, TowerType.ArcherTower)] = minAdvantagePoints;
