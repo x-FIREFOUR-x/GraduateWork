@@ -48,10 +48,10 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm.Heuristics
             advantagePoints[(EnemyType.Fast, TowerType.CatapultTower)] = 15;
             advantagePoints[(EnemyType.Fast, TowerType.IceMageTower)] = minAdvantagePoints;
 
-            advantagePoints[(EnemyType.Tank, TowerType.BallistaTower)] = 5;
-            advantagePoints[(EnemyType.Tank, TowerType.ArcherTower)] = 5;
-            advantagePoints[(EnemyType.Tank, TowerType.CatapultTower)] = 5;
-            advantagePoints[(EnemyType.Tank, TowerType.IceMageTower)] = 5;
+            advantagePoints[(EnemyType.Troll, TowerType.BallistaTower)] = 5;
+            advantagePoints[(EnemyType.Troll, TowerType.ArcherTower)] = 5;
+            advantagePoints[(EnemyType.Troll, TowerType.CatapultTower)] = 5;
+            advantagePoints[(EnemyType.Troll, TowerType.IceMageTower)] = 5;
 
 
             GameObject[] pathTiles = GameObject.FindGameObjectsWithTag(PathTile.pathTileTag);

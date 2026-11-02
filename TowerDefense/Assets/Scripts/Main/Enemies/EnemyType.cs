@@ -5,6 +5,6 @@
         Goblin = 0,
         Bat,
         Fast,
-        Tank
+        Troll
     }
 }

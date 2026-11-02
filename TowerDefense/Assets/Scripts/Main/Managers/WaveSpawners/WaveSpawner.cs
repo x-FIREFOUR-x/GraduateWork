@@ -69,8 +69,8 @@ namespace TowerDefense.Main.Managers.WaveSpawners
                     availableEnemy.Add(EnemyType.Fast);
                     break;
                 case 8:
-                    availablePrices[EnemyType.Tank] = enemiesStorage.Enemies[(int)EnemyType.Tank].GetComponent<Enemy>().Price;
-                    availableEnemy.Add(EnemyType.Tank);
+                    availablePrices[EnemyType.Troll] = enemiesStorage.Enemies[(int)EnemyType.Troll].GetComponent<Enemy>().Price;
+                    availableEnemy.Add(EnemyType.Troll);
                     break;
 
                 default:
