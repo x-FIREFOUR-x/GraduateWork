@@ -3031,7 +3031,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3684437011186225682, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
       propertyPath: m_text
-      value: Fast
+      value: Orc Warg Rider
       objectReference: {fileID: 0}
     - target: {fileID: 3684437011186225682, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
       propertyPath: m_ActiveFontFeatures.Array.size
@@ -3079,7 +3079,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3684437011409486241, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
       propertyPath: m_Name
-      value: FastEnemyShopComponent
+      value: OrcWargRiderShopComponent
       objectReference: {fileID: 0}
     - target: {fileID: 3684437011647253202, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
       propertyPath: m_ActiveFontFeatures.Array.size

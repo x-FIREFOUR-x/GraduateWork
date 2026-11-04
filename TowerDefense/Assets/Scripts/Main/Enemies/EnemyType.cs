@@ -4,7 +4,7 @@
     {
         Goblin = 0,
         Bat,
-        Fast,
+        OrcWargRider,
         Troll
     }
 }

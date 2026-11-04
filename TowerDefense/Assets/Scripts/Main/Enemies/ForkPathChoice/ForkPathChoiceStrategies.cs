@@ -11,7 +11,7 @@ namespace TowerDefense.Main.Enemies.ForkPathChoice
             {
                 EnemyType.Goblin => RandomStrategy,
                 EnemyType.Bat => RandomStrategy,
-                EnemyType.Fast => RandomStrategy,
+                EnemyType.OrcWargRider => RandomStrategy,
                 EnemyType.Troll => RandomStrategy,
                 _ => RandomStrategy
             };
