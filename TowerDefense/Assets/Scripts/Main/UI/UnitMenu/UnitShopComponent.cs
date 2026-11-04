@@ -3,21 +3,21 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-using TowerDefense.Main.Enemies;
+using TowerDefense.Main.Units;
 
 
-namespace TowerDefense.Main.UI.EnemyMenu
+namespace TowerDefense.Main.UI.UnitMenu
 {
-    public class EnemyShopComponent : MonoBehaviour
+    public class UnitShopComponent : MonoBehaviour
     {
         [SerializeField]
-        private Enemy enemy;
+        private Unit unit;
 
         private int count = 0;
 
 
         [SerializeField]
-        private EnemyShopMenu enemyShopMenu;
+        private UnitShopMenu unitShopMenu;
 
 
         [Header("Text Components Settings")]
@@ -34,7 +34,7 @@ namespace TowerDefense.Main.UI.EnemyMenu
 
         [Header("Image Button Settings")]
         [SerializeField]
-        private GameObject characterEnemy;
+        private GameObject characterUnit;
         [SerializeField]
         private GameObject textCharacter;
         [SerializeField]
@@ -66,16 +66,16 @@ namespace TowerDefense.Main.UI.EnemyMenu
             textName.color = colorText;
 
             textPrice.color = colorText;
-            textPrice.text = enemy.Price.ToString();
+            textPrice.text = unit.Price.ToString();
 
             textCount.color = colorText;
             textCount.text = "0";
 
             colorButtonsAddAndSub = buttonAdd.GetComponent<Image>().color;
-            buttonAdd.onClick.AddListener(() => AddEnemy(buttonAdd, 1));
-            button5Add.onClick.AddListener(() => AddEnemy(button5Add, 5));
-            buttonSub.onClick.AddListener(() => SubEnemy(buttonSub, 1));
-            button5Sub.onClick.AddListener(() => SubEnemy(button5Sub, 5));
+            buttonAdd.onClick.AddListener(() => AddUnit(buttonAdd, 1));
+            button5Add.onClick.AddListener(() => AddUnit(button5Add, 5));
+            buttonSub.onClick.AddListener(() => SubUnit(buttonSub, 1));
+            button5Sub.onClick.AddListener(() => SubUnit(button5Sub, 5));
 
             InitializetextCharacters();
         }
@@ -84,9 +84,9 @@ namespace TowerDefense.Main.UI.EnemyMenu
         {
             textCharacter.GetComponent<TMPro.TextMeshProUGUI>().color = colorCharacterText;
             textCharacter.GetComponent<TMPro.TextMeshProUGUI>().text =
-                "Health " + Highlight(enemy.StartHealth.ToString()) + "\n" +
-                "Speed " + Highlight(enemy.StartSpeed.ToString()) + "\n" +
-                "Damage " + Highlight(enemy.Damage.ToString());
+                "Health " + Highlight(unit.StartHealth.ToString()) + "\n" +
+                "Speed " + Highlight(unit.StartSpeed.ToString()) + "\n" +
+                "Damage " + Highlight(unit.Damage.ToString());
         }
 
         private string Highlight(string value)
@@ -96,14 +96,14 @@ namespace TowerDefense.Main.UI.EnemyMenu
 
         public void ChangeImageToCharacter()
         {
-            if (characterEnemy.activeSelf)
+            if (characterUnit.activeSelf)
             {
-                characterEnemy.SetActive(false);
+                characterUnit.SetActive(false);
                 textCharacter.SetActive(false);
             }
             else
             {
-                characterEnemy.SetActive(true);
+                characterUnit.SetActive(true);
                 textCharacter.SetActive(true);
             }
 
@@ -115,9 +115,9 @@ namespace TowerDefense.Main.UI.EnemyMenu
             textCount.text = count.ToString();
         }
 
-        private void AddEnemy(Button clickedButton, int countAdd)
+        private void AddUnit(Button clickedButton, int countAdd)
         {
-            if (enemyShopMenu.AddEnemy(enemy.EnemyType, enemy.Price, countAdd))
+            if (unitShopMenu.AddUnit(unit.UnitType, unit.Price, countAdd))
             {
                 count += countAdd;
                 textCount.text = count.ToString();
@@ -129,10 +129,10 @@ namespace TowerDefense.Main.UI.EnemyMenu
             }
         }
 
-        private void SubEnemy(Button clickedButton, int countSub)
+        private void SubUnit(Button clickedButton, int countSub)
         {
 
-            if (enemyShopMenu.SubEnemy(enemy.EnemyType, enemy.Price, count, countSub))
+            if (unitShopMenu.SubUnit(unit.UnitType, unit.Price, count, countSub))
             {
                 count -= countSub;
                 textCount.text = count.ToString();

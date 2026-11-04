@@ -6,7 +6,7 @@ using UnityEngine;
 namespace TowerDefense.Main.Map
 {
     // Scatters obstacles over the cells the path does not use. The path is generated first and never touched,
-    // so blocking a cell only takes a tower spot away and can never cut the enemies off from the end building.
+    // so blocking a cell only takes a tower spot away and can never cut the units off from the end building.
     public class BlockedTilesGenerator
     {
         public HashSet<Vector2Int> Generate(int size, HashSet<Vector2Int> pathTiles, float shareOfFreeTiles)

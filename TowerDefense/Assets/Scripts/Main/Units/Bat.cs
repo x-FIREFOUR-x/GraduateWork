@@ -1,9 +1,9 @@
 using UnityEngine;
 
 
-namespace TowerDefense.Main.Enemies
+namespace TowerDefense.Main.Units
 {
-    public class Bat : Enemy
+    public class Bat : Unit
     {
         [Header("Bat")]
         [SerializeField]

@@ -1,9 +1,9 @@
 using UnityEngine;
 
 
-namespace TowerDefense.Main.Enemies
+namespace TowerDefense.Main.Units
 {
-    public class Troll : Enemy
+    public class Troll : Unit
     {
         [Header("Troll")]
         [SerializeField]

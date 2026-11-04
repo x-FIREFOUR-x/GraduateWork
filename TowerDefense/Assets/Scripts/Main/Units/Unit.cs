@@ -1,21 +1,21 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-using TowerDefense.Main.Enemies.ForkPathChoice;
+using TowerDefense.Main.Units.ForkPathChoice;
 using TowerDefense.Main.Map.Path;
 using TowerDefense.Main.Map.Buildings;
 using TowerDefense.Algorithms.GeneticAlgorithm.Heuristics;
 
 
-namespace TowerDefense.Main.Enemies
+namespace TowerDefense.Main.Units
 {
-    public class Enemy : MonoBehaviour
+    public class Unit : MonoBehaviour
     {
         [SerializeField]
         protected Transform model;
 
         [field: SerializeField]
-        public EnemyType EnemyType { get; private set; }
+        public UnitType UnitType { get; private set; }
 
         [field: Header("Attributes")]
         [field: SerializeField]
@@ -47,7 +47,7 @@ namespace TowerDefense.Main.Enemies
         private IForkPathChoiceStrategy forkPathChoiceStrategy;
         private float movedDistance = 0;
 
-        public static string enemyTag = "Enemy";
+        public static string unitTag = "Unit";
 
         [Header("Effects")]
         [SerializeField]
@@ -66,7 +66,7 @@ namespace TowerDefense.Main.Enemies
 
         protected virtual void Start()
         {
-            forkPathChoiceStrategy = ForkPathChoiceStrategies.GetByEnemyType(EnemyType);
+            forkPathChoiceStrategy = ForkPathChoiceStrategies.GetByUnitType(UnitType);
             target = ChooseNextPathNode(PathGraphHolder.Graph.Start);
 
             Vector2 randomPathOffset = Random.insideUnitCircle * maxRandomPathOffset;
@@ -143,8 +143,8 @@ namespace TowerDefense.Main.Enemies
             isDead = true;
             Destroy(gameObject);
 
-            if (EnemiesHeuristicsCalculator.instance != null)
-                EnemiesHeuristicsCalculator.instance.AddDistanceMovedEnemy(movedDistance);
+            if (UnitsHeuristicsCalculator.instance != null)
+                UnitsHeuristicsCalculator.instance.AddDistanceMovedUnit(movedDistance);
         }
 
         private void DamageEndBuilding()

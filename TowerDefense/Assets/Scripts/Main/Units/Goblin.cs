@@ -1,9 +1,9 @@
 using UnityEngine;
 
 
-namespace TowerDefense.Main.Enemies
+namespace TowerDefense.Main.Units
 {
-    public class Goblin : Enemy
+    public class Goblin : Unit
     {
         [Header("Goblin")]
         [SerializeField]

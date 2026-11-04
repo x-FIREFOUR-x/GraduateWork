@@ -1,6 +1,6 @@
-﻿namespace TowerDefense.Main.Enemies
+﻿namespace TowerDefense.Main.Units
 {
-    public enum EnemyType
+    public enum UnitType
     {
         Goblin = 0,
         Bat,

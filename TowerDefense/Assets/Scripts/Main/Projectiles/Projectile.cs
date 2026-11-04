@@ -1,6 +1,6 @@
 using UnityEngine;
 
-using TowerDefense.Main.Enemies;
+using TowerDefense.Main.Units;
 
 
 namespace TowerDefense.Main.Projectiles
@@ -23,19 +23,19 @@ namespace TowerDefense.Main.Projectiles
         [SerializeField]
         protected float effectLifetime = 1.5f;
 
-        private System.Predicate<Enemy> targetFilter;
+        private System.Predicate<Unit> targetFilter;
 
 
         public abstract void Seek(Transform target, Vector3 offsetTarget);
 
-        public void SetTargetFilter(System.Predicate<Enemy> filter)
+        public void SetTargetFilter(System.Predicate<Unit> filter)
         {
             targetFilter = filter;
         }
 
-        protected bool IsTargetable(Enemy enemy)
+        protected bool IsTargetable(Unit unit)
         {
-            return enemy != null && (targetFilter == null || targetFilter(enemy));
+            return unit != null && (targetFilter == null || targetFilter(unit));
         }
 
         protected abstract void HitTarget();

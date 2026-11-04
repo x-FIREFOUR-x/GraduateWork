@@ -1,9 +1,9 @@
 using UnityEngine;
 
 
-namespace TowerDefense.Main.Enemies
+namespace TowerDefense.Main.Units
 {
-    public class OrcWargRider : Enemy
+    public class OrcWargRider : Unit
     {
         [Header("Warg")]
         [SerializeField]

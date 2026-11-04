@@ -1,6 +1,6 @@
 using UnityEngine;
 
-using TowerDefense.Main.Enemies;
+using TowerDefense.Main.Units;
 
 
 namespace TowerDefense.Main.Towers
@@ -77,9 +77,9 @@ namespace TowerDefense.Main.Towers
                 hitEffect.transform.position = (target.position + offsetTarget) + direction.normalized;
                 hitEffect.transform.rotation = Quaternion.LookRotation(direction);
 
-                target.GetComponent<Enemy>().TakeDamage(damage * Time.deltaTime);
+                target.GetComponent<Unit>().TakeDamage(damage * Time.deltaTime);
 
-                target.GetComponent<Enemy>().Slow(percentSlowing);
+                target.GetComponent<Unit>().Slow(percentSlowing);
             }
             else
             {

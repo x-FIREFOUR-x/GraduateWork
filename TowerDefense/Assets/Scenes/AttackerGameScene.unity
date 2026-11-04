@@ -1369,11 +1369,11 @@ PrefabInstance:
       value: 1801810542
       objectReference: {fileID: 0}
     - target: {fileID: 4842703967493754198, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
-      propertyPath: enemy
+      propertyPath: unit
       value: 
       objectReference: {fileID: 3227266706816968185, guid: dacf52917bbd9b34c92c6053146aa1ad, type: 3}
     - target: {fileID: 4842703967493754198, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
-      propertyPath: enemyShopMenu
+      propertyPath: unitShopMenu
       value: 
       objectReference: {fileID: 869074699}
     - target: {fileID: 5982759752692979637, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
@@ -1415,7 +1415,7 @@ GameObject:
   - component: {fileID: 869074698}
   - component: {fileID: 869074699}
   m_Layer: 5
-  m_Name: EnemyShop
+  m_Name: UnitShop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1504,7 +1504,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1e4f154e3342904597170ca4190ef9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyShopComponents:
+  UnitShopComponents:
   - {fileID: 2134406996208417436}
   - {fileID: 1491116531}
   - {fileID: 1719382778}
@@ -2595,11 +2595,11 @@ PrefabInstance:
       value: BatShopComponent
       objectReference: {fileID: 0}
     - target: {fileID: 4842703967493754198, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
-      propertyPath: enemy
+      propertyPath: unit
       value: 
       objectReference: {fileID: 2887793875316940237, guid: 9269b724e471f1d44997bbec575080ac, type: 3}
     - target: {fileID: 4842703967493754198, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
-      propertyPath: enemyShopMenu
+      propertyPath: unitShopMenu
       value: 
       objectReference: {fileID: 869074699}
     - target: {fileID: 5982759752692979637, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
@@ -2886,7 +2886,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeBetweenWaves: 10
-  enemyShopMenu: {fileID: 869074699}
+  unitShopMenu: {fileID: 869074699}
 --- !u!1 &1672618633
 GameObject:
   m_ObjectHideFlags: 0
@@ -3094,11 +3094,11 @@ PrefabInstance:
       value: 1801810542
       objectReference: {fileID: 0}
     - target: {fileID: 4842703967493754198, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
-      propertyPath: enemy
+      propertyPath: unit
       value: 
       objectReference: {fileID: 3336841223218190839, guid: 80afb8f52d27bae4f8ff4cf083945861, type: 3}
     - target: {fileID: 4842703967493754198, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
-      propertyPath: enemyShopMenu
+      propertyPath: unitShopMenu
       value: 
       objectReference: {fileID: 869074699}
     - target: {fileID: 5982759752692979637, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
@@ -4153,7 +4153,7 @@ PrefabInstance:
       value: 1801810542
       objectReference: {fileID: 0}
     - target: {fileID: 4842703967493754198, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
-      propertyPath: enemyShopMenu
+      propertyPath: unitShopMenu
       value: 
       objectReference: {fileID: 869074699}
     m_RemovedComponents: []

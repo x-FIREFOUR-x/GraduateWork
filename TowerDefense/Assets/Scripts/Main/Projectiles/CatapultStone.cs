@@ -1,6 +1,6 @@
 using UnityEngine;
 
-using TowerDefense.Main.Enemies;
+using TowerDefense.Main.Units;
 
 
 namespace TowerDefense.Main.Projectiles
@@ -86,12 +86,12 @@ namespace TowerDefense.Main.Projectiles
             Collider[] hitItems = Physics.OverlapSphere(aimPoint, explosionRadius);
             foreach (Collider hitItem in hitItems)
             {
-                if (hitItem.tag != Enemy.enemyTag)
+                if (hitItem.tag != Unit.unitTag)
                     continue;
 
-                Enemy enemy = hitItem.transform.GetComponent<Enemy>();
-                if (IsTargetable(enemy))
-                    enemy.TakeDamage(Damage);
+                Unit unit = hitItem.transform.GetComponent<Unit>();
+                if (IsTargetable(unit))
+                    unit.TakeDamage(Damage);
             }
         }
 

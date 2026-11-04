@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 using UnityEngine;
 
-using TowerDefense.Main.Enemies;
+using TowerDefense.Main.Units;
 using TowerDefense.Algorithms.GeneticAlgorithm;
 using TowerDefense.Algorithms.GeneticAlgorithm.Heuristics;
 using TowerDefense.Algorithms.GeneticAlgorithm.Persons;
@@ -16,11 +16,11 @@ namespace TowerDefense.Main.Managers.WaveSpawners
 
     public class AIWaveSpawner: WaveSpawner
     {
-        private GeneticAlgorithm<Person<EnemyType>, EnemyType> algoCreateWave;
+        private GeneticAlgorithm<Person<UnitType>, UnitType> algoCreateWave;
 
         private bool waveGenerated = false;
         private bool isTaskRunning = false;
-        private Task<List<EnemyType>> taskGenerated;
+        private Task<List<UnitType>> taskGenerated;
 
 
         public override void Initialize(Transform spawn)
@@ -32,10 +32,10 @@ namespace TowerDefense.Main.Managers.WaveSpawners
                 new Mutation(MutationType.RandomRegenerateRange, 0.5f),
                 new Mutation(MutationType.ChangeRangeOneType, 0.5f)
             });
-            algoCreateWave = new GeneticAlgorithm<Person<EnemyType>, EnemyType>(new PersonFactory<EnemyType>(), new EnemiesHeuristicsCalculator(), mutationSelector);
+            algoCreateWave = new GeneticAlgorithm<Person<UnitType>, UnitType>(new PersonFactory<UnitType>(), new UnitsHeuristicsCalculator(), mutationSelector);
 
-            availableEnemy = new List<EnemyType>();
-            availablePrices = new Dictionary<EnemyType, int>();
+            availableUnit = new List<UnitType>();
+            availablePrices = new Dictionary<UnitType, int>();
         }
 
 
@@ -47,10 +47,10 @@ namespace TowerDefense.Main.Managers.WaveSpawners
             }
             else 
             {
-                if (AllCurrentWaveEnemiesSpawned)
+                if (AllCurrentWaveUnitsSpawned)
                 {
                     OperationAfterFinishWave();
-                    AllCurrentWaveEnemiesSpawned = false;
+                    AllCurrentWaveUnitsSpawned = false;
                 }
             }
 
@@ -65,9 +65,9 @@ namespace TowerDefense.Main.Managers.WaveSpawners
 
             if (!waveGenerated && !isTaskRunning)
             {
-                UpdateAvailableEnemy();
+                UpdateAvailableUnit();
 
-                EnemiesHeuristicsCalculator.instance.UpdateCurrentTower();
+                UnitsHeuristicsCalculator.instance.UpdateCurrentTower();
 
                 isTaskRunning = true;
                 taskGenerated = GeneratedWave();
@@ -85,32 +85,32 @@ namespace TowerDefense.Main.Managers.WaveSpawners
 
             for (int i = 0; i < nextWave.Count; i++)
             {
-                SpawnEnemy(nextWave[i]);
+                SpawnUnit(nextWave[i]);
                 yield return new WaitForSeconds(0.5f);
             }
 
-            AllCurrentWaveEnemiesSpawned = true;
+            AllCurrentWaveUnitsSpawned = true;
         }
 
-        private Task<List<EnemyType>> GeneratedWave()
+        private Task<List<UnitType>> GeneratedWave()
         {
-            return Task<List<EnemyType>>.Run(() =>
+            return Task<List<UnitType>>.Run(() =>
             {
-                var result = algoCreateWave.SearchKnapsac(availableEnemy, availablePrices, EnemiesHeuristicsCalculator.instance.MoneyForWave());
+                var result = algoCreateWave.SearchKnapsac(availableUnit, availablePrices, UnitsHeuristicsCalculator.instance.MoneyForWave());
                 OperationsPostGeneratingWave();
                 return result;
             });
 
         }
 
-        private List<EnemyType> SortBalanceWave(List<EnemyType> enemiesWave)
+        private List<UnitType> SortBalanceWave(List<UnitType> unitsWave)
         {
             if (WaveNumber == 1)
             {
-                return enemiesWave.GetRange(0, 3);
+                return unitsWave.GetRange(0, 3);
             }
-            //enemiesWave.Sort();
-            return enemiesWave;
+            //unitsWave.Sort();
+            return unitsWave;
         }
 
         private void OperationsPostGeneratingWave()

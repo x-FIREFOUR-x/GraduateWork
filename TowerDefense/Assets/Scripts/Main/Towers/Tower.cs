@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-using TowerDefense.Main.Enemies;
+using TowerDefense.Main.Units;
 using TowerDefense.Main.Projectiles;
 
 
@@ -35,7 +35,7 @@ namespace TowerDefense.Main.Towers
 
         [Header("Targets")]
         [SerializeField]
-        protected List<EnemyType> targetableEnemyTypes = new((EnemyType[])System.Enum.GetValues(typeof(EnemyType)));
+        protected List<UnitType> targetableUnitTypes = new((UnitType[])System.Enum.GetValues(typeof(UnitType)));
 
         [field: SerializeField]
         public int Price { get; private set; } = 100;
@@ -76,28 +76,28 @@ namespace TowerDefense.Main.Towers
 
         protected void UpdateTarget()
         {
-            GameObject[] enemies = GameObject.FindGameObjectsWithTag(Enemy.enemyTag);
+            GameObject[] units = GameObject.FindGameObjectsWithTag(Unit.unitTag);
 
             float shortestDistance = Mathf.Infinity;
-            GameObject nearestEnemy = null;
+            GameObject nearestUnit = null;
 
 
-            foreach (GameObject enemy in enemies)
+            foreach (GameObject unit in units)
             {
-                if (!IsTargetable(enemy.GetComponent<Enemy>()))
+                if (!IsTargetable(unit.GetComponent<Unit>()))
                     continue;
 
-                float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
-                if (shortestDistance > distanceToEnemy)
+                float distanceToUnit = Vector3.Distance(transform.position, unit.transform.position);
+                if (shortestDistance > distanceToUnit)
                 {
-                    shortestDistance = distanceToEnemy;
-                    nearestEnemy = enemy;
+                    shortestDistance = distanceToUnit;
+                    nearestUnit = unit;
                 }
             }
 
-            if (nearestEnemy != null && shortestDistance <= shootRange)
+            if (nearestUnit != null && shortestDistance <= shootRange)
             {
-                target = nearestEnemy.transform;
+                target = nearestUnit.transform;
             }
             else
             {
@@ -177,9 +177,9 @@ namespace TowerDefense.Main.Towers
             Gizmos.DrawWireSphere(transform.position, shootRange);
         }
 
-        public bool IsTargetable(Enemy enemy)
+        public bool IsTargetable(Unit unit)
         {
-            return enemy != null && targetableEnemyTypes.Contains(enemy.EnemyType);
+            return unit != null && targetableUnitTypes.Contains(unit.UnitType);
         }
 
         public virtual float DamageInSecond()
