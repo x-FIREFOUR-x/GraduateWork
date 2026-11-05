@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using TowerDefense.Main.Units.ForkPathChoice;
 using TowerDefense.Main.Map.Path;
 using TowerDefense.Main.Map.Buildings;
+using TowerDefense.Storage;
 using TowerDefense.Algorithms.GeneticAlgorithm.Heuristics;
 
 
@@ -57,11 +58,12 @@ namespace TowerDefense.Main.Units
         protected float SpeedFactor { get { return speed / StartSpeed; } }
 
         private Vector3 bodyCenter;
+        private float groundHeight;
 
         protected abstract Transform Torso { get; }
 
         public Vector3 BodyCenterPoint { get { return Torso.TransformPoint(bodyCenter); } }
-        public Vector3 GroundPoint { get { return transform.position - Vector3.up * offsetStartPosY; } }
+        public Vector3 GroundPoint { get { return new Vector3(transform.position.x, groundHeight, transform.position.z); } }
 
         public Vector3 AimPoint(bool atGround)
         {
@@ -91,6 +93,7 @@ namespace TowerDefense.Main.Units
                 transform.rotation);
 
             bodyCenter = CalculateBodyCenter();
+            groundHeight = Resources.Load<MapSizeParamsStorage>($"{nameof(MapSizeParamsStorage)}").GroundHeight;
             InitializeHealthBar();
         }
 

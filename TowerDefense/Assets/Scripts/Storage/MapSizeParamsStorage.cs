@@ -27,6 +27,8 @@ namespace TowerDefense.Storage
 
         [field: SerializeField] public float WayPointHeight { get; private set; } = 2.5f;
 
+        public float GroundHeight { get { return SizeTile.y / 2f; } }
+
 
         public Vector3 CellToPosition(Vector2Int cell)
         {
