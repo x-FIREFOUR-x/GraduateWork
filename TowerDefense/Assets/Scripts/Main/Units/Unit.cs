@@ -9,7 +9,7 @@ using TowerDefense.Algorithms.GeneticAlgorithm.Heuristics;
 
 namespace TowerDefense.Main.Units
 {
-    public class Unit : MonoBehaviour
+    public abstract class Unit : MonoBehaviour
     {
         [SerializeField]
         protected Transform model;
@@ -56,6 +56,18 @@ namespace TowerDefense.Main.Units
 
         protected float SpeedFactor { get { return speed / StartSpeed; } }
 
+        private Vector3 bodyCenter;
+
+        protected abstract Transform Torso { get; }
+
+        public Vector3 BodyCenterPoint { get { return Torso.TransformPoint(bodyCenter); } }
+        public Vector3 GroundPoint { get { return transform.position - Vector3.up * offsetStartPosY; } }
+
+        public Vector3 AimPoint(bool atGround)
+        {
+            return atGround ? GroundPoint : BodyCenterPoint;
+        }
+
         [Header("SetUpHealthBar")]
         [SerializeField]
         private Image healthBar;
@@ -78,7 +90,14 @@ namespace TowerDefense.Main.Units
                 new Vector3(transform.position.x + pathOffset.x, transform.position.y + pathOffset.y + offsetStartPosY, transform.position.z + pathOffset.z),
                 transform.rotation);
 
+            bodyCenter = CalculateBodyCenter();
             InitializeHealthBar();
+        }
+
+        private Vector3 CalculateBodyCenter()
+        {
+            MeshFilter torsoMesh = Torso.GetComponent<MeshFilter>();
+            return torsoMesh != null ? torsoMesh.sharedMesh.bounds.center : Vector3.zero;
         }
 
         void Update()

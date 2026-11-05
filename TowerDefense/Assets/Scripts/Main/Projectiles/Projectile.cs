@@ -26,7 +26,7 @@ namespace TowerDefense.Main.Projectiles
         private System.Predicate<Unit> targetFilter;
 
 
-        public abstract void Seek(Transform target, Vector3 offsetTarget);
+        public abstract void Seek(Unit target, bool aimAtGround);
 
         public void SetTargetFilter(System.Predicate<Unit> filter)
         {

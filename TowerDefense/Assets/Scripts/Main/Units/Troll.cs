@@ -115,6 +115,8 @@ namespace TowerDefense.Main.Units
         private Quaternion leftForearmRest, rightForearmRest, rightHandRest;
 
 
+        protected override Transform Torso { get { return body; } }
+
         protected override void Start()
         {
             base.Start();

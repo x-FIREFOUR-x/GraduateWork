@@ -67,7 +67,7 @@ namespace TowerDefense.Main.Towers
 
         protected override IEnumerator Shoot()
         {
-            Vector3 aimPoint = target.position + offsetTarget;
+            Vector3 aimPoint = TargetPoint;
             float swingStarted = Time.time;
 
             //Wind-up

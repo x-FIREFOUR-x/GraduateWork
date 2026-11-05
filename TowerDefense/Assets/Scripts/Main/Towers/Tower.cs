@@ -11,56 +11,47 @@ namespace TowerDefense.Main.Towers
 {
     public abstract class Tower : MonoBehaviour
     {
-        protected Transform target;
+        public static string towerTag = "Tower";
 
         [field: SerializeField]
         public TowerType Type { get; private set; }
 
-        [Header("Prefabs")]
-        // What the tower shoots; a tower that does not shoot projectiles leaves it empty
-        [SerializeField]
-        protected GameObject projectilePrefab;
-
-        [Header("Attributes")]
-        [SerializeField]
-        protected float timeBetweenShoots = 1f;
-        [SerializeField]
-        protected float timeToNextFire = 0f;
-
-        [SerializeField]
-        protected float shootRange = 15f;
-
-        [SerializeField]
-        protected float rotateSpeed = 8f;
-
         [Header("Targets")]
         [SerializeField]
         protected List<UnitType> targetableUnitTypes = new((UnitType[])System.Enum.GetValues(typeof(UnitType)));
-
-        [field: SerializeField]
-        public int Price { get; private set; } = 100;
-
+        [SerializeField]
+        protected bool aimAtGround;
+        protected Vector3 TargetPoint { get { return target.AimPoint(aimAtGround); } }
 
         [Header("Setup Fields")]
+        [SerializeField]
+        protected GameObject projectilePrefab;
         // One projectile leaves from each of these points per shot
         [SerializeField]
         protected List<Transform> pointStartFire = new();
+        public int CountProjectileEntitys { get { return pointStartFire.Count; } }
         [SerializeField]
         protected Transform rotatePart;
         [SerializeField]
         protected Vector3 offsetTower;
+
+        [field: Header("Attributes")]
+        [field: SerializeField]
+        public int Price { get; private set; } = 100;
+        [field: SerializeField]
+        public float TimeBetweenShoots { get; private set; } = 1f;
         [SerializeField]
-        protected Vector3 offsetTarget;
+        protected float timeToNextFire = 0f;
+        [field: SerializeField]
+        public float ShootRange { get; private set; } = 15f;
+        [SerializeField]
+        protected float rotateSpeed = 8f;
 
-        public static string towerTag = "Tower";
 
+        protected Unit target;
         // While a shot plays out, from the release to being loaded again, the tower does not start another
         protected bool isReloading;
 
-
-        public int CountProjectileEntitys { get { return pointStartFire.Count; } }
-        public float ShootRange { get { return shootRange; } }
-        public float TimeBetweenShoots { get { return timeBetweenShoots; } }
 
         void Start()
         {
@@ -95,9 +86,9 @@ namespace TowerDefense.Main.Towers
                 }
             }
 
-            if (nearestUnit != null && shortestDistance <= shootRange)
+            if (nearestUnit != null && shortestDistance <= ShootRange)
             {
-                target = nearestUnit.transform;
+                target = nearestUnit.GetComponent<Unit>();
             }
             else
             {
@@ -107,7 +98,7 @@ namespace TowerDefense.Main.Towers
 
         protected void RotateToTarget()
         {
-            Vector3 direction = target.position - transform.position;
+            Vector3 direction = target.transform.position - transform.position;
             Quaternion lookRotation = Quaternion.LookRotation(direction);
             Vector3 rotation = Quaternion.Lerp(rotatePart.rotation, lookRotation, Time.deltaTime * rotateSpeed).eulerAngles;
             rotatePart.rotation = Quaternion.Euler(0f, rotation.y, 0f);
@@ -124,7 +115,7 @@ namespace TowerDefense.Main.Towers
                 if (timeToNextFire <= 0f && !isReloading)
                 {
                     StartCoroutine(ShootAndReload());
-                    timeToNextFire = timeBetweenShoots;
+                    timeToNextFire = TimeBetweenShoots;
                 }
             }
             timeToNextFire -= Time.deltaTime;
@@ -156,7 +147,7 @@ namespace TowerDefense.Main.Towers
                 if (projectile != null)
                 {
                     projectile.SetTargetFilter(IsTargetable);
-                    projectile.Seek(target, offsetTarget);
+                    projectile.Seek(target, aimAtGround);
                 }
             }
         }
@@ -174,7 +165,7 @@ namespace TowerDefense.Main.Towers
         void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, shootRange);
+            Gizmos.DrawWireSphere(transform.position, ShootRange);
         }
 
         public bool IsTargetable(Unit unit)
@@ -184,7 +175,7 @@ namespace TowerDefense.Main.Towers
 
         public virtual float DamageInSecond()
         {
-            return projectilePrefab.GetComponent<Projectile>().Damage * CountProjectileEntitys / timeBetweenShoots;
+            return projectilePrefab.GetComponent<Projectile>().Damage * CountProjectileEntitys / TimeBetweenShoots;
         }
     }
 

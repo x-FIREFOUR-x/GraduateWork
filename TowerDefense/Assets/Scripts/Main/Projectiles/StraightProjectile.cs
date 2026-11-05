@@ -7,22 +7,22 @@ namespace TowerDefense.Main.Projectiles
 {
     public class StraightProjectile : Projectile
     {
-        private Transform targetUnit;
-        private Vector3 offsetTarget;
+        private Unit target;
+        private bool aimAtGround;
 
 
-        public override void Seek(Transform target, Vector3 offset)
+        public override void Seek(Unit target, bool aimAtGround)
         {
-            targetUnit = target;
-            offsetTarget = offset;
+            this.target = target;
+            this.aimAtGround = aimAtGround;
 
-            if (targetUnit != null)
-                transform.LookAt(targetUnit.position + offsetTarget);
+            if (target != null)
+                transform.LookAt(target.AimPoint(aimAtGround));
         }
 
         void Update()
         {
-            if (targetUnit != null)
+            if (target != null)
             {
                 Vector3 direction = GetDirectionToTarget();
                 float distanceFrame = speed * Time.deltaTime;
@@ -47,14 +47,14 @@ namespace TowerDefense.Main.Projectiles
         {
             SpawnHitEffect(transform.position, transform.rotation);
 
-            targetUnit.GetComponent<Unit>().TakeDamage(Damage);
+            target.TakeDamage(Damage);
 
             Disappear();
         }
 
         private Vector3 GetDirectionToTarget()
         {
-            return targetUnit.position + offsetTarget - transform.position;
+            return target.AimPoint(aimAtGround) - transform.position;
         }
     }
 

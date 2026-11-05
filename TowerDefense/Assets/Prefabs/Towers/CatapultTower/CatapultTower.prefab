@@ -229,9 +229,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Type>k__BackingField: 2
   projectilePrefab: {fileID: 3030725858542508267, guid: 3be7cc554e0ba4a48a4a3bb209ad430a, type: 3}
-  timeBetweenShoots: 2
+  <TimeBetweenShoots>k__BackingField: 2
   timeToNextFire: 0
-  shootRange: 25
+  <ShootRange>k__BackingField: 25
   rotateSpeed: 8
   targetableUnitTypes: 000000000200000003000000i
   <Price>k__BackingField: 300
@@ -239,7 +239,7 @@ MonoBehaviour:
   - {fileID: 4035774621446171047}
   rotatePart: {fileID: 6059494694254124202}
   offsetTower: {x: 0, y: 0.5, z: 0}
-  offsetTarget: {x: 0, y: 0.5, z: 0}
+  aimAtGround: 1
   arm: {fileID: 7366513587013381397}
   loadedStone: {fileID: 4954477417163641602}
   launchDust: {fileID: 8291635050140258927}

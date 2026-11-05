@@ -7,7 +7,6 @@ namespace TowerDefense.Main.Towers
 {
     public class IceMageTower : Tower
     {
-        [Header("Attributes")]
         [SerializeField]
         private float damage = 10f;
         [SerializeField]
@@ -73,13 +72,13 @@ namespace TowerDefense.Main.Towers
                 RotateToTarget();
                 ActivateBeam();
 
-                Vector3 direction = pointStartFire[0].position - (target.position + offsetTarget);
-                hitEffect.transform.position = (target.position + offsetTarget) + direction.normalized;
+                Vector3 direction = pointStartFire[0].position - TargetPoint;
+                hitEffect.transform.position = TargetPoint + direction.normalized;
                 hitEffect.transform.rotation = Quaternion.LookRotation(direction);
 
-                target.GetComponent<Unit>().TakeDamage(damage * Time.deltaTime);
+                target.TakeDamage(damage * Time.deltaTime);
 
-                target.GetComponent<Unit>().Slow(percentSlowing);
+                target.Slow(percentSlowing);
             }
             else
             {
@@ -99,7 +98,7 @@ namespace TowerDefense.Main.Towers
             }
 
             frostBeam.SetPosition(0, pointStartFire[0].position);
-            frostBeam.SetPosition(1, target.position + offsetTarget);
+            frostBeam.SetPosition(1, TargetPoint);
             frostBeam.widthMultiplier = 1f + 0.2f * Mathf.Sin(Time.time * 23f) + 0.1f * Mathf.Sin(Time.time * 41f);
         }
 

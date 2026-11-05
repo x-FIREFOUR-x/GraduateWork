@@ -147,6 +147,8 @@ namespace TowerDefense.Main.Units
         private Vector3 braidJoint, braidJointPrevious, braidEnd, braidEndPrevious, braidRootPrevious, braidAirVelocity;
 
 
+        protected override Transform Torso { get { return warg; } }
+
         protected override void Start()
         {
             base.Start();

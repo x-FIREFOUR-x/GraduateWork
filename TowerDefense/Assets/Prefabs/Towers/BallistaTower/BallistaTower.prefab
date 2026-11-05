@@ -803,9 +803,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Type>k__BackingField: 0
   projectilePrefab: {fileID: 5587021352456154238, guid: 17262a8176604c94ca17a2a8110c5795, type: 3}
-  timeBetweenShoots: 0.7
+  <TimeBetweenShoots>k__BackingField: 0.7
   timeToNextFire: 0
-  shootRange: 15
+  <ShootRange>k__BackingField: 15
   rotateSpeed: 8
   targetableUnitTypes: 000000000200000003000000i
   <Price>k__BackingField: 100
@@ -813,7 +813,6 @@ MonoBehaviour:
   - {fileID: 9069229935690751401}
   rotatePart: {fileID: 2072572219788389484}
   offsetTower: {x: 0, y: 0.5, z: 0}
-  offsetTarget: {x: 0, y: 1.5, z: 0}
   ballista: {fileID: 6092188003079060807}
   bowArmLeft: {fileID: 7540301104881883882}
   bowArmRight: {fileID: 2871690949855335370}

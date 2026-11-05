@@ -46,6 +46,8 @@ namespace TowerDefense.Main.Units
         private Quaternion bodyRotation, leftWingRest, leftWingOuterRest, rightWingRest, rightWingOuterRest, leftEarRest, rightEarRest, tailRest;
 
 
+        protected override Transform Torso { get { return body; } }
+
         protected override void Start()
         {
             base.Start();

@@ -31,7 +31,7 @@ namespace TowerDefense.Main.Projectiles
         private Transform graphic;
 
 
-        public override void Seek(Transform target, Vector3 offsetTarget)
+        public override void Seek(Unit target, bool aimAtGround)
         {
             if (target == null)
             {
@@ -39,7 +39,7 @@ namespace TowerDefense.Main.Projectiles
                 return;
             }
 
-            Launch(target.position + offsetTarget, 0f);
+            Launch(target.AimPoint(aimAtGround), 0f);
         }
 
         public void Launch(Vector3 point, float timeSpent)
