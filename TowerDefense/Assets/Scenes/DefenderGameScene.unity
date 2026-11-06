@@ -633,7 +633,7 @@ MonoBehaviour:
   minY: 20
   moveSpeed: 20
   zoomedInMinX: 19
-  zoomedInMaxX: 51
+  zoomedInMaxX: 60
   zoomedInMinZ: -4.5
   zoomedInMaxZ: 30
 --- !u!1 &332170618
@@ -3731,7 +3731,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 15
+  m_ScrollSensitivity: 80
   m_Viewport: {fileID: 1979527122}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 0}
