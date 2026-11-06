@@ -53,6 +53,11 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm.Heuristics
             advantagePoints[(UnitType.Troll, TowerType.CatapultTower)] = 5;
             advantagePoints[(UnitType.Troll, TowerType.IceMageTower)] = 5;
 
+            advantagePoints[(UnitType.WraithDragonRider, TowerType.BallistaTower)] = 15;
+            advantagePoints[(UnitType.WraithDragonRider, TowerType.ArcherTower)] = 8;
+            advantagePoints[(UnitType.WraithDragonRider, TowerType.CatapultTower)] = 15;
+            advantagePoints[(UnitType.WraithDragonRider, TowerType.IceMageTower)] = 5;
+
 
             GameObject[] pathTiles = GameObject.FindGameObjectsWithTag(PathTile.pathTileTag);
             MapSizeParamsStorage mapSizeParams = Resources.Load<MapSizeParamsStorage>($"{nameof(MapSizeParamsStorage)}");

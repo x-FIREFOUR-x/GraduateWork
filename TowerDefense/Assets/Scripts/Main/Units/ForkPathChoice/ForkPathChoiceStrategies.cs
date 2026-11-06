@@ -13,6 +13,8 @@ namespace TowerDefense.Main.Units.ForkPathChoice
                 UnitType.Bat => RandomStrategy,
                 UnitType.OrcWargRider => RandomStrategy,
                 UnitType.Troll => RandomStrategy,
+                UnitType.WraithDragonRider => RandomStrategy,
+                UnitType.Wraith => RandomStrategy,
                 _ => RandomStrategy
             };
         }

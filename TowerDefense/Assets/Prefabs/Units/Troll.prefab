@@ -1192,7 +1192,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   model: {fileID: 1144850472894354669}
   <UnitType>k__BackingField: 3
-  <StartHealth>k__BackingField: 1000
+  <StartHealth>k__BackingField: 1500
   <StartSpeed>k__BackingField: 5
   timeReturnSpeed: 1
   <Damage>k__BackingField: 10

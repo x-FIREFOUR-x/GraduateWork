@@ -170,7 +170,7 @@ namespace TowerDefense.Main.Towers
 
         public bool IsTargetable(Unit unit)
         {
-            return unit != null && targetableUnitTypes.Contains(unit.UnitType);
+            return unit != null && unit.CanBeTargeted && targetableUnitTypes.Contains(unit.UnitType);
         }
 
         public virtual float DamageInSecond()

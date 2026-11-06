@@ -1437,6 +1437,7 @@ RectTransform:
   - {fileID: 1491116532}
   - {fileID: 1719382777}
   - {fileID: 829438950}
+  - {fileID: 1259503223}
   m_Father: {fileID: 1979527122}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
@@ -1509,6 +1510,7 @@ MonoBehaviour:
   - {fileID: 1491116531}
   - {fileID: 1719382778}
   - {fileID: 829438951}
+  - {fileID: 1259503222}
 --- !u!1 &885789877
 GameObject:
   m_ObjectHideFlags: 0
@@ -2380,6 +2382,135 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1201098037}
   m_CullTransparentMesh: 1
+--- !u!1001 &1259503221
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 869074693}
+    m_Modifications:
+    - target: {fileID: 3684437011186225682, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
+      propertyPath: m_text
+      value: Wraith Rider
+      objectReference: {fileID: 0}
+    - target: {fileID: 3684437011409486240, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3684437011409486240, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3684437011409486240, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3684437011409486240, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3684437011409486240, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3684437011409486240, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3684437011409486240, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 126
+      objectReference: {fileID: 0}
+    - target: {fileID: 3684437011409486240, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 229
+      objectReference: {fileID: 0}
+    - target: {fileID: 3684437011409486240, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3684437011409486240, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3684437011409486240, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3684437011409486240, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3684437011409486240, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3684437011409486240, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3684437011409486240, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3684437011409486240, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3684437011409486240, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3684437011409486240, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3684437011409486240, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3684437011409486240, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3684437011409486241, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
+      propertyPath: m_Name
+      value: WraithDragonRiderShopComponent
+      objectReference: {fileID: 0}
+    - target: {fileID: 4842703967493754198, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
+      propertyPath: unit
+      value: 
+      objectReference: {fileID: 5657219934203866195, guid: 795e3bea2e1ec264bad450ce0c7167b5, type: 3}
+    - target: {fileID: 4842703967493754198, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
+      propertyPath: unitShopMenu
+      value: 
+      objectReference: {fileID: 869074699}
+    - target: {fileID: 5982759752692979637, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 312e0de46528396409522594c55862a9, type: 3}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
+--- !u!114 &1259503222 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4842703967493754198, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
+  m_PrefabInstance: {fileID: 1259503221}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e64e99c1d42b0114390909dd56c5e597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!224 &1259503223 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3684437011409486240, guid: 336b2fbf441b1184fb3d3208bb65375e, type: 3}
+  m_PrefabInstance: {fileID: 1259503221}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1406771554
 GameObject:
   m_ObjectHideFlags: 0

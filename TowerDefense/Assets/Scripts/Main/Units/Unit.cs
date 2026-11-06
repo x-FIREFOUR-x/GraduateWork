@@ -44,9 +44,16 @@ namespace TowerDefense.Main.Units
         [SerializeField]
         private float offsetStartPosY;
 
+        public float TravelHeight { get; private set; }
+
         private PathGraphNode target;
         private IForkPathChoiceStrategy forkPathChoiceStrategy;
         private float movedDistance = 0;
+        protected bool IsSuccessor { get; private set; }
+        private bool hasSuccessor;
+
+        public bool CanBeTargeted { get; protected set; } = true;
+        protected bool CanMove { get; set; } = true;
 
         public static string unitTag = "Unit";
 
@@ -81,16 +88,21 @@ namespace TowerDefense.Main.Units
         protected virtual void Start()
         {
             forkPathChoiceStrategy = ForkPathChoiceStrategies.GetByUnitType(UnitType);
-            target = ChooseNextPathNode(PathGraphHolder.Graph.Start);
-
-            Vector2 randomPathOffset = Random.insideUnitCircle * maxRandomPathOffset;
-            pathOffset = new Vector3(randomPathOffset.x, 0, randomPathOffset.y);
             health = StartHealth;
             speed = StartSpeed;
 
-            transform.SetPositionAndRotation(
-                new Vector3(transform.position.x + pathOffset.x, transform.position.y + pathOffset.y + offsetStartPosY, transform.position.z + pathOffset.z),
-                transform.rotation);
+            if (!IsSuccessor)
+            {
+                target = ChooseNextPathNode(PathGraphHolder.Graph.Start);
+
+                Vector2 randomPathOffset = Random.insideUnitCircle * maxRandomPathOffset;
+                pathOffset = new Vector3(randomPathOffset.x, 0, randomPathOffset.y);
+                TravelHeight = transform.position.y + pathOffset.y + offsetStartPosY;
+
+                transform.SetPositionAndRotation(
+                    new Vector3(transform.position.x + pathOffset.x, TravelHeight, transform.position.z + pathOffset.z),
+                    transform.rotation);
+            }
 
             bodyCenter = CalculateBodyCenter();
             groundHeight = Resources.Load<MapSizeParamsStorage>($"{nameof(MapSizeParamsStorage)}").GroundHeight;
@@ -110,6 +122,9 @@ namespace TowerDefense.Main.Units
 
         void FixedUpdate()
         {
+            if (!CanMove)
+                return;
+
             Vector3 targetPosition = new Vector3(target.Position.x + pathOffset.x, 0, target.Position.z + pathOffset.z);
             Vector3 position = new Vector3(transform.position.x, 0, transform.position.z);
 
@@ -160,12 +175,24 @@ namespace TowerDefense.Main.Units
                 Instantiate(deathEffect, model.position, model.rotation);
         }
 
+        public void BecomeSuccessorOf(Unit previous)
+        {
+            target = previous.target;
+            pathOffset = previous.pathOffset;
+            TravelHeight = previous.TravelHeight - previous.offsetStartPosY + offsetStartPosY;
+            movedDistance = previous.movedDistance;
+            model.rotation = previous.model.rotation;
+
+            IsSuccessor = true;
+            previous.hasSuccessor = true;
+        }
+
         private void Die()
         {
             isDead = true;
             Destroy(gameObject);
 
-            if (UnitsHeuristicsCalculator.instance != null)
+            if (UnitsHeuristicsCalculator.instance != null && !hasSuccessor)
                 UnitsHeuristicsCalculator.instance.AddDistanceMovedUnit(movedDistance);
         }
 
@@ -229,7 +256,7 @@ namespace TowerDefense.Main.Units
             currentTimeReturnSpeed = timeReturnSpeed;
         }
 
-        public void UpgradeHealth(float upByPercentage)
+        public virtual void UpgradeHealth(float upByPercentage)
         {
             StartHealth += StartHealth * upByPercentage;
         }

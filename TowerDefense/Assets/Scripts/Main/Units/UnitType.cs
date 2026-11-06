@@ -5,6 +5,8 @@
         Goblin = 0,
         Bat,
         OrcWargRider,
-        Troll
+        Troll,
+        WraithDragonRider,
+        Wraith
     }
 }

@@ -72,6 +72,10 @@ namespace TowerDefense.Main.Managers.WaveSpawners
                     availablePrices[UnitType.Troll] = unitsStorage.Units[(int)UnitType.Troll].GetComponent<Unit>().Price;
                     availableUnit.Add(UnitType.Troll);
                     break;
+                case 10:
+                    availablePrices[UnitType.WraithDragonRider] = unitsStorage.Units[(int)UnitType.WraithDragonRider].GetComponent<Unit>().Price;
+                    availableUnit.Add(UnitType.WraithDragonRider);
+                    break;
 
                 default:
                     break;
