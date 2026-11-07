@@ -15,6 +15,7 @@ namespace TowerDefense.Main.Units.ForkPathChoice
                 UnitType.Troll => RandomStrategy,
                 UnitType.WraithDragonRider => RandomStrategy,
                 UnitType.Wraith => RandomStrategy,
+                UnitType.UrukStandardBearer => RandomStrategy,
                 _ => RandomStrategy
             };
         }

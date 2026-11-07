@@ -7,6 +7,7 @@
         OrcWargRider,
         Troll,
         WraithDragonRider,
-        Wraith
+        Wraith,
+        UrukStandardBearer,
     }
 }
