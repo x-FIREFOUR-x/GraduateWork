@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using TowerDefense.Storage;
 
 namespace TowerDefense.CameraControl
 {
@@ -34,10 +35,8 @@ namespace TowerDefense.CameraControl
         private float zoomedInMinX = 19f;
         [SerializeField]
         private float zoomedInMaxX = 51f;
-        [SerializeField]
-        private float zoomedInMinZ = -4.5f;
-        [SerializeField]
-        private float zoomedInMaxZ = 30f;
+        private float zoomedInMinZ;
+        private float zoomedInMaxZ;
 
         // Base position/rotation is the camera's initial placement in the scene.
         // It also doubles as the upper (fully zoomed-out) limit.
@@ -70,6 +69,24 @@ namespace TowerDefense.CameraControl
             moveDirectionZ = Vector3.forward;
 
             zoomOffsetMax = baseForward.y < 0f ? (basePosition.y - minY) / -baseForward.y : Mathf.Infinity;
+
+            CalculateZoomedInBoundsZ();
+        }
+
+        private void CalculateZoomedInBoundsZ()
+        {
+            MapSizeParamsStorage mapSizeParams = Resources.Load<MapSizeParamsStorage>(nameof(MapSizeParamsStorage));
+
+            float mapMinZ = mapSizeParams.StartMap.z - mapSizeParams.SizeTile.z / 2f;
+            float mapMaxZ = mapMinZ + (mapSizeParams.CountTile - 1) * (mapSizeParams.SizeTile.z + mapSizeParams.OffsetTile.z) + mapSizeParams.SizeTile.z;
+            mapMaxZ += mapSizeParams.SizeTile.z;
+
+            float height = minY - mapSizeParams.GroundHeight;
+            float pitch = baseRotation.eulerAngles.x;
+            float halfFov = targetCamera.fieldOfView / 2f;
+
+            zoomedInMinZ = mapMinZ - height / Mathf.Tan((pitch + halfFov) * Mathf.Deg2Rad);
+            zoomedInMaxZ = mapMaxZ - height / Mathf.Tan(Mathf.Max(pitch - halfFov, 1f) * Mathf.Deg2Rad);
         }
 
         private void Update()

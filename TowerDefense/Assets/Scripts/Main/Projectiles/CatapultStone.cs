@@ -1,6 +1,6 @@
 using UnityEngine;
 
-using TowerDefense.Main.Enemies;
+using TowerDefense.Main.Units;
 
 
 namespace TowerDefense.Main.Projectiles
@@ -31,7 +31,7 @@ namespace TowerDefense.Main.Projectiles
         private Transform graphic;
 
 
-        public override void Seek(Transform target, Vector3 offsetTarget)
+        public override void Seek(Unit target, bool aimAtGround)
         {
             if (target == null)
             {
@@ -39,7 +39,7 @@ namespace TowerDefense.Main.Projectiles
                 return;
             }
 
-            Launch(target.position + offsetTarget, 0f);
+            Launch(target.AimPoint(aimAtGround), 0f);
         }
 
         public void Launch(Vector3 point, float timeSpent)
@@ -86,8 +86,12 @@ namespace TowerDefense.Main.Projectiles
             Collider[] hitItems = Physics.OverlapSphere(aimPoint, explosionRadius);
             foreach (Collider hitItem in hitItems)
             {
-                if (hitItem.tag == Enemy.enemyTag)
-                    hitItem.transform.GetComponent<Enemy>().TakeDamage(Damage);
+                if (hitItem.tag != Unit.unitTag)
+                    continue;
+
+                Unit unit = hitItem.transform.GetComponent<Unit>();
+                if (IsTargetable(unit))
+                    unit.TakeDamage(Damage);
             }
         }
 

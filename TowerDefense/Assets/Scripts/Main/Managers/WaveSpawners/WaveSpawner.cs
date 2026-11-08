@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using TowerDefense.Storage;
-using TowerDefense.Main.Enemies;
+using TowerDefense.Main.Units;
 
 
 namespace TowerDefense.Main.Managers.WaveSpawners
@@ -12,7 +12,7 @@ namespace TowerDefense.Main.Managers.WaveSpawners
     {
         public Transform SpawnPoint { get; protected set; }
 
-        protected EnemiesStorage enemiesStorage;
+        protected UnitsStorage unitsStorage;
 
         [SerializeField]
         protected float timeBetweenWaves = 5f;
@@ -21,52 +21,64 @@ namespace TowerDefense.Main.Managers.WaveSpawners
 
         public int WaveNumber { get; protected set; } = 1;
 
-        protected List<EnemyType> availableEnemy;
-        protected Dictionary<EnemyType, int> availablePrices;
+        protected List<UnitType> availableUnit;
+        protected Dictionary<UnitType, int> availablePrices;
 
-        protected List<EnemyType> nextWave;
+        protected List<UnitType> nextWave;
         
-        protected int countAllEnemiesCurrentWave;
-        protected int countSpawnedEnemiesInThisWave;
-        protected bool AllCurrentWaveEnemiesSpawned;
+        protected int countAllUnitsCurrentWave;
+        protected int countSpawnedUnitsInThisWave;
+        protected bool AllCurrentWaveUnitsSpawned;
 
         public virtual void Initialize(Transform spawn)
         {
             SpawnPoint = spawn;
-            enemiesStorage = Resources.Load<EnemiesStorage>($"{nameof(EnemiesStorage)}");
+            unitsStorage = Resources.Load<UnitsStorage>($"{nameof(UnitsStorage)}");
 
-            countAllEnemiesCurrentWave = 0;
-            countSpawnedEnemiesInThisWave = 0;
-            AllCurrentWaveEnemiesSpawned = false;
+            countAllUnitsCurrentWave = 0;
+            countSpawnedUnitsInThisWave = 0;
+            AllCurrentWaveUnitsSpawned = false;
         }
 
 
         public bool WaveFinished()
         {
-            return countSpawnedEnemiesInThisWave == countAllEnemiesCurrentWave && GameObject.FindGameObjectsWithTag(Enemy.enemyTag).Length == 0;
+            return countSpawnedUnitsInThisWave == countAllUnitsCurrentWave && GameObject.FindGameObjectsWithTag(Unit.unitTag).Length == 0;
         }
 
-        protected void SpawnEnemy(EnemyType enemyType)
+        protected void SpawnUnit(UnitType unitType)
         {
-            countSpawnedEnemiesInThisWave++;
-            Instantiate(enemiesStorage.Enemies[(int)enemyType], SpawnPoint.position, SpawnPoint.rotation);
+            countSpawnedUnitsInThisWave++;
+            Instantiate(unitsStorage.Units[(int)unitType], SpawnPoint.position, SpawnPoint.rotation);
         }
 
-        protected void UpdateAvailableEnemy()
+        protected void UpdateAvailableUnit()
         {
             switch (WaveNumber)
             {
                 case 1:
-                    availableEnemy.Add(EnemyType.Standard);
-                    availablePrices[EnemyType.Standard] = enemiesStorage.Enemies[(int)EnemyType.Standard].GetComponent<Enemy>().Price;
+                    availableUnit.Add(UnitType.Goblin);
+                    availablePrices[UnitType.Goblin] = unitsStorage.Units[(int)UnitType.Goblin].GetComponent<Unit>().Price;
                     break;
-                case 3:
-                    availablePrices[EnemyType.Fast] = enemiesStorage.Enemies[(int)EnemyType.Fast].GetComponent<Enemy>().Price;
-                    availableEnemy.Add(EnemyType.Fast);
+                case 4:
+                    availablePrices[UnitType.Bat] = unitsStorage.Units[(int)UnitType.Bat].GetComponent<Unit>().Price;
+                    availableUnit.Add(UnitType.Bat);
                     break;
-                case 5:
-                    availablePrices[EnemyType.Tank] = enemiesStorage.Enemies[(int)EnemyType.Tank].GetComponent<Enemy>().Price;
-                    availableEnemy.Add(EnemyType.Tank);
+                case 6:
+                    availablePrices[UnitType.OrcWargRider] = unitsStorage.Units[(int)UnitType.OrcWargRider].GetComponent<Unit>().Price;
+                    availableUnit.Add(UnitType.OrcWargRider);
+                    break;
+                case 8:
+                    availablePrices[UnitType.Troll] = unitsStorage.Units[(int)UnitType.Troll].GetComponent<Unit>().Price;
+                    availableUnit.Add(UnitType.Troll);
+                    break;
+                case 10:
+                    availablePrices[UnitType.UrukStandardBearer] = unitsStorage.Units[(int)UnitType.UrukStandardBearer].GetComponent<Unit>().Price;
+                    availableUnit.Add(UnitType.UrukStandardBearer);
+                    break;
+                case 12:
+                    availablePrices[UnitType.WraithDragonRider] = unitsStorage.Units[(int)UnitType.WraithDragonRider].GetComponent<Unit>().Price;
+                    availableUnit.Add(UnitType.WraithDragonRider);
                     break;
 
                 default:
@@ -76,8 +88,8 @@ namespace TowerDefense.Main.Managers.WaveSpawners
 
         protected void OperationPrevStartWave()
         {
-            countSpawnedEnemiesInThisWave = 0;
-            countAllEnemiesCurrentWave = nextWave.Count;
+            countSpawnedUnitsInThisWave = 0;
+            countAllUnitsCurrentWave = nextWave.Count;
         }
 
         protected void OperationAfterFinishWave()
@@ -102,9 +114,10 @@ namespace TowerDefense.Main.Managers.WaveSpawners
         {
             if (WaveNumber % 5 == 0)
             {
-                foreach (var enemy in enemiesStorage.Enemies)
+                foreach (var unit in unitsStorage.Units)
                 {
-                    enemy.GetComponent<Enemy>().UpgradeHealth((float)0.25);
+                    if (unit != null)
+                        unit.GetComponent<Unit>().UpgradeHealth((float)0.25);
                 }
             }
         }

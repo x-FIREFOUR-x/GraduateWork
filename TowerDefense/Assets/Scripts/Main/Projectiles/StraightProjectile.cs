@@ -1,28 +1,28 @@
 using UnityEngine;
 
-using TowerDefense.Main.Enemies;
+using TowerDefense.Main.Units;
 
 
 namespace TowerDefense.Main.Projectiles
 {
     public class StraightProjectile : Projectile
     {
-        private Transform targetEnemy;
-        private Vector3 offsetTarget;
+        private Unit target;
+        private bool aimAtGround;
 
 
-        public override void Seek(Transform target, Vector3 offset)
+        public override void Seek(Unit target, bool aimAtGround)
         {
-            targetEnemy = target;
-            offsetTarget = offset;
+            this.target = target;
+            this.aimAtGround = aimAtGround;
 
-            if (targetEnemy != null)
-                transform.LookAt(targetEnemy.position + offsetTarget);
+            if (target != null)
+                transform.LookAt(target.AimPoint(aimAtGround));
         }
 
         void Update()
         {
-            if (targetEnemy != null)
+            if (target != null)
             {
                 Vector3 direction = GetDirectionToTarget();
                 float distanceFrame = speed * Time.deltaTime;
@@ -47,14 +47,14 @@ namespace TowerDefense.Main.Projectiles
         {
             SpawnHitEffect(transform.position, transform.rotation);
 
-            targetEnemy.GetComponent<Enemy>().TakeDamage(Damage);
+            target.TakeDamage(Damage);
 
             Disappear();
         }
 
         private Vector3 GetDirectionToTarget()
         {
-            return targetEnemy.position + offsetTarget - transform.position;
+            return target.AimPoint(aimAtGround) - transform.position;
         }
     }
 

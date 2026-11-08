@@ -173,13 +173,13 @@ namespace TowerDefense.Main.Towers
             SetCommand(0f);
 
             // Nocking: a new arrow from the quiver laid on each bow
-            float nockTime = timeBetweenShoots * nockShare;
+            float nockTime = TimeBetweenShoots * nockShare;
             yield return new WaitForSeconds(nockTime * 0.5f);
             SetArrowsShown(true);
             yield return new WaitForSeconds(nockTime * 0.5f);
 
             // Drawing, while the captain raises his sword for the next volley
-            float drawTime = timeBetweenShoots * drawShare;
+            float drawTime = TimeBetweenShoots * drawShare;
             for (float t = 0f; t < 1f; t += Time.deltaTime / drawTime)
             {
                 float eased = Mathf.SmoothStep(0f, 1f, t);

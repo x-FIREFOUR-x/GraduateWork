@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-using TowerDefense.Main.Enemies;
-using TowerDefense.Main.UI.EnemyMenu;
+using TowerDefense.Main.Units;
+using TowerDefense.Main.UI.UnitMenu;
 
 
 namespace TowerDefense.Main.Managers.WaveSpawners
@@ -12,14 +12,14 @@ namespace TowerDefense.Main.Managers.WaveSpawners
     public class PlayerWaveSpawner : WaveSpawner
     {
         [SerializeField]
-        private EnemyShopMenu enemyShopMenu;
+        private UnitShopMenu unitShopMenu;
 
         public override void Initialize(Transform spawn)
         {
             base.Initialize(spawn);
 
-            availableEnemy = new List<EnemyType>();
-            availablePrices = new Dictionary<EnemyType, int>();
+            availableUnit = new List<UnitType>();
+            availablePrices = new Dictionary<UnitType, int>();
         }
 
         void Update()
@@ -30,10 +30,10 @@ namespace TowerDefense.Main.Managers.WaveSpawners
             }
             else
             {
-                if (AllCurrentWaveEnemiesSpawned)
+                if (AllCurrentWaveUnitsSpawned)
                 {
                     OperationAfterFinishWave();
-                    AllCurrentWaveEnemiesSpawned = false;
+                    AllCurrentWaveUnitsSpawned = false;
                 }
             }
 
@@ -48,16 +48,16 @@ namespace TowerDefense.Main.Managers.WaveSpawners
 
         private IEnumerator SpawnWave()
         {
-            nextWave = enemyShopMenu.TakeEnemies();
+            nextWave = unitShopMenu.TakeUnits();
             OperationPrevStartWave();
 
             for (int i = 0; i < nextWave.Count; i++)
             {
-                SpawnEnemy(nextWave[i]);
+                SpawnUnit(nextWave[i]);
                 yield return new WaitForSeconds(0.5f);
             }
 
-            AllCurrentWaveEnemiesSpawned = true;
+            AllCurrentWaveUnitsSpawned = true;
         }
     }
 

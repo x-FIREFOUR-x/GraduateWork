@@ -12407,16 +12407,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Type>k__BackingField: 3
   projectilePrefab: {fileID: 0}
-  timeBetweenShoots: 0
+  <TimeBetweenShoots>k__BackingField: 0
   timeToNextFire: 0
-  shootRange: 15
+  <ShootRange>k__BackingField: 15
   rotateSpeed: 8
   <Price>k__BackingField: 200
   pointStartFire:
   - {fileID: 2691111133046650425}
   rotatePart: {fileID: 2435140106413035375}
   offsetTower: {x: 0, y: 0.5, z: 0}
-  offsetTarget: {x: 0, y: 2, z: 0}
   damage: 60
   percentSlowing: 0.5
   frostBeam: {fileID: -1268797453948382230}

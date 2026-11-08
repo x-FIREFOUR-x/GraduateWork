@@ -147,7 +147,7 @@ namespace TowerDefense.Main.Towers
 
             // Winding: he turns the cranks, his arms going round with the handles and his body leaning in and out with
             // them, the slider coming back with every turn
-            float windTime = timeBetweenShoots * windShare;
+            float windTime = TimeBetweenShoots * windShare;
             for (float t = 0f; t < 1f; t += Time.deltaTime / windTime)
             {
                 float wound = Mathf.SmoothStep(0f, 1f, t);
@@ -164,7 +164,7 @@ namespace TowerDefense.Main.Towers
             // Loading: the next bolt slides into the groove
             if (loadedBolt != null)
                 loadedBolt.SetActive(true);
-            float loadTime = timeBetweenShoots * loadShare;
+            float loadTime = TimeBetweenShoots * loadShare;
             for (float t = 0f; t < 1f; t += Time.deltaTime / loadTime)
             {
                 SetBoltLength(Mathf.SmoothStep(0.2f, 1f, t));

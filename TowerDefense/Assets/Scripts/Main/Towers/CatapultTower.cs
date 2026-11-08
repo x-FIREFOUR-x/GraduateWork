@@ -67,7 +67,7 @@ namespace TowerDefense.Main.Towers
 
         protected override IEnumerator Shoot()
         {
-            Vector3 aimPoint = target.position + offsetTarget;
+            Vector3 aimPoint = TargetPoint;
             float swingStarted = Time.time;
 
             //Wind-up
@@ -126,7 +126,9 @@ namespace TowerDefense.Main.Towers
                 launchDust.Play();
 
             GameObject stoneObject = Instantiate(projectilePrefab, loadedStone.transform.position, loadedStone.transform.rotation);
-            stoneObject.GetComponent<CatapultStone>().Launch(aimPoint, timeSpent);
+            CatapultStone stone = stoneObject.GetComponent<CatapultStone>();
+            stone.SetTargetFilter(IsTargetable);
+            stone.Launch(aimPoint, timeSpent);
         }
 
         private void SetArmAngle(float angle)
