@@ -5,7 +5,7 @@ namespace TowerDefense.Main.Units.ForkPathChoice
 {
     public interface IForkPathChoiceStrategy
     {
-        PathGraphNode ChooseNextNodeAtFork(Unit unit, PathGraphNode fork);
+        PathGraphNode ChooseNextNodeAtFork(Unit unit, PathGraphNode forkStartNode);
     }
 
 }

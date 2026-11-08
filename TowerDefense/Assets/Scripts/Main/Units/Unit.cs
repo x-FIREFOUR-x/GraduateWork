@@ -46,7 +46,8 @@ namespace TowerDefense.Main.Units
 
         public float TravelHeight { get; private set; }
 
-        private PathGraphNode target;
+        public PathGraphNode PreviousNode { get; private set; }
+        public PathGraphNode TargetNode { get; private set; }
         private IForkPathChoiceStrategy forkPathChoiceStrategy;
         private float movedDistance = 0;
         protected bool IsSuccessor { get; private set; }
@@ -93,7 +94,8 @@ namespace TowerDefense.Main.Units
 
             if (!IsSuccessor)
             {
-                target = ChooseNextPathNode(PathGraphHolder.Graph.Start);
+                PreviousNode = PathGraphHolder.Graph.Start;
+                TargetNode = ChooseNextPathNode(PreviousNode);
 
                 Vector2 randomPathOffset = Random.insideUnitCircle * maxRandomPathOffset;
                 pathOffset = new Vector3(randomPathOffset.x, 0, randomPathOffset.y);
@@ -125,7 +127,7 @@ namespace TowerDefense.Main.Units
             if (!CanMove)
                 return;
 
-            Vector3 targetPosition = new Vector3(target.Position.x + pathOffset.x, 0, target.Position.z + pathOffset.z);
+            Vector3 targetPosition = new Vector3(TargetNode.Position.x + pathOffset.x, 0, TargetNode.Position.z + pathOffset.z);
             Vector3 position = new Vector3(transform.position.x, 0, transform.position.z);
 
             Vector3 direction = targetPosition - position;
@@ -149,13 +151,14 @@ namespace TowerDefense.Main.Units
 
         private bool TryGetNextPathNode()
         {
-            if (target.IsEnd)
+            if (TargetNode.IsEnd)
             {
                 return false;
             }
             else
             {
-                target = ChooseNextPathNode(target);
+                PreviousNode = TargetNode;
+                TargetNode = ChooseNextPathNode(PreviousNode);
                 return true;
             }
         }
@@ -177,7 +180,8 @@ namespace TowerDefense.Main.Units
 
         public void BecomeSuccessorOf(Unit previous)
         {
-            target = previous.target;
+            PreviousNode = previous.PreviousNode;
+            TargetNode = previous.TargetNode;
             pathOffset = previous.pathOffset;
             TravelHeight = previous.TravelHeight - previous.offsetStartPosY + offsetStartPosY;
             movedDistance = previous.movedDistance;
@@ -228,7 +232,7 @@ namespace TowerDefense.Main.Units
 
         private void Rotate()
         {
-            Vector3 dir = target.Position + pathOffset - model.position;
+            Vector3 dir = TargetNode.Position + pathOffset - model.position;
             dir.y = 0;
             dir.Normalize();
             Quaternion quaternion = Quaternion.LookRotation(dir, Vector3.up);
