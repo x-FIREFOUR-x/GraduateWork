@@ -16,12 +16,12 @@ namespace TowerDefense.Main.Units.ForkPathChoice
             return unitType switch
             {
                 UnitType.Goblin => RandomStrategy,
-                UnitType.Bat => RandomStrategy,
-                UnitType.OrcWargRider => RandomStrategy,
-                UnitType.Troll => RandomStrategy,
-                UnitType.WraithDragonRider => RandomStrategy,
-                UnitType.Wraith => RandomStrategy,
-                UnitType.UrukStandardBearer => RandomStrategy,
+                UnitType.Bat => LeastCrowdedStrategy,
+                UnitType.OrcWargRider => LeastCrowdedStrategy,
+                UnitType.Troll => MostDangerousStrategy,
+                UnitType.WraithDragonRider => SafestStrategy,
+                UnitType.Wraith => MostCrowdedStrategy,
+                UnitType.UrukStandardBearer => SafestStrategy,
                 _ => RandomStrategy
             };
         }
