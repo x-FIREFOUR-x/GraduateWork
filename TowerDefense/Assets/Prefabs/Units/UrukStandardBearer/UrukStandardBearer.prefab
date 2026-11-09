@@ -3773,6 +3773,11 @@ MonoBehaviour:
   healthBar: {fileID: 4165859003981342830}
   fullHealthBar: {fileID: 522820854166011662}
   angleX: 40
+  maxSquadMembersCount: 10
+  allowedSquadMemberUnitTypes: 
+  - 0
+  - 1
+  - 3
   body: {fileID: 8148715568897785477}
   head: {fileID: 7257624088521499218}
   leftThigh: {fileID: 7250119627489181220}

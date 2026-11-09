@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using TowerDefense.Main.Units.ForkPathChoice;
+using TowerDefense.Main.Units.Squad;
 using TowerDefense.Main.Map.Path;
 using TowerDefense.Main.Map.Buildings;
 using TowerDefense.Storage;
@@ -49,6 +50,7 @@ namespace TowerDefense.Main.Units
         public PathGraphNode PreviousNode { get; private set; }
         public PathGraphNode TargetNode { get; private set; }
         private IForkPathChoiceStrategy forkPathChoiceStrategy;
+        private SquadRoutePlan squadRoutePlan;
         private float movedDistance = 0;
         protected bool IsSuccessor { get; private set; }
         private bool hasSuccessor;
@@ -165,7 +167,23 @@ namespace TowerDefense.Main.Units
 
         private PathGraphNode ChooseNextPathNode(PathGraphNode currentNode)
         {
-            return currentNode.IsFork ? forkPathChoiceStrategy.ChooseNextNodeAtFork(this, currentNode) : currentNode.Next[0];
+            if (!currentNode.IsFork)
+                return currentNode.Next[0];
+
+            if (squadRoutePlan != null && squadRoutePlan.TryGetNextBranchNodeAtFork(currentNode, out PathGraphNode nextBranchNodeFromSquadRoutePlan))
+                return nextBranchNodeFromSquadRoutePlan;
+
+            return ChooseNextBranchNodeAtForkByStrategy(currentNode);
+        }
+
+        protected virtual PathGraphNode ChooseNextBranchNodeAtForkByStrategy(PathGraphNode forkStartNode)
+        {
+            return forkPathChoiceStrategy.ChooseNextNodeAtFork(this, forkStartNode);
+        }
+
+        public void SetSquadRoutePlan(SquadRoutePlan squadRoutePlan)
+        {
+            this.squadRoutePlan = squadRoutePlan;
         }
 
         protected virtual void Animate()

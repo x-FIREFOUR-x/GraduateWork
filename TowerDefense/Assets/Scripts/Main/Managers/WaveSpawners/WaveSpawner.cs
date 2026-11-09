@@ -4,6 +4,7 @@ using UnityEngine;
 
 using TowerDefense.Storage;
 using TowerDefense.Main.Units;
+using TowerDefense.Main.Units.Squad;
 
 
 namespace TowerDefense.Main.Managers.WaveSpawners
@@ -30,6 +31,8 @@ namespace TowerDefense.Main.Managers.WaveSpawners
         protected int countSpawnedUnitsInThisWave;
         protected bool AllCurrentWaveUnitsSpawned;
 
+        private readonly List<SquadLeader> squadLeadersAbleToRecruit = new();
+
         public virtual void Initialize(Transform spawn)
         {
             SpawnPoint = spawn;
@@ -49,7 +52,24 @@ namespace TowerDefense.Main.Managers.WaveSpawners
         protected void SpawnUnit(UnitType unitType)
         {
             countSpawnedUnitsInThisWave++;
-            Instantiate(unitsStorage.Units[(int)unitType], SpawnPoint.position, SpawnPoint.rotation);
+            GameObject unitObject = Instantiate(unitsStorage.Units[(int)unitType], SpawnPoint.position, SpawnPoint.rotation);
+            Unit unit = unitObject.GetComponent<Unit>();
+
+            RecruitToSquad(unit);
+
+            if (unit is SquadLeader squadLeader)
+                squadLeadersAbleToRecruit.Add(squadLeader);
+        }
+
+        private void RecruitToSquad(Unit unit)
+        {
+            squadLeadersAbleToRecruit.RemoveAll(squadLeader => !squadLeader.CanRecruit);
+
+            foreach (SquadLeader squadLeader in squadLeadersAbleToRecruit)
+            {
+                if (squadLeader.TryRecruit(unit))
+                    return;
+            }
         }
 
         protected void UpdateAvailableUnit()
@@ -90,6 +110,7 @@ namespace TowerDefense.Main.Managers.WaveSpawners
         {
             countSpawnedUnitsInThisWave = 0;
             countAllUnitsCurrentWave = nextWave.Count;
+            squadLeadersAbleToRecruit.Clear();
         }
 
         protected void OperationAfterFinishWave()
