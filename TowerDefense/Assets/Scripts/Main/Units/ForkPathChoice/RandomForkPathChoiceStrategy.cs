@@ -7,9 +7,9 @@ namespace TowerDefense.Main.Units.ForkPathChoice
 {
     public class RandomForkPathChoiceStrategy : IForkPathChoiceStrategy
     {
-        public PathGraphNode ChooseNextNodeAtFork(Unit unit, PathGraphNode fork)
+        public PathGraphNode ChooseNextNodeAtFork(Unit unit, PathGraphNode forkStartNode)
         {
-            return fork.Next[Random.Range(0, fork.Next.Count)];
+            return forkStartNode.Next[Random.Range(0, forkStartNode.Next.Count)];
         }
     }
 

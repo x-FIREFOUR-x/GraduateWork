@@ -12452,7 +12452,7 @@ MonoBehaviour:
   offsetStartPosY: 5.5
   deathEffect: {fileID: 7802616703178295926, guid: 366749ae4241b5f4188003a22d77cd96, type: 3}
   healthBar: {fileID: 2163952515786195359}
-  fullHealthBar: {fileID: 1231666419244177060}
+  <FullHealthBar>k__BackingField: {fileID: 1231666419244177060}
   angleX: 40
   body: {fileID: 1181620001911543789}
   neck: {fileID: 901400812604037914}

@@ -802,17 +802,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Type>k__BackingField: 0
+  targetableUnitTypes: 0000000002000000030000000500000006000000i
+  aimAtGround: 0
   projectilePrefab: {fileID: 5587021352456154238, guid: 17262a8176604c94ca17a2a8110c5795, type: 3}
-  <TimeBetweenShoots>k__BackingField: 0.7
-  timeToNextFire: 0
-  <ShootRange>k__BackingField: 15
-  rotateSpeed: 8
-  targetableUnitTypes: 00000000020000000300000005000000i
-  <Price>k__BackingField: 100
   pointStartFire:
   - {fileID: 9069229935690751401}
   rotatePart: {fileID: 2072572219788389484}
   offsetTower: {x: 0, y: 0.5, z: 0}
+  <Price>k__BackingField: 100
+  <TimeBetweenShoots>k__BackingField: 0.7
+  timeToNextFire: 0
+  <ShootRange>k__BackingField: 15
+  rotateSpeed: 8
   ballista: {fileID: 6092188003079060807}
   bowArmLeft: {fileID: 7540301104881883882}
   bowArmRight: {fileID: 2871690949855335370}

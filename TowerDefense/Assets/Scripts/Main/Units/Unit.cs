@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using TowerDefense.Main.Units.ForkPathChoice;
+using TowerDefense.Main.Units.Squad;
 using TowerDefense.Main.Map.Path;
 using TowerDefense.Main.Map.Buildings;
 using TowerDefense.Storage;
@@ -12,8 +13,11 @@ namespace TowerDefense.Main.Units
 {
     public abstract class Unit : MonoBehaviour
     {
+        public static string unitTag = "Unit";
+
         [SerializeField]
         protected Transform model;
+        protected abstract Transform Torso { get; }
 
         [field: SerializeField]
         public UnitType UnitType { get; private set; }
@@ -22,10 +26,12 @@ namespace TowerDefense.Main.Units
         [field: SerializeField]
         public float StartHealth { get; private set; } = 100f;
         private float health;
+        private bool isDead;
 
         [field: SerializeField]
         public float StartSpeed { get; private set; } = 10f;
         private float speed;
+        protected float SpeedFactor { get { return speed / StartSpeed; } }
 
         [SerializeField]
         private float timeReturnSpeed = 1f;
@@ -43,47 +49,47 @@ namespace TowerDefense.Main.Units
         private Vector3 pathOffset;
         [SerializeField]
         private float offsetStartPosY;
-
         public float TravelHeight { get; private set; }
 
-        private PathGraphNode target;
+        protected bool CanMove { get; set; } = true;
+        public PathGraphNode PreviousNode { get; private set; }
+        public PathGraphNode TargetNode { get; private set; }
         private IForkPathChoiceStrategy forkPathChoiceStrategy;
         private float movedDistance = 0;
+
         protected bool IsSuccessor { get; private set; }
         private bool hasSuccessor;
 
         public bool CanBeTargeted { get; protected set; } = true;
-        protected bool CanMove { get; set; } = true;
+        private Vector3 bodyCenter;
+        private float groundHeight;
+        public Vector3 BodyCenterPoint { get { return Torso.TransformPoint(bodyCenter); } }
+        public Vector3 GroundPoint { get { return new Vector3(transform.position.x, groundHeight, transform.position.z); } }
 
-        public static string unitTag = "Unit";
+        [Header("SetUpHealthBar")]
+        [SerializeField]
+        private Image healthBar;
+        [field: SerializeField]
+        public Transform FullHealthBar { get; private set; }
+        [SerializeField]
+        private float angleX;
 
         [Header("Effects")]
         [SerializeField]
         private GameObject deathEffect;
-        private bool isDead;
 
-        protected float SpeedFactor { get { return speed / StartSpeed; } }
+        [Header("Squad")]
+        [SerializeField]
+        protected float squadRingSizeFactor = 1f;
+        protected SquadRoutePlan SquadRoutePlan { get; set; }
+        protected SquadMarker SquadMarker { get; set; }
+        private bool hasLostSquadLeader;
 
-        private Vector3 bodyCenter;
-        private float groundHeight;
-
-        protected abstract Transform Torso { get; }
-
-        public Vector3 BodyCenterPoint { get { return Torso.TransformPoint(bodyCenter); } }
-        public Vector3 GroundPoint { get { return new Vector3(transform.position.x, groundHeight, transform.position.z); } }
 
         public Vector3 AimPoint(bool atGround)
         {
             return atGround ? GroundPoint : BodyCenterPoint;
         }
-
-        [Header("SetUpHealthBar")]
-        [SerializeField]
-        private Image healthBar;
-        [SerializeField]
-        private Transform fullHealthBar;
-        [SerializeField]
-        private float angleX;
 
         protected virtual void Start()
         {
@@ -93,7 +99,9 @@ namespace TowerDefense.Main.Units
 
             if (!IsSuccessor)
             {
-                target = ChooseNextPathNode(PathGraphHolder.Graph.Start);
+                PreviousNode = PathGraphHolder.Graph.Start;
+                TargetNode = ChooseNextPathNode(PreviousNode);
+                LeaveSquadIfRoutePlanCompleted();
 
                 Vector2 randomPathOffset = Random.insideUnitCircle * maxRandomPathOffset;
                 pathOffset = new Vector3(randomPathOffset.x, 0, randomPathOffset.y);
@@ -125,7 +133,7 @@ namespace TowerDefense.Main.Units
             if (!CanMove)
                 return;
 
-            Vector3 targetPosition = new Vector3(target.Position.x + pathOffset.x, 0, target.Position.z + pathOffset.z);
+            Vector3 targetPosition = new Vector3(TargetNode.Position.x + pathOffset.x, 0, TargetNode.Position.z + pathOffset.z);
             Vector3 position = new Vector3(transform.position.x, 0, transform.position.z);
 
             Vector3 direction = targetPosition - position;
@@ -149,20 +157,56 @@ namespace TowerDefense.Main.Units
 
         private bool TryGetNextPathNode()
         {
-            if (target.IsEnd)
+            if (TargetNode.IsEnd)
             {
                 return false;
             }
             else
             {
-                target = ChooseNextPathNode(target);
+                PreviousNode = TargetNode;
+                TargetNode = ChooseNextPathNode(PreviousNode);
+                LeaveSquadIfRoutePlanCompleted();
                 return true;
             }
         }
 
         private PathGraphNode ChooseNextPathNode(PathGraphNode currentNode)
         {
-            return currentNode.IsFork ? forkPathChoiceStrategy.ChooseNextNodeAtFork(this, currentNode) : currentNode.Next[0];
+            if (!currentNode.IsFork)
+                return currentNode.Next[0];
+
+            if (SquadRoutePlan != null && SquadRoutePlan.TryGetNextBranchNodeAtFork(currentNode, out PathGraphNode nextBranchNodeFromSquadRoutePlan))
+                return nextBranchNodeFromSquadRoutePlan;
+
+            return ChooseNextBranchNodeAtForkByStrategy(currentNode);
+        }
+
+        protected virtual PathGraphNode ChooseNextBranchNodeAtForkByStrategy(PathGraphNode forkStartNode)
+        {
+            return forkPathChoiceStrategy.ChooseNextNodeAtFork(this, forkStartNode);
+        }
+
+        public void JoinSquad(SquadRoutePlan squadRoutePlan, SquadMarker squadLeaderMarker)
+        {
+            SquadRoutePlan = squadRoutePlan;
+            SquadMarker = squadLeaderMarker.CreateForSquadMember(this, squadRingSizeFactor);
+        }
+
+        public void LoseSquadLeader()
+        {
+            hasLostSquadLeader = true;
+            SquadMarker.ShowSquadLeaderLost();
+            LeaveSquadIfRoutePlanCompleted();
+        }
+
+        private void LeaveSquadIfRoutePlanCompleted()
+        {
+            if (SquadRoutePlan == null || !hasLostSquadLeader || TargetNode == null || SquadRoutePlan.HasPlannedForkNodeAtOrAfter(TargetNode))
+                return;
+
+            SquadRoutePlan = null;
+            Destroy(SquadMarker.gameObject);
+            SquadMarker = null;
         }
 
         protected virtual void Animate()
@@ -177,7 +221,8 @@ namespace TowerDefense.Main.Units
 
         public void BecomeSuccessorOf(Unit previous)
         {
-            target = previous.target;
+            PreviousNode = previous.PreviousNode;
+            TargetNode = previous.TargetNode;
             pathOffset = previous.pathOffset;
             TravelHeight = previous.TravelHeight - previous.offsetStartPosY + offsetStartPosY;
             movedDistance = previous.movedDistance;
@@ -223,12 +268,12 @@ namespace TowerDefense.Main.Units
             Vector3 angles = transform.localEulerAngles;
             angles.x = angleX;
             angles.y = -angles.y;
-            fullHealthBar.localEulerAngles = angles;
+            FullHealthBar.localEulerAngles = angles;
         }
 
         private void Rotate()
         {
-            Vector3 dir = target.Position + pathOffset - model.position;
+            Vector3 dir = TargetNode.Position + pathOffset - model.position;
             dir.y = 0;
             dir.Normalize();
             Quaternion quaternion = Quaternion.LookRotation(dir, Vector3.up);

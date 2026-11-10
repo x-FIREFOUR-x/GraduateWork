@@ -1,9 +1,11 @@
 using UnityEngine;
 
+using TowerDefense.Main.Units.Squad;
+
 
 namespace TowerDefense.Main.Units
 {
-    public class UrukStandardBearer : Unit
+    public class UrukStandardBearer : SquadLeader
     {
         [Header("Uruk")]
         [SerializeField]
