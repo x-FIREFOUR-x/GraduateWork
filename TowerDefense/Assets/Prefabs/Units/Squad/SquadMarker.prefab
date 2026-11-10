@@ -45,6 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TowerDefense.Main.Units.Squad.SquadMarker
   squadHueCandidatesCount: 16
+  excludedSquadHueRangeStart: 0.03
+  excludedSquadHueRangeEnd: 0.14
   squadColorSaturation: 0.85
   squadColorValue: 1
   dimFactorAfterSquadLeaderLost: 0.35

@@ -14,6 +14,10 @@ namespace TowerDefense.Main.Units.Squad
         [SerializeField]
         private int squadHueCandidatesCount = 16;
         [SerializeField, Range(0f, 1f)]
+        private float excludedSquadHueRangeStart = 0.03f;
+        [SerializeField, Range(0f, 1f)]
+        private float excludedSquadHueRangeEnd = 0.14f;
+        [SerializeField, Range(0f, 1f)]
         private float squadColorSaturation = 0.85f;
         [SerializeField, Range(0f, 1f)]
         private float squadColorValue = 1f;
@@ -120,12 +124,12 @@ namespace TowerDefense.Main.Units.Squad
 
         private float ChooseDistinctSquadHue()
         {
-            float bestHue = Random.value;
+            float bestHue = RandomAllowedSquadHue();
             float bestDistance = DistanceToNearestSquadHueInUse(bestHue);
 
             for (int candidate = 1; candidate < squadHueCandidatesCount; candidate++)
             {
-                float hue = Random.value;
+                float hue = RandomAllowedSquadHue();
                 float distance = DistanceToNearestSquadHueInUse(hue);
                 if (distance > bestDistance)
                 {
@@ -135,6 +139,12 @@ namespace TowerDefense.Main.Units.Squad
             }
 
             return bestHue;
+        }
+
+        private float RandomAllowedSquadHue()
+        {
+            float excludedSquadHueRangeLength = Mathf.Repeat(excludedSquadHueRangeEnd - excludedSquadHueRangeStart, 1f);
+            return Mathf.Repeat(excludedSquadHueRangeEnd + Random.value * (1f - excludedSquadHueRangeLength), 1f);
         }
 
         private static float DistanceToNearestSquadHueInUse(float hue)
