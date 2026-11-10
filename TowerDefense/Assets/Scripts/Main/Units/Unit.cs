@@ -19,6 +19,7 @@ namespace TowerDefense.Main.Units
         [field: SerializeField]
         public UnitType UnitType { get; private set; }
 
+
         [field: Header("Attributes")]
         [field: SerializeField]
         public float StartHealth { get; private set; } = 100f;
@@ -38,19 +39,23 @@ namespace TowerDefense.Main.Units
         [field: SerializeField]
         public int Price { get; private set; } = 25;
 
+
         [Header("Position")]
         [SerializeField]
         private float maxRandomPathOffset = 0.7f;
         private Vector3 pathOffset;
         [SerializeField]
         private float offsetStartPosY;
-
         public float TravelHeight { get; private set; }
 
         public PathGraphNode PreviousNode { get; private set; }
         public PathGraphNode TargetNode { get; private set; }
         private IForkPathChoiceStrategy forkPathChoiceStrategy;
-        private SquadRoutePlan squadRoutePlan;
+
+        protected SquadRoutePlan SquadRoutePlan { get; set; }
+        protected SquadMarker SquadMarker { get; set; }
+        private bool hasLostSquadLeader;
+
         private float movedDistance = 0;
         protected bool IsSuccessor { get; private set; }
         private bool hasSuccessor;
@@ -83,10 +88,14 @@ namespace TowerDefense.Main.Units
         [Header("SetUpHealthBar")]
         [SerializeField]
         private Image healthBar;
-        [SerializeField]
-        private Transform fullHealthBar;
+        [field: SerializeField]
+        public Transform FullHealthBar { get; private set; }
         [SerializeField]
         private float angleX;
+
+        [Header("SquadMarker")]
+        [SerializeField]
+        protected float squadRingSizeFactor = 1f;
 
         protected virtual void Start()
         {
@@ -98,6 +107,7 @@ namespace TowerDefense.Main.Units
             {
                 PreviousNode = PathGraphHolder.Graph.Start;
                 TargetNode = ChooseNextPathNode(PreviousNode);
+                LeaveSquadIfRoutePlanCompleted();
 
                 Vector2 randomPathOffset = Random.insideUnitCircle * maxRandomPathOffset;
                 pathOffset = new Vector3(randomPathOffset.x, 0, randomPathOffset.y);
@@ -161,6 +171,7 @@ namespace TowerDefense.Main.Units
             {
                 PreviousNode = TargetNode;
                 TargetNode = ChooseNextPathNode(PreviousNode);
+                LeaveSquadIfRoutePlanCompleted();
                 return true;
             }
         }
@@ -170,7 +181,7 @@ namespace TowerDefense.Main.Units
             if (!currentNode.IsFork)
                 return currentNode.Next[0];
 
-            if (squadRoutePlan != null && squadRoutePlan.TryGetNextBranchNodeAtFork(currentNode, out PathGraphNode nextBranchNodeFromSquadRoutePlan))
+            if (SquadRoutePlan != null && SquadRoutePlan.TryGetNextBranchNodeAtFork(currentNode, out PathGraphNode nextBranchNodeFromSquadRoutePlan))
                 return nextBranchNodeFromSquadRoutePlan;
 
             return ChooseNextBranchNodeAtForkByStrategy(currentNode);
@@ -181,9 +192,27 @@ namespace TowerDefense.Main.Units
             return forkPathChoiceStrategy.ChooseNextNodeAtFork(this, forkStartNode);
         }
 
-        public void SetSquadRoutePlan(SquadRoutePlan squadRoutePlan)
+        public void JoinSquad(SquadRoutePlan squadRoutePlan, SquadMarker squadLeaderMarker)
         {
-            this.squadRoutePlan = squadRoutePlan;
+            SquadRoutePlan = squadRoutePlan;
+            SquadMarker = squadLeaderMarker.CreateForSquadMember(this, squadRingSizeFactor);
+        }
+
+        public void LoseSquadLeader()
+        {
+            hasLostSquadLeader = true;
+            SquadMarker.ShowSquadLeaderLost();
+            LeaveSquadIfRoutePlanCompleted();
+        }
+
+        private void LeaveSquadIfRoutePlanCompleted()
+        {
+            if (SquadRoutePlan == null || !hasLostSquadLeader || TargetNode == null || SquadRoutePlan.HasPlannedForkNodeAtOrAfter(TargetNode))
+                return;
+
+            SquadRoutePlan = null;
+            Destroy(SquadMarker.gameObject);
+            SquadMarker = null;
         }
 
         protected virtual void Animate()
@@ -245,7 +274,7 @@ namespace TowerDefense.Main.Units
             Vector3 angles = transform.localEulerAngles;
             angles.x = angleX;
             angles.y = -angles.y;
-            fullHealthBar.localEulerAngles = angles;
+            FullHealthBar.localEulerAngles = angles;
         }
 
         private void Rotate()

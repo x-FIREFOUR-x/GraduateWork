@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2591786829737968608
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4380952204860915358}
+  - component: {fileID: 3484351884332284987}
+  m_Layer: 0
+  m_Name: SquadMarker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4380952204860915358
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2591786829737968608}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3484351884332284987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2591786829737968608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2a5c59c168c2e84aabb10b6d9fcb17c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TowerDefense.Main.Units.Squad.SquadMarker
+  squadHueCandidatesCount: 16
+  squadColorSaturation: 0.85
+  squadColorValue: 1
+  dimFactorAfterSquadLeaderLost: 0.35
+  emblemSize: 32
+  emblemGapToHealthBar: 4
+  ringSprite: {fileID: 21300000, guid: 4b11a00f40fd41d479ea84ddc75085f5, type: 3}
+  ringEdgeRadiusPart: 0.74
+  ringDiameterToFootprint: 1.05
+  squadLeaderRingDiameterFactor: 1.15
+  ringHeightAboveGround: 0.03
+  ringAlpha: 0.55
+  pulseSpeed: 2.5
+  pulseAmplitude: 0.2
+  sparksMaterial: {fileID: 2100000, guid: 87ecb24d8659cb6469a3d1c1b8d76046, type: 2}
+  squadLeaderSparksPerRingLengthPerSecond: 9
+  squadMemberSparksPerRingLengthPerSecond: 5
+  maxSparksCount: 300
+  sparkLifetime: 1.3
+  sparkMinSizeToRingDiameter: 0.09
+  sparkMaxSizeToRingDiameter: 0.15
+  sparkStartHeightToRingDiameter: 0.25
+  sparkStartHeightSpreadToRingDiameter: 0.15
+  sparkMinRiseSpeedToRingDiameter: 0.35
+  sparkMaxRiseSpeedToRingDiameter: 0.6

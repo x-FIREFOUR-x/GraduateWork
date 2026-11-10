@@ -79,8 +79,9 @@ MonoBehaviour:
   offsetStartPosY: 4
   deathEffect: {fileID: 758981756685564097, guid: e77938cc53a4c7f4bbbcfe503a992a17, type: 3}
   healthBar: {fileID: 8764153020033866868}
-  fullHealthBar: {fileID: 7329156444501033405}
+  <FullHealthBar>k__BackingField: {fileID: 7329156444501033405}
   angleX: 40
+  squadRingSizeFactor: 0.7
   body: {fileID: 5226299515462828513}
   leftWing: {fileID: 8323247560371140031}
   leftWingOuter: {fileID: 682722098393790825}
