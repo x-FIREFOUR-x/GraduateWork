@@ -13,21 +13,25 @@ namespace TowerDefense.Main.Units
 {
     public abstract class Unit : MonoBehaviour
     {
+        public static string unitTag = "Unit";
+
         [SerializeField]
         protected Transform model;
+        protected abstract Transform Torso { get; }
 
         [field: SerializeField]
         public UnitType UnitType { get; private set; }
-
 
         [field: Header("Attributes")]
         [field: SerializeField]
         public float StartHealth { get; private set; } = 100f;
         private float health;
+        private bool isDead;
 
         [field: SerializeField]
         public float StartSpeed { get; private set; } = 10f;
         private float speed;
+        protected float SpeedFactor { get { return speed / StartSpeed; } }
 
         [SerializeField]
         private float timeReturnSpeed = 1f;
@@ -39,7 +43,6 @@ namespace TowerDefense.Main.Units
         [field: SerializeField]
         public int Price { get; private set; } = 25;
 
-
         [Header("Position")]
         [SerializeField]
         private float maxRandomPathOffset = 0.7f;
@@ -48,42 +51,20 @@ namespace TowerDefense.Main.Units
         private float offsetStartPosY;
         public float TravelHeight { get; private set; }
 
+        protected bool CanMove { get; set; } = true;
         public PathGraphNode PreviousNode { get; private set; }
         public PathGraphNode TargetNode { get; private set; }
         private IForkPathChoiceStrategy forkPathChoiceStrategy;
-
-        protected SquadRoutePlan SquadRoutePlan { get; set; }
-        protected SquadMarker SquadMarker { get; set; }
-        private bool hasLostSquadLeader;
-
         private float movedDistance = 0;
+
         protected bool IsSuccessor { get; private set; }
         private bool hasSuccessor;
 
         public bool CanBeTargeted { get; protected set; } = true;
-        protected bool CanMove { get; set; } = true;
-
-        public static string unitTag = "Unit";
-
-        [Header("Effects")]
-        [SerializeField]
-        private GameObject deathEffect;
-        private bool isDead;
-
-        protected float SpeedFactor { get { return speed / StartSpeed; } }
-
         private Vector3 bodyCenter;
         private float groundHeight;
-
-        protected abstract Transform Torso { get; }
-
         public Vector3 BodyCenterPoint { get { return Torso.TransformPoint(bodyCenter); } }
         public Vector3 GroundPoint { get { return new Vector3(transform.position.x, groundHeight, transform.position.z); } }
-
-        public Vector3 AimPoint(bool atGround)
-        {
-            return atGround ? GroundPoint : BodyCenterPoint;
-        }
 
         [Header("SetUpHealthBar")]
         [SerializeField]
@@ -93,9 +74,22 @@ namespace TowerDefense.Main.Units
         [SerializeField]
         private float angleX;
 
-        [Header("SquadMarker")]
+        [Header("Effects")]
+        [SerializeField]
+        private GameObject deathEffect;
+
+        [Header("Squad")]
         [SerializeField]
         protected float squadRingSizeFactor = 1f;
+        protected SquadRoutePlan SquadRoutePlan { get; set; }
+        protected SquadMarker SquadMarker { get; set; }
+        private bool hasLostSquadLeader;
+
+
+        public Vector3 AimPoint(bool atGround)
+        {
+            return atGround ? GroundPoint : BodyCenterPoint;
+        }
 
         protected virtual void Start()
         {
