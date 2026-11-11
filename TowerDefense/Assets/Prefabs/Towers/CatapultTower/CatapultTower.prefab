@@ -228,7 +228,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Type>k__BackingField: 2
-  targetableUnitTypes: 00000000020000000300000005000000i
+  targetableUnitTypes: 000000000200000003000000050000000600000007000000i
   aimAtGround: 1
   projectilePrefab: {fileID: 3030725858542508267, guid: 3be7cc554e0ba4a48a4a3bb209ad430a, type: 3}
   pointStartFire:

@@ -22,6 +22,7 @@ namespace TowerDefense.Main.Units.ForkPathChoice
                 UnitType.WraithDragonRider => SafestStrategy,
                 UnitType.Wraith => MostCrowdedStrategy,
                 UnitType.UrukStandardBearer => SafestStrategy,
+                UnitType.OrcAlphaWargRider => ShortestPathStrategy,
                 _ => RandomStrategy
             };
         }

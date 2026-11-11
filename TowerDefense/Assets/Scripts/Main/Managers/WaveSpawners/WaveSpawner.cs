@@ -96,6 +96,10 @@ namespace TowerDefense.Main.Managers.WaveSpawners
                     availablePrices[UnitType.UrukStandardBearer] = unitsStorage.Units[(int)UnitType.UrukStandardBearer].GetComponent<Unit>().Price;
                     availableUnit.Add(UnitType.UrukStandardBearer);
                     break;
+                case 11:
+                    availablePrices[UnitType.OrcAlphaWargRider] = unitsStorage.Units[(int)UnitType.OrcAlphaWargRider].GetComponent<Unit>().Price;
+                    availableUnit.Add(UnitType.OrcAlphaWargRider);
+                    break;
                 case 12:
                     availablePrices[UnitType.WraithDragonRider] = unitsStorage.Units[(int)UnitType.WraithDragonRider].GetComponent<Unit>().Price;
                     availableUnit.Add(UnitType.WraithDragonRider);

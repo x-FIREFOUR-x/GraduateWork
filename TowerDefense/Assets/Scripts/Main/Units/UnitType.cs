@@ -9,5 +9,6 @@
         WraithDragonRider,
         Wraith,
         UrukStandardBearer,
+        OrcAlphaWargRider,
     }
 }
