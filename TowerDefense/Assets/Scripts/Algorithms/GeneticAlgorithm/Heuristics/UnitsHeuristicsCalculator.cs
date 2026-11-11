@@ -63,6 +63,11 @@ namespace TowerDefense.Algorithms.GeneticAlgorithm.Heuristics
             advantagePoints[(UnitType.UrukStandardBearer, TowerType.CatapultTower)] = 3;
             advantagePoints[(UnitType.UrukStandardBearer, TowerType.IceMageTower)] = 5;
 
+            advantagePoints[(UnitType.OrcAlphaWargRider, TowerType.BallistaTower)] = 8;
+            advantagePoints[(UnitType.OrcAlphaWargRider, TowerType.ArcherTower)] = 10;
+            advantagePoints[(UnitType.OrcAlphaWargRider, TowerType.CatapultTower)] = 15;
+            advantagePoints[(UnitType.OrcAlphaWargRider, TowerType.IceMageTower)] = minAdvantagePoints;
+
 
             GameObject[] pathTiles = GameObject.FindGameObjectsWithTag(PathTile.pathTileTag);
             MapSizeParamsStorage mapSizeParams = Resources.Load<MapSizeParamsStorage>($"{nameof(MapSizeParamsStorage)}");
