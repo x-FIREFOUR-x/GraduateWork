@@ -17,6 +17,8 @@ namespace TowerDefense.Main.Units.ForkPathChoice
             this.goal = goal;
         }
 
+        public string Name { get { return goal == ForkChoiceGoal.Minimize ? "Shortest" : "Longest"; } }
+
         public PathGraphNode ChooseNextNodeAtFork(Unit unit, PathGraphNode forkStartNode)
         {
             PathGraphNode forkEndNode = ForkChoiceUtility.FindForkEndNode(forkStartNode);

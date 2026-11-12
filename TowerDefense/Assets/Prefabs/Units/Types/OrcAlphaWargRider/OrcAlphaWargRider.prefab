@@ -3850,7 +3850,7 @@ MonoBehaviour:
   deathEffect: {fileID: 7304532797343525400, guid: 47bba6350555df840a185864d1b614cf, type: 3}
   squadRingSizeFactor: 0.9
   allowedSquadMemberUnitTypes: 02000000i
-  maxSquadMembersCount: 4
+  <MaxSquadMembersCount>k__BackingField: 4
   squadEmblem: {fileID: 21300000, guid: 06fbf6afa72a06d489074aaebd19188d, type: 3}
   squadMarkerPrefab: {fileID: 3484351884332284987, guid: c3698094b5c960a47be6920ca0d9af76, type: 3}
   warg: {fileID: 2855414284881736125}

@@ -12,8 +12,8 @@ namespace TowerDefense.Main.Units.Squad
         [Header("Squad")]
         [SerializeField]
         private List<UnitType> allowedSquadMemberUnitTypes = new();
-        [SerializeField]
-        private int maxSquadMembersCount = 10;
+        [field: SerializeField]
+        public int MaxSquadMembersCount { get; private set; } = 10;
         private readonly List<Unit> squadMembers = new();
         [SerializeField]
         private Sprite squadEmblem;
@@ -21,7 +21,7 @@ namespace TowerDefense.Main.Units.Squad
         private SquadMarker squadMarkerPrefab;
 
 
-        public bool CanRecruit { get { return this != null && squadMembers.Count < maxSquadMembersCount; } }
+        public bool CanRecruit { get { return this != null && squadMembers.Count < MaxSquadMembersCount; } }
 
         protected virtual void Awake()
         {

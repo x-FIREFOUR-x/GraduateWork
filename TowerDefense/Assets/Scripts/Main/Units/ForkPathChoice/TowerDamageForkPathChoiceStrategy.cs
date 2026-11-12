@@ -18,6 +18,8 @@ namespace TowerDefense.Main.Units.ForkPathChoice
             this.goal = goal;
         }
 
+        public string Name { get { return goal == ForkChoiceGoal.Minimize ? "Safest" : "Most dangerous"; } }
+
         public PathGraphNode ChooseNextNodeAtFork(Unit unit, PathGraphNode forkStartNode)
         {
             List<Tower> towers = FindTowersTargeting(unit);
