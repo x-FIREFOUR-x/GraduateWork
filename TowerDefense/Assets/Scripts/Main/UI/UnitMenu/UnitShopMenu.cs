@@ -17,15 +17,15 @@ namespace TowerDefense.Main.UI.UnitMenu
 
         [Header("Expand")]
         [SerializeField]
-        private TMPro.TextMeshProUGUI textExpand;
+        private Image iconExpand;
         [SerializeField]
         private GridLayoutGroup gridLayout;
         [SerializeField]
         private List<RectTransform> expandedRects;
         [SerializeField]
-        private string textCollapsed = ">>";
+        private Sprite spriteCollapsed;
         [SerializeField]
-        private string textExpanded = "<<";
+        private Sprite spriteExpanded;
 
         private bool isExpanded = false;
 
@@ -43,7 +43,7 @@ namespace TowerDefense.Main.UI.UnitMenu
             }
 
             gridLayout.constraintCount = 1;
-            textExpand.text = textCollapsed;
+            iconExpand.sprite = spriteCollapsed;
         }
 
         public void SwitchExpand()
@@ -61,7 +61,7 @@ namespace TowerDefense.Main.UI.UnitMenu
             }
 
             gridLayout.constraintCount = isExpanded ? 2 : 1;
-            textExpand.text = isExpanded ? textExpanded : textCollapsed;
+            iconExpand.sprite = isExpanded ? spriteExpanded : spriteCollapsed;
         }
 
         public bool AddUnit(UnitType unit, int price, int countAddUnits = 1)
