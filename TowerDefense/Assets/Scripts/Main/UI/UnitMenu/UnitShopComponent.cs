@@ -98,7 +98,7 @@ namespace TowerDefense.Main.UI.UnitMenu
                 Highlight(ForkPathChoiceStrategies.GetByUnitType(unit.UnitType).Name) + "</indent>";
 
             if (unit is SquadLeader squadLeader)
-                text += "\n" + "Squad " + Highlight(squadLeader.MaxSquadMembersCount.ToString());
+                text += "\n" + "Squad size " + Highlight(squadLeader.MaxSquadMembersCount.ToString());
 
             characterText.text = text;
         }
