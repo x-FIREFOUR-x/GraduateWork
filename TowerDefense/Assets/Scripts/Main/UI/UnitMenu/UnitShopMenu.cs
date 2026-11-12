@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 
 using UnityEngine;
+using UnityEngine.UI;
 
 using TowerDefense.Main.Managers;
 using TowerDefense.Main.Units;
@@ -14,6 +15,21 @@ namespace TowerDefense.Main.UI.UnitMenu
         private List<UnitShopComponent> UnitShopComponents;
 
 
+        [Header("Expand")]
+        [SerializeField]
+        private TMPro.TextMeshProUGUI textExpand;
+        [SerializeField]
+        private GridLayoutGroup gridLayout;
+        [SerializeField]
+        private List<RectTransform> expandedRects;
+        [SerializeField]
+        private string textCollapsed = ">>";
+        [SerializeField]
+        private string textExpanded = "<<";
+
+        private bool isExpanded = false;
+
+
         private List<UnitType> units = new List<UnitType>();
 
         public static string currencySymbol = "$";
@@ -25,6 +41,27 @@ namespace TowerDefense.Main.UI.UnitMenu
             {
                 unitShopComponent.Initialize();
             }
+
+            gridLayout.constraintCount = 1;
+            textExpand.text = textCollapsed;
+        }
+
+        public void SwitchExpand()
+        {
+            isExpanded = !isExpanded;
+
+            float delta = gridLayout.cellSize.x + gridLayout.spacing.x;
+            if (!isExpanded)
+                delta = -delta;
+
+            foreach (var rect in expandedRects)
+            {
+                rect.sizeDelta += new Vector2(delta, 0);
+                rect.anchoredPosition += new Vector2(delta * (rect.pivot.x - rect.anchorMin.x), 0);
+            }
+
+            gridLayout.constraintCount = isExpanded ? 2 : 1;
+            textExpand.text = isExpanded ? textExpanded : textCollapsed;
         }
 
         public bool AddUnit(UnitType unit, int price, int countAddUnits = 1)
