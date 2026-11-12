@@ -1,9 +1,12 @@
 using System.Collections;
+using System.Globalization;
 
 using UnityEngine;
 using UnityEngine.UI;
 
 using TowerDefense.Main.Units;
+using TowerDefense.Main.Units.ForkPathChoice;
+using TowerDefense.Main.Units.Squad;
 
 
 namespace TowerDefense.Main.UI.UnitMenu
@@ -82,11 +85,22 @@ namespace TowerDefense.Main.UI.UnitMenu
 
         private void InitializetextCharacters()
         {
-            textCharacter.GetComponent<TMPro.TextMeshProUGUI>().color = colorCharacterText;
-            textCharacter.GetComponent<TMPro.TextMeshProUGUI>().text =
+            TMPro.TextMeshProUGUI characterText = textCharacter.GetComponent<TMPro.TextMeshProUGUI>();
+            characterText.color = colorCharacterText;
+            string text =
                 "Health " + Highlight(unit.StartHealth.ToString()) + "\n" +
                 "Speed " + Highlight(unit.StartSpeed.ToString()) + "\n" +
                 "Damage " + Highlight(unit.Damage.ToString());
+
+            string forkLabel = "Fork";
+            float forkIndent = characterText.GetPreferredValues(forkLabel).x;
+            text += "\n" + forkLabel + "<indent=" + forkIndent.ToString(CultureInfo.InvariantCulture) + ">" + " " +
+                Highlight(ForkPathChoiceStrategies.GetByUnitType(unit.UnitType).Name) + "</indent>";
+
+            if (unit is SquadLeader squadLeader)
+                text += "\n" + "Squad size " + Highlight(squadLeader.MaxSquadMembersCount.ToString());
+
+            characterText.text = text;
         }
 
         private string Highlight(string value)

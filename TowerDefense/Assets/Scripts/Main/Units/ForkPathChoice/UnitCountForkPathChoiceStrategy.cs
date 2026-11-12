@@ -17,6 +17,8 @@ namespace TowerDefense.Main.Units.ForkPathChoice
             this.goal = goal;
         }
 
+        public string Name { get { return goal == ForkChoiceGoal.Minimize ? "Least crowded" : "Most crowded"; } }
+
         public PathGraphNode ChooseNextNodeAtFork(Unit unit, PathGraphNode forkStartNode)
         {
             Dictionary<(PathGraphNode, PathGraphNode), int> unitCountBySegments = CountUnitsBySegments(unit);
