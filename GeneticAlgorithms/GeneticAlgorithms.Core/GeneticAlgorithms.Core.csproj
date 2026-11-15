@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+    <Nullable>disable</Nullable>
+    <RootNamespace>GeneticAlgorithms</RootNamespace>
+    <AssemblyName>GeneticAlgorithms.Core</AssemblyName>
+  </PropertyGroup>
+
+</Project>
