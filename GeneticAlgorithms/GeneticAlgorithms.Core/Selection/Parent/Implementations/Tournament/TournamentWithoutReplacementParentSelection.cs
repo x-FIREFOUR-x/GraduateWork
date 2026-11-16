@@ -1,0 +1,65 @@
+using System;
+using System.Collections.Generic;
+using GeneticAlgorithms.Individuals;
+using GeneticAlgorithms.Randomness;
+
+
+namespace GeneticAlgorithms.Selection.Parent.Implementations.Tournament
+{
+    // Tournament without replacement (Goldberg, Korb, Deb, 1989): the population is shuffled and split
+    // into consecutive groups of TournamentSize individuals, and the best of each group becomes a parent.
+    // When the permutation is exhausted, the population is shuffled again. Every individual takes part
+    // in tournaments evenly, so the selection variance is lower than in a regular tournament.
+    public sealed class TournamentWithoutReplacementParentSelection<TGene> : IParentSelection<TGene>
+    {
+        public int TournamentSize { get; }
+
+
+        public TournamentWithoutReplacementParentSelection(int tournamentSize = 2)
+        {
+            if (tournamentSize < 1)
+                throw new ArgumentOutOfRangeException(nameof(tournamentSize), tournamentSize, "Tournament size must be at least 1.");
+            TournamentSize = tournamentSize;
+        }
+
+        public IReadOnlyList<ParentPair<TGene>> SelectParents(
+            IReadOnlyList<Individual<TGene>> population,
+            IComparer<Individual<TGene>> comparer,
+            int parentPairCount,
+            IRandom random)
+        {
+            ParentSelectionUtilities.Validate(population, comparer, parentPairCount, random);
+            if (TournamentSize > population.Count)
+                throw new InvalidOperationException("Tournament size must not exceed population size.");
+
+            int parentCount = 2 * parentPairCount;
+            var parents = new Individual<TGene>[parentCount];
+
+            var shuffledCandidateIndices = new int[population.Count];
+            for (int i = 0; i < shuffledCandidateIndices.Length; i++)
+                shuffledCandidateIndices[i] = i;
+            
+            int groupStart = shuffledCandidateIndices.Length;
+            for (int i = 0; i < parentCount; i++)
+            {
+                if (groupStart + TournamentSize > shuffledCandidateIndices.Length)
+                {
+                    ParentSelectionUtilities.Shuffle(shuffledCandidateIndices, random);
+                    groupStart = 0;
+                }
+
+                var bestCandidate = population[shuffledCandidateIndices[groupStart]];
+                for (int j = 1; j < TournamentSize; j++)
+                {
+                    var candidate = population[shuffledCandidateIndices[groupStart + j]];
+                    if (comparer.Compare(candidate, bestCandidate) > 0)
+                        bestCandidate = candidate;
+                }
+                groupStart += TournamentSize;
+                parents[i] = bestCandidate;
+            }
+
+            return ParentSelectionUtilities.ToPairs(parents);
+        }
+    }
+}

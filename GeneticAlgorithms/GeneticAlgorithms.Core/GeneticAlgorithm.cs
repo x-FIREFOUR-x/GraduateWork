@@ -82,8 +82,9 @@ namespace GeneticAlgorithms
                     break;
 
                 offspring.Clear();
-                for (int i = 0; i < _config.CountOffspring; i++)
-                    offspring.Add(CreateOffspring(population, comparerIndividuals));
+                var parentPairs = _parentSelection.SelectParents(population, comparerIndividuals, _config.CountOffspring, _random);
+                foreach (var parentPair in parentPairs)
+                    offspring.Add(CreateOffspring(parentPair.First, parentPair.Second, comparerIndividuals));
 
                 _survivorSelection.Replace(population, offspring);
                 _searchProgress.IterationCount++;
@@ -102,11 +103,8 @@ namespace GeneticAlgorithms
             return new GeneticAlgorithmResult<TGene>(bestIndividual, population.ToArray(), _searchProgress);
         }
 
-        private Individual<TGene> CreateOffspring(List<Individual<TGene>> population, IIndividualComparer<TGene> comparer)
+        private Individual<TGene> CreateOffspring(Individual<TGene> firstParent, Individual<TGene> secondParent, IIndividualComparer<TGene> comparer)
         {
-            var firstParent = _parentSelection.Select(population, comparer, _random);
-            var secondParent = _parentSelection.Select(population, comparer, _random);
-
             var child = RepairIfNeeded(_crossover.Cross(firstParent, secondParent, _random));
             EvaluateFitness(child);
 
