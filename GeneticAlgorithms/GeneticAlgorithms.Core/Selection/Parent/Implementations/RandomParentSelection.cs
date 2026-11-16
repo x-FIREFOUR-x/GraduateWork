@@ -10,7 +10,7 @@ namespace GeneticAlgorithms.Selection.Parent.Implementations
     {
         public IReadOnlyList<ParentPair<TGene>> SelectParents(
             IReadOnlyList<Individual<TGene>> population,
-            IComparer<Individual<TGene>> comparer,
+            IIndividualComparer<TGene> comparer,
             int parentPairCount,
             IRandom random)
         {

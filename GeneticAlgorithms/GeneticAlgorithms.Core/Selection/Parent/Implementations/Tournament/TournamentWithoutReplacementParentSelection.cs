@@ -24,7 +24,7 @@ namespace GeneticAlgorithms.Selection.Parent.Implementations.Tournament
 
         public IReadOnlyList<ParentPair<TGene>> SelectParents(
             IReadOnlyList<Individual<TGene>> population,
-            IComparer<Individual<TGene>> comparer,
+            IIndividualComparer<TGene> comparer,
             int parentPairCount,
             IRandom random)
         {
@@ -52,7 +52,7 @@ namespace GeneticAlgorithms.Selection.Parent.Implementations.Tournament
                 for (int j = 1; j < TournamentSize; j++)
                 {
                     var candidate = population[shuffledCandidateIndices[groupStart + j]];
-                    if (comparer.Compare(candidate, bestCandidate) > 0)
+                    if (comparer.IsBetter(candidate, bestCandidate))
                         bestCandidate = candidate;
                 }
                 groupStart += TournamentSize;

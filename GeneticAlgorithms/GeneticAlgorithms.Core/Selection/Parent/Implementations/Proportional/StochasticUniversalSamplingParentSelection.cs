@@ -10,18 +10,9 @@ namespace GeneticAlgorithms.Selection.Parent.Implementations.Proportional
     // individual deviates from its expectation by at most one. The selected pool is shuffled.
     public sealed class StochasticUniversalSamplingParentSelection<TGene> : IParentSelection<TGene>
     {
-        public int FitnessIndex { get; }
-
-
-        public StochasticUniversalSamplingParentSelection(int fitnessIndex = 0)
-        {
-            ParentSelectionUtilities.ValidateFitnessIndex(fitnessIndex);
-            FitnessIndex = fitnessIndex;
-        }
-
         public IReadOnlyList<ParentPair<TGene>> SelectParents(
             IReadOnlyList<Individual<TGene>> population,
-            IComparer<Individual<TGene>> comparer,
+            IIndividualComparer<TGene> comparer,
             int parentPairCount,
             IRandom random)
         {
@@ -29,7 +20,7 @@ namespace GeneticAlgorithms.Selection.Parent.Implementations.Proportional
 
             int parentCount = 2 * parentPairCount;
 
-            var selectionProbabilityWeights = ParentSelectionUtilities.GetFitnessValues(population, FitnessIndex);
+            var selectionProbabilityWeights = ParentSelectionUtilities.GetFitnessValues(population, comparer);
 
             return ParentSelectionUtilities.ToPairs(ParentSelectionUtilities.SelectParentsByStochasticUniversalSampling(population, selectionProbabilityWeights, parentCount, random));
         }

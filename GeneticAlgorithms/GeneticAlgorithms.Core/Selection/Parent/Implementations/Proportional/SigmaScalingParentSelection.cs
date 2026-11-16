@@ -13,28 +13,25 @@ namespace GeneticAlgorithms.Selection.Parent.Implementations.Proportional
     public sealed class SigmaScalingParentSelection<TGene> : IParentSelection<TGene>
     {
         public double ScalingFactor { get; }
-        public int FitnessIndex { get; }
 
 
-        public SigmaScalingParentSelection(double scalingFactor = 2, int fitnessIndex = 0)
+        public SigmaScalingParentSelection(double scalingFactor = 2)
         {
             if (!(scalingFactor > 0) || double.IsInfinity(scalingFactor))
                 throw new ArgumentOutOfRangeException(nameof(scalingFactor), scalingFactor, "Scaling factor must be positive and finite.");
-            ParentSelectionUtilities.ValidateFitnessIndex(fitnessIndex);
             ScalingFactor = scalingFactor;
-            FitnessIndex = fitnessIndex;
         }
 
         public IReadOnlyList<ParentPair<TGene>> SelectParents(
             IReadOnlyList<Individual<TGene>> population,
-            IComparer<Individual<TGene>> comparer,
+            IIndividualComparer<TGene> comparer,
             int parentPairCount,
             IRandom random)
         {
             ParentSelectionUtilities.Validate(population, comparer, parentPairCount, random);
 
             int parentCount = 2 * parentPairCount;
-            var fitnessValues = ParentSelectionUtilities.GetFitnessValues(population, FitnessIndex);
+            var fitnessValues = ParentSelectionUtilities.GetFitnessValues(population, comparer);
 
             double meanFitness = 0;
             foreach (double fitness in fitnessValues)

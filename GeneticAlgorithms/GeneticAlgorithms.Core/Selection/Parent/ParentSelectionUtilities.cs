@@ -11,7 +11,7 @@ namespace GeneticAlgorithms.Selection.Parent
     // weighted sampling (roulette wheel and stochastic universal sampling), grouping parents into pairs and shuffling.
     internal static class ParentSelectionUtilities
     {
-        public static void Validate<TGene>(IReadOnlyList<Individual<TGene>> population, IComparer<Individual<TGene>> comparer, int parentPairCount, IRandom random)
+        public static void Validate<TGene>(IReadOnlyList<Individual<TGene>> population, IIndividualComparer<TGene> comparer, int parentPairCount, IRandom random)
         {
             if (population == null)
                 throw new ArgumentNullException(nameof(population));
@@ -33,22 +33,19 @@ namespace GeneticAlgorithms.Selection.Parent
             return pairs;
         }
 
-        public static void ValidateFitnessIndex(int fitnessIndex)
-        {
-            if (fitnessIndex < 0)
-                throw new ArgumentOutOfRangeException(nameof(fitnessIndex), fitnessIndex, "Fitness index must be non-negative.");
-        }
-
-        public static Individual<TGene>[] SortWorstToBest<TGene>(IReadOnlyList<Individual<TGene>> population, IComparer<Individual<TGene>> comparer)
+        public static Individual<TGene>[] SortWorstToBest<TGene>(IReadOnlyList<Individual<TGene>> population, IIndividualComparer<TGene> comparer)
         {
             return population.OrderBy(individual => individual, comparer).ToArray();
         }
 
-        public static double[] GetFitnessValues<TGene>(IReadOnlyList<Individual<TGene>> population, int fitnessIndex)
+        public static double[] GetFitnessValues<TGene>(IReadOnlyList<Individual<TGene>> population, IIndividualComparer<TGene> comparer)
         {
+            if (comparer is not FitnessComparer<TGene> fitnessComparer)
+                throw new InvalidOperationException("Fitness-proportional selection requires a FitnessComparer, need FitnessIndex that to know which fitness value to use.");
+
             var fitnessValues = new double[population.Count];
             for (int i = 0; i < population.Count; i++)
-                fitnessValues[i] = population[i].FitnessValues[fitnessIndex];
+                fitnessValues[i] = population[i].FitnessValues[fitnessComparer.FitnessIndex];
             return fitnessValues;
         }
 

@@ -22,7 +22,7 @@ namespace GeneticAlgorithms.Selection.Parent.Implementations.Tournament
 
         public IReadOnlyList<ParentPair<TGene>> SelectParents(
             IReadOnlyList<Individual<TGene>> population,
-            IComparer<Individual<TGene>> comparer,
+            IIndividualComparer<TGene> comparer,
             int parentPairCount,
             IRandom random)
         {
@@ -37,13 +37,13 @@ namespace GeneticAlgorithms.Selection.Parent.Implementations.Tournament
             return ParentSelectionUtilities.ToPairs(parents);
         }
 
-        private Individual<TGene> SelectParent(IReadOnlyList<Individual<TGene>> population, IComparer<Individual<TGene>> comparer, IRandom random)
+        private Individual<TGene> SelectParent(IReadOnlyList<Individual<TGene>> population, IIndividualComparer<TGene> comparer, IRandom random)
         {
             var bestCandidate = population[random.Next(population.Count)];
             for (int i = 1; i < TournamentSize; i++)
             {
                 var candidate = population[random.Next(population.Count)];
-                if (comparer.Compare(candidate, bestCandidate) > 0)
+                if (comparer.IsBetter(candidate, bestCandidate))
                     bestCandidate = candidate;
             }
             return bestCandidate;

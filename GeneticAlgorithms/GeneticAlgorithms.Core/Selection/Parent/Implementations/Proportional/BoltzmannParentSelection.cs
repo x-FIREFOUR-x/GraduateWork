@@ -7,26 +7,23 @@ using GeneticAlgorithms.Randomness;
 namespace GeneticAlgorithms.Selection.Parent.Implementations.Proportional
 {
     // Boltzmann selection: the selection probability is proportional to exp(f / T), where f is the fitness
-    // at FitnessIndex and T = Temperature. A high temperature makes selection close to uniform,
+    // value used by the FitnessComparer and T = Temperature. A high temperature makes selection close to uniform,
     // a low one makes it close to always picking the best individual. Allows negative fitness values.
     public sealed class BoltzmannParentSelection<TGene> : IParentSelection<TGene>
     {
         public double Temperature { get; }
-        public int FitnessIndex { get; }
 
 
-        public BoltzmannParentSelection(double temperature = 1, int fitnessIndex = 0)
+        public BoltzmannParentSelection(double temperature = 1)
         {
             if (!(temperature > 0) || double.IsInfinity(temperature))
                 throw new ArgumentOutOfRangeException(nameof(temperature), temperature, "Temperature must be positive and finite.");
-            ParentSelectionUtilities.ValidateFitnessIndex(fitnessIndex);
             Temperature = temperature;
-            FitnessIndex = fitnessIndex;
         }
 
         public IReadOnlyList<ParentPair<TGene>> SelectParents(
             IReadOnlyList<Individual<TGene>> population,
-            IComparer<Individual<TGene>> comparer,
+            IIndividualComparer<TGene> comparer,
             int parentPairCount,
             IRandom random)
         {
@@ -34,7 +31,7 @@ namespace GeneticAlgorithms.Selection.Parent.Implementations.Proportional
 
             int parentCount = 2 * parentPairCount;
 
-            var fitnessValues = ParentSelectionUtilities.GetFitnessValues(population, FitnessIndex);
+            var fitnessValues = ParentSelectionUtilities.GetFitnessValues(population, comparer);
             double maxFitness = double.NegativeInfinity;
             foreach (double fitness in fitnessValues)
                 maxFitness = Math.Max(maxFitness, fitness);

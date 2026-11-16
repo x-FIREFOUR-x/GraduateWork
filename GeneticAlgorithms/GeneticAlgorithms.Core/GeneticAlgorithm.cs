@@ -90,7 +90,7 @@ namespace GeneticAlgorithms
                 _searchProgress.IterationCount++;
 
                 var individual = FindBestIndividual(population, comparerIndividuals);
-                if (comparerIndividuals.Compare(individual, bestIndividual) > 0)
+                if (comparerIndividuals.IsBetter(individual, bestIndividual))
                 {
                     bestIndividual = individual;
                     _searchProgress.BestFitnessValues = bestIndividual.FitnessValues;
@@ -135,11 +135,11 @@ namespace GeneticAlgorithms
             _searchProgress.FitnessFunctionCallCount++;
         }
 
-        private static Individual<TGene> FindBestIndividual(List<Individual<TGene>> population, IComparer<Individual<TGene>> comparer)
+        private static Individual<TGene> FindBestIndividual(List<Individual<TGene>> population, IIndividualComparer<TGene> comparer)
         {
             var bestIndividual = population[0];
             for (int i = 1; i < population.Count; i++)
-                if (comparer.Compare(population[i], bestIndividual) > 0)
+                if (comparer.IsBetter(population[i], bestIndividual))
                     bestIndividual = population[i];
             return bestIndividual;
         }

@@ -11,7 +11,7 @@ namespace GeneticAlgorithms.Selection.Parent
     {
         IReadOnlyList<ParentPair<TGene>> SelectParents(
             IReadOnlyList<Individual<TGene>> population,
-            IComparer<Individual<TGene>> comparer,
+            IIndividualComparer<TGene> comparer,
             int parentPairCount,
             IRandom random);
     }
