@@ -44,15 +44,15 @@ namespace GeneticAlgorithms
         public void Validate()
         {
             if (PopulationSize < 2)
-                throw new ArgumentOutOfRangeException(nameof(PopulationSize));
+                throw new ArgumentOutOfRangeException(nameof(PopulationSize), PopulationSize, "Population size must be at least 2.");
             if (CountOffspring < 1)
-                throw new ArgumentOutOfRangeException(nameof(CountOffspring));
+                throw new ArgumentOutOfRangeException(nameof(CountOffspring), CountOffspring, "Offspring count must be at least 1.");
             if (InitialPopulationRandomShare < 0 || InitialPopulationGreedyShare < 0 || InitialPopulationWarmStartShare < 0 || InitialPopulationRandomShare + InitialPopulationGreedyShare + InitialPopulationWarmStartShare <= 0)
-                throw new ArgumentException("Initialization shares must be non-negative with a positive sum.");
+                throw new ArgumentException("Initial population shares must be non-negative and their sum must be positive.");
             if (InitialPopulationGreedyCandidatePool < 1)
-                throw new ArgumentOutOfRangeException(nameof(InitialPopulationGreedyCandidatePool));
+                throw new ArgumentOutOfRangeException(nameof(InitialPopulationGreedyCandidatePool), InitialPopulationGreedyCandidatePool, "Initial population greedy candidate pool must be at least 1.");
             if (MaxIterations == null && TimeLimit == null && StagnationIterations == null)
-                throw new ArgumentException("At least one stop criterion must be configured.");
+                throw new ArgumentException("At least one stop criterion must be configured: MaxIterations, TimeLimit or StagnationIterations.");
         }
     }
 }

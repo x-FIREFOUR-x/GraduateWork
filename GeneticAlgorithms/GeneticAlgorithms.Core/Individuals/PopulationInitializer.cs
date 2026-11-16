@@ -18,7 +18,7 @@ namespace GeneticAlgorithms.Individuals
             _individualBuilder = individualBuilder ?? throw new ArgumentNullException(nameof(individualBuilder));
             _repair = repair ?? throw new ArgumentNullException(nameof(repair));
             if (attemptsPerIndividual < 1)
-                throw new ArgumentOutOfRangeException(nameof(attemptsPerIndividual));
+                throw new ArgumentOutOfRangeException(nameof(attemptsPerIndividual), attemptsPerIndividual, "Attempts per individual must be at least 1.");
             AttemptsPerIndividual = attemptsPerIndividual;
         }
 

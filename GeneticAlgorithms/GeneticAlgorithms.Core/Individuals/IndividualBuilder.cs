@@ -60,7 +60,7 @@ namespace GeneticAlgorithms.Individuals
         public Individual<TGene> CreateGreedy(int candidatePool, IRandom random)
         {
             if (candidatePool < 1)
-                throw new ArgumentOutOfRangeException(nameof(candidatePool));
+                throw new ArgumentOutOfRangeException(nameof(candidatePool), candidatePool, "Candidate pool must be at least 1.");
 
             var individual = CreateEmpty();
             while (true)
