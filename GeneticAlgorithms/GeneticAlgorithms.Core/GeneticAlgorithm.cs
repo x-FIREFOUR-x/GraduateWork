@@ -86,19 +86,19 @@ namespace GeneticAlgorithms
                     offspring.Add(CreateOffspring(population, comparerIndividuals));
 
                 _survivorSelection.Replace(population, offspring);
-                _searchProgress.Iteration++;
+                _searchProgress.IterationCount++;
 
                 var individual = FindBestIndividual(population, comparerIndividuals);
                 if (comparerIndividuals.Compare(individual, bestIndividual) > 0)
                 {
                     bestIndividual = individual;
                     _searchProgress.BestFitnessValues = bestIndividual.FitnessValues;
-                    _searchProgress.LastImprovementIteration = _searchProgress.Iteration;
+                    _searchProgress.NumberLastImprovementIteration = _searchProgress.IterationCount;
                 }
             }
 
             _searchProgress.ElapsedTime = stopwatch.Elapsed;
-            _searchProgress.IndividualsShareConstraintSatisfying =CalculateIndividualsShareConstraintSatisfying(population);
+            _searchProgress.IndividualsShareConstraintSatisfying = CalculateIndividualsShareConstraintSatisfying(population);
             return new GeneticAlgorithmResult<TGene>(bestIndividual, population.ToArray(), _searchProgress);
         }
 
