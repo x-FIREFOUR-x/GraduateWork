@@ -106,11 +106,11 @@ namespace GeneticAlgorithms.Individuals
             InvalidateFitnessValues();
         }
 
-        public double TotalCost(IResourceConstraint<TGene> constraint)
+        public double TotalCost(ICostModel<TGene> costModel)
         {
             double total = 0;
             foreach (var gene in _genes)
-                total += constraint.Cost(gene);
+                total += costModel.Cost(gene);
             return total;
         }
 

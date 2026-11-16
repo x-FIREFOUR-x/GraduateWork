@@ -1,6 +1,6 @@
 namespace GeneticAlgorithms.Constraints
 {
-    public interface IResourceConstraint<TGene> : IConstraint<TGene>
+    public interface ICostModel<TGene>
     {
         double MaxTotalCost { get; }
 

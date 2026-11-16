@@ -9,13 +9,13 @@ namespace GeneticAlgorithms.Individuals
 {
     public sealed class IndividualBuilder<TGene>
     {
-        private readonly IResourceConstraint<TGene> _constraint;
+        private readonly IConstraint<TGene> _constraint;
         private readonly List<TGene> _existingGenes;
         private readonly List<TGene> _sortedGenesByFitnessPerCost;
         private readonly List<TGene> _availableGenes = new List<TGene>();
 
         public IndividualBuilder(
-            IResourceConstraint<TGene> constraint,
+            IConstraint<TGene> constraint,
             IReadOnlyList<TGene> availableGenes,
             FitnessPerCostCalculator<TGene> fitnessPerCostCalculator)
         {

@@ -7,13 +7,13 @@ namespace GeneticAlgorithms.Fitness
     public sealed class FitnessPerCostCalculator<TGene>
     {
         private readonly IFitnessFunction<TGene> _fitnessFunction;
-        private readonly IResourceConstraint<TGene> _constraint;
+        private readonly ICostModel<TGene> _costModel;
         private readonly Dictionary<TGene, double> _fitnessPerCostByGene;
 
-        public FitnessPerCostCalculator(IFitnessFunction<TGene> fitnessFunction, IResourceConstraint<TGene> constraint)
+        public FitnessPerCostCalculator(IFitnessFunction<TGene> fitnessFunction, ICostModel<TGene> costModel)
         {
             _fitnessFunction = fitnessFunction;
-            _constraint = constraint;
+            _costModel = costModel;
             _fitnessPerCostByGene = new Dictionary<TGene, double>();
         }
 
@@ -23,8 +23,8 @@ namespace GeneticAlgorithms.Fitness
                 return fitnessPerCost;
 
             double fitness = _fitnessFunction.EvaluateGene(gene);
-            double cost = _constraint.Cost(gene);
-            fitnessPerCost = cost > 0 ? fitness / cost : (fitness > 0 ? double.PositiveInfinity : fitness);
+            double cost = _costModel.Cost(gene);
+            fitnessPerCost = fitness / cost;
 
             _fitnessPerCostByGene[gene] = fitnessPerCost;
             return fitnessPerCost;
