@@ -8,8 +8,13 @@ namespace GeneticAlgorithms.Selection.Parent.Implementations.Rank
 {
     // Truncation selection: a parent is drawn uniformly from the TruncationShare best individuals
     // of the population (at least one). Very strong selection pressure, risk of premature convergence.
+    //
+    // Complexity: time O(n * log n + m), memory O(n + m).
+    // n - the population size;
+    // m - the number of selected parents (2 * parentPairCount).
     public sealed class TruncationParentSelection<TGene> : IParentSelection<TGene>
     {
+        /// Share of the population, counted from the best, that may become parents, in (0; 1].
         public double TruncationShare { get; }
 
 

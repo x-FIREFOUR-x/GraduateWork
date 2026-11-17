@@ -10,6 +10,10 @@ namespace GeneticAlgorithms.Selection.Parent.Implementations.Proportional
     // max(0, 1 + (f - mean) / (c * sigma)), where mean and sigma are the mean and standard deviation of fitness
     // in the population and c = ScalingFactor. The selection pressure is independent of the fitness scale and stays
     // constant during the search. If sigma = 0, selection is uniform. Allows negative fitness values.
+    //
+    // Complexity: time O(n + m * log n), memory O(n + m).
+    // n - the population size;
+    // m - the number of selected parents (2 * parentPairCount).
     public sealed class SigmaScalingParentSelection<TGene> : IParentSelection<TGene>
     {
         public double ScalingFactor { get; }

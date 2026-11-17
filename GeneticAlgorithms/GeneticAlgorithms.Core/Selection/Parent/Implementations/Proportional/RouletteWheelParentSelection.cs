@@ -8,6 +8,10 @@ namespace GeneticAlgorithms.Selection.Parent.Implementations.Proportional
     // Roulette wheel (fitness-proportional) selection (Holland, 1975): the selection probability is proportional
     // to the fitness value used by the FitnessComparer. Values must be non-negative; if all are zero, selection is uniform.
     // Sensitive to the fitness scale; suitable for single-objective maximization only.
+    //
+    // Complexity: time O(n + m * log n), memory O(n + m).
+    // n - the population size;
+    // m - the number of selected parents (2 * parentPairCount).
     public sealed class RouletteWheelParentSelection<TGene> : IParentSelection<TGene>
     {
         public IReadOnlyList<ParentPair<TGene>> SelectParents(

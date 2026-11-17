@@ -9,6 +9,10 @@ namespace GeneticAlgorithms.Selection.Parent.Implementations.Proportional
     // Boltzmann selection: the selection probability is proportional to exp(f / T), where f is the fitness
     // value used by the FitnessComparer and T = Temperature. A high temperature makes selection close to uniform,
     // a low one makes it close to always picking the best individual. Allows negative fitness values.
+    //
+    // Complexity: time O(n + m * log n), memory O(n + m).
+    // n - the population size;
+    // m - the number of selected parents (2 * parentPairCount).
     public sealed class BoltzmannParentSelection<TGene> : IParentSelection<TGene>
     {
         public double Temperature { get; }

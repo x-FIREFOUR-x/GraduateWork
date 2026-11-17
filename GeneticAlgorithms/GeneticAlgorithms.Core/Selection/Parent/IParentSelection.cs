@@ -9,6 +9,7 @@ namespace GeneticAlgorithms.Selection.Parent
     // Each pair is crossed over to produce one offspring.
     public interface IParentSelection<TGene>
     {
+        // parentPairCount: number of parent pairs, one per offspring.
         IReadOnlyList<ParentPair<TGene>> SelectParents(
             IReadOnlyList<Individual<TGene>> population,
             IIndividualComparer<TGene> comparer,

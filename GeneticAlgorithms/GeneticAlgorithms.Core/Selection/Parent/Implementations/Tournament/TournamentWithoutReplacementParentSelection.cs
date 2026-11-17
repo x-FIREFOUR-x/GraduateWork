@@ -10,8 +10,14 @@ namespace GeneticAlgorithms.Selection.Parent.Implementations.Tournament
     // into consecutive groups of TournamentSize individuals, and the best of each group becomes a parent.
     // When the permutation is exhausted, the population is shuffled again. Every individual takes part
     // in tournaments evenly, so the selection variance is lower than in a regular tournament.
+    //
+    // Complexity: time O(n + m * k), memory O(n + m).
+    // n - the population size;
+    // m - the number of selected parents (2 * parentPairCount);
+    // k - the tournament size.
     public sealed class TournamentWithoutReplacementParentSelection<TGene> : IParentSelection<TGene>
     {
+        // How many candidates of the shuffled population compete in one group; from 1 to the population size.
         public int TournamentSize { get; }
 
 

@@ -9,6 +9,10 @@ namespace GeneticAlgorithms.Selection.Parent.Implementations.Rank
     // Linear ranking selection (Baker, 1985): individuals are sorted from worst (rank 0) to best (rank n - 1),
     // and the selection probability depends linearly on the rank: p(r) = (2 - s) / n + 2r(s - 1) / (n(n - 1)),
     // where s = SelectionPressure in [1; 2] is the expected number of copies of the best individual.
+    //
+    // Complexity: time O((n + m) * log n), memory O(n + m).
+    // n - the population size;
+    // m - the number of selected parents (2 * parentPairCount).
     public sealed class LinearRankParentSelection<TGene> : IParentSelection<TGene>
     {
         public double SelectionPressure { get; }

@@ -9,8 +9,13 @@ namespace GeneticAlgorithms.Selection.Parent.Implementations.Tournament
     // Probabilistic tournament: candidates are ordered from best to worst, the best wins with
     // probability p = WinProbability, the second with probability p(1 - p), and so on; the last one gets
     // the remaining probability. Allows the selection pressure to be lowered smoothly.
+    //
+    // Complexity: time O(m * k * log k), memory O(m + k).
+    // m - the number of selected parents (2 * parentPairCount);
+    // k - the tournament size.
     public sealed class ProbabilisticTournamentParentSelection<TGene> : IParentSelection<TGene>
     {
+        // How many randomly drawn candidates compete in one tournament; at least 2.
         public int TournamentSize { get; }
 
         // Probability p that the best of the remaining candidates wins. Allowed range is [0.5; 1]:

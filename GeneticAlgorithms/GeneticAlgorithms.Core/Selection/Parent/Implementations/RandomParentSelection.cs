@@ -6,6 +6,9 @@ using GeneticAlgorithms.Randomness;
 namespace GeneticAlgorithms.Selection.Parent.Implementations
 {
     // Random selection: a parent is drawn uniformly from the population, with no selection pressure.
+    //
+    // Complexity: time O(m), memory O(m).
+    // m - the number of selected parents (2 * parentPairCount).
     public sealed class RandomParentSelection<TGene> : IParentSelection<TGene>
     {
         public IReadOnlyList<ParentPair<TGene>> SelectParents(

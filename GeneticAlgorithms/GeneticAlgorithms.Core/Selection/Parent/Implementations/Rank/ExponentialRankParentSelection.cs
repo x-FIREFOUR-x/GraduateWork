@@ -9,6 +9,10 @@ namespace GeneticAlgorithms.Selection.Parent.Implementations.Rank
     // Exponential ranking selection: individuals are ordered from best to worst, and the weight of the individual
     // at position i (0 is the best) equals c^i, where c = RankBase in (0; 1]. The smaller c, the stronger
     // the selection pressure; c = 1 gives uniform selection. Independent of the fitness scale; uses comparisons only.
+    //
+    // Complexity: time O((n + m) * log n), memory O(n + m).
+    // n - the population size;
+    // m - the number of selected parents (2 * parentPairCount).
     public sealed class ExponentialRankParentSelection<TGene> : IParentSelection<TGene>
     {
         public double RankBase { get; }

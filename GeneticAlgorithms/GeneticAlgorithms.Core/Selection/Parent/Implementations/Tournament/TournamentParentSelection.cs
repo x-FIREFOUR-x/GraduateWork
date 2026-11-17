@@ -8,8 +8,13 @@ namespace GeneticAlgorithms.Selection.Parent.Implementations.Tournament
 {
     // Tournament selection: TournamentSize individuals are drawn at random (with replacement)
     // and the best of them becomes a parent. Selection pressure grows with the tournament size.
+    //
+    // Complexity: time O(m * k), memory O(m).
+    // m - the number of selected parents (2 * parentPairCount);
+    // k - the tournament size.
     public sealed class TournamentParentSelection<TGene> : IParentSelection<TGene>
     {
+        // How many randomly drawn candidates compete in one tournament; at least 1.
         public int TournamentSize { get; }
 
 
