@@ -69,7 +69,7 @@ namespace GeneticAlgorithms
             var bestIndividual = FindBestIndividual(population, comparerIndividuals);
             _searchProgress.BestFitnessValues = bestIndividual.FitnessValues;
 
-            var offspring = new List<Individual<TGene>>(_config.CountOffspring);
+            var offspring = new List<Offspring<TGene>>(_config.CountOffspring);
             while (true)
             {
                 _searchProgress.ElapsedTime = stopwatch.Elapsed;
@@ -84,9 +84,9 @@ namespace GeneticAlgorithms
                 offspring.Clear();
                 var parentPairs = _parentSelection.SelectParents(population, comparerIndividuals, _config.CountOffspring, _random);
                 foreach (var parentPair in parentPairs)
-                    offspring.Add(CreateOffspring(parentPair.First, parentPair.Second, comparerIndividuals));
+                    offspring.Add(new Offspring<TGene>(CreateOffspring(parentPair.First, parentPair.Second, comparerIndividuals), parentPair));
 
-                _survivorSelection.Replace(population, offspring);
+                _survivorSelection.Replace(population, offspring, _random);
                 _searchProgress.IterationCount++;
 
                 var individual = FindBestIndividual(population, comparerIndividuals);
