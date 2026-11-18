@@ -129,6 +129,19 @@ namespace GeneticAlgorithms.Crossovers
             return cutPoints;
         }
 
+        // Creates random cut points for one parent of a variable-length crossover, in ascending order.
+        // The points may repeat and may be 0 or length, so a segment between them may be empty or the whole parent;
+        // this is what lets the child be shorter or longer than its parents.
+        // Example: length 5, cutPointCount 2 -> [0, 3], so the segments are [0, 0) empty, [0, 3), [3, 5).
+        public static int[] CreateRandomCutPoints(int length, int cutPointCount, IRandom random)
+        {
+            var cutPoints = new int[cutPointCount];
+            for (int i = 0; i < cutPointCount; i++)
+                cutPoints[i] = random.Next(length + 1);
+            Array.Sort(cutPoints);
+            return cutPoints;
+        }
+
         // Appends to the child the segments between the cut points, taking them in turn from the first and the second parent:
         // segment 0 from the first parent, segment 1 from the second, segment 2 from the first, and so on.
         // Each parent is cut at its own points: segment i of the first parent ends at firstCutPoints[i],
