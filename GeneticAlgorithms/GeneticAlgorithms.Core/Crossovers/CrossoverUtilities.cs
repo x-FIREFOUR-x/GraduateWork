@@ -24,6 +24,32 @@ namespace GeneticAlgorithms.Crossovers
                 throw new ArgumentException($"Fixed-length crossover requires parents of equal length, but the parents have {firstParent.Count} and {secondParent.Count} genes.");
         }
 
+        public static void ValidateFiniteGenes(Individual<double> firstParent, Individual<double> secondParent)
+        {
+            if (!HasOnlyFiniteValuesGenes(firstParent))
+                throw new ArgumentException("Real-valued crossover requires finite values genes.", nameof(firstParent));
+            if (!HasOnlyFiniteValuesGenes(secondParent))
+                throw new ArgumentException("Real-valued crossover requires finite values genes.", nameof(secondParent));
+        }
+
+        public static void ValidateGenesWithinBounds(Individual<double> firstParent, Individual<double> secondParent, double minGeneValue, double maxGeneValue)
+        {
+            if (!HasOnlyGenesWithinBounds(firstParent, minGeneValue, maxGeneValue))
+                throw new ArgumentException("Bounded real-valued crossover requires parent genes values between the min and max gene values.", nameof(firstParent));
+            if (!HasOnlyGenesWithinBounds(secondParent, minGeneValue, maxGeneValue))
+                throw new ArgumentException("Bounded real-valued crossover requires parent genes values between the min and max gene values.", nameof(secondParent));
+        }
+
+        public static void ValidateGeneBounds(double minGeneValue, double maxGeneValue)
+        {
+            if (double.IsNaN(minGeneValue))
+                throw new ArgumentOutOfRangeException(nameof(minGeneValue), minGeneValue, "Min gene value must be a number.");
+            if (double.IsNaN(maxGeneValue))
+                throw new ArgumentOutOfRangeException(nameof(maxGeneValue), maxGeneValue, "Max gene value must be a number.");
+            if (minGeneValue > maxGeneValue)
+                throw new ArgumentException("Min gene value must not exceed max gene value.", nameof(minGeneValue));
+        }
+
         // Returns 0, 1, ..., count - 1: the first parent in the numbers of FindPositionsOfSecondParentGenesInFirstParent, or the positions in their original order.
         public static int[] CreateSequentialIndices(int count)
         {
@@ -98,6 +124,22 @@ namespace GeneticAlgorithms.Crossovers
                 int j = random.Next(i + 1);
                 (items[i], items[j]) = (items[j], items[i]);
             }
+        }
+
+        private static bool HasOnlyFiniteValuesGenes(Individual<double> parent)
+        {
+            foreach (double gene in parent.Genes)
+                if (double.IsNaN(gene) || double.IsInfinity(gene))
+                    return false;
+            return true;
+        }
+
+        private static bool HasOnlyGenesWithinBounds(Individual<double> parent, double minGeneValue, double maxGeneValue)
+        {
+            foreach (double gene in parent.Genes)
+                if (gene < minGeneValue || gene > maxGeneValue)
+                    return false;
+            return true;
         }
     }
 }
