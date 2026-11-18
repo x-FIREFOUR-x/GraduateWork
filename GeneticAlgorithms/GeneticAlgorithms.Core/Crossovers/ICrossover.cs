@@ -6,6 +6,6 @@ namespace GeneticAlgorithms.Crossovers
 {
     public interface ICrossover<TGene>
     {
-        Individual<TGene> Cross(Individual<TGene> first, Individual<TGene> second, IRandom random);
+        Individual<TGene> Cross(Individual<TGene> firstParent, Individual<TGene> secondParent, IRandom random);
     }
 }
