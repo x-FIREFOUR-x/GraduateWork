@@ -50,6 +50,44 @@ namespace GeneticAlgorithms.Crossovers
                 throw new ArgumentException("Min gene value must not exceed max gene value.", nameof(minGeneValue));
         }
 
+        // Turns the second parent into numbers that permutation crossovers can work with:
+        // each gene is replaced by the position of the same gene in the first parent.
+        // If a gene repeats, its k-th occurrence in the second parent gets the position of its k-th occurrence in the first parent,
+        // so all numbers are different. The first parent itself becomes 0, 1, ..., n - 1.
+        // Example: first [A, B, A, C], second [C, A, A, B] -> [3, 0, 2, 1].
+        public static int[] FindPositionsOfSecondParentGenesInFirstParent<TGene>(Individual<TGene> firstParent, Individual<TGene> secondParent)
+        {
+            var positionsByGeneInFirstParent = new Dictionary<TGene, Queue<int>>();
+            for (int i = 0; i < firstParent.Count; i++)
+            {
+                if (!positionsByGeneInFirstParent.TryGetValue(firstParent.Genes[i], out var positions))
+                {
+                    positions = new Queue<int>();
+                    positionsByGeneInFirstParent.Add(firstParent.Genes[i], positions);
+                }
+                positions.Enqueue(i);
+            }
+
+            var secondParentPermutation = new int[secondParent.Count];
+            for (int i = 0; i < secondParent.Count; i++)
+            {
+                if (!positionsByGeneInFirstParent.TryGetValue(secondParent.Genes[i], out var positions) || positions.Count == 0)
+                    throw new ArgumentException("Permutation crossover requires parents that are permutations of the same genes.");
+                secondParentPermutation[i] = positions.Dequeue();
+            }
+            return secondParentPermutation;
+        }
+
+        // Returns the genes of the first parent at the given positions; turns a child built by a permutation crossover back into genes.
+        // Example: first [A, B, A, C], positions for permutations [0, 3, 1, 2] -> [A, C, B, A].
+        public static List<TGene> GetFirstParentGenesAtPositions<TGene>(Individual<TGene> firstParent, int[] positionsForPermutations)
+        {
+            var genes = new List<TGene>(positionsForPermutations.Length);
+            foreach (int position in positionsForPermutations)
+                genes.Add(firstParent.Genes[position]);
+            return genes;
+        }
+
         // Returns 0, 1, ..., count - 1: the first parent in the numbers of FindPositionsOfSecondParentGenesInFirstParent, or the positions in their original order.
         public static int[] CreateSequentialIndices(int count)
         {
