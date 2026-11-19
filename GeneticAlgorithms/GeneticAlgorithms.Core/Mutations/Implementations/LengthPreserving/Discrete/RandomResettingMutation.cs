@@ -23,7 +23,7 @@ namespace GeneticAlgorithms.Mutations.Implementations.LengthPreserving.Discrete
         // Distinct genes a mutated gene can become; at least one.
         public IReadOnlyList<TGene> AvailableGenes { get; }
 
-        // Probability that a gene is mutated, in [0; 1]; null means 1 / IndividualSize, so on average one gene per individual.
+        // Probability that a gene is mutated, in (0; 1]; null means 1 / IndividualSize, so on average one gene per individual.
         public double? GeneMutationProbability { get; }
 
 

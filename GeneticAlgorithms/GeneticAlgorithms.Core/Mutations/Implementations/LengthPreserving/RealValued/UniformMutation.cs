@@ -23,7 +23,7 @@ namespace GeneticAlgorithms.Mutations.Implementations.LengthPreserving.RealValue
         // Upper bound of the values a mutated gene can take; finite.
         public double MaxGeneValue { get; }
 
-        // Probability that a gene is mutated, in [0; 1]; null means 1 / n, so on average one gene per individual.
+        // Probability that a gene is mutated, in (0; 1]; null means 1 / n, so on average one gene per individual.
         public double? GeneMutationProbability { get; }
 
 

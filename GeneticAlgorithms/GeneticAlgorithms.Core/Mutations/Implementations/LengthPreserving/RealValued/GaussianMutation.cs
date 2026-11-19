@@ -29,7 +29,7 @@ namespace GeneticAlgorithms.Mutations.Implementations.LengthPreserving.RealValue
         // Largest allowed gene value; mutated genes above it are clamped to it.
         public double MaxGeneValue { get; }
 
-        // Probability that a gene is mutated, in [0; 1]; null means 1 / n, so on average one gene per individual.
+        // Probability that a gene is mutated, in (0; 1]; null means 1 / n, so on average one gene per individual.
         public double? GeneMutationProbability { get; }
 
         // Typical size of a step: about 68% of the additions lie within one standard deviation; positive and finite.

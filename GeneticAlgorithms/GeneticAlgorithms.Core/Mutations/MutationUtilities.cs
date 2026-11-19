@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using GeneticAlgorithms.Individuals;
@@ -20,8 +20,8 @@ namespace GeneticAlgorithms.Mutations
         // Null is allowed and means the classic rate 1 / n, where n is the number of genes of the mutated individual.
         public static void ValidateGeneMutationProbability(double? geneMutationProbability)
         {
-            if (geneMutationProbability.HasValue && !(geneMutationProbability.Value >= 0 && geneMutationProbability.Value <= 1))
-                throw new ArgumentOutOfRangeException(nameof(geneMutationProbability), geneMutationProbability, "Gene mutation probability must be greater between 0 and 1.");
+            if (geneMutationProbability.HasValue && !(geneMutationProbability.Value > 0 && geneMutationProbability.Value <= 1))
+                throw new ArgumentOutOfRangeException(nameof(geneMutationProbability), geneMutationProbability, "Gene mutation probability must be greater than 0 and at most 1.");
         }
 
         public static void ValidateGeneBounds(double minGeneValue, double maxGeneValue)
@@ -150,10 +150,10 @@ namespace GeneticAlgorithms.Mutations
         // Chooses a random non-empty range of genes: a random start and a length from 1 to ceil(maxShare * count),
         // cut so that the range does not go past the last gene. The count must be positive.
         // Example: count 10, maxShare 0.3, start 8 -> length 1 or 2.
-        public static (int StartIndex, int RangeLength) ChooseRandomRange(int count, double maxShareRenge, IRandom random)
+        public static (int StartIndex, int RangeLength) ChooseRandomRange(int count, double maxShare, IRandom random)
         {
             int startIndex = random.Next(count);
-            int maxRangeLength = Math.Max(1, (int)Math.Ceiling(maxShareRenge * count));
+            int maxRangeLength = Math.Max(1, (int)Math.Ceiling(maxShare * count));
             maxRangeLength = Math.Min(maxRangeLength, count - startIndex);
             int rangeLength = random.Next(1, maxRangeLength + 1);
             return (startIndex, rangeLength);
