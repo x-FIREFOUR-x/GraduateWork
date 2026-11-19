@@ -3,7 +3,7 @@ using GeneticAlgorithms.Individuals;
 using GeneticAlgorithms.Randomness;
 
 
-namespace GeneticAlgorithms.Mutations.Implementations.FixedLength.RealValued
+namespace GeneticAlgorithms.Mutations.Implementations.LengthPreserving.RealValued
 {
     // Gaussian mutation, the mutation of evolution strategies (Rechenberg, 1973; Schwefel, 1981):
     // every gene, with probability GeneMutationProbability, gets a random addition N(0, StandardDeviation^2).

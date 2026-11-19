@@ -3,7 +3,7 @@ using GeneticAlgorithms.Individuals;
 using GeneticAlgorithms.Randomness;
 
 
-namespace GeneticAlgorithms.Mutations.Implementations.FixedLength.Discrete
+namespace GeneticAlgorithms.Mutations.Implementations.LengthPreserving.Discrete
 {
     // Random resetting mutation (see Eiben, Smith, Introduction to Evolutionary Computing, 2003):
     // every gene, with probability GeneMutationProbability, is replaced by a random different gene from AvailableGenes.

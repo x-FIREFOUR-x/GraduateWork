@@ -2,7 +2,7 @@ using GeneticAlgorithms.Individuals;
 using GeneticAlgorithms.Randomness;
 
 
-namespace GeneticAlgorithms.Mutations.Implementations.FixedLength.RealValued
+namespace GeneticAlgorithms.Mutations.Implementations.LengthPreserving.RealValued
 {
     // Uniform mutation (Michalewicz, 1992): every gene, with probability GeneMutationProbability,
     // is replaced by a value drawn uniformly from [MinGeneValue; MaxGeneValue), independent of its old value.

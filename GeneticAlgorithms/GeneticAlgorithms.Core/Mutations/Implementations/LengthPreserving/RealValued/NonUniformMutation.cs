@@ -3,7 +3,7 @@ using GeneticAlgorithms.Individuals;
 using GeneticAlgorithms.Randomness;
 
 
-namespace GeneticAlgorithms.Mutations.Implementations.FixedLength.RealValued
+namespace GeneticAlgorithms.Mutations.Implementations.LengthPreserving.RealValued
 {
     // Non-uniform mutation (Michalewicz, 1992): the step shrinks as the search goes on,
     // so the mutation explores the whole range at the start and refines solutions at the end.

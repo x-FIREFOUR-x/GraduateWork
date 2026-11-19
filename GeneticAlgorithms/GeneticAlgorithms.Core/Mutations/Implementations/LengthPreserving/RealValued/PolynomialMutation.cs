@@ -3,7 +3,7 @@ using GeneticAlgorithms.Individuals;
 using GeneticAlgorithms.Randomness;
 
 
-namespace GeneticAlgorithms.Mutations.Implementations.FixedLength.RealValued
+namespace GeneticAlgorithms.Mutations.Implementations.LengthPreserving.RealValued
 {
     // Bounded polynomial mutation (Deb, Agrawal, 1995; Deb, Goyal, 1996; bounded form as in the NSGA-II code of Deb):
     // the mutation pair of simulated binary crossover. The mutated gene is drawn from a polynomial distribution
