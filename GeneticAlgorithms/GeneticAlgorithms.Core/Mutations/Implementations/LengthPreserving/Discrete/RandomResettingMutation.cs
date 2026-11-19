@@ -20,10 +20,8 @@ namespace GeneticAlgorithms.Mutations.Implementations.LengthPreserving.Discrete
     // g - the number of distinct available genes.
     public sealed class RandomResettingMutation<TGene> : IMutation<TGene>
     {
-        private readonly List<TGene> _availableGenes;
-
         // Distinct genes a mutated gene can become; at least one.
-        public IReadOnlyList<TGene> AvailableGenes => _availableGenes;
+        public IReadOnlyList<TGene> AvailableGenes { get; }
 
         // Probability that a gene is mutated, in [0; 1]; null means 1 / IndividualSize, so on average one gene per individual.
         public double? GeneMutationProbability { get; }
@@ -34,7 +32,7 @@ namespace GeneticAlgorithms.Mutations.Implementations.LengthPreserving.Discrete
             MutationUtilities.ValidateGeneMutationProbability(geneMutationProbability);
             GeneMutationProbability = geneMutationProbability;
 
-            _availableGenes = MutationUtilities.CreateDistinctGenes(availableGenes, nameof(availableGenes));
+            AvailableGenes = MutationUtilities.CreateDistinctGenes(availableGenes, nameof(availableGenes));
         }
 
         public Individual<TGene> Mutate(Individual<TGene> individual, IRandom random, int? currentIterationNumber = null)
@@ -45,7 +43,7 @@ namespace GeneticAlgorithms.Mutations.Implementations.LengthPreserving.Discrete
                 individual,
                 GeneMutationProbability,
                 random,
-                gene => MutationUtilities.ChooseDifferentGene(_availableGenes, gene, random));
+                gene => MutationUtilities.ChooseDifferentGene(AvailableGenes, gene, random));
         }
     }
 }

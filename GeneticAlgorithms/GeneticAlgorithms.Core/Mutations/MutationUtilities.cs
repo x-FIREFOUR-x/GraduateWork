@@ -71,9 +71,18 @@ namespace GeneticAlgorithms.Mutations
         // If the current gene is not among the genes, any gene may be chosen;
         // if it is the only gene, it is returned and the gene stays the same.
         // Example: genes [A, B, C], current B -> A or C.
-        public static TGene ChooseDifferentGene<TGene>(List<TGene> genesVariants, TGene currentGene, IRandom random)
+        public static TGene ChooseDifferentGene<TGene>(IReadOnlyList<TGene> genesVariants, TGene currentGene, IRandom random)
         {
-            int currentIndex = genesVariants.IndexOf(currentGene);
+            var comparer = EqualityComparer<TGene>.Default;
+            int currentIndex = -1;
+            for (int i = 0; i < genesVariants.Count; i++)
+            {
+                if (comparer.Equals(genesVariants[i], currentGene))
+                {
+                    currentIndex = i;
+                    break;
+                }
+            }
             if (currentIndex < 0)
                 return genesVariants[random.Next(genesVariants.Count)];
             if (genesVariants.Count == 1)
