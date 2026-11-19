@@ -119,5 +119,17 @@ namespace GeneticAlgorithms.Mutations
             }
             return mutant ?? individual;
         }
+
+        // Chooses two different indices from 0 to count - 1 and returns them in ascending order;
+        // every pair is equally likely. The count must be at least 2.
+        // Example: count 5 -> (1, 4).
+        public static (int StartIndex, int EndIndex) ChooseRandomTwoDistinctIndices(int count, IRandom random)
+        {
+            int startIndex = random.Next(count);
+            int EndIndex = random.Next(count - 1);
+            if (EndIndex >= startIndex)
+                EndIndex++;
+            return startIndex < EndIndex ? (startIndex, EndIndex) : (EndIndex, startIndex);
+        }
     }
 }
