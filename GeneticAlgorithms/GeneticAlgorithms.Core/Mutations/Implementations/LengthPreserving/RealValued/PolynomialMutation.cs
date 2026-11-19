@@ -38,7 +38,7 @@ namespace GeneticAlgorithms.Mutations.Implementations.LengthPreserving.RealValue
         // How close mutated genes stay to the old ones: large values give small steps; non-negative, usually 20 to 100.
         public double DistributionIndex { get; }
 
-        // Probability that a gene is mutated, in (0; 1]; null means 1 / n, so on average one gene per individual.
+        // Probability that a gene is mutated, in [0; 1]; null means 1 / n, so on average one gene per individual.
         public double? GeneMutationProbability { get; }
 
 

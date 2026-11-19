@@ -135,10 +135,10 @@ namespace GeneticAlgorithms.Mutations
         public static (int StartIndex, int EndIndex) ChooseRandomTwoDistinctIndices(int count, IRandom random)
         {
             int startIndex = random.Next(count);
-            int EndIndex = random.Next(count - 1);
-            if (EndIndex >= startIndex)
-                EndIndex++;
-            return startIndex < EndIndex ? (startIndex, EndIndex) : (EndIndex, startIndex);
+            int endIndex = random.Next(count - 1);
+            if (endIndex >= startIndex)
+                endIndex++;
+            return startIndex < endIndex ? (startIndex, endIndex) : (endIndex, startIndex);
         }
     }
 }

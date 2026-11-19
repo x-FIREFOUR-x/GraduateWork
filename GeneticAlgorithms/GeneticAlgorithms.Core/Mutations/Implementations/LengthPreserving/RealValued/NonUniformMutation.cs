@@ -33,7 +33,7 @@ namespace GeneticAlgorithms.Mutations.Implementations.LengthPreserving.RealValue
 
         // Largest allowed gene value; finite, steps towards it never go past it.
         public double MaxGeneValue { get; }
-        // Probability that a gene is mutated, in (0; 1]; null means 1 / n, so on average one gene per individual.
+        // Probability that a gene is mutated, in [0; 1]; null means 1 / n, so on average one gene per individual.
         public double? GeneMutationProbability { get; }
 
         // Iteration at which steps become zero when DependencyDegree is positive; usually the iteration limit of the stop criterion; at least 1.
@@ -80,7 +80,7 @@ namespace GeneticAlgorithms.Mutations.Implementations.LengthPreserving.RealValue
         private static int ValidateCurrentIterationNumber(int? currentIterationNumber)
         {
             if (!currentIterationNumber.HasValue)
-                throw new ArgumentNullException(nameof(currentIterationNumber), "NonUniformMutation mutation requires parameter the current iteration number.");
+                throw new ArgumentNullException(nameof(currentIterationNumber), "Non-uniform mutation requires the current iteration number.");
 
             if (currentIterationNumber.Value < 0)
                 throw new ArgumentOutOfRangeException(nameof(currentIterationNumber), currentIterationNumber, "Current iteration number must be non-negative.");
