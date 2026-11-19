@@ -54,6 +54,12 @@ namespace GeneticAlgorithms.Mutations
 
         }
 
+        public static void ValidateMaxShare(double maxShare)
+        {
+            if (!(maxShare > 0 && maxShare <= 1))
+                throw new ArgumentOutOfRangeException(nameof(maxShare), maxShare, "Max share must be greater than 0 and at most 1.");
+        }
+
         // Returns the available genes without repeats, so that every gene is chosen with the same probability.
         // Example: [A, B, A, C] -> [A, B, C].
         public static List<TGene> CreateDistinctGenes<TGene>(IReadOnlyList<TGene> availableGenes, string parameterName)
@@ -139,6 +145,18 @@ namespace GeneticAlgorithms.Mutations
             if (endIndex >= startIndex)
                 endIndex++;
             return startIndex < endIndex ? (startIndex, endIndex) : (endIndex, startIndex);
+        }
+
+        // Chooses a random non-empty range of genes: a random start and a length from 1 to ceil(maxShare * count),
+        // cut so that the range does not go past the last gene. The count must be positive.
+        // Example: count 10, maxShare 0.3, start 8 -> length 1 or 2.
+        public static (int StartIndex, int RangeLength) ChooseRandomRange(int count, double maxShareRenge, IRandom random)
+        {
+            int startIndex = random.Next(count);
+            int maxRangeLength = Math.Max(1, (int)Math.Ceiling(maxShareRenge * count));
+            maxRangeLength = Math.Min(maxRangeLength, count - startIndex);
+            int rangeLength = random.Next(1, maxRangeLength + 1);
+            return (startIndex, rangeLength);
         }
     }
 }
