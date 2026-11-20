@@ -1,4 +1,5 @@
 using System;
+using GeneticAlgorithms.Comparison;
 using GeneticAlgorithms.Constraints;
 using GeneticAlgorithms.Individuals;
 using GeneticAlgorithms.Randomness;

@@ -2,7 +2,7 @@ using System;
 using GeneticAlgorithms.Constraints;
 using GeneticAlgorithms.Individuals;
 using GeneticAlgorithms.Randomness;
-using GeneticAlgorithms.Repair;
+using GeneticAlgorithms.Repairs;
 
 
 namespace GeneticAlgorithms.Crossovers.Implementations.VariableLength.Constrained

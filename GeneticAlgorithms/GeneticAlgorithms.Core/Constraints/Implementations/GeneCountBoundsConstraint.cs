@@ -1,6 +1,6 @@
 using System;
 
-namespace GeneticAlgorithms.Constraints.Rules
+namespace GeneticAlgorithms.Constraints.Implementations
 {
     public sealed class GeneCountBoundsConstraint<TGene> : IConstraint<TGene>
     {

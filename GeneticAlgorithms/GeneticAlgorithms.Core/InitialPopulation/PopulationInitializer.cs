@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using GeneticAlgorithms.Individuals;
 using GeneticAlgorithms.Randomness;
-using GeneticAlgorithms.Repair;
+using GeneticAlgorithms.Repairs;
 
-namespace GeneticAlgorithms.Individuals
+namespace GeneticAlgorithms.InitialPopulation
 {
     public sealed class PopulationInitializer<TGene>
     {

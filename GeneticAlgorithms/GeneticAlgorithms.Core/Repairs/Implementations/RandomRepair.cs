@@ -3,7 +3,7 @@ using GeneticAlgorithms.Individuals;
 using GeneticAlgorithms.Randomness;
 
 
-namespace GeneticAlgorithms.Repair.Implementations
+namespace GeneticAlgorithms.Repairs.Implementations
 {
     // Random repair: removes and appends random genes, every candidate being equally likely.
     // It prefers no gene, so it keeps the diversity of the population and serves as the baseline for the other repairs.

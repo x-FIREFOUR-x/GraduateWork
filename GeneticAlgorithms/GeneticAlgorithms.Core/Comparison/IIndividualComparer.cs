@@ -1,7 +1,8 @@
 using System.Collections.Generic;
+using GeneticAlgorithms.Individuals;
 
 
-namespace GeneticAlgorithms.Individuals
+namespace GeneticAlgorithms.Comparison
 {
     public interface IIndividualComparer<TGene> : IComparer<Individual<TGene>>
     {

@@ -2,7 +2,7 @@ using GeneticAlgorithms.Individuals;
 using GeneticAlgorithms.Randomness;
 
 
-namespace GeneticAlgorithms.Repair
+namespace GeneticAlgorithms.Repairs
 {
     // Turns an individual that breaks the constraint into one that satisfies it, or gets as close to it as the repair can.
     // Returns the individual itself when nothing changes, otherwise a changed copy; the given individual is never changed.

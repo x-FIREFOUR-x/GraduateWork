@@ -1,6 +1,6 @@
 using System;
 
-namespace GeneticAlgorithms.Stopping.Criteria
+namespace GeneticAlgorithms.StopCriteria.Implementations
 {
     public sealed class StagnationStopCriterion : IStopCriterion
     {

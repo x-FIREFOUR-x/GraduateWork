@@ -1,4 +1,4 @@
-namespace GeneticAlgorithms.Stopping
+namespace GeneticAlgorithms.StopCriteria
 {
     public interface IStopCriterion
     {

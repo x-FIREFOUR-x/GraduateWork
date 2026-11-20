@@ -5,7 +5,7 @@ using GeneticAlgorithms.Individuals;
 using GeneticAlgorithms.Randomness;
 
 
-namespace GeneticAlgorithms.Repair.Composite
+namespace GeneticAlgorithms.Repairs.Composite
 {
     // Sequential repair: applies the repairs one after another, each to the result of the previous one.
     // Lets one repair be built from steps of different repairs, for example downgrading genes that break the budget

@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace GeneticAlgorithms.Stopping
+namespace GeneticAlgorithms.StopCriteria.Composite
 {
     public sealed class CompositeStopCriterion : IStopCriterion
     {

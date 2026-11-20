@@ -4,7 +4,7 @@ using GeneticAlgorithms.Individuals;
 using GeneticAlgorithms.Randomness;
 
 
-namespace GeneticAlgorithms.Repair.Composite
+namespace GeneticAlgorithms.Repairs.Composite
 {
     // Roulette repair: on every call one of the repairs is chosen by roulette wheel
     // with probabilities that never change, and the individual is repaired by it; the rest of the wheel means no repair,

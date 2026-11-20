@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using GeneticAlgorithms.Individuals;
-using GeneticAlgorithms.Stopping;
+using GeneticAlgorithms.StopCriteria;
 
 namespace GeneticAlgorithms
 {

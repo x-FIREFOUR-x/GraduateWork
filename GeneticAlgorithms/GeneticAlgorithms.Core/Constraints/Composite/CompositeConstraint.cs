@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace GeneticAlgorithms.Constraints
+namespace GeneticAlgorithms.Constraints.Composite
 {
     public sealed class CompositeConstraint<TGene> : IConstraint<TGene>
     {

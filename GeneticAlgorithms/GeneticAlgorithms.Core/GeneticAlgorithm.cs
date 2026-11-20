@@ -2,15 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
+using GeneticAlgorithms.Comparison;
 using GeneticAlgorithms.Crossovers;
 using GeneticAlgorithms.Fitness;
 using GeneticAlgorithms.Individuals;
+using GeneticAlgorithms.InitialPopulation;
 using GeneticAlgorithms.Mutations;
 using GeneticAlgorithms.Randomness;
-using GeneticAlgorithms.Repair;
+using GeneticAlgorithms.Repairs;
 using GeneticAlgorithms.Selection.Parent;
 using GeneticAlgorithms.Selection.Survivor;
-using GeneticAlgorithms.Stopping;
+using GeneticAlgorithms.StopCriteria;
 
 
 namespace GeneticAlgorithms

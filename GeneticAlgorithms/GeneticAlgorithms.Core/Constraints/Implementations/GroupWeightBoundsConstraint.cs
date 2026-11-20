@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace GeneticAlgorithms.Constraints.Rules
+namespace GeneticAlgorithms.Constraints.Implementations
 {
     public sealed class GroupWeightBoundsConstraint<TGene, TGroup> : IConstraint<TGene>
     {

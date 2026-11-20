@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using GeneticAlgorithms.Comparison;
 using GeneticAlgorithms.Individuals;
 using GeneticAlgorithms.Randomness;
 

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace GeneticAlgorithms.Stopping
+namespace GeneticAlgorithms.StopCriteria
 {
     public sealed class SearchProgress
     {

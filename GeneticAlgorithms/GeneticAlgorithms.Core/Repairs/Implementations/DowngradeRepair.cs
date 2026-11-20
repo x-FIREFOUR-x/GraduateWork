@@ -6,7 +6,7 @@ using GeneticAlgorithms.Individuals;
 using GeneticAlgorithms.Randomness;
 
 
-namespace GeneticAlgorithms.Repair.Implementations
+namespace GeneticAlgorithms.Repairs.Implementations
 {
     // Downgrade repair: a gene that breaks an upper bound is replaced by a cheaper gene of the same kind instead of being removed,
     // for example a tower is replaced by a weaker tower of the same type on the same place,

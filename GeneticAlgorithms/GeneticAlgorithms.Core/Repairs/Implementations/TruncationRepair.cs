@@ -3,7 +3,7 @@ using GeneticAlgorithms.Individuals;
 using GeneticAlgorithms.Randomness;
 
 
-namespace GeneticAlgorithms.Repair.Implementations
+namespace GeneticAlgorithms.Repairs.Implementations
 {
     // Truncation repair: removes the last genes of the individual and appends the available genes in their given order,
     // so mostly the end of the individual is cut off.

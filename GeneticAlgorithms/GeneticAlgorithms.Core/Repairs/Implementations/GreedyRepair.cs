@@ -4,7 +4,7 @@ using GeneticAlgorithms.Individuals;
 using GeneticAlgorithms.Randomness;
 
 
-namespace GeneticAlgorithms.Repair.Implementations
+namespace GeneticAlgorithms.Repairs.Implementations
 {
     // Greedy repair: removes the genes with the lowest priority and appends the genes with the highest priority,
     // so the repaired individual keeps the genes that matter most, as a greedy solution of the knapsack problem.

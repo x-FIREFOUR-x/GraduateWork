@@ -6,7 +6,7 @@ using GeneticAlgorithms.Individuals;
 using GeneticAlgorithms.Randomness;
 
 
-namespace GeneticAlgorithms.Repair
+namespace GeneticAlgorithms.Repairs
 {
     internal static class RepairUtilities
     {
