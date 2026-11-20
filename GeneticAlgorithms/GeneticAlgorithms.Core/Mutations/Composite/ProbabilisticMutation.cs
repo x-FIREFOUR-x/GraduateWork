@@ -45,7 +45,7 @@ namespace GeneticAlgorithms.Mutations.Composite
                 feedback.Report(improved);
         }
 
-        private static void ValidateProbability(double probability)
+        private void ValidateProbability(double probability)
         {
             if (!(probability >= 0 && probability <= 1))
                 throw new ArgumentOutOfRangeException(nameof(probability), probability, "Probability must be between 0 and 1.");

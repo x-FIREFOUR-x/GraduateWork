@@ -86,6 +86,8 @@ namespace GeneticAlgorithms.Mutations.Composite
 
         public Individual<TGene> Mutate(Individual<TGene> individual, IRandom random, int? currentIterationNumber = null)
         {
+            MutationUtilities.ValidateArgumentsNotNull(individual, random);
+
             _indexLastMutation = MutationUtilities.ChooseIndexByProbability(_probabilities, random.NextDouble());
             return _mutations[_indexLastMutation].Mutate(individual, random, currentIterationNumber);
         }
@@ -140,7 +142,7 @@ namespace GeneticAlgorithms.Mutations.Composite
         // probabilities that already sum to 1 stay the same, null gives every mutation the same probability.
         // Example: [0.25, 0.75] -> [0.25, 0.75]; weights [1, 3] -> [0.25, 0.75]; [0.2, 0.3] -> [0.4, 0.6];
         // null, count 4 -> [0.25, 0.25, 0.25, 0.25].
-        private static double[] CreateProbabilities(IReadOnlyList<double> probabilities, int mutationCount, string parameterName)
+        private double[] CreateProbabilities(IReadOnlyList<double> probabilities, int mutationCount, string parameterName)
         {
             if (probabilities == null)
                 return Enumerable.Repeat(1.0 / mutationCount, mutationCount).ToArray();

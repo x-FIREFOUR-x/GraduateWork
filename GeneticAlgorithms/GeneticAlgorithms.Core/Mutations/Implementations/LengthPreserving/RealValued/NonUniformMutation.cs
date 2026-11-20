@@ -77,7 +77,7 @@ namespace GeneticAlgorithms.Mutations.Implementations.LengthPreserving.RealValue
             return MutationUtilities.MutateEachGene(individual, GeneMutationProbability, random, gene => MutateGene(gene, stepPower, random));
         }
 
-        private static int ValidateCurrentIterationNumber(int? currentIterationNumber)
+        private int ValidateCurrentIterationNumber(int? currentIterationNumber)
         {
             if (!currentIterationNumber.HasValue)
                 throw new ArgumentNullException(nameof(currentIterationNumber), "Non-uniform mutation requires the current iteration number.");

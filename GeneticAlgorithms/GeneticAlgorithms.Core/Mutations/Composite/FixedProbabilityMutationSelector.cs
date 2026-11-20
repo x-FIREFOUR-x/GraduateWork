@@ -25,9 +25,9 @@ namespace GeneticAlgorithms.Mutations.Composite
     {
         private const double RoundingErrorTolerance = 1e-9;
 
-        private readonly double _mutationProbability;
-        private int _indexLastMutation = -1;
 
+        private readonly double _sumMutationsProbabilities;
+        private int _indexLastMutation = -1;
 
         // Mutations to choose from; at least one, none of them null.
         public IReadOnlyList<IMutation<TGene>> Mutations { get; }
@@ -36,7 +36,7 @@ namespace GeneticAlgorithms.Mutations.Composite
         public IReadOnlyList<double> Probabilities { get; }
 
         // Probability that no mutation is applied and the individual is returned unchanged: 1 minus the sum of Probabilities.
-        public double NoMutationProbability;
+        public double NoMutationProbability { get; }
 
 
         public FixedProbabilityMutationSelector(IReadOnlyList<IMutation<TGene>> mutations, IReadOnlyList<double> probabilities = null)
@@ -48,7 +48,8 @@ namespace GeneticAlgorithms.Mutations.Composite
                 : CreateProbabilities(probabilities, Mutations.Count);
 
             double sum = Probabilities.Sum();
-            _mutationProbability = sum >= 1 - RoundingErrorTolerance ? 1 : sum;
+            _sumMutationsProbabilities = sum >= 1 - RoundingErrorTolerance ? 1 : sum;
+            NoMutationProbability = 1 - _sumMutationsProbabilities;
         }
 
         public Individual<TGene> Mutate(Individual<TGene> individual, IRandom random, int? currentIterationNumber = null)
@@ -57,7 +58,8 @@ namespace GeneticAlgorithms.Mutations.Composite
 
             _indexLastMutation = -1;
             double roll = random.NextDouble();
-            if (roll >= _mutationProbability)
+            // The roll is beyond the segments of all mutations, so no mutation is applied.
+            if (roll >= _sumMutationsProbabilities)
                 return individual;
 
             _indexLastMutation = MutationUtilities.ChooseIndexByProbability(Probabilities, roll);
@@ -86,8 +88,6 @@ namespace GeneticAlgorithms.Mutations.Composite
             double sum = probabilities.Sum();
             if (sum > 1 + RoundingErrorTolerance)
                 throw new ArgumentException($"Probabilities must sum to at most 1, but they sum to {sum}.", nameof(probabilities));
-
-            NoMutationProbability = 1 - sum;
 
             return probabilities.ToArray();
         }
