@@ -115,6 +115,10 @@ namespace GeneticAlgorithms
             mutant = RepairIfNeeded(mutant);
             EvaluateFitness(mutant);
 
+            bool improved = comparer.IsBetter(mutant, child);
+            if (_mutation is IMutationFeedback feedback)
+                feedback.Report(improved);
+
             if (_config.AcceptMutationOnlyIfNotWorse && !comparer.IsNotWorse(mutant, child))
                 return child;
             return mutant;
