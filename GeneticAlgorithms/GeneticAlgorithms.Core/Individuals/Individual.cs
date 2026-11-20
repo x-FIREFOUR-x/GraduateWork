@@ -98,6 +98,39 @@ namespace GeneticAlgorithms.Individuals
             InvalidateFitnessValues();
         }
 
+        public void Replace(int index, TGene newGene)
+        {
+            var currentGene = _genes[index];
+            ConstraintTracker.Remove(currentGene);
+
+            ConstraintTracker.Append(newGene);
+            _genes[index] = newGene;
+            InvalidateFitnessValues();
+        }
+
+        public void Move(int geneIndex, int newGeneIndex) => MoveRange(geneIndex, 1, newGeneIndex);
+
+        public void MoveRange(int startIndex, int movedGeneCount, int newStartIndex)
+        {
+            if (startIndex < 0 || startIndex > _genes.Count)
+                throw new ArgumentOutOfRangeException(nameof(startIndex), startIndex, "Start index can't smaller 0 and more genes count in Individual");
+            if (movedGeneCount < 0)
+                throw new ArgumentOutOfRangeException(nameof(movedGeneCount), movedGeneCount, "Count of the moved genes must be non-negative.");
+            if (movedGeneCount > _genes.Count - startIndex)
+                throw new ArgumentOutOfRangeException(nameof(movedGeneCount), movedGeneCount, $"Moved genes must end within the genes: start index {startIndex} + count {movedGeneCount} exceeds the genes count {_genes.Count}.");
+            if (newStartIndex < 0)
+                throw new ArgumentOutOfRangeException(nameof(newStartIndex), newStartIndex, "New start index of the moved genes must be non-negative.");
+            if (newStartIndex > _genes.Count - movedGeneCount)
+                throw new ArgumentOutOfRangeException(nameof(newStartIndex), newStartIndex, $"New start index of the moved genes must not exceed {_genes.Count - movedGeneCount}, the genes count {_genes.Count} minus the count of the moved genes {movedGeneCount}.");
+            if (movedGeneCount == 0 || newStartIndex == startIndex)
+                return;
+
+            var movedGenes = _genes.GetRange(startIndex, movedGeneCount);
+            _genes.RemoveRange(startIndex, movedGeneCount);
+            _genes.InsertRange(newStartIndex, movedGenes);
+            InvalidateFitnessValues();
+        }
+
         public void Swap(int first, int second)
         {
             if (first == second)

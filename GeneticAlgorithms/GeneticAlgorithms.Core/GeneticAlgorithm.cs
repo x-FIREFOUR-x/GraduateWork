@@ -108,12 +108,16 @@ namespace GeneticAlgorithms
             var child = RepairIfNeeded(_crossover.Cross(firstParent, secondParent, _random));
             EvaluateFitness(child);
 
-            var mutant = _mutation.Mutate(child, _random);
+            var mutant = _mutation.Mutate(child, _random, _searchProgress.IterationCount);
             if (ReferenceEquals(mutant, child))
                 return child;
 
             mutant = RepairIfNeeded(mutant);
             EvaluateFitness(mutant);
+
+            bool improved = comparer.IsBetter(mutant, child);
+            if (_mutation is IMutationFeedback feedback)
+                feedback.Report(improved);
 
             if (_config.AcceptMutationOnlyIfNotWorse && !comparer.IsNotWorse(mutant, child))
                 return child;
