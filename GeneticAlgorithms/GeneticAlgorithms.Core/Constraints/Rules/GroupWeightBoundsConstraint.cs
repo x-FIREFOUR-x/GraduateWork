@@ -60,16 +60,16 @@ namespace GeneticAlgorithms.Constraints.Rules
         private double GetGeneWeight(TGene gene)
         {
             double geneWeight = _getGeneWeight(gene);
-            if (geneWeight < 0)
-                throw new InvalidOperationException("Gene weight must be non-negative.");
+            if (!(geneWeight >= 0))
+                throw new InvalidOperationException("Gene weight must be a non-negative number.");
             return geneWeight;
         }
 
         private double? GetGroupMaxWeight(TGroup group)
         {
             double? groupMaxWeight = _getGroupMaxWeight?.Invoke(group);
-            if (groupMaxWeight < 0)
-                throw new InvalidOperationException($"Max weight of group '{group}' must be non-negative.");
+            if (groupMaxWeight.HasValue && !(groupMaxWeight.Value >= 0))
+                throw new InvalidOperationException($"Max weight of group '{group}' must be a non-negative number.");
             return groupMaxWeight;
         }
 
@@ -78,8 +78,8 @@ namespace GeneticAlgorithms.Constraints.Rules
             if (!_groups.Contains(group))
                 return null;
             double? groupMinWeight = _getGroupMinWeight(group);
-            if (groupMinWeight < 0)
-                throw new InvalidOperationException($"Min weight of group '{group}' must be non-negative.");
+            if (groupMinWeight.HasValue && !(groupMinWeight.Value >= 0))
+                throw new InvalidOperationException($"Min weight of group '{group}' must be a non-negative number.");
             return groupMinWeight;
         }
 
@@ -114,6 +114,37 @@ namespace GeneticAlgorithms.Constraints.Rules
             }
 
             public bool IsSatisfied => _outOfBoundsGroupCount == 0;
+
+            public double UpperBoundViolation
+            {
+                get
+                {
+                    double upperBoundViolation = 0;
+                    foreach (var groupWeight in _weightByGroup)
+                    {
+                        double? groupMaxWeight = _constraint.GetGroupMaxWeight(groupWeight.Key);
+                        if (groupMaxWeight.HasValue && !_constraint.IsWithinGroupMaxWeight(groupWeight.Key, groupWeight.Value))
+                            upperBoundViolation += ConstraintUtilities.RelativeBoundViolation(groupWeight.Value - groupMaxWeight.Value, groupMaxWeight.Value);
+                    }
+                    return upperBoundViolation;
+                }
+            }
+
+            public double LowerBoundViolation
+            {
+                get
+                {
+                    double lowerBoundViolation = 0;
+                    foreach (var group in _constraint._groups)
+                    {
+                        _weightByGroup.TryGetValue(group, out double groupWeight);
+                        double? groupMinWeight = _constraint.GetGroupMinWeight(group);
+                        if (groupMinWeight.HasValue && !_constraint.IsWithinGroupMinWeight(group, groupWeight))
+                            lowerBoundViolation += ConstraintUtilities.RelativeBoundViolation(groupMinWeight.Value - groupWeight, groupMinWeight.Value);
+                    }
+                    return lowerBoundViolation;
+                }
+            }
 
             public bool CanAppend(TGene gene)
             {

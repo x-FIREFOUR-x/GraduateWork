@@ -61,7 +61,7 @@ namespace GeneticAlgorithms.Crossovers.Implementations.VariableLength.Constraine
             AppendParentPrefixToChildWithinCostLimit(firstParent, child, firstParentMaxTotalCostShare * _costModel.MaxTotalCost);
             AppendParentSuffixToChildWithinCostLimit(secondParent, child, secondParentMaxTotalCostShare * _costModel.MaxTotalCost);
 
-            return _repair.Repair(child);
+            return _repair.Repair(child, random);
         }
 
         private void AppendParentPrefixToChildWithinCostLimit(Individual<TGene> parent, Individual<TGene> child, double costLimit)

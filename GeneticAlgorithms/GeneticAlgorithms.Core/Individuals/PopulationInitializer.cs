@@ -37,7 +37,7 @@ namespace GeneticAlgorithms.Individuals
 
             if (warmCount > 0)
             {
-                var warmStartIndividual = CreateIndividualUsingWarmStart(warmStartGenes);
+                var warmStartIndividual = CreateIndividualUsingWarmStart(warmStartGenes, random);
                 TryAddUniqueIndividualInPopulation(population, warmStartIndividual);
                 FillPopulationUniqueIndividuals(population, warmCount, () => CreateIndividualVarianUsingWarmStart(warmStartIndividual, random));
             }
@@ -56,9 +56,9 @@ namespace GeneticAlgorithms.Individuals
             return population;
         }
 
-        private Individual<TGene> CreateIndividualUsingWarmStart(IEnumerable<TGene> genes)
+        private Individual<TGene> CreateIndividualUsingWarmStart(IEnumerable<TGene> genes, IRandom random)
         {
-            return _repair.Repair(_individualBuilder.CreateFromGenes(genes));
+            return _repair.Repair(_individualBuilder.CreateFromGenes(genes), random);
         }
 
         private Individual<TGene> CreateIndividualVarianUsingWarmStart(Individual<TGene> warmStartIndividual, IRandom random)

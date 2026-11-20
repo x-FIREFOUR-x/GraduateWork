@@ -38,6 +38,14 @@ namespace GeneticAlgorithms.Constraints.Rules
 
             public bool IsSatisfied => _geneCount >= (_constraint.MinGeneCount ?? 0) && _geneCount <= (_constraint.MaxGeneCount ?? int.MaxValue);
 
+            public double UpperBoundViolation => _geneCount > _constraint.MaxGeneCount
+                ? ConstraintUtilities.RelativeBoundViolation(_geneCount - _constraint.MaxGeneCount.Value, _constraint.MaxGeneCount.Value)
+                : 0;
+
+            public double LowerBoundViolation => _geneCount < _constraint.MinGeneCount
+                ? ConstraintUtilities.RelativeBoundViolation(_constraint.MinGeneCount.Value - _geneCount, _constraint.MinGeneCount.Value)
+                : 0;
+
             public bool CanAppend(TGene gene) => _geneCount < (_constraint.MaxGeneCount ?? int.MaxValue);
 
             public void Append(TGene gene) => _geneCount++;
