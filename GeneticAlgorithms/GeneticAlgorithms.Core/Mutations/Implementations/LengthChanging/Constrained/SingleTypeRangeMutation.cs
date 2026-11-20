@@ -8,22 +8,25 @@ using GeneticAlgorithms.Randomness;
 
 namespace GeneticAlgorithms.Mutations.Implementations.LengthChanging.Constrained
 {
-    // Single type range mutation: a random range of genes is removed, and the free place is filled with genes of one kind,
+    // Single type range mutation: a random range of genes is replaced by a group of genes of one kind,
     // so the individual gets a group of similar genes, for example several towers of the same type.
     // 1. A random start is chosen and a length from 1 to ceil(MaxShare * n), cut so that the range does not go past the last gene;
     //    the range is removed.
     // 2. A random gene among the available genes that can still be appended is inserted at the place of the range;
-    //    its kind becomes the kind of the group.
+    //    its kind becomes the kind of the group. The removed range usually holds genes of several kinds,
+    //    so replacing it with one kind changes it even when that kind was among them.
     // 3. After it, random genes of that kind that can still be appended are inserted until none of them fits;
-    //    two genes are of the same kind when sameKind returns true for them, by default when they are equal.
-    // 4. The limits that are left are filled with the cheapest genes first: every available gene, from the cheapest one,
-    //    is inserted while it still fits, so the budget left after the group is not wasted.
+    //    two genes are of the same kind when checkGenesSameKind returns true for them, by default when they are equal.
+    // 4. Only if FillRemainder is set, the limits that are left are filled with the cheapest genes first: every available gene,
+    //    from the cheapest one, is inserted while it still fits. Otherwise the budget left after the group stays unused,
+    //    so the mutation changes only the range and its effect is not mixed with greedy filling.
     // Upper bounds of the constraint are never exceeded. If no gene can be appended after the removal,
     // the individual without the range is returned; an empty individual is then returned itself.
     // The filling stops only when the constraint forbids every gene, so every gene must use up some of a limit, for example cost more than 0.
     //
     // Example: budget 10, gene cost = gene, available genes [1, 2, 3], individual [1, 2, 3, 2], range [2, 3] removed ->
-    // [1, 2] with 7 of the budget left, kind 3 chosen -> [1, 3, 3, 2] with 1 left, the cheapest gene 1 fills it -> [1, 3, 3, 1, 2].
+    // [1, 2] with 7 of the budget left, kind 3 chosen -> [1, 3, 3, 2] with 1 left;
+    // with FillRemainder the cheapest gene 1 fills it -> [1, 3, 3, 1, 2].
     //
     // Complexity: time O(n + g * log g + k * (g + n))
     //             memory O(n + g)
@@ -40,12 +43,16 @@ namespace GeneticAlgorithms.Mutations.Implementations.LengthChanging.Constrained
         // Largest share of the genes the removed range may take, in (0; 1]; the range always has at least one gene.
         public double MaxShare { get; }
 
+        // Whether the budget left after the group is filled with the cheapest genes; false keeps the mutation to the range only.
+        public bool FillRemainder { get; }
+
 
         public SingleTypeRangeMutation(
             ICostModel<TGene> costModel,
             IReadOnlyList<TGene> availableGenes,
             double maxShare = 0.5,
-            Func<TGene, TGene, bool> checkGenesSameKind = null)
+            Func<TGene, TGene, bool> checkGenesSameKind = null,
+            bool fillRemainder = false)
         {
             MutationUtilities.ValidateMaxShare(maxShare);
             MaxShare = maxShare;
@@ -56,6 +63,7 @@ namespace GeneticAlgorithms.Mutations.Implementations.LengthChanging.Constrained
             _availableGenesOrderedByCost = _availableGenes.OrderBy(costModel.Cost).ToList();
 
             _checkGenesSameKind = checkGenesSameKind ?? EqualityComparer<TGene>.Default.Equals;
+            FillRemainder = fillRemainder;
         }
 
         public Individual<TGene> Mutate(Individual<TGene> individual, IRandom random, int? currentIterationNumber = null)
@@ -70,7 +78,8 @@ namespace GeneticAlgorithms.Mutations.Implementations.LengthChanging.Constrained
 
             mutant.Insert(insertIndex++, kindGene);
             insertIndex = InsertGenesOfKind(mutant, insertIndex, kindGene, random);
-            FillWithCheapestGenes(mutant, insertIndex);
+            if (FillRemainder)
+                FillWithCheapestGenes(mutant, insertIndex);
 
             return mutant;
         }
