@@ -88,7 +88,7 @@ namespace GeneticAlgorithms.Mutations.Composite
         {
             MutationUtilities.ValidateArgumentsNotNull(individual, random);
 
-            _indexLastMutation = MutationUtilities.ChooseIndexByProbability(_probabilities, random.NextDouble());
+            _indexLastMutation = ProbabilityUtilities.ChooseIndexByProbability(_probabilities, random.NextDouble());
             return _mutations[_indexLastMutation].Mutate(individual, random, currentIterationNumber);
         }
 

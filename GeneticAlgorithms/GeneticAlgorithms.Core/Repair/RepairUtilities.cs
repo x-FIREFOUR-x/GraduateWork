@@ -23,6 +23,15 @@ namespace GeneticAlgorithms.Repair
                 throw new ArgumentNullException(nameof(random), "This repair makes random choices and requires a random number generator.");
         }
 
+        public static void ValidateRepairs<TGene>(IReadOnlyList<IRepair<TGene>> repairs, string parameterName)
+        {
+            if (repairs == null || repairs.Count == 0)
+                throw new ArgumentException("At least one repair is required.", parameterName);
+
+            if (repairs.Any(repair => repair == null))
+                throw new ArgumentException("Repairs must not contain null.", parameterName);
+        }
+
         // Returns the available genes without repeats, so that every gene is considered once.
         public static List<TGene> CreateDistinctGenes<TGene>(IReadOnlyList<TGene> availableGenes, string parameterName)
         {

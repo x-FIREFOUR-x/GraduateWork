@@ -23,9 +23,6 @@ namespace GeneticAlgorithms.Mutations.Composite
     // m - the number of mutations.
     public sealed class FixedProbabilityMutationSelector<TGene> : IMutation<TGene>, IMutationFeedback
     {
-        private const double RoundingErrorTolerance = 1e-9;
-
-
         private readonly double _sumMutationsProbabilities;
         private int _indexLastMutation = -1;
 
@@ -43,12 +40,9 @@ namespace GeneticAlgorithms.Mutations.Composite
         {
             MutationUtilities.ValidateMutations(mutations, nameof(mutations));
             Mutations = mutations.ToArray();
-            Probabilities = probabilities == null
-                ? Enumerable.Repeat(1.0 / Mutations.Count, Mutations.Count).ToArray()
-                : CreateProbabilities(probabilities, Mutations.Count);
+            Probabilities = ProbabilityUtilities.CreateAbsoluteProbabilities(probabilities, Mutations.Count, nameof(probabilities));
 
-            double sum = Probabilities.Sum();
-            _sumMutationsProbabilities = sum >= 1 - RoundingErrorTolerance ? 1 : sum;
+            _sumMutationsProbabilities = ProbabilityUtilities.SumProbabilities(Probabilities);
             NoMutationProbability = 1 - _sumMutationsProbabilities;
         }
 
@@ -62,7 +56,7 @@ namespace GeneticAlgorithms.Mutations.Composite
             if (roll >= _sumMutationsProbabilities)
                 return individual;
 
-            _indexLastMutation = MutationUtilities.ChooseIndexByProbability(Probabilities, roll);
+            _indexLastMutation = ProbabilityUtilities.ChooseIndexByProbability(Probabilities, roll);
             return Mutations[_indexLastMutation].Mutate(individual, random, currentIterationNumber);
         }
 
@@ -75,21 +69,6 @@ namespace GeneticAlgorithms.Mutations.Composite
                 nested.Report(improved);
 
             _indexLastMutation = -1;
-        }
-
-        private IReadOnlyList<double> CreateProbabilities(IReadOnlyList<double> probabilities, int mutationsCount)
-        {
-            if (probabilities.Count != mutationsCount)
-                throw new ArgumentException($"Probabilities count {probabilities.Count} must match mutations count {mutationsCount}.", nameof(probabilities));
-
-            if (probabilities.Any(p => !(p >= 0 && p <= 1)))
-                throw new ArgumentException("Every probability must be between 0 and 1.", nameof(probabilities));
-
-            double sum = probabilities.Sum();
-            if (sum > 1 + RoundingErrorTolerance)
-                throw new ArgumentException($"Probabilities must sum to at most 1, but they sum to {sum}.", nameof(probabilities));
-
-            return probabilities.ToArray();
         }
     }
 }

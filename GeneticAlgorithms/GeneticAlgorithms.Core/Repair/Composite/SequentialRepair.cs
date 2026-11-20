@@ -26,12 +26,7 @@ namespace GeneticAlgorithms.Repair.Composite
 
         public SequentialRepair(IReadOnlyList<IRepair<TGene>> repairs)
         {
-            if (repairs == null || repairs.Count == 0)
-                throw new ArgumentException("At least one repair is required.", nameof(repairs));
-
-            if (repairs.Any(repair => repair == null))
-                throw new ArgumentException("Repairs must not contain null.", nameof(repairs));
-
+            RepairUtilities.ValidateRepairs(repairs, nameof(repairs));
             Repairs = repairs.ToArray();
         }
 

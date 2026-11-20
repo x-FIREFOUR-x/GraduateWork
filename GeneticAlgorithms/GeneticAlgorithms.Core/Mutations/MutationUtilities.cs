@@ -166,27 +166,5 @@ namespace GeneticAlgorithms.Mutations
             int rangeLength = random.Next(1, maxRangeLength + 1);
             return (startIndex, rangeLength);
         }
-
-        // Roulette wheel: returns the index i whose segment [p_0 + ... + p_(i-1); p_0 + ... + p_i) contains the roll,
-        // so for a roll uniform in [0; 1) index i is returned with probability probabilities[i].
-        // The roll must lie below the sum of the probabilities; it is a parameter, so the caller can use the same roll for other decisions.
-        // If rounding leaves the roll above the last cumulative sum, the last index with a positive probability is returned,
-        // so a mutation with zero probability is never chosen.
-        // Example: probabilities [0.2, 0.8], roll 0.5 -> 1.
-        public static int ChooseIndexByProbability(IReadOnlyList<double> probabilities, double roll)
-        {
-            double cumulative = 0;
-            for (int i = 0; i < probabilities.Count; i++)
-            {
-                cumulative += probabilities[i];
-                if (roll < cumulative)
-                    return i;
-            }
-            for (int i = probabilities.Count - 1; i > 0; i--)
-                if (probabilities[i] > 0)
-                    return i;
-            return 0;
-        }
-
     }
 }
