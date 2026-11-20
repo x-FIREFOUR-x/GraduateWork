@@ -128,7 +128,7 @@ namespace GeneticAlgorithms
         {
             if (_repair == null || individual.ConstraintTracker.IsSatisfied)
                 return individual;
-            return _repair.Repair(individual);
+            return _repair.Repair(individual, _random);
         }
 
         private void EvaluateFitness(Individual<TGene> individual)
