@@ -14,16 +14,16 @@ namespace GeneticAlgorithms.Constraints.Rules
         public CostLimitConstraint(Func<TGene, double> getGeneCost, double maxTotalCost)
         {
             _getGeneCost = getGeneCost ?? throw new ArgumentNullException(nameof(getGeneCost));
-            if (maxTotalCost < 0)
-                throw new ArgumentOutOfRangeException(nameof(maxTotalCost), maxTotalCost, "Max total cost must be non-negative.");
+            if (!(maxTotalCost >= 0))
+                throw new ArgumentOutOfRangeException(nameof(maxTotalCost), maxTotalCost, "Max total cost must be a non-negative number.");
             MaxTotalCost = maxTotalCost;
         }
 
         public double Cost(TGene gene)
         {
             double geneCost = _getGeneCost(gene);
-            if (geneCost <= 0)
-                throw new InvalidOperationException("Gene cost must be positive.");
+            if (!(geneCost > 0))
+                throw new InvalidOperationException("Gene cost must be a positive number.");
             return geneCost;
         }
 
@@ -41,6 +41,10 @@ namespace GeneticAlgorithms.Constraints.Rules
             }
 
             public bool IsSatisfied => _totalCost <= _constraint.MaxTotalCost + RoundingErrorTolerance;
+
+            public double UpperBoundViolation => IsSatisfied ? 0 : ConstraintUtilities.RelativeBoundViolation(_totalCost - _constraint.MaxTotalCost, _constraint.MaxTotalCost);
+
+            public double LowerBoundViolation => 0;
 
             public bool CanAppend(TGene gene) => _totalCost + _constraint.Cost(gene) <= _constraint.MaxTotalCost + RoundingErrorTolerance;
 

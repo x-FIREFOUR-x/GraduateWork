@@ -39,6 +39,28 @@ namespace GeneticAlgorithms.Constraints
                 }
             }
 
+            public double UpperBoundViolation
+            {
+                get
+                {
+                    double upperBoundViolation = 0;
+                    foreach (var tracker in _trackers)
+                        upperBoundViolation += tracker.UpperBoundViolation;
+                    return upperBoundViolation;
+                }
+            }
+
+            public double LowerBoundViolation
+            {
+                get
+                {
+                    double lowerBoundViolation = 0;
+                    foreach (var tracker in _trackers)
+                        lowerBoundViolation += tracker.LowerBoundViolation;
+                    return lowerBoundViolation;
+                }
+            }
+
             public bool CanAppend(TGene gene)
             {
                 foreach (var tracker in _trackers)
