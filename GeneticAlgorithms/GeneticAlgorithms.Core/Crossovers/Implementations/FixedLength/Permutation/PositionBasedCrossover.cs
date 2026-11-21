@@ -19,6 +19,8 @@ namespace GeneticAlgorithms.Crossovers.Implementations.FixedLength.Permutation
     {
         private readonly IConstraint<TGene> _constraint;
 
+        public bool RequiresParentsOfEqualLength => true;
+
         // Probability that a position of the child takes the gene of the first parent at the same position; in [0; 1].
         public double FirstParentGeneProbability { get; }
 

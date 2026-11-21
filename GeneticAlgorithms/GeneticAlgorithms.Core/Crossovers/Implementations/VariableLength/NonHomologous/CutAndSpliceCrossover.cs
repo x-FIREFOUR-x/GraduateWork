@@ -21,6 +21,8 @@ namespace GeneticAlgorithms.Crossovers.Implementations.VariableLength.NonHomolog
     {
         private readonly IConstraint<TGene> _constraint;
 
+        public bool RequiresParentsOfEqualLength => false;
+
         // How many cut points split each parent; at least 1.
         public int CutPointCount { get; }
 

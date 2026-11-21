@@ -17,6 +17,8 @@ namespace GeneticAlgorithms.Crossovers.Implementations.FixedLength.Discrete
     {
         private readonly IConstraint<TGene> _constraint;
 
+        public bool RequiresParentsOfEqualLength => true;
+
         // Probability that a gene is taken from the second parent (the swap probability of the classic two-child form); in [0; 1].
         public double SecondParentGeneProbability { get; }
 

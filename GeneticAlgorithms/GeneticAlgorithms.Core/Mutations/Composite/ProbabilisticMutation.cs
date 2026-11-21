@@ -18,6 +18,8 @@ namespace GeneticAlgorithms.Mutations.Composite
     {
         private readonly IMutation<TGene> _mutation;
 
+        public bool PreservesIndividualLength => _mutation.PreservesIndividualLength;
+
         // Probability that the nested mutation is applied, in [0; 1]; 0 never mutates and 1 always does.
         public double Probability { get; }
 

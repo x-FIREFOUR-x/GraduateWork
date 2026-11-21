@@ -21,6 +21,8 @@ namespace GeneticAlgorithms.Crossovers.Implementations.VariableLength.Homologous
     {
         private readonly IConstraint<TGene> _constraint;
 
+        public bool RequiresParentsOfEqualLength => false;
+
         // Probability that a gene only one of the parents has passes to the child; in [0; 1].
         public double InclusionProbability { get; }
 

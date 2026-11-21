@@ -20,6 +20,8 @@ namespace GeneticAlgorithms.Repairs.Composite
     //             memory is the largest memory of the repairs
     public sealed class SequentialRepair<TGene> : IRepair<TGene>
     {
+        public bool PreservesIndividualLength => Repairs.All(repair => repair.PreservesIndividualLength);
+
         // Repairs in the order they are applied; at least one, none of them null.
         public IReadOnlyList<IRepair<TGene>> Repairs { get; }
 

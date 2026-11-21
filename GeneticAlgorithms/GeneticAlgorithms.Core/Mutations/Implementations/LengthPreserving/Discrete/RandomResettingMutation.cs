@@ -20,6 +20,8 @@ namespace GeneticAlgorithms.Mutations.Implementations.LengthPreserving.Discrete
     // g - the number of distinct available genes.
     public sealed class RandomResettingMutation<TGene> : IMutation<TGene>
     {
+        public bool PreservesIndividualLength => true;
+
         // Distinct genes a mutated gene can become; at least one.
         public IReadOnlyList<TGene> AvailableGenes { get; }
 

@@ -41,6 +41,8 @@ namespace GeneticAlgorithms.Repairs.Implementations
         private readonly Func<TGene, TGene, bool> _checkGenesSameKind;
         private readonly List<TGene> _availableGenesByCostDescending;
 
+        public bool PreservesIndividualLength => false;
+
         // Distinct genes that may replace or be appended; at least one.
         public IReadOnlyList<TGene> AvailableGenes { get; }
 

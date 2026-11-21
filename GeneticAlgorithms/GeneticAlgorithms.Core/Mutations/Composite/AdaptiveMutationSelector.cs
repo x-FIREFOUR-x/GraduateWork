@@ -34,6 +34,8 @@ namespace GeneticAlgorithms.Mutations.Composite
         private readonly double[] _probabilities;
 
         private readonly int[] _improvements;
+
+        public bool PreservesIndividualLength => _mutations.All(mutation => mutation.PreservesIndividualLength);
         private readonly Queue<(int Mutation, bool Improved)> _history;
         private int _indexLastMutation = -1;
 

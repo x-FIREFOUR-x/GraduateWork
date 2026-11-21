@@ -28,6 +28,8 @@ namespace GeneticAlgorithms.Mutations.Implementations.LengthChanging.Constrained
     {
         private readonly IndividualBuilder<TGene> _individualBuilder;
 
+        public bool PreservesIndividualLength => false;
+
         // Largest share of the genes the removed range may take, in (0; 1]; the range always has at least one gene.
         public double MaxShare { get; }
 

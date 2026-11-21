@@ -40,6 +40,8 @@ namespace GeneticAlgorithms.Mutations.Implementations.LengthChanging.Constrained
         private readonly Func<TGene, TGene, bool> _checkGenesSameKind;
         private readonly List<TGene> _fittingGenes = new List<TGene>();
 
+        public bool PreservesIndividualLength => false;
+
         // Largest share of the genes the removed range may take, in (0; 1]; the range always has at least one gene.
         public double MaxShare { get; }
 

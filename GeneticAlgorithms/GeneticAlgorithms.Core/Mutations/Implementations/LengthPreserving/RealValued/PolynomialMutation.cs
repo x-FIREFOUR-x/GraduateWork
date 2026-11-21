@@ -29,6 +29,8 @@ namespace GeneticAlgorithms.Mutations.Implementations.LengthPreserving.RealValue
     // n - the number of genes of the individual.
     public sealed class PolynomialMutation : IMutation<double>
     {
+        public bool PreservesIndividualLength => true;
+
         // Smallest allowed gene value; finite, the distribution is narrowed so that genes never go below it.
         public double MinGeneValue { get; }
 

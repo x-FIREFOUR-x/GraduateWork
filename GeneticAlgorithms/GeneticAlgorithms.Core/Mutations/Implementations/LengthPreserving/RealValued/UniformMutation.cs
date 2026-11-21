@@ -17,6 +17,8 @@ namespace GeneticAlgorithms.Mutations.Implementations.LengthPreserving.RealValue
     // n - the number of genes of the individual.
     public sealed class UniformMutation : IMutation<double>
     {
+        public bool PreservesIndividualLength => true;
+
         // Smallest value a mutated gene can take; finite.
         public double MinGeneValue { get; }
 

@@ -16,6 +16,8 @@ namespace GeneticAlgorithms.Mutations.Implementations.LengthChanging.InsertionDe
     // n - the number of genes of the individual.
     public sealed class DeletionMutation<TGene> : IMutation<TGene>
     {
+        public bool PreservesIndividualLength => false;
+
         public Individual<TGene> Mutate(Individual<TGene> individual, IRandom random, int? currentIterationNumber = null)
         {
             MutationUtilities.ValidateArgumentsNotNull(individual, random);

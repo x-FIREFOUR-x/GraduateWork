@@ -26,6 +26,8 @@ namespace GeneticAlgorithms.Crossovers.Implementations.FixedLength.Permutation
     {
         private readonly IConstraint<TGene> _constraint;
 
+        public bool RequiresParentsOfEqualLength => true;
+
 
         public PartiallyMappedCrossover(IConstraint<TGene> constraint)
         {

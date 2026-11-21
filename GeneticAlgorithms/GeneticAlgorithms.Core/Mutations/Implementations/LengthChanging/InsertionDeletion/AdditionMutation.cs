@@ -18,6 +18,8 @@ namespace GeneticAlgorithms.Mutations.Implementations.LengthChanging.InsertionDe
     // n - the number of genes of the individual.
     public sealed class AdditionMutation<TGene> : IMutation<TGene>
     {
+        public bool PreservesIndividualLength => false;
+
         // Distinct genes that can be inserted, each with the same probability; at least one.
         public IReadOnlyList<TGene> AvailableGenes { get; }
 

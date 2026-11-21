@@ -26,6 +26,8 @@ namespace GeneticAlgorithms.Crossovers.Implementations.FixedLength.Permutation
     {
         private readonly IConstraint<TGene> _constraint;
 
+        public bool RequiresParentsOfEqualLength => true;
+
         // Probability that a gene of the second parent passes its relative order to the child; in [0; 1].
         public double SelectionProbability { get; }
 

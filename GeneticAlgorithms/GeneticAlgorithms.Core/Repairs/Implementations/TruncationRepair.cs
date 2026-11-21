@@ -31,6 +31,8 @@ namespace GeneticAlgorithms.Repairs.Implementations
     // c - the time of one check or update of the constraint tracker.
     public sealed class TruncationRepair<TGene> : IRepair<TGene>
     {
+        public bool PreservesIndividualLength => false;
+
         // Distinct genes that may be appended, from the most to the least preferred; at least one.
         public IReadOnlyList<TGene> AvailableGenes { get; }
 

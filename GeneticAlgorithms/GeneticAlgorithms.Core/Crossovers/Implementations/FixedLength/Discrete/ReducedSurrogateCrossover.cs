@@ -21,6 +21,8 @@ namespace GeneticAlgorithms.Crossovers.Implementations.FixedLength.Discrete
 
         private readonly IConstraint<TGene> _constraint;
 
+        public bool RequiresParentsOfEqualLength => true;
+
         // How many cut points split the sequence of differing positions; at least 1.
         public int CutPointCount { get; }
 

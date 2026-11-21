@@ -30,6 +30,8 @@ namespace GeneticAlgorithms.Repairs.Composite
     {
         private readonly double _sumRepairsProbabilities;
 
+        public bool PreservesIndividualLength => Repairs.All(repair => repair.PreservesIndividualLength);
+
         // Repairs to choose from; at least one, none of them null.
         public IReadOnlyList<IRepair<TGene>> Repairs { get; }
 

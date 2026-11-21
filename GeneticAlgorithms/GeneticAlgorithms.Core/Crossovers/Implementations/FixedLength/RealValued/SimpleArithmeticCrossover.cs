@@ -17,6 +17,8 @@ namespace GeneticAlgorithms.Crossovers.Implementations.FixedLength.RealValued
     {
         private readonly IConstraint<double> _constraint;
 
+        public bool RequiresParentsOfEqualLength => true;
+
         // Weight of the first parent in the average of the genes after the drawn position; in [0; 1].
         public double FirstParentWeight { get; }
 

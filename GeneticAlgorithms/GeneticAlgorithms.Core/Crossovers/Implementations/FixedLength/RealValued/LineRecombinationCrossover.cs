@@ -20,6 +20,8 @@ namespace GeneticAlgorithms.Crossovers.Implementations.FixedLength.RealValued
     {
         private readonly IConstraint<double> _constraint;
 
+        public bool RequiresParentsOfEqualLength => true;
+
         // How far beyond the parents the child may go, as a share of the distance between them; non-negative.
         public double ParentGeneRangeExtensionFactor { get; }
 

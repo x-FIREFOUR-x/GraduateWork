@@ -18,6 +18,8 @@ namespace GeneticAlgorithms.Crossovers.Implementations.VariableLength.Constraine
     {
         private readonly IConstraint<TGene> _constraint;
 
+        public bool RequiresParentsOfEqualLength => false;
+
 
         public HalfAndFeasibleFillCrossover(IConstraint<TGene> constraint)
         {

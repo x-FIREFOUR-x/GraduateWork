@@ -11,5 +11,9 @@ namespace GeneticAlgorithms.Repairs
     public interface IRepair<TGene>
     {
         Individual<TGene> Repair(Individual<TGene> individual, IRandom random = null);
+
+        // Whether the repaired individual always has the same number of genes as the original one;
+        // false for repairs that remove or append genes. True by default, as a repair that only changes gene values keeps the length.
+        bool PreservesIndividualLength => false;
     }
 }

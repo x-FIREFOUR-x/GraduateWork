@@ -18,6 +18,8 @@ namespace GeneticAlgorithms.Crossovers.Implementations.FixedLength.Permutation
     {
         private readonly IConstraint<TGene> _constraint;
 
+        public bool RequiresParentsOfEqualLength => true;
+
 
         public OrderCrossover(IConstraint<TGene> constraint)
         {

@@ -19,6 +19,8 @@ namespace GeneticAlgorithms.Mutations.Implementations.LengthPreserving.Discrete
     // g - the number of distinct available genes.
     public sealed class ReplacementMutation<TGene> : IMutation<TGene>
     {
+        public bool PreservesIndividualLength => true;
+
         // Distinct genes a replaced gene can become; at least one.
         public IReadOnlyList<TGene> AvailableGenes { get; }
 

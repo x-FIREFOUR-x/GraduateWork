@@ -22,6 +22,8 @@ namespace GeneticAlgorithms.Crossovers.Implementations.FixedLength.RealValued
     {
         private readonly IConstraint<double> _constraint;
 
+        public bool RequiresParentsOfEqualLength => true;
+
         // Smallest allowed gene value; a child with a smaller gene is drawn again.
         public double MinGeneValue { get; }
 

@@ -19,6 +19,8 @@ namespace GeneticAlgorithms.Crossovers.Implementations.VariableLength.NonHomolog
     {
         private readonly IConstraint<TGene> _constraint;
 
+        public bool RequiresParentsOfEqualLength => false;
+
         // Probability that a gene of the common part is taken from the second parent; in [0; 1].
         public double SecondParentGeneProbability { get; }
 

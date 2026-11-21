@@ -28,6 +28,8 @@ namespace GeneticAlgorithms.Repairs.Implementations
     // c - the time of one check or update of the constraint tracker.
     public sealed class RandomRepair<TGene> : IRepair<TGene>
     {
+        public bool PreservesIndividualLength => false;
+
         // Distinct genes that may be appended; at least one.
         public IReadOnlyList<TGene> AvailableGenes { get; }
 

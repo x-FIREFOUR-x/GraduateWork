@@ -37,6 +37,8 @@ namespace GeneticAlgorithms.Repairs.Implementations
     {
         private readonly Func<TGene, double> _getGenePriority;
 
+        public bool PreservesIndividualLength => false;
+
         // Distinct genes that may be appended; at least one.
         public IReadOnlyList<TGene> AvailableGenes { get; }
 

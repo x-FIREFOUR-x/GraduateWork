@@ -25,6 +25,8 @@ namespace GeneticAlgorithms.Crossovers.Implementations.VariableLength.Constraine
         private readonly FitnessPerCostCalculator<TGene> _fitnessPerCostCalculator;
         private readonly List<int> _indecesGenesCandidates = new List<int>();
 
+        public bool RequiresParentsOfEqualLength => false;
+
         // How many fitting genes of the pool are compared to choose the next gene of the child; at least 1.
         public int TournamentSize { get; }
 

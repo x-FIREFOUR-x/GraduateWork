@@ -24,6 +24,8 @@ namespace GeneticAlgorithms.Crossovers.Implementations.VariableLength.Homologous
 
         private readonly IConstraint<TGene> _constraint;
 
+        public bool RequiresParentsOfEqualLength => false;
+
         // How many synapses are used as cut points; at least 1.
         public int CutPointCount { get; }
 

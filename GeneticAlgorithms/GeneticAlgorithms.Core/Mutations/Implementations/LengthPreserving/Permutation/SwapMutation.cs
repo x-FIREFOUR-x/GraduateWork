@@ -16,6 +16,8 @@ namespace GeneticAlgorithms.Mutations.Implementations.LengthPreserving.Permutati
     // n - the number of genes of the individual; both are spent on cloning it.
     public sealed class SwapMutation<TGene> : IMutation<TGene>
     {
+        public bool PreservesIndividualLength => true;
+
         public Individual<TGene> Mutate(Individual<TGene> individual, IRandom random, int? currentIterationNumber = null)
         {
             MutationUtilities.ValidateArgumentsNotNull(individual, random);

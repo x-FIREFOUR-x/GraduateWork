@@ -37,6 +37,8 @@ namespace GeneticAlgorithms.Crossovers.Implementations.FixedLength.RealValued
     {
         private readonly IConstraint<double> _constraint;
 
+        public bool RequiresParentsOfEqualLength => true;
+
         // How close children stay to the parents: large values give children near the parents, small values spread them; non-negative.
         public double ParentProximityIndex { get; }
 

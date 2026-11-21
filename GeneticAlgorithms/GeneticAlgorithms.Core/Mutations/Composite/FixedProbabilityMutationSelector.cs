@@ -26,6 +26,8 @@ namespace GeneticAlgorithms.Mutations.Composite
         private readonly double _sumMutationsProbabilities;
         private int _indexLastMutation = -1;
 
+        public bool PreservesIndividualLength => Mutations.All(mutation => mutation.PreservesIndividualLength);
+
         // Mutations to choose from; at least one, none of them null.
         public IReadOnlyList<IMutation<TGene>> Mutations { get; }
 

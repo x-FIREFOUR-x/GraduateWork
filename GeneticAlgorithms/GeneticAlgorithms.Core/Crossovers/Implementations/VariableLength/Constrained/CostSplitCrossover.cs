@@ -27,6 +27,8 @@ namespace GeneticAlgorithms.Crossovers.Implementations.VariableLength.Constraine
         private readonly ICostModel<TGene> _costModel;
         private readonly IRepair<TGene> _repair;
 
+        public bool RequiresParentsOfEqualLength => false;
+
         // Share of MaxTotalCost allocated for acquiring genes for the offspring from the first parent, the rest of share goes to the second parent; in [0; 1].
         // Null means a new random share for every child.
         public double? FirstParentMaxTotalCostShare { get; }

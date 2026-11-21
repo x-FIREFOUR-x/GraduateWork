@@ -20,6 +20,8 @@ namespace GeneticAlgorithms.Crossovers.Implementations.FixedLength.Discrete
 
         private readonly IConstraint<TGene> _constraint;
 
+        public bool RequiresParentsOfEqualLength => true;
+
 
         public HalfUniformCrossover(IConstraint<TGene> constraint)
         {

@@ -22,6 +22,8 @@ namespace GeneticAlgorithms.Mutations.Implementations.LengthPreserving.RealValue
     {
         private const double TwoPi = 2 * Math.PI;
 
+        public bool PreservesIndividualLength => true;
+
 
         // Smallest allowed gene value; mutated genes below it are clamped to it.
         public double MinGeneValue { get; }

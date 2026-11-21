@@ -57,6 +57,8 @@ namespace GeneticAlgorithms
             _random = random ?? throw new ArgumentNullException(nameof(random));
             _repair = repair;
 
+            ValidateOperatorsKeepLengthForEqualLengthCrossover();
+
             _canKeepInfeasibleIndividuals = _fitnessFunction.PrefersFeasibleIndividuals || _survivorSelection.Comparer.PrefersFeasibleIndividuals;
             if (_config.CheckInfeasibleIndividuals)
                 ValidateParentAndSurvivorSelectionsAgreeOnFeasibleIndividuals();
@@ -136,6 +138,29 @@ namespace GeneticAlgorithms
                 return child;
             return mutant;
         }
+
+        // A crossover that needs parents of equal length fails as soon as individuals of different lengths meet as parents,
+        // so every mutation and the repair must keep the length; otherwise the combination is rejected before the run.
+        private void ValidateOperatorsKeepLengthForEqualLengthCrossover()
+        {
+            if (!_crossover.RequiresParentsOfEqualLength)
+                return;
+
+            if (!_mutation.PreservesIndividualLength)
+                throw new ArgumentException(
+                    $"{TypeName(_mutation)} changes the length of individuals, but {TypeName(_crossover)} requires parents of equal length. " +
+                    "Use length-preserving mutations or a crossover for parents of different lengths.",
+                    "mutation");
+
+            if (_repair != null && !_repair.PreservesIndividualLength)
+                throw new ArgumentException(
+                    $"{TypeName(_repair)} changes the length of individuals, but {TypeName(_crossover)} requires parents of equal length. " +
+                    "Use a repair that keeps the length, no repair, or a crossover for parents of different lengths.",
+                    "repair");
+        }
+
+        // Name of the type of a component without the arity suffix of generic types, for example AdditionMutation instead of AdditionMutation`1.
+        private static string TypeName(object component) => component.GetType().Name.Split('`')[0];
 
         // The parent selection and the survivor selection must prefer feasible individuals alike: through the fitness function,
         // which both use, or through their comparers. Otherwise infeasible individuals are preferred in one selection
