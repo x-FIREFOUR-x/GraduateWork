@@ -29,6 +29,7 @@ namespace GeneticAlgorithms
         private readonly IStopCriterion _stopCriterion;
         private readonly IRepair<TGene> _repair;
         private readonly IRandom _random;
+        private readonly bool _canKeepInfeasibleIndividuals;
 
         private SearchProgress _searchProgress;
 
@@ -55,6 +56,10 @@ namespace GeneticAlgorithms
             _stopCriterion = stopCriterion ?? throw new ArgumentNullException(nameof(stopCriterion));
             _random = random ?? throw new ArgumentNullException(nameof(random));
             _repair = repair;
+
+            _canKeepInfeasibleIndividuals = _fitnessFunction.PrefersFeasibleIndividuals || _survivorSelection.Comparer.PrefersFeasibleIndividuals;
+            if (_config.CheckInfeasibleIndividuals)
+                ValidateParentAndSurvivorSelectionsAgreeOnFeasibleIndividuals();
         }
 
         public GeneticAlgorithmResult<TGene> Run(IEnumerable<TGene> warmStartGenes = null, CancellationToken cancellationToken = default)
@@ -63,8 +68,12 @@ namespace GeneticAlgorithms
             _searchProgress = new SearchProgress();
 
             var population = _populationInitializer.CreatePopulation(_config, warmStartGenes, _random);
-            foreach (var individual in population)
-                EvaluateFitness(individual);
+            for (int i = 0; i < population.Count; i++)
+            {
+                population[i] = RepairIfNeeded(population[i]);
+                EnsureInfeasibleIndividualCanBeKept(population[i]);
+                EvaluateFitness(population[i]);
+            }
             _survivorSelection.Initialize(population);
 
             var comparerIndividuals = _survivorSelection.Comparer;
@@ -108,6 +117,7 @@ namespace GeneticAlgorithms
         private Individual<TGene> CreateOffspring(Individual<TGene> firstParent, Individual<TGene> secondParent, IIndividualComparer<TGene> comparer)
         {
             var child = RepairIfNeeded(_crossover.Cross(firstParent, secondParent, _random));
+            EnsureInfeasibleIndividualCanBeKept(child);
             EvaluateFitness(child);
 
             var mutant = _mutation.Mutate(child, _random, _searchProgress.IterationCount);
@@ -115,6 +125,7 @@ namespace GeneticAlgorithms
                 return child;
 
             mutant = RepairIfNeeded(mutant);
+            EnsureInfeasibleIndividualCanBeKept(mutant);
             EvaluateFitness(mutant);
 
             bool improved = comparer.IsBetter(mutant, child);
@@ -124,6 +135,41 @@ namespace GeneticAlgorithms
             if (_config.AcceptMutationOnlyIfNotWorse && !comparer.IsNotWorse(mutant, child))
                 return child;
             return mutant;
+        }
+
+        // The parent selection and the survivor selection must prefer feasible individuals alike: through the fitness function,
+        // which both use, or through their comparers. Otherwise infeasible individuals are preferred in one selection
+        // and treated as feasible in the other. A fitness-proportional parent selection prefers individuals by fitness values only,
+        // and a parent selection that neither compares nor uses fitness values, such as random selection, never prefers anyone.
+        private void ValidateParentAndSurvivorSelectionsAgreeOnFeasibleIndividuals()
+        {
+            var parentComparer = _parentSelection.Comparer;
+            if (parentComparer == null && !_parentSelection.UsesFitnessValues)
+                return;
+
+            bool parentSelectionPrefersFeasibleIndividuals = _fitnessFunction.PrefersFeasibleIndividuals || (parentComparer?.PrefersFeasibleIndividuals ?? false);
+            bool survivorSelectionPrefersFeasibleIndividuals = _fitnessFunction.PrefersFeasibleIndividuals || _survivorSelection.Comparer.PrefersFeasibleIndividuals;
+            if (parentSelectionPrefersFeasibleIndividuals != survivorSelectionPrefersFeasibleIndividuals)
+                throw new ArgumentException(
+                    $"The parent selection {(parentSelectionPrefersFeasibleIndividuals ? "prefers" : "does not prefer")} feasible individuals, " +
+                    $"but the survivor selection {(survivorSelectionPrefersFeasibleIndividuals ? "does" : "does not")}. " +
+                    "Give both selections a comparer that prefers feasible individuals, such as ConstrainedFitnessComparer, " +
+                    "or use a PenalizedFitnessFunction; fitness-proportional parent selections compare only by fitness values, so they need the penalty.",
+                    "parentSelection");
+        }
+
+        // An infeasible individual left after the repair would compete by fitness only when neither the fitness function
+        // nor the comparer prefers feasible individuals, so it could win over feasible ones; the run is stopped with an explanation.
+        private void EnsureInfeasibleIndividualCanBeKept(Individual<TGene> individual)
+        {
+            if (!_config.CheckInfeasibleIndividuals || _canKeepInfeasibleIndividuals || individual.ConstraintTracker.IsSatisfied)
+                return;
+
+            throw new InvalidOperationException(
+                "An individual breaks the constraint after the repair, but neither the fitness function nor the comparer prefers feasible individuals, " +
+                "so infeasible individuals could win over feasible ones. Use a repair that repairs every individual, " +
+                "a PenalizedFitnessFunction or a ConstrainedFitnessComparer. If the constraint cannot be satisfied with the available genes, " +
+                "even a repair leaves it violated. Set CheckInfeasibleIndividuals to false in the config to allow infeasible individuals.");
         }
 
         private Individual<TGene> RepairIfNeeded(Individual<TGene> individual)

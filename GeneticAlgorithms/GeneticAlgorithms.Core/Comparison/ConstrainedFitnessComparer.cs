@@ -25,6 +25,8 @@ namespace GeneticAlgorithms.Comparison
     // c - the time to read the violations from the constraint tracker.
     public sealed class ConstrainedFitnessComparer<TGene> : IIndividualComparer<TGene>
     {
+        public bool PrefersFeasibleIndividuals => true;
+
         // Comparer of feasible individuals.
         public IIndividualComparer<TGene> FeasibleComparer { get; }
 

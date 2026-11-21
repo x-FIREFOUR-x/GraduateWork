@@ -31,6 +31,8 @@ namespace GeneticAlgorithms
 
         public bool AcceptMutationOnlyIfNotWorse { get; set; } = true;
 
+        public bool CheckInfeasibleIndividuals { get; set; } = true;
+
 
         public int? MaxIterations { get; set; }
 

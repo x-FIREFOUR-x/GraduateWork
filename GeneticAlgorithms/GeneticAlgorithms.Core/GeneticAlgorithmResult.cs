@@ -15,6 +15,8 @@ namespace GeneticAlgorithms
 
         public Individual<TGene> BestIndividual { get; }
 
+        public bool IsBestIndividualFeasible => BestIndividual.ConstraintTracker.IsSatisfied;
+
         public IReadOnlyList<Individual<TGene>> Population { get; }
 
         public SearchProgress Progress { get; }

@@ -33,6 +33,8 @@ namespace GeneticAlgorithms.Fitness
 
         public int FitnessValueCount => _fitnessFunction.FitnessValueCount;
 
+        public bool PrefersFeasibleIndividuals => true;
+
 
         public PenalizedFitnessFunction(IFitnessFunction<TGene> fitnessFunction, IConstraint<TGene> constraint, double penaltyCoefficient)
         {
