@@ -12,14 +12,12 @@ namespace GeneticAlgorithms.Selection.Parent
     // weighted sampling (roulette wheel and stochastic universal sampling), grouping parents into pairs and shuffling.
     internal static class ParentSelectionUtilities
     {
-        public static void Validate<TGene>(IReadOnlyList<Individual<TGene>> population, IIndividualComparer<TGene> comparer, int parentPairCount, IRandom random)
+        public static void Validate<TGene>(IReadOnlyList<Individual<TGene>> population, int parentPairCount, IRandom random)
         {
             if (population == null)
                 throw new ArgumentNullException(nameof(population));
             if (population.Count == 0)
                 throw new ArgumentException("Population must not be empty.", nameof(population));
-            if (comparer == null)
-                throw new ArgumentNullException(nameof(comparer));
             if (random == null)
                 throw new ArgumentNullException(nameof(random));
             if (parentPairCount < 1)
@@ -39,14 +37,11 @@ namespace GeneticAlgorithms.Selection.Parent
             return population.OrderBy(individual => individual, comparer).ToArray();
         }
 
-        public static double[] GetFitnessValues<TGene>(IReadOnlyList<Individual<TGene>> population, IIndividualComparer<TGene> comparer)
+        public static double[] GetFitnessValues<TGene>(IReadOnlyList<Individual<TGene>> population, int fitnessIndex)
         {
-            if (comparer is not FitnessComparer<TGene> fitnessComparer)
-                throw new InvalidOperationException("Fitness-proportional selection requires a FitnessComparer, need FitnessIndex that to know which fitness value to use.");
-
             var fitnessValues = new double[population.Count];
             for (int i = 0; i < population.Count; i++)
-                fitnessValues[i] = population[i].FitnessValues[fitnessComparer.FitnessIndex];
+                fitnessValues[i] = population[i].FitnessValues[fitnessIndex];
             return fitnessValues;
         }
 

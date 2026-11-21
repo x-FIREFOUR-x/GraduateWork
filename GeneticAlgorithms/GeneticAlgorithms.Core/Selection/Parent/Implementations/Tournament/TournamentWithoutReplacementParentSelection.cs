@@ -18,24 +18,26 @@ namespace GeneticAlgorithms.Selection.Parent.Implementations.Tournament
     // k - the tournament size.
     public sealed class TournamentWithoutReplacementParentSelection<TGene> : IParentSelection<TGene>
     {
+        public IIndividualComparer<TGene> Comparer { get; }
+
         // How many candidates of the shuffled population compete in one group; from 1 to the population size.
         public int TournamentSize { get; }
 
 
-        public TournamentWithoutReplacementParentSelection(int tournamentSize = 2)
+        public TournamentWithoutReplacementParentSelection(int tournamentSize = 2, IIndividualComparer<TGene> comparer = null)
         {
             if (tournamentSize < 1)
                 throw new ArgumentOutOfRangeException(nameof(tournamentSize), tournamentSize, "Tournament size must be at least 1.");
             TournamentSize = tournamentSize;
+            Comparer = comparer ?? new FitnessComparer<TGene>();
         }
 
         public IReadOnlyList<ParentPair<TGene>> SelectParents(
             IReadOnlyList<Individual<TGene>> population,
-            IIndividualComparer<TGene> comparer,
             int parentPairCount,
             IRandom random)
         {
-            ParentSelectionUtilities.Validate(population, comparer, parentPairCount, random);
+            ParentSelectionUtilities.Validate(population, parentPairCount, random);
             if (TournamentSize > population.Count)
                 throw new InvalidOperationException("Tournament size must not exceed population size.");
 
@@ -59,7 +61,7 @@ namespace GeneticAlgorithms.Selection.Parent.Implementations.Tournament
                 for (int j = 1; j < TournamentSize; j++)
                 {
                     var candidate = population[shuffledCandidateIndices[groupStart + j]];
-                    if (comparer.IsBetter(candidate, bestCandidate))
+                    if (Comparer.IsBetter(candidate, bestCandidate))
                         bestCandidate = candidate;
                 }
                 groupStart += TournamentSize;

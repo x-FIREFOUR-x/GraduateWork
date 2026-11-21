@@ -8,7 +8,7 @@ using GeneticAlgorithms.Randomness;
 namespace GeneticAlgorithms.Selection.Parent.Implementations.Proportional
 {
     // Boltzmann selection: the selection probability is proportional to exp(f / T), where f is the fitness
-    // value used by the FitnessComparer and T = Temperature. A high temperature makes selection close to uniform,
+    // value with FitnessIndex and T = Temperature. A high temperature makes selection close to uniform,
     // a low one makes it close to always picking the best individual. Allows negative fitness values.
     //
     // Complexity: time O(n + m * log n), memory O(n + m).
@@ -16,27 +16,37 @@ namespace GeneticAlgorithms.Selection.Parent.Implementations.Proportional
     // m - the number of selected parents (2 * parentPairCount).
     public sealed class BoltzmannParentSelection<TGene> : IParentSelection<TGene>
     {
+        // Null: the selection reads the fitness value with FitnessIndex directly instead of comparing individuals.
+        public IIndividualComparer<TGene> Comparer => null;
+
+        public bool UsesFitnessValues => true;
+
+        // Index of the fitness value the selection probabilities are computed from; non-negative.
+        public int FitnessIndex { get; }
+
         public double Temperature { get; }
 
 
-        public BoltzmannParentSelection(double temperature = 1)
+        public BoltzmannParentSelection(double temperature = 1, int fitnessIndex = 0)
         {
             if (!(temperature > 0) || double.IsInfinity(temperature))
                 throw new ArgumentOutOfRangeException(nameof(temperature), temperature, "Temperature must be positive and finite.");
             Temperature = temperature;
+            if (fitnessIndex < 0)
+                throw new ArgumentOutOfRangeException(nameof(fitnessIndex), fitnessIndex, "Fitness index must be non-negative.");
+            FitnessIndex = fitnessIndex;
         }
 
         public IReadOnlyList<ParentPair<TGene>> SelectParents(
             IReadOnlyList<Individual<TGene>> population,
-            IIndividualComparer<TGene> comparer,
             int parentPairCount,
             IRandom random)
         {
-            ParentSelectionUtilities.Validate(population, comparer, parentPairCount, random);
+            ParentSelectionUtilities.Validate(population, parentPairCount, random);
 
             int parentCount = 2 * parentPairCount;
 
-            var fitnessValues = ParentSelectionUtilities.GetFitnessValues(population, comparer);
+            var fitnessValues = ParentSelectionUtilities.GetFitnessValues(population, FitnessIndex);
             double maxFitness = double.NegativeInfinity;
             foreach (double fitness in fitnessValues)
                 maxFitness = Math.Max(maxFitness, fitness);

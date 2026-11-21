@@ -16,26 +16,28 @@ namespace GeneticAlgorithms.Selection.Parent.Implementations.Rank
     // m - the number of selected parents (2 * parentPairCount).
     public sealed class ExponentialRankParentSelection<TGene> : IParentSelection<TGene>
     {
+        public IIndividualComparer<TGene> Comparer { get; }
+
         public double RankBase { get; }
 
 
-        public ExponentialRankParentSelection(double rankBase = 0.9)
+        public ExponentialRankParentSelection(double rankBase = 0.9, IIndividualComparer<TGene> comparer = null)
         {
             if (rankBase <= 0 || rankBase > 1)
                 throw new ArgumentOutOfRangeException(nameof(rankBase), rankBase, "Rank base must be greater than 0 and at less 1.");
             RankBase = rankBase;
+            Comparer = comparer ?? new FitnessComparer<TGene>();
         }
 
         public IReadOnlyList<ParentPair<TGene>> SelectParents(
             IReadOnlyList<Individual<TGene>> population,
-            IIndividualComparer<TGene> comparer,
             int parentPairCount,
             IRandom random)
         {
-            ParentSelectionUtilities.Validate(population, comparer, parentPairCount, random);
+            ParentSelectionUtilities.Validate(population, parentPairCount, random);
             int parentCount = 2 * parentPairCount;
 
-            var rankedPopulation = ParentSelectionUtilities.SortWorstToBest(population, comparer);
+            var rankedPopulation = ParentSelectionUtilities.SortWorstToBest(population, Comparer);
 
             var selectionProbabilityWeights = new double[rankedPopulation.Length];
             double probabilityWeight = 1;

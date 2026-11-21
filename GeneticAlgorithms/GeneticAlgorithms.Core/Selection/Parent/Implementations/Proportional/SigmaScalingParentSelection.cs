@@ -17,26 +17,36 @@ namespace GeneticAlgorithms.Selection.Parent.Implementations.Proportional
     // m - the number of selected parents (2 * parentPairCount).
     public sealed class SigmaScalingParentSelection<TGene> : IParentSelection<TGene>
     {
+        // Null: the selection reads the fitness value with FitnessIndex directly instead of comparing individuals.
+        public IIndividualComparer<TGene> Comparer => null;
+
+        public bool UsesFitnessValues => true;
+
+        // Index of the fitness value the selection probabilities are computed from; non-negative.
+        public int FitnessIndex { get; }
+
         public double ScalingFactor { get; }
 
 
-        public SigmaScalingParentSelection(double scalingFactor = 2)
+        public SigmaScalingParentSelection(double scalingFactor = 2, int fitnessIndex = 0)
         {
             if (!(scalingFactor > 0) || double.IsInfinity(scalingFactor))
                 throw new ArgumentOutOfRangeException(nameof(scalingFactor), scalingFactor, "Scaling factor must be positive and finite.");
             ScalingFactor = scalingFactor;
+            if (fitnessIndex < 0)
+                throw new ArgumentOutOfRangeException(nameof(fitnessIndex), fitnessIndex, "Fitness index must be non-negative.");
+            FitnessIndex = fitnessIndex;
         }
 
         public IReadOnlyList<ParentPair<TGene>> SelectParents(
             IReadOnlyList<Individual<TGene>> population,
-            IIndividualComparer<TGene> comparer,
             int parentPairCount,
             IRandom random)
         {
-            ParentSelectionUtilities.Validate(population, comparer, parentPairCount, random);
+            ParentSelectionUtilities.Validate(population, parentPairCount, random);
 
             int parentCount = 2 * parentPairCount;
-            var fitnessValues = ParentSelectionUtilities.GetFitnessValues(population, comparer);
+            var fitnessValues = ParentSelectionUtilities.GetFitnessValues(population, FitnessIndex);
 
             double meanFitness = 0;
             foreach (double fitness in fitnessValues)

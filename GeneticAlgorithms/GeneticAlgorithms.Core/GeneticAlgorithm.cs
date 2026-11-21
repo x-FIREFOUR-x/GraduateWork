@@ -84,7 +84,7 @@ namespace GeneticAlgorithms
                     break;
 
                 offspring.Clear();
-                var parentPairs = _parentSelection.SelectParents(population, comparerIndividuals, _config.CountOffspring, _random);
+                var parentPairs = _parentSelection.SelectParents(population, _config.CountOffspring, _random);
                 foreach (var parentPair in parentPairs)
                     offspring.Add(new Offspring<TGene>(CreateOffspring(parentPair.First, parentPair.Second, comparerIndividuals), parentPair));
 

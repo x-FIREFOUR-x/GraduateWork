@@ -16,27 +16,29 @@ namespace GeneticAlgorithms.Selection.Parent.Implementations.Rank
     // m - the number of selected parents (2 * parentPairCount).
     public sealed class LinearRankParentSelection<TGene> : IParentSelection<TGene>
     {
+        public IIndividualComparer<TGene> Comparer { get; }
+
         public double SelectionPressure { get; }
 
 
-        public LinearRankParentSelection(double selectionPressure = 1.5)
+        public LinearRankParentSelection(double selectionPressure = 1.5, IIndividualComparer<TGene> comparer = null)
         {
             if (selectionPressure < 1 || selectionPressure > 2)
                 throw new ArgumentOutOfRangeException(nameof(selectionPressure), selectionPressure, "Selection pressure must be between 1 and 2.");
             SelectionPressure = selectionPressure;
+            Comparer = comparer ?? new FitnessComparer<TGene>();
         }
 
         public IReadOnlyList<ParentPair<TGene>> SelectParents(
             IReadOnlyList<Individual<TGene>> population,
-            IIndividualComparer<TGene> comparer,
             int parentPairCount,
             IRandom random)
         {
-            ParentSelectionUtilities.Validate(population, comparer, parentPairCount, random);
+            ParentSelectionUtilities.Validate(population, parentPairCount, random);
 
             int parentCount = 2 * parentPairCount;
 
-            var rankedPopulation = ParentSelectionUtilities.SortWorstToBest(population, comparer);
+            var rankedPopulation = ParentSelectionUtilities.SortWorstToBest(population, Comparer);
             int populationSize = rankedPopulation.Length;
             var selectionProbabilityWeights = new double[populationSize];
 

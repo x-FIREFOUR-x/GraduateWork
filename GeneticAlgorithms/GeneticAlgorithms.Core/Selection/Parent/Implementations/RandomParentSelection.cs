@@ -12,13 +12,15 @@ namespace GeneticAlgorithms.Selection.Parent.Implementations
     // m - the number of selected parents (2 * parentPairCount).
     public sealed class RandomParentSelection<TGene> : IParentSelection<TGene>
     {
+        // Null: the selection picks parents uniformly at random and never compares individuals.
+        public IIndividualComparer<TGene> Comparer => null;
+
         public IReadOnlyList<ParentPair<TGene>> SelectParents(
             IReadOnlyList<Individual<TGene>> population,
-            IIndividualComparer<TGene> comparer,
             int parentPairCount,
             IRandom random)
         {
-            ParentSelectionUtilities.Validate(population, comparer, parentPairCount, random);
+            ParentSelectionUtilities.Validate(population, parentPairCount, random);
 
             int parentCount = 2 * parentPairCount;
             var parents = new Individual<TGene>[parentCount];

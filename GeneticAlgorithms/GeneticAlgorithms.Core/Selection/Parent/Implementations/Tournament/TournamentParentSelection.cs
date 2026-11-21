@@ -15,30 +15,32 @@ namespace GeneticAlgorithms.Selection.Parent.Implementations.Tournament
     // k - the tournament size.
     public sealed class TournamentParentSelection<TGene> : IParentSelection<TGene>
     {
+        public IIndividualComparer<TGene> Comparer { get; }
+
         // How many randomly drawn candidates compete in one tournament; at least 1.
         public int TournamentSize { get; }
 
 
-        public TournamentParentSelection(int tournamentSize = 3)
+        public TournamentParentSelection(int tournamentSize = 3, IIndividualComparer<TGene> comparer = null)
         {
             if (tournamentSize < 1)
                 throw new ArgumentOutOfRangeException(nameof(tournamentSize), tournamentSize, "Tournament size must be at least 1.");
             TournamentSize = tournamentSize;
+            Comparer = comparer ?? new FitnessComparer<TGene>();
         }
 
         public IReadOnlyList<ParentPair<TGene>> SelectParents(
             IReadOnlyList<Individual<TGene>> population,
-            IIndividualComparer<TGene> comparer,
             int parentPairCount,
             IRandom random)
         {
-            ParentSelectionUtilities.Validate(population, comparer, parentPairCount, random);
+            ParentSelectionUtilities.Validate(population, parentPairCount, random);
 
             int parentCount = 2 * parentPairCount;
             var parents = new Individual<TGene>[parentCount];
 
             for (int i = 0; i < parentCount; i++)
-                parents[i] = SelectParent(population, comparer, random);
+                parents[i] = SelectParent(population, Comparer, random);
 
             return ParentSelectionUtilities.ToPairs(parents);
         }

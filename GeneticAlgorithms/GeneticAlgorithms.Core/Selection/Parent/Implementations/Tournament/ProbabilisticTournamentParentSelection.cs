@@ -16,6 +16,8 @@ namespace GeneticAlgorithms.Selection.Parent.Implementations.Tournament
     // k - the tournament size.
     public sealed class ProbabilisticTournamentParentSelection<TGene> : IParentSelection<TGene>
     {
+        public IIndividualComparer<TGene> Comparer { get; }
+
         // How many randomly drawn candidates compete in one tournament; at least 2.
         public int TournamentSize { get; }
 
@@ -26,7 +28,7 @@ namespace GeneticAlgorithms.Selection.Parent.Implementations.Tournament
         public double WinProbability { get; }
 
 
-        public ProbabilisticTournamentParentSelection(int tournamentSize = 2, double winProbability = 0.75)
+        public ProbabilisticTournamentParentSelection(int tournamentSize = 2, double winProbability = 0.75, IIndividualComparer<TGene> comparer = null)
         {
             if (tournamentSize < 2)
                 throw new ArgumentOutOfRangeException(nameof(tournamentSize), tournamentSize, "Tournament size must be at least 2.");
@@ -34,15 +36,15 @@ namespace GeneticAlgorithms.Selection.Parent.Implementations.Tournament
                 throw new ArgumentOutOfRangeException(nameof(winProbability), winProbability, "Win probability must be between 0.5 and 1.");
             TournamentSize = tournamentSize;
             WinProbability = winProbability;
+            Comparer = comparer ?? new FitnessComparer<TGene>();
         }
 
         public IReadOnlyList<ParentPair<TGene>> SelectParents(
             IReadOnlyList<Individual<TGene>> population,
-            IIndividualComparer<TGene> comparer,
             int parentPairCount,
             IRandom random)
         {
-            ParentSelectionUtilities.Validate(population, comparer, parentPairCount, random);
+            ParentSelectionUtilities.Validate(population, parentPairCount, random);
 
             int parentCount = 2 * parentPairCount;
             var parents = new Individual<TGene>[parentCount];
@@ -52,7 +54,7 @@ namespace GeneticAlgorithms.Selection.Parent.Implementations.Tournament
             {
                 for (int j = 0; j < TournamentSize; j++)
                     candidates[j] = population[random.Next(population.Count)];
-                Array.Sort(candidates, (x, y) => comparer.Compare(y, x));
+                Array.Sort(candidates, (x, y) => Comparer.Compare(y, x));
                 parents[i] = PickWinner(candidates, random);
             }
 
