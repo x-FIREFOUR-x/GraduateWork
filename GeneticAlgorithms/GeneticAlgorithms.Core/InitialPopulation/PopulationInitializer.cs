@@ -14,10 +14,10 @@ namespace GeneticAlgorithms.InitialPopulation
         public int AttemptsPerIndividual { get; }
 
 
-        public PopulationInitializer(IndividualBuilder<TGene> individualBuilder, IRepair<TGene> repair, int attemptsPerIndividual = 10)
+        public PopulationInitializer(IndividualBuilder<TGene> individualBuilder, IRepair<TGene> repair = null, int attemptsPerIndividual = 10)
         {
             _individualBuilder = individualBuilder ?? throw new ArgumentNullException(nameof(individualBuilder));
-            _repair = repair ?? throw new ArgumentNullException(nameof(repair));
+            _repair = repair;
             if (attemptsPerIndividual < 1)
                 throw new ArgumentOutOfRangeException(nameof(attemptsPerIndividual), attemptsPerIndividual, "Attempts per individual must be at least 1.");
             AttemptsPerIndividual = attemptsPerIndividual;
@@ -59,7 +59,8 @@ namespace GeneticAlgorithms.InitialPopulation
 
         private Individual<TGene> CreateIndividualUsingWarmStart(IEnumerable<TGene> genes, IRandom random)
         {
-            return _repair.Repair(_individualBuilder.CreateFromGenes(genes), random);
+            var individual = _individualBuilder.CreateFromGenes(genes);
+            return _repair == null ? individual : _repair.Repair(individual, random);
         }
 
         private Individual<TGene> CreateIndividualVarianUsingWarmStart(Individual<TGene> warmStartIndividual, IRandom random)

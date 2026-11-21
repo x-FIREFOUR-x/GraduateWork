@@ -18,5 +18,17 @@ namespace GeneticAlgorithms.Constraints
             double boundSize = Math.Abs(bound);
             return boundSize == 0 ? boundViolation : boundViolation / boundSize;
         }
+
+        // Total violation of the constraint: the sum of the violations of its upper and lower bounds; 0 when it is satisfied.
+        // Used to compare how far infeasible individuals are from the feasible region.
+        // Throws if the tracker reports a negative or NaN violation, as it would make an infeasible individual look better
+        // than a feasible one; this can only come from a custom tracker that breaks the contract of IConstraintTracker.
+        public static double TotalBoundViolation<TGene>(IConstraintTracker<TGene> tracker)
+        {
+            double totalBoundViolation = tracker.UpperBoundViolation + tracker.LowerBoundViolation;
+            if (!(totalBoundViolation >= 0))
+                throw new InvalidOperationException($"Constraint tracker must report non-negative bound violations, but they sum to {totalBoundViolation}.");
+            return totalBoundViolation;
+        }
     }
 }
