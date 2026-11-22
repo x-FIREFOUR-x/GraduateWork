@@ -8,6 +8,8 @@ namespace GeneticAlgorithms.Comparison
     {
         public bool PrefersFeasibleIndividuals => false;
 
+        public bool IsTotalOrder => true;
+
         public int FitnessIndex { get; }
 
         public FitnessComparer(int fitnessIndex = 0)

@@ -12,7 +12,7 @@ namespace GeneticAlgorithms.Comparison
     // 3. Of two feasible individuals, the nested comparer decides, by default the first fitness value.
     // The total violation is the sum of UpperBoundViolation and LowerBoundViolation of the constraint tracker of the individual,
     // so it is read without evaluating anything again. It needs no penalty coefficient to tune.
-    // It is the constraint handling of NSGA-II (constrained domination) for a single objective.
+    // With ParetoDominanceComparer as the nested comparer it is the constrained domination of NSGA-II for several objectives.
     // When every individual is feasible, for example with a repair that always fixes the constraint, it acts as the nested comparer.
     // Parent selections that use fitness values directly, such as roulette wheel selection, do not use comparers,
     // so for them the constraint has to be handled by a penalty in the fitness function.
@@ -27,13 +27,15 @@ namespace GeneticAlgorithms.Comparison
     {
         public bool PrefersFeasibleIndividuals => true;
 
+        public bool IsTotalOrder => FeasibleIndividualComparer.IsTotalOrder;
+
         // Comparer of feasible individuals.
-        public IIndividualComparer<TGene> FeasibleComparer { get; }
+        public IIndividualComparer<TGene> FeasibleIndividualComparer { get; }
 
 
-        public ConstrainedFitnessComparer(IIndividualComparer<TGene> feasibleComparer = null)
+        public ConstrainedFitnessComparer(IIndividualComparer<TGene> feasibleIndividualComparer = null)
         {
-            FeasibleComparer = feasibleComparer ?? new FitnessComparer<TGene>();
+            FeasibleIndividualComparer = feasibleIndividualComparer ?? new FitnessComparer<TGene>();
         }
 
         public int Compare(Individual<TGene> x, Individual<TGene> y)
@@ -46,7 +48,7 @@ namespace GeneticAlgorithms.Comparison
             double xViolation = ConstraintUtilities.TotalBoundViolation(x.ConstraintTracker);
             double yViolation = ConstraintUtilities.TotalBoundViolation(y.ConstraintTracker);
             if (xViolation == 0 && yViolation == 0)
-                return FeasibleComparer.Compare(x, y);
+                return FeasibleIndividualComparer.Compare(x, y);
 
             return yViolation.CompareTo(xViolation);
         }

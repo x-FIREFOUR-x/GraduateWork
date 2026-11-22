@@ -10,6 +10,10 @@ namespace GeneticAlgorithms.Comparison
         // so that infeasible individuals lose to feasible ones without a repair; false for a comparison by fitness only.
         bool PrefersFeasibleIndividuals { get; }
 
+        // Whether any two individuals are comparable, so the comparer orders a population consistently and may be used for sorting;
+        // false for a partial order such as Pareto dominance, where individuals that do not dominate each other compare as equal.
+        bool IsTotalOrder { get; }
+
 
         bool IsBetter(Individual<TGene> candidate, Individual<TGene> reference)
             => Compare(candidate, reference) > 0;
