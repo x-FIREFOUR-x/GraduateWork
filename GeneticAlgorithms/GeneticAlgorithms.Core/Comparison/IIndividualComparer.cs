@@ -8,7 +8,7 @@ namespace GeneticAlgorithms.Comparison
     {
         // Whether the comparison prefers feasible individuals to infeasible ones, for example by the constraints,
         // so that infeasible individuals lose to feasible ones without a repair; false for a comparison by fitness only.
-        bool PrefersFeasibleIndividuals => false;
+        bool PrefersFeasibleIndividuals { get; }
 
 
         bool IsBetter(Individual<TGene> candidate, Individual<TGene> reference)

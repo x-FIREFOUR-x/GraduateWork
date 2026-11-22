@@ -15,7 +15,7 @@ namespace GeneticAlgorithms.Mutations
         Individual<TGene> Mutate(Individual<TGene> individual, IRandom random, int? currentIterationNumber = null);
 
         // Whether the mutated individual always has the same number of genes as the original one;
-        // false for mutations that insert or remove genes. True by default, as most mutations only change or reorder genes.
-        bool PreservesIndividualLength => false;
+        // false for mutations that insert or remove genes.
+        bool PreservesIndividualLength { get; }
     }
 }

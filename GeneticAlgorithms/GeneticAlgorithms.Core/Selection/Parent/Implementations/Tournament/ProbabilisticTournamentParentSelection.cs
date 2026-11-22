@@ -18,6 +18,8 @@ namespace GeneticAlgorithms.Selection.Parent.Implementations.Tournament
     {
         public IIndividualComparer<TGene> Comparer { get; }
 
+        public bool UsesFitnessValues => false;
+
         // How many randomly drawn candidates compete in one tournament; at least 2.
         public int TournamentSize { get; }
 

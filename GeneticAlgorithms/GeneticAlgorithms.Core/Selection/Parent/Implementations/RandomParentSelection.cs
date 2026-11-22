@@ -15,6 +15,8 @@ namespace GeneticAlgorithms.Selection.Parent.Implementations
         // Null: the selection picks parents uniformly at random and never compares individuals.
         public IIndividualComparer<TGene> Comparer => null;
 
+        public bool UsesFitnessValues => false;
+
         public IReadOnlyList<ParentPair<TGene>> SelectParents(
             IReadOnlyList<Individual<TGene>> population,
             int parentPairCount,

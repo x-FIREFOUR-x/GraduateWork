@@ -20,6 +20,8 @@ namespace GeneticAlgorithms.Selection.Parent.Implementations.Tournament
     {
         public IIndividualComparer<TGene> Comparer { get; }
 
+        public bool UsesFitnessValues => false;
+
         // How many candidates of the shuffled population compete in one group; from 1 to the population size.
         public int TournamentSize { get; }
 

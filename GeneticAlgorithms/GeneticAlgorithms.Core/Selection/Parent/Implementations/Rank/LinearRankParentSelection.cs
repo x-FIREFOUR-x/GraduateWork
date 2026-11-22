@@ -18,6 +18,8 @@ namespace GeneticAlgorithms.Selection.Parent.Implementations.Rank
     {
         public IIndividualComparer<TGene> Comparer { get; }
 
+        public bool UsesFitnessValues => false;
+
         public double SelectionPressure { get; }
 
 

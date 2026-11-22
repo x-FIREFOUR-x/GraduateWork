@@ -17,6 +17,8 @@ namespace GeneticAlgorithms.Selection.Parent.Implementations.Rank
     {
         public IIndividualComparer<TGene> Comparer { get; }
 
+        public bool UsesFitnessValues => false;
+
         /// Share of the population, counted from the best, that may become parents, in (0; 1].
         public double TruncationShare { get; }
 

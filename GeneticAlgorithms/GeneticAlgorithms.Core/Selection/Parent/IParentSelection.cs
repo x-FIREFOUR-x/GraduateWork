@@ -16,7 +16,7 @@ namespace GeneticAlgorithms.Selection.Parent
 
         // Whether the selection prefers individuals by reading their fitness values directly, as fitness-proportional selections do,
         // so it prefers feasible individuals only if the fitness values do; false for selections that compare or pick at random.
-        bool UsesFitnessValues => false;
+        bool UsesFitnessValues { get; }
 
         // parentPairCount: number of parent pairs, one per offspring.
         IReadOnlyList<ParentPair<TGene>> SelectParents(

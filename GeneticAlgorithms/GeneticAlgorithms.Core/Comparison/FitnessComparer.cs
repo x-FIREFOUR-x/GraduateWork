@@ -6,6 +6,8 @@ namespace GeneticAlgorithms.Comparison
 {
     public sealed class FitnessComparer<TGene> : IIndividualComparer<TGene>
     {
+        public bool PrefersFeasibleIndividuals => false;
+
         public int FitnessIndex { get; }
 
         public FitnessComparer(int fitnessIndex = 0)
