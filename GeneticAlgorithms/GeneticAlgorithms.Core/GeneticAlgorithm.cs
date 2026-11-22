@@ -81,7 +81,7 @@ namespace GeneticAlgorithms
             _survivorSelection.Initialize(population);
 
             var comparerIndividuals = _survivorSelection.Comparer;
-            var bestIndividual = FindBestIndividual(population, comparerIndividuals);
+            var bestIndividual = FindBestIndividual(population, comparerIndividuals, population[0]);
             _searchProgress.BestFitnessValues = bestIndividual.FitnessValues;
 
             var offspring = new List<Offspring<TGene>>(_config.CountOffspring);
@@ -104,8 +104,8 @@ namespace GeneticAlgorithms
                 _survivorSelection.Replace(population, offspring, _random);
                 _searchProgress.IterationCount++;
 
-                var individual = FindBestIndividual(population, comparerIndividuals);
-                if (comparerIndividuals.IsBetter(individual, bestIndividual))
+                var individual = FindBestIndividual(population, comparerIndividuals, bestIndividual);
+                if (!ReferenceEquals(individual, bestIndividual))
                 {
                     bestIndividual = individual;
                     _searchProgress.BestFitnessValues = bestIndividual.FitnessValues;
@@ -115,7 +115,8 @@ namespace GeneticAlgorithms
 
             _searchProgress.ElapsedTime = stopwatch.Elapsed;
             _searchProgress.IndividualsShareConstraintSatisfying = CalculateIndividualsShareConstraintSatisfying(population);
-            return new GeneticAlgorithmResult<TGene>(bestIndividual, population.ToArray(), _searchProgress);
+            var paretoFront = RemoveDuplicateGenes(ParetoUtilities.FindNondominated(population, comparerIndividuals));
+            return new GeneticAlgorithmResult<TGene>(bestIndividual, population.ToArray(), paretoFront, _searchProgress);
         }
 
         private Individual<TGene> CreateOffspring(Individual<TGene> firstParent, Individual<TGene> secondParent, IIndividualComparer<TGene> comparer)
@@ -252,13 +253,23 @@ namespace GeneticAlgorithms
             _searchProgress.FitnessFunctionCallCount++;
         }
 
-        private static Individual<TGene> FindBestIndividual(List<Individual<TGene>> population, IIndividualComparer<TGene> comparer)
+        // Starting from the current best individual, so the result is not dominated by it or any individual of the population even for a partial order such as Pareto dominance.
+        private static Individual<TGene> FindBestIndividual(List<Individual<TGene>> population, IIndividualComparer<TGene> comparer, Individual<TGene> currentBestIndividual)
         {
-            var bestIndividual = population[0];
-            for (int i = 1; i < population.Count; i++)
+            var bestIndividual = currentBestIndividual;
+            for (int i = 0; i < population.Count; i++)
                 if (comparer.IsBetter(population[i], bestIndividual))
                     bestIndividual = population[i];
             return bestIndividual;
+        }
+
+        private static List<Individual<TGene>> RemoveDuplicateGenes(List<Individual<TGene>> individuals)
+        {
+            var uniqueIndividuals = new List<Individual<TGene>>(individuals.Count);
+            foreach (var individual in individuals)
+                if (!SurvivorSelectionUtilities.PopulationContainsSameIndividual(uniqueIndividuals, individual))
+                    uniqueIndividuals.Add(individual);
+            return uniqueIndividuals;
         }
 
         private static double CalculateIndividualsShareConstraintSatisfying(List<Individual<TGene>> population)
