@@ -6,7 +6,7 @@ using TowerDefense.Main.Units.Squad;
 using TowerDefense.Main.Map.Path;
 using TowerDefense.Main.Map.Buildings;
 using TowerDefense.Storage;
-using TowerDefense.Algorithms.GeneticAlgorithm.Heuristics;
+using TowerDefense.Opponents.Attacker.State;
 
 
 namespace TowerDefense.Main.Units
@@ -237,8 +237,8 @@ namespace TowerDefense.Main.Units
             isDead = true;
             Destroy(gameObject);
 
-            if (UnitsHeuristicsCalculator.instance != null && !hasSuccessor)
-                UnitsHeuristicsCalculator.instance.AddDistanceMovedUnit(movedDistance);
+            if (AttackerBudget.Instance != null && !hasSuccessor)
+                AttackerBudget.Instance.AddDistanceMovedUnit(movedDistance);
         }
 
         private void DamageEndBuilding()
