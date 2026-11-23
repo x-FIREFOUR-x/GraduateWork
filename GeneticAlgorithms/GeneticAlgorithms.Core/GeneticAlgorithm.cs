@@ -10,6 +10,7 @@ using GeneticAlgorithms.InitialPopulation;
 using GeneticAlgorithms.Mutations;
 using GeneticAlgorithms.Randomness;
 using GeneticAlgorithms.Repairs;
+using GeneticAlgorithms.Selection;
 using GeneticAlgorithms.Selection.Parent;
 using GeneticAlgorithms.Selection.Survivor;
 using GeneticAlgorithms.StopCriteria;
@@ -58,6 +59,7 @@ namespace GeneticAlgorithms
             _repair = repair;
 
             ValidateOperatorsKeepLengthForEqualLengthCrossover();
+            ValidateSelectionsMatchComparerOrder();
 
             _canKeepInfeasibleIndividuals = _fitnessFunction.PrefersFeasibleIndividuals || _survivorSelection.Comparer.PrefersFeasibleIndividuals;
             if (_config.CheckInfeasibleIndividuals)
@@ -79,7 +81,7 @@ namespace GeneticAlgorithms
             _survivorSelection.Initialize(population);
 
             var comparerIndividuals = _survivorSelection.Comparer;
-            var bestIndividual = FindBestIndividual(population, comparerIndividuals);
+            var bestIndividual = FindBestIndividual(population, comparerIndividuals, population[0]);
             _searchProgress.BestFitnessValues = bestIndividual.FitnessValues;
 
             var offspring = new List<Offspring<TGene>>(_config.CountOffspring);
@@ -102,8 +104,8 @@ namespace GeneticAlgorithms
                 _survivorSelection.Replace(population, offspring, _random);
                 _searchProgress.IterationCount++;
 
-                var individual = FindBestIndividual(population, comparerIndividuals);
-                if (comparerIndividuals.IsBetter(individual, bestIndividual))
+                var individual = FindBestIndividual(population, comparerIndividuals, bestIndividual);
+                if (!ReferenceEquals(individual, bestIndividual))
                 {
                     bestIndividual = individual;
                     _searchProgress.BestFitnessValues = bestIndividual.FitnessValues;
@@ -113,7 +115,8 @@ namespace GeneticAlgorithms
 
             _searchProgress.ElapsedTime = stopwatch.Elapsed;
             _searchProgress.IndividualsShareConstraintSatisfying = CalculateIndividualsShareConstraintSatisfying(population);
-            return new GeneticAlgorithmResult<TGene>(bestIndividual, population.ToArray(), _searchProgress);
+            var paretoFront = RemoveDuplicateGenes(ParetoUtilities.FindNondominated(population, comparerIndividuals));
+            return new GeneticAlgorithmResult<TGene>(bestIndividual, population.ToArray(), paretoFront, _searchProgress);
         }
 
         private Individual<TGene> CreateOffspring(Individual<TGene> firstParent, Individual<TGene> secondParent, IIndividualComparer<TGene> comparer)
@@ -158,6 +161,44 @@ namespace GeneticAlgorithms
                     "Use a repair that keeps the length, no repair, or a crossover for parents of different lengths.",
                     "repair");
         }
+
+        // A selection that sorts individuals or reads a single fitness value needs a total order. With a partial order such as Pareto dominance
+        // the order of individuals that do not dominate each other would be arbitrary, and a single fitness value would draw the search
+        // to one end of the front, so the combination is rejected before the run. A parent selection without a comparer
+        // is checked against the comparer of the survivor selection, which decides how the algorithm orders individuals.
+        private void ValidateSelectionsMatchComparerOrder()
+        {
+            const string parentExample = "Use a selection that only compares pairs, for example CrowdedTournamentParentSelection.";
+            
+            if (_survivorSelection.RequiresTotalOrder && !_survivorSelection.Comparer.IsTotalOrder)
+                throw new ArgumentException(
+                    $"{TypeName(_survivorSelection)} sorts the population, but its comparer {ComparerName(_survivorSelection.Comparer)} does not order every pair of individuals, " +
+                    "so the sorted order would be arbitrary. Use a comparer that orders every pair, for example FitnessComparer, " +
+                    "or a selection that supports such comparers, for example NondominatedSortingSurvivorSelection.",
+                    "survivorSelection");
+
+            // A parent selection that only compares pairs or picks at random works with any comparer, so only the others are checked below.
+            if (!_parentSelection.RequiresTotalOrder)
+                return;
+
+            if (_parentSelection.Comparer != null && !_parentSelection.Comparer.IsTotalOrder)
+                throw new ArgumentException(
+                    $"{TypeName(_parentSelection)} sorts individuals, but its comparer {ComparerName(_parentSelection.Comparer)} does not order every pair of individuals, " +
+                    $"so the sorted order would be arbitrary. {parentExample}",
+                    "parentSelection");
+
+            if (!_survivorSelection.Comparer.IsTotalOrder)
+                throw new ArgumentException(
+                    $"{TypeName(_parentSelection)} chooses parents by one fitness value, but {TypeName(_survivorSelection)} keeps survivors by {ComparerName(_survivorSelection.Comparer)}, " +
+                    $"which does not order every pair of individuals, so parents and survivors would be chosen by different criteria. {parentExample}",
+                    "parentSelection");
+        }
+
+        // Name of a comparer with its nested comparer, for example ConstrainedFitnessComparer(ParetoDominanceComparer).
+        private static string ComparerName(IIndividualComparer<TGene> comparer)
+            => comparer is ConstrainedFitnessComparer<TGene> constrained
+                ? $"{TypeName(constrained)}({ComparerName(constrained.FeasibleIndividualComparer)})"
+                : TypeName(comparer);
 
         // Name of the type of a component without the arity suffix of generic types, for example AdditionMutation instead of AdditionMutation`1.
         private static string TypeName(object component) => component.GetType().Name.Split('`')[0];
@@ -212,13 +253,23 @@ namespace GeneticAlgorithms
             _searchProgress.FitnessFunctionCallCount++;
         }
 
-        private static Individual<TGene> FindBestIndividual(List<Individual<TGene>> population, IIndividualComparer<TGene> comparer)
+        // Starting from the current best individual, so the result is not dominated by it or any individual of the population even for a partial order such as Pareto dominance.
+        private static Individual<TGene> FindBestIndividual(List<Individual<TGene>> population, IIndividualComparer<TGene> comparer, Individual<TGene> currentBestIndividual)
         {
-            var bestIndividual = population[0];
-            for (int i = 1; i < population.Count; i++)
+            var bestIndividual = currentBestIndividual;
+            for (int i = 0; i < population.Count; i++)
                 if (comparer.IsBetter(population[i], bestIndividual))
                     bestIndividual = population[i];
             return bestIndividual;
+        }
+
+        private static List<Individual<TGene>> RemoveDuplicateGenes(List<Individual<TGene>> individuals)
+        {
+            var uniqueIndividuals = new List<Individual<TGene>>(individuals.Count);
+            foreach (var individual in individuals)
+                if (!SurvivorSelectionUtilities.PopulationContainsSameIndividual(uniqueIndividuals, individual))
+                    uniqueIndividuals.Add(individual);
+            return uniqueIndividuals;
         }
 
         private static double CalculateIndividualsShareConstraintSatisfying(List<Individual<TGene>> population)

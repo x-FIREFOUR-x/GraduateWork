@@ -13,6 +13,12 @@ namespace GeneticAlgorithms.Selection.Survivor
         // Decides which individual is better.
         IIndividualComparer<TGene> Comparer { get; }
 
+        // Whether the selector needs a comparer that orders every pair of individuals, such as FitnessComparer.
+        // true: it sorts individuals, so it cannot be used with Pareto dominance.
+        // false: it only compares pairs or picks at random, so it runs correctly with Pareto dominance.
+        // false does not mean the selection is useful for several objectives: that is shown by its folder (SingleObjective or MultiObjective).
+        bool RequiresTotalOrder { get; }
+
 
         // Called once per run with the initial population.
         void Initialize(List<Individual<TGene>> population);
