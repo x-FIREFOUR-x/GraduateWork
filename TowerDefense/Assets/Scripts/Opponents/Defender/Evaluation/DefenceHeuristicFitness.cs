@@ -23,8 +23,6 @@ namespace TowerDefense.Opponents.Defender.Evaluation
         private readonly double[] _targetShareByType;
         private int _currentEvaluation;
 
-        public int BuiltCoverage { get; }
-
         public int FitnessValueCount => 1;
 
         public bool PrefersFeasibleIndividuals => false;
@@ -50,12 +48,7 @@ namespace TowerDefense.Opponents.Defender.Evaluation
             {
                 _builtCountByType[(int)tower.Type]++;
                 foreach (int pathCell in _coverageMap.CoveredPathCells(tower))
-                {
-                    if (_isCoveredByBuiltTowers[pathCell])
-                        continue;
                     _isCoveredByBuiltTowers[pathCell] = true;
-                    BuiltCoverage++;
-                }
             }
 
             _targetShareByType = new double[TowerTypeCount];
@@ -74,7 +67,7 @@ namespace TowerDefense.Opponents.Defender.Evaluation
             return (CoverageGain(genes) + _fireDensityWeight * FireDensity(genes)) / _coverageMap.PathCellCount;
         }
 
-        public int FireDensity(IReadOnlyList<DefenderGene> genes)
+        private int FireDensity(IReadOnlyList<DefenderGene> genes)
         {
             int fireDensity = 0;
             foreach (DefenderGene gene in genes)
@@ -82,7 +75,7 @@ namespace TowerDefense.Opponents.Defender.Evaluation
             return fireDensity;
         }
 
-        public int CoverageGain(IReadOnlyList<DefenderGene> genes)
+        private int CoverageGain(IReadOnlyList<DefenderGene> genes)
         {
             _currentEvaluation++;
             int coverageGain = 0;
