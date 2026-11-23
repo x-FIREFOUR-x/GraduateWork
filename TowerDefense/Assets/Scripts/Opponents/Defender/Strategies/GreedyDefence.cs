@@ -13,22 +13,26 @@ namespace TowerDefense.Opponents.Defender.Strategies
     public sealed class GreedyDefence : IDefenceDecisionStrategy
     {
         private readonly double _balanceWeight;
+        private readonly double _fireDensityWeight;
 
         public DefenceDecisionReport LastReport { get; private set; }
 
 
-        public GreedyDefence(double balanceWeight)
+        public GreedyDefence(double balanceWeight, double fireDensityWeight)
         {
             if (!(balanceWeight >= 0))
                 throw new ArgumentOutOfRangeException(nameof(balanceWeight), balanceWeight, "Balance weight must be non-negative.");
+            if (!(fireDensityWeight >= 0))
+                throw new ArgumentOutOfRangeException(nameof(fireDensityWeight), fireDensityWeight, "Fire density weight must be non-negative.");
             _balanceWeight = balanceWeight;
+            _fireDensityWeight = fireDensityWeight;
         }
 
         public List<DefenderGene> Decide(DefenderSnapshot snapshot)
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
-            List<DefenderGene> towers = Build(snapshot, _balanceWeight);
-            var fitness = new DefenceHeuristicFitness(snapshot, _balanceWeight);
+            List<DefenderGene> towers = Build(snapshot, _balanceWeight, _fireDensityWeight);
+            var fitness = new DefenceHeuristicFitness(snapshot, _balanceWeight, _fireDensityWeight);
             LastReport = new DefenceDecisionReport("Greedy", snapshot.Budget, snapshot.Cost(towers), towers.ToArray(), fitness.Evaluate(towers), null, 0, stopwatch.Elapsed);
             return towers;
         }
@@ -37,12 +41,12 @@ namespace TowerDefense.Opponents.Defender.Strategies
         {
         }
 
-        public static List<DefenderGene> Build(DefenderSnapshot snapshot, double balanceWeight)
+        public static List<DefenderGene> Build(DefenderSnapshot snapshot, double balanceWeight, double fireDensityWeight)
         {
             if (snapshot == null)
                 throw new ArgumentNullException(nameof(snapshot));
 
-            var fitness = new DefenceHeuristicFitness(snapshot, balanceWeight);
+            var fitness = new DefenceHeuristicFitness(snapshot, balanceWeight, fireDensityWeight);
             var towers = new List<DefenderGene>();
             var occupiedCells = new HashSet<Vector2Int>();
             int remainingBudget = snapshot.Budget;

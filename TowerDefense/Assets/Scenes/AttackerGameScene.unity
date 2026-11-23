@@ -4733,6 +4733,7 @@ MonoBehaviour:
   useSeed: 0
   seed: 0
   balanceWeight: 0.3
+  fireDensityWeight: 1
   difficultyLevel: 0.7
   adaptiveDifficulty: 1
   targetCastleDamage: 10

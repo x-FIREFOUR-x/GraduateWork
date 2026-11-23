@@ -59,6 +59,8 @@ namespace TowerDefense.Main.Managers.TowerBuilders
         private int seed = 0;
         [SerializeField, Min(0f)]
         private float balanceWeight = 0.3f;
+        [SerializeField, Min(0f)]
+        private float fireDensityWeight = 1f;
 
         [Header("NSGA-II")]
         [SerializeField, Range(0f, 1f)]
@@ -121,13 +123,13 @@ namespace TowerDefense.Main.Managers.TowerBuilders
             switch (decisionAlgorithm)
             {
                 case DefenderDecisionAlgorithm.NsgaII:
-                    return new NsgaIIDefenceStrategy(timeLimit, strategySeed, difficultyLevel, adaptiveDifficulty, targetCastleDamage, regulatorStep);
+                    return new NsgaIIDefenceStrategy(timeLimit, strategySeed, fireDensityWeight, difficultyLevel, adaptiveDifficulty, targetCastleDamage, regulatorStep);
                 case DefenderDecisionAlgorithm.LegacyGa:
-                    return new LegacyGaDefenceStrategy(timeLimit, strategySeed, balanceWeight);
+                    return new LegacyGaDefenceStrategy(timeLimit, strategySeed, balanceWeight, fireDensityWeight);
                 case DefenderDecisionAlgorithm.Greedy:
-                    return new GreedyDefence(balanceWeight);
+                    return new GreedyDefence(balanceWeight, fireDensityWeight);
                 default:
-                    return new OriginalGaDefenceStrategy(timeLimit, strategySeed, balanceWeight);
+                    return new OriginalGaDefenceStrategy(timeLimit, strategySeed, balanceWeight, fireDensityWeight);
             }
         }
 
@@ -161,7 +163,7 @@ namespace TowerDefense.Main.Managers.TowerBuilders
             if (decisionTask.IsFaulted)
             {
                 Debug.LogException(decisionTask.Exception);
-                return GreedyDefence.Build(decisionSnapshot, balanceWeight);
+                return GreedyDefence.Build(decisionSnapshot, balanceWeight, fireDensityWeight);
             }
 
             Debug.Log($"Defence {waveSpawner.WaveNumber}: {decisionStrategy.LastReport}");

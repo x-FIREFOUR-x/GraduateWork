@@ -16,16 +16,18 @@ namespace TowerDefense.Opponents.Defender.Strategies
     public sealed class LegacyGaDefenceStrategy : GeneticDefenceStrategy
     {
         private readonly double _balanceWeight;
+        private readonly double _fireDensityWeight;
 
         public override string StrategyName => "GeneticAlgorithm-legacy";
 
 
-        public LegacyGaDefenceStrategy(TimeSpan timeLimit, int? seed, double balanceWeight) : base(timeLimit, seed)
+        public LegacyGaDefenceStrategy(TimeSpan timeLimit, int? seed, double balanceWeight, double fireDensityWeight) : base(timeLimit, seed)
         {
             _balanceWeight = balanceWeight;
+            _fireDensityWeight = fireDensityWeight;
         }
 
-        protected override IFitnessFunction<DefenderGene> CreateFitness(DefenderSnapshot snapshot) => new DefenceHeuristicFitness(snapshot, _balanceWeight);
+        protected override IFitnessFunction<DefenderGene> CreateFitness(DefenderSnapshot snapshot) => new DefenceHeuristicFitness(snapshot, _balanceWeight, _fireDensityWeight);
 
         protected override GeneticAlgorithmConfig CreateConfig() => DefenceLegacyGaConfiguration.CreateConfig();
 

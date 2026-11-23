@@ -3168,7 +3168,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeBetweenWaves: 5
   decisionAlgorithm: 1
-  timeLimitSeconds: 2
+  timeLimitSeconds: 4
   useSeed: 0
   seed: 0
   difficultyLevel: 0.7

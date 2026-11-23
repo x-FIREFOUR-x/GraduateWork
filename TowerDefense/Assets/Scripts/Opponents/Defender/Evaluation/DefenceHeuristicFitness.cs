@@ -16,6 +16,7 @@ namespace TowerDefense.Opponents.Defender.Evaluation
 
         private readonly PathCoverageMap _coverageMap;
         private readonly double _balanceWeight;
+        private readonly double _fireDensityWeight;
         private readonly bool[] _isCoveredByBuiltTowers;
         private readonly int[] _lastCountedEvaluationByPathCell;
         private readonly int[] _builtCountByType;
@@ -29,15 +30,18 @@ namespace TowerDefense.Opponents.Defender.Evaluation
         public bool PrefersFeasibleIndividuals => false;
 
 
-        public DefenceHeuristicFitness(DefenderSnapshot snapshot, double balanceWeight)
+        public DefenceHeuristicFitness(DefenderSnapshot snapshot, double balanceWeight, double fireDensityWeight)
         {
             if (snapshot == null)
                 throw new ArgumentNullException(nameof(snapshot));
             if (!(balanceWeight >= 0))
                 throw new ArgumentOutOfRangeException(nameof(balanceWeight), balanceWeight, "Balance weight must be non-negative.");
+            if (!(fireDensityWeight >= 0))
+                throw new ArgumentOutOfRangeException(nameof(fireDensityWeight), fireDensityWeight, "Fire density weight must be non-negative.");
 
             _coverageMap = snapshot.CoverageMap;
             _balanceWeight = balanceWeight;
+            _fireDensityWeight = fireDensityWeight;
 
             _isCoveredByBuiltTowers = new bool[_coverageMap.PathCellCount];
             _lastCountedEvaluationByPathCell = new int[_coverageMap.PathCellCount];
@@ -61,10 +65,21 @@ namespace TowerDefense.Opponents.Defender.Evaluation
 
         public double[] Evaluate(IReadOnlyList<DefenderGene> genes) => new[] { Value(genes) };
 
-        public double Value(IReadOnlyList<DefenderGene> genes)
+        public double Value(IReadOnlyList<DefenderGene> genes) => CoverageScore(genes) + _balanceWeight * Balance(genes);
+
+        public double CoverageScore(IReadOnlyList<DefenderGene> genes)
         {
-            double coverageGainShare = _coverageMap.PathCellCount == 0 ? 0 : (double)CoverageGain(genes) / _coverageMap.PathCellCount;
-            return coverageGainShare + _balanceWeight * Balance(genes);
+            if (_coverageMap.PathCellCount == 0)
+                return 0;
+            return (CoverageGain(genes) + _fireDensityWeight * FireDensity(genes)) / _coverageMap.PathCellCount;
+        }
+
+        public int FireDensity(IReadOnlyList<DefenderGene> genes)
+        {
+            int fireDensity = 0;
+            foreach (DefenderGene gene in genes)
+                fireDensity += _coverageMap.CoveredPathCells(gene).Count;
+            return fireDensity;
         }
 
         public int CoverageGain(IReadOnlyList<DefenderGene> genes)
