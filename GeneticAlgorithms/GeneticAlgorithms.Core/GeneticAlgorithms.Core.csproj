@@ -6,6 +6,12 @@
     <Nullable>disable</Nullable>
     <RootNamespace>GeneticAlgorithms</RootNamespace>
     <AssemblyName>GeneticAlgorithms.Core</AssemblyName>
+    <DebugType>portable</DebugType>
+    <UnityPluginDir>$(MSBuildThisFileDirectory)..\..\TowerDefense\Assets\Plugins\GeneticAlgorithms\</UnityPluginDir>
   </PropertyGroup>
+
+  <Target Name="CopyToUnity" AfterTargets="Build" Condition="'$(TargetFramework)' == 'netstandard2.1'">
+    <Copy SourceFiles="$(TargetPath);$(TargetDir)$(TargetName).pdb" DestinationFolder="$(UnityPluginDir)" SkipUnchangedFiles="true" />
+  </Target>
 
 </Project>
