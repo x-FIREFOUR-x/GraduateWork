@@ -4,11 +4,11 @@ using TowerDefense.Main.Towers;
 using TowerDefense.Main.Units;
 
 
-namespace TowerDefense.Opponents.Attacker.Evaluation
+namespace TowerDefense.Opponents
 {
     public static class AdvantageMatrix
     {
-        private const int MaxAdvantagePoints = 50;
+        public const int MaxAdvantagePoints = 50;
         private const int MinAdvantagePoints = 0;
 
         private static readonly Dictionary<(UnitType, TowerType), int> AdvantagePointsByUnitOverTower = new Dictionary<(UnitType, TowerType), int>
