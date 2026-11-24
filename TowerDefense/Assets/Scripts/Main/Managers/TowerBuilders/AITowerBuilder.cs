@@ -57,8 +57,8 @@ namespace TowerDefense.Main.Managers.TowerBuilders
         private bool useSeed = false;
         [SerializeField]
         private int seed = 0;
-        [SerializeField, Min(0f)]
-        private float balanceWeight = 0.3f;
+        [SerializeField, Range(0f, 1f)]
+        private float balanceWeight = 1f;
         [SerializeField, Min(0f)]
         private float fireDensityWeight = 1f;
 
@@ -123,7 +123,7 @@ namespace TowerDefense.Main.Managers.TowerBuilders
             switch (decisionAlgorithm)
             {
                 case DefenderDecisionAlgorithm.NsgaII:
-                    return new NsgaIIDefenceStrategy(timeLimit, strategySeed, fireDensityWeight, difficultyLevel, adaptiveDifficulty, targetCastleDamage, regulatorStep);
+                    return new NsgaIIDefenceStrategy(timeLimit, strategySeed, balanceWeight, fireDensityWeight, difficultyLevel, adaptiveDifficulty, targetCastleDamage, regulatorStep);
                 case DefenderDecisionAlgorithm.LegacyGa:
                     return new LegacyGaDefenceStrategy(timeLimit, strategySeed, balanceWeight, fireDensityWeight);
                 case DefenderDecisionAlgorithm.Greedy:

@@ -23,6 +23,7 @@ namespace TowerDefense.Main.Managers.WaveSpawners
         public int WaveNumber { get; protected set; } = 1;
 
         protected List<UnitType> availableUnit;
+        public List<UnitType> AvailableUnits => availableUnit;
         protected Dictionary<UnitType, int> availablePrices;
 
         protected List<UnitType> nextWave;
@@ -81,12 +82,12 @@ namespace TowerDefense.Main.Managers.WaveSpawners
                     availablePrices[UnitType.Goblin] = unitsStorage.Units[(int)UnitType.Goblin].GetComponent<Unit>().Price;
                     break;
                 case 4:
-                    availablePrices[UnitType.Bat] = unitsStorage.Units[(int)UnitType.Bat].GetComponent<Unit>().Price;
-                    availableUnit.Add(UnitType.Bat);
-                    break;
-                case 6:
                     availablePrices[UnitType.OrcWargRider] = unitsStorage.Units[(int)UnitType.OrcWargRider].GetComponent<Unit>().Price;
                     availableUnit.Add(UnitType.OrcWargRider);
+                    break;
+                case 6:
+                    availablePrices[UnitType.Bat] = unitsStorage.Units[(int)UnitType.Bat].GetComponent<Unit>().Price;
+                    availableUnit.Add(UnitType.Bat);
                     break;
                 case 8:
                     availablePrices[UnitType.Troll] = unitsStorage.Units[(int)UnitType.Troll].GetComponent<Unit>().Price;
@@ -129,9 +130,9 @@ namespace TowerDefense.Main.Managers.WaveSpawners
         protected void UpdateMoneyByWave()
         {
             int numberNextWave = WaveNumber + 1;
-            if (numberNextWave % 5 == 0)
+            if (numberNextWave % 3 == 0)
             {
-                PlayerStats.IncreaseMoneyByWave(2);
+                PlayerStats.IncreaseMoneyByWave(1.5f);
             }
         }
 

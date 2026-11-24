@@ -24,10 +24,10 @@ namespace TowerDefense.Opponents.Defender.Evaluation
         public bool PrefersFeasibleIndividuals => false;
 
 
-        public DefenceMultiObjectiveFitness(DefenderSnapshot snapshot, double fireDensityWeight)
+        public DefenceMultiObjectiveFitness(DefenderSnapshot snapshot, double balanceWeight, double fireDensityWeight)
         {
             _snapshot = snapshot ?? throw new ArgumentNullException(nameof(snapshot));
-            _heuristicFitness = new DefenceHeuristicFitness(snapshot, 0, fireDensityWeight);
+            _heuristicFitness = new DefenceHeuristicFitness(snapshot, balanceWeight, fireDensityWeight);
             _threatUnits = snapshot.UnitTypesUnlockedByAttacker.Count > 0
                 ? snapshot.UnitTypesUnlockedByAttacker
                 : Enum.GetValues(typeof(UnitType)).Cast<UnitType>().ToList();
@@ -35,10 +35,10 @@ namespace TowerDefense.Opponents.Defender.Evaluation
 
         public double[] Evaluate(IReadOnlyList<DefenderGene> genes)
         {
-            double coverageScore = _heuristicFitness.CoverageScore(genes);
+            double balancedCoverage = _heuristicFitness.Value(genes);
             double balance = _heuristicFitness.Balance(genes);
             double remainingBudget = _snapshot.Budget - _snapshot.Cost(genes);
-            return new[] { coverageScore, balance, remainingBudget, Robustness(genes) };
+            return new[] { balancedCoverage, balance, remainingBudget, Robustness(genes) };
         }
 
         private double Robustness(IReadOnlyList<DefenderGene> genes)

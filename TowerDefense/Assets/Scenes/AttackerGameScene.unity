@@ -1720,8 +1720,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2134406996208417435}
-  - {fileID: 1491116532}
   - {fileID: 1719382777}
+  - {fileID: 1491116532}
   - {fileID: 829438950}
   - {fileID: 917351384}
   - {fileID: 588133037}
@@ -1793,8 +1793,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UnitShopComponents:
   - {fileID: 2134406996208417436}
-  - {fileID: 1491116531}
   - {fileID: 1719382778}
+  - {fileID: 1491116531}
   - {fileID: 829438951}
   - {fileID: 917351383}
   - {fileID: 588133038}
@@ -4732,7 +4732,7 @@ MonoBehaviour:
   timeLimitSeconds: 4
   useSeed: 0
   seed: 0
-  balanceWeight: 0.3
+  balanceWeight: 1
   fireDensityWeight: 1
   difficultyLevel: 0.7
   adaptiveDifficulty: 1

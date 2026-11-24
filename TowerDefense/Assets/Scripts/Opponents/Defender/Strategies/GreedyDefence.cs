@@ -20,8 +20,8 @@ namespace TowerDefense.Opponents.Defender.Strategies
 
         public GreedyDefence(double balanceWeight, double fireDensityWeight)
         {
-            if (!(balanceWeight >= 0))
-                throw new ArgumentOutOfRangeException(nameof(balanceWeight), balanceWeight, "Balance weight must be non-negative.");
+            if (!(balanceWeight >= 0 && balanceWeight <= 1))
+                throw new ArgumentOutOfRangeException(nameof(balanceWeight), balanceWeight, "Balance weight must be in [0; 1].");
             if (!(fireDensityWeight >= 0))
                 throw new ArgumentOutOfRangeException(nameof(fireDensityWeight), fireDensityWeight, "Fire density weight must be non-negative.");
             _balanceWeight = balanceWeight;
