@@ -2435,11 +2435,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TowerDefense.Main.Projectiles.CatapultStone
   effectHitPrefab: {fileID: 7314232444623315399, guid: db492c08f4dee2949a16074691aa7805, type: 3}
-  speed: 20
+  <Speed>k__BackingField: 20
   <Damage>k__BackingField: 40
   trail: {fileID: 8272484961572574614}
   effectLifetime: 2.5
-  explosionRadius: 5
+  <ExplosionRadius>k__BackingField: 5
   arcHeightPerDistance: 0.3
   minArcHeight: 2
   tumbleSpeed: 400

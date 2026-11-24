@@ -22,8 +22,9 @@ namespace TowerDefense.Main.Towers
         private float armRestAngle = 45f;
         [SerializeField]
         private float armFireAngle = 82f;
-        [SerializeField]
-        private float swingTime = 0.22f;
+        [field: SerializeField]
+        public float SwingTime { get; private set; } = 0.22f;
+        public override float FirePointHeight => loadedStone.transform.position.y - transform.position.y;
         [SerializeField]
         private float reloadTime = 1.1f;
 
@@ -71,7 +72,7 @@ namespace TowerDefense.Main.Towers
             float swingStarted = Time.time;
 
             //Wind-up
-            for (float t = 0f; t < 1f; t += Time.deltaTime / swingTime)
+            for (float t = 0f; t < 1f; t += Time.deltaTime / SwingTime)
             {
                 SetArmAngle(Mathf.Lerp(armRestAngle, armFireAngle, t * t));
 
@@ -125,7 +126,7 @@ namespace TowerDefense.Main.Towers
             if (launchDust != null)
                 launchDust.Play();
 
-            GameObject stoneObject = Instantiate(projectilePrefab, loadedStone.transform.position, loadedStone.transform.rotation);
+            GameObject stoneObject = Instantiate(ProjectilePrefab, loadedStone.transform.position, loadedStone.transform.rotation);
             CatapultStone stone = stoneObject.GetComponent<CatapultStone>();
             stone.SetTargetFilter(IsTargetable);
             stone.Launch(aimPoint, timeSpent);

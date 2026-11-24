@@ -25,7 +25,7 @@ namespace TowerDefense.Main.Projectiles
             if (target != null)
             {
                 Vector3 direction = GetDirectionToTarget();
-                float distanceFrame = speed * Time.deltaTime;
+                float distanceFrame = Speed * Time.deltaTime;
 
                 if (direction.magnitude <= distanceFrame)
                 {

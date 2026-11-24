@@ -9,8 +9,8 @@ namespace TowerDefense.Main.Towers
     {
         [SerializeField]
         private float damage = 10f;
-        [SerializeField]
-        private float percentSlowing = 0.5f;
+        [field: SerializeField]
+        public float PercentSlowing { get; private set; } = 0.5f;
 
         [Header("Effects")]
         [SerializeField]
@@ -78,7 +78,7 @@ namespace TowerDefense.Main.Towers
 
                 target.TakeDamage(damage * Time.deltaTime);
 
-                target.Slow(percentSlowing);
+                target.Slow(PercentSlowing);
             }
             else
             {

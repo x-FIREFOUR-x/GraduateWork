@@ -9,9 +9,9 @@ namespace TowerDefense.Main.Units.Squad
 {
     public abstract class SquadLeader : Unit
     {
-        [Header("Squad")]
-        [SerializeField]
-        private List<UnitType> allowedSquadMemberUnitTypes = new();
+        [field: Header("Squad")]
+        [field: SerializeField]
+        public List<UnitType> AllowedSquadMemberUnitTypes { get; private set; } = new();
         [field: SerializeField]
         public int MaxSquadMembersCount { get; private set; } = 10;
         private readonly List<Unit> squadMembers = new();
@@ -31,7 +31,7 @@ namespace TowerDefense.Main.Units.Squad
 
         public bool TryRecruit(Unit unit)
         {
-            if (!CanRecruit || !allowedSquadMemberUnitTypes.Contains(unit.UnitType))
+            if (!CanRecruit || !AllowedSquadMemberUnitTypes.Contains(unit.UnitType))
                 return false;
 
             unit.JoinSquad(SquadRoutePlan, SquadMarker);

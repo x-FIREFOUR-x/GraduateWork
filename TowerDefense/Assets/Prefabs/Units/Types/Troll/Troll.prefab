@@ -1194,11 +1194,11 @@ MonoBehaviour:
   <UnitType>k__BackingField: 3
   <StartHealth>k__BackingField: 1500
   <StartSpeed>k__BackingField: 5
-  timeReturnSpeed: 1
+  <TimeReturnSpeed>k__BackingField: 1
   <Damage>k__BackingField: 10
   <Price>k__BackingField: 150
-  maxRandomPathOffset: 0.7
-  offsetStartPosY: 0.15
+  <MaxRandomPathOffset>k__BackingField: 0.7
+  <OffsetStartPosY>k__BackingField: 0.15
   deathEffect: {fileID: 4331006237066636809, guid: 66106b4ca26555f48bf8096fbd096a42, type: 3}
   healthBar: {fileID: 6415678583352886365}
   <FullHealthBar>k__BackingField: {fileID: 347138234622689303}

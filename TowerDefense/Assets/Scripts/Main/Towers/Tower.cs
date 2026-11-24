@@ -12,28 +12,30 @@ namespace TowerDefense.Main.Towers
     public abstract class Tower : MonoBehaviour
     {
         public static string towerTag = "Tower";
+        public const float TargetingInterval = 0.1f;
 
         [field: SerializeField]
         public TowerType Type { get; private set; }
 
-        [Header("Targets")]
-        [SerializeField]
-        protected List<UnitType> targetableUnitTypes = new((UnitType[])System.Enum.GetValues(typeof(UnitType)));
-        [SerializeField]
-        protected bool aimAtGround;
-        protected Vector3 TargetPoint { get { return target.AimPoint(aimAtGround); } }
+        [field: Header("Targets")]
+        [field: SerializeField]
+        public List<UnitType> TargetableUnitTypes { get; private set; } = new((UnitType[])System.Enum.GetValues(typeof(UnitType)));
+        [field: SerializeField]
+        public bool AimAtGround { get; private set; }
+        protected Vector3 TargetPoint { get { return target.AimPoint(AimAtGround); } }
 
-        [Header("Setup Fields")]
-        [SerializeField]
-        protected GameObject projectilePrefab;
+        [field: Header("Setup Fields")]
+        [field: SerializeField]
+        public GameObject ProjectilePrefab { get; private set; }
         // One projectile leaves from each of these points per shot
         [SerializeField]
         protected List<Transform> pointStartFire = new();
         public int CountProjectileEntitys { get { return pointStartFire.Count; } }
         [SerializeField]
         protected Transform rotatePart;
-        [SerializeField]
-        protected Vector3 offsetTower;
+        [field: SerializeField]
+        public Vector3 OffsetTower { get; private set; }
+        public virtual float FirePointHeight => pointStartFire.Count > 0 && pointStartFire[0] != null ? pointStartFire[0].position.y - transform.position.y : 0f;
 
         [field: Header("Attributes")]
         [field: SerializeField]
@@ -58,11 +60,11 @@ namespace TowerDefense.Main.Towers
             target = null;
 
             transform.position = new Vector3(
-                transform.position.x + offsetTower.x,
-                transform.position.y + offsetTower.y,
-                transform.position.z + offsetTower.z);
+                transform.position.x + OffsetTower.x,
+                transform.position.y + OffsetTower.y,
+                transform.position.z + OffsetTower.z);
 
-            InvokeRepeating("UpdateTarget", 0f, 0.1f);
+            InvokeRepeating("UpdateTarget", 0f, TargetingInterval);
         }
 
         protected void UpdateTarget()
@@ -142,12 +144,12 @@ namespace TowerDefense.Main.Towers
                 if (start == null)
                     continue;
 
-                GameObject projectileObject = Instantiate(projectilePrefab, start.position, start.rotation);
+                GameObject projectileObject = Instantiate(ProjectilePrefab, start.position, start.rotation);
                 Projectile projectile = projectileObject.GetComponent<Projectile>();
                 if (projectile != null)
                 {
                     projectile.SetTargetFilter(IsTargetable);
-                    projectile.Seek(target, aimAtGround);
+                    projectile.Seek(target, AimAtGround);
                 }
             }
         }
@@ -170,12 +172,12 @@ namespace TowerDefense.Main.Towers
 
         public bool IsTargetable(Unit unit)
         {
-            return unit != null && unit.CanBeTargeted && targetableUnitTypes.Contains(unit.UnitType);
+            return unit != null && unit.CanBeTargeted && TargetableUnitTypes.Contains(unit.UnitType);
         }
 
         public virtual float DamageInSecond()
         {
-            return projectilePrefab.GetComponent<Projectile>().Damage * CountProjectileEntitys / TimeBetweenShoots;
+            return ProjectilePrefab.GetComponent<Projectile>().Damage * CountProjectileEntitys / TimeBetweenShoots;
         }
     }
 

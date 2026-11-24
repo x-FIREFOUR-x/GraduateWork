@@ -12406,7 +12406,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Type>k__BackingField: 3
-  projectilePrefab: {fileID: 0}
+  <ProjectilePrefab>k__BackingField: {fileID: 0}
   <TimeBetweenShoots>k__BackingField: 0
   timeToNextFire: 0
   <ShootRange>k__BackingField: 15
@@ -12415,9 +12415,9 @@ MonoBehaviour:
   pointStartFire:
   - {fileID: 2691111133046650425}
   rotatePart: {fileID: 2435140106413035375}
-  offsetTower: {x: 0, y: 0.5, z: 0}
+  <OffsetTower>k__BackingField: {x: 0, y: 0.5, z: 0}
   damage: 60
-  percentSlowing: 0.5
+  <PercentSlowing>k__BackingField: 0.5
   frostBeam: {fileID: -1268797453948382230}
   hitEffect: {fileID: 87676243824195739}
   hitLight: {fileID: 8021482470508781535}

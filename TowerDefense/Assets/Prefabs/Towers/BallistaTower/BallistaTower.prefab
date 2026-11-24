@@ -802,13 +802,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Type>k__BackingField: 0
-  targetableUnitTypes: 000000000200000003000000050000000600000007000000i
-  aimAtGround: 0
-  projectilePrefab: {fileID: 5587021352456154238, guid: 17262a8176604c94ca17a2a8110c5795, type: 3}
+  <TargetableUnitTypes>k__BackingField: 000000000200000003000000050000000600000007000000i
+  <AimAtGround>k__BackingField: 0
+  <ProjectilePrefab>k__BackingField: {fileID: 5587021352456154238, guid: 17262a8176604c94ca17a2a8110c5795, type: 3}
   pointStartFire:
   - {fileID: 9069229935690751401}
   rotatePart: {fileID: 2072572219788389484}
-  offsetTower: {x: 0, y: 0.5, z: 0}
+  <OffsetTower>k__BackingField: {x: 0, y: 0.5, z: 0}
   <Price>k__BackingField: 100
   <TimeBetweenShoots>k__BackingField: 0.7
   timeToNextFire: 0

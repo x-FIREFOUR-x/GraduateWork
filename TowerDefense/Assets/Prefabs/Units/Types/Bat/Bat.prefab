@@ -72,11 +72,11 @@ MonoBehaviour:
   <UnitType>k__BackingField: 1
   <StartHealth>k__BackingField: 100
   <StartSpeed>k__BackingField: 10
-  timeReturnSpeed: 1
+  <TimeReturnSpeed>k__BackingField: 1
   <Damage>k__BackingField: 10
   <Price>k__BackingField: 25
-  maxRandomPathOffset: 0.7
-  offsetStartPosY: 4
+  <MaxRandomPathOffset>k__BackingField: 0.7
+  <OffsetStartPosY>k__BackingField: 4
   healthBar: {fileID: 8764153020033866868}
   <FullHealthBar>k__BackingField: {fileID: 7329156444501033405}
   angleX: 40

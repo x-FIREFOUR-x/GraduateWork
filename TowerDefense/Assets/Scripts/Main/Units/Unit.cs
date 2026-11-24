@@ -14,6 +14,7 @@ namespace TowerDefense.Main.Units
     public abstract class Unit : MonoBehaviour
     {
         public static string unitTag = "Unit";
+        public const float NodeReachDistance = 0.2f;
 
         [SerializeField]
         protected Transform model;
@@ -33,8 +34,8 @@ namespace TowerDefense.Main.Units
         private float speed;
         protected float SpeedFactor { get { return speed / StartSpeed; } }
 
-        [SerializeField]
-        private float timeReturnSpeed = 1f;
+        [field: SerializeField]
+        public float TimeReturnSpeed { get; private set; } = 1f;
         private float currentTimeReturnSpeed = 0;
 
         [field: SerializeField]
@@ -43,12 +44,12 @@ namespace TowerDefense.Main.Units
         [field: SerializeField]
         public int Price { get; private set; } = 25;
 
-        [Header("Position")]
-        [SerializeField]
-        private float maxRandomPathOffset = 0.7f;
+        [field: Header("Position")]
+        [field: SerializeField]
+        public float MaxRandomPathOffset { get; private set; } = 0.7f;
         private Vector3 pathOffset;
-        [SerializeField]
-        private float offsetStartPosY;
+        [field: SerializeField]
+        public float OffsetStartPosY { get; private set; }
         public float TravelHeight { get; private set; }
 
         protected bool CanMove { get; set; } = true;
@@ -103,9 +104,9 @@ namespace TowerDefense.Main.Units
                 TargetNode = ChooseNextPathNode(PreviousNode);
                 LeaveSquadIfRoutePlanCompleted();
 
-                Vector2 randomPathOffset = Random.insideUnitCircle * maxRandomPathOffset;
+                Vector2 randomPathOffset = Random.insideUnitCircle * MaxRandomPathOffset;
                 pathOffset = new Vector3(randomPathOffset.x, 0, randomPathOffset.y);
-                TravelHeight = transform.position.y + pathOffset.y + offsetStartPosY;
+                TravelHeight = transform.position.y + pathOffset.y + OffsetStartPosY;
 
                 transform.SetPositionAndRotation(
                     new Vector3(transform.position.x + pathOffset.x, TravelHeight, transform.position.z + pathOffset.z),
@@ -141,7 +142,7 @@ namespace TowerDefense.Main.Units
 
             movedDistance += (direction.normalized * speed * Time.deltaTime).magnitude;
 
-            if (Mathf.Abs(Vector3.Distance(position, targetPosition)) <= 0.2f)
+            if (Mathf.Abs(Vector3.Distance(position, targetPosition)) <= NodeReachDistance)
             {
                 if (!TryGetNextPathNode())
                 {
@@ -224,7 +225,7 @@ namespace TowerDefense.Main.Units
             PreviousNode = previous.PreviousNode;
             TargetNode = previous.TargetNode;
             pathOffset = previous.pathOffset;
-            TravelHeight = previous.TravelHeight - previous.offsetStartPosY + offsetStartPosY;
+            TravelHeight = previous.TravelHeight - previous.OffsetStartPosY + OffsetStartPosY;
             movedDistance = previous.movedDistance;
             model.rotation = previous.model.rotation;
 
@@ -298,7 +299,7 @@ namespace TowerDefense.Main.Units
         {
             speed = StartSpeed * (1 - percentSlowing);
 
-            currentTimeReturnSpeed = timeReturnSpeed;
+            currentTimeReturnSpeed = TimeReturnSpeed;
         }
 
         public virtual void UpgradeHealth(float upByPercentage)

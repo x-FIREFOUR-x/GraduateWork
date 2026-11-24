@@ -72,11 +72,11 @@ MonoBehaviour:
   <UnitType>k__BackingField: 0
   <StartHealth>k__BackingField: 100
   <StartSpeed>k__BackingField: 10
-  timeReturnSpeed: 1
+  <TimeReturnSpeed>k__BackingField: 1
   <Damage>k__BackingField: 10
   <Price>k__BackingField: 15
-  maxRandomPathOffset: 0.7
-  offsetStartPosY: 0.15
+  <MaxRandomPathOffset>k__BackingField: 0.7
+  <OffsetStartPosY>k__BackingField: 0.15
   deathEffect: {fileID: 3601105295639275960, guid: 8386a125d33ae5240bdf4bf79f2bd3cc, type: 3}
   healthBar: {fileID: 8444251327687469307}
   <FullHealthBar>k__BackingField: {fileID: 2888525177142085310}

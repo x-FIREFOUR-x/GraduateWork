@@ -228,13 +228,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Type>k__BackingField: 2
-  targetableUnitTypes: 000000000200000003000000050000000600000007000000i
-  aimAtGround: 1
-  projectilePrefab: {fileID: 3030725858542508267, guid: 3be7cc554e0ba4a48a4a3bb209ad430a, type: 3}
+  <TargetableUnitTypes>k__BackingField: 000000000200000003000000050000000600000007000000i
+  <AimAtGround>k__BackingField: 1
+  <ProjectilePrefab>k__BackingField: {fileID: 3030725858542508267, guid: 3be7cc554e0ba4a48a4a3bb209ad430a, type: 3}
   pointStartFire:
   - {fileID: 4035774621446171047}
   rotatePart: {fileID: 6059494694254124202}
-  offsetTower: {x: 0, y: 0.5, z: 0}
+  <OffsetTower>k__BackingField: {x: 0, y: 0.5, z: 0}
   <Price>k__BackingField: 300
   <TimeBetweenShoots>k__BackingField: 2
   timeToNextFire: 0
@@ -245,7 +245,7 @@ MonoBehaviour:
   launchDust: {fileID: 8291635050140258927}
   armRestAngle: 45
   armFireAngle: 82
-  swingTime: 0.22
+  <SwingTime>k__BackingField: 0.22
   reloadTime: 1.1
   gnome: {fileID: 4633676639596970070}
   gnomeArm: {fileID: 7641139518746293034}

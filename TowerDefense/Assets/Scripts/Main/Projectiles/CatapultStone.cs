@@ -7,8 +7,9 @@ namespace TowerDefense.Main.Projectiles
 {
     public class CatapultStone : Projectile
     {
-        [SerializeField]
-        protected float explosionRadius = 4f;
+        [field: SerializeField]
+        public float ExplosionRadius { get; private set; } = 4f;
+        public const float MinFlightTime = 0.1f;
 
         [Header("Flight")]
         [SerializeField]
@@ -48,7 +49,7 @@ namespace TowerDefense.Main.Projectiles
             aimPoint = point;
 
             arcHeight = Mathf.Max(minArcHeight, HorizontalDistance(startPosition, aimPoint) * arcHeightPerDistance);
-            flightTime = Mathf.Max(Vector3.Distance(startPosition, aimPoint) / speed - timeSpent, 0.1f);
+            flightTime = Mathf.Max(Vector3.Distance(startPosition, aimPoint) / Speed - timeSpent, MinFlightTime);
             elapsed = 0f;
             tumbleAxis = Random.onUnitSphere;
             isLaunched = true;
@@ -83,7 +84,7 @@ namespace TowerDefense.Main.Projectiles
 
         private void ExplodeDamage()
         {
-            Collider[] hitItems = Physics.OverlapSphere(aimPoint, explosionRadius);
+            Collider[] hitItems = Physics.OverlapSphere(aimPoint, ExplosionRadius);
             foreach (Collider hitItem in hitItems)
             {
                 if (hitItem.tag != Unit.unitTag)

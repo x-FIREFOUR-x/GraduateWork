@@ -12445,11 +12445,11 @@ MonoBehaviour:
   <UnitType>k__BackingField: 4
   <StartHealth>k__BackingField: 500
   <StartSpeed>k__BackingField: 12
-  timeReturnSpeed: 1
+  <TimeReturnSpeed>k__BackingField: 1
   <Damage>k__BackingField: 20
   <Price>k__BackingField: 250
-  maxRandomPathOffset: 0.7
-  offsetStartPosY: 5.5
+  <MaxRandomPathOffset>k__BackingField: 0.7
+  <OffsetStartPosY>k__BackingField: 5.5
   deathEffect: {fileID: 7802616703178295926, guid: 366749ae4241b5f4188003a22d77cd96, type: 3}
   healthBar: {fileID: 2163952515786195359}
   <FullHealthBar>k__BackingField: {fileID: 1231666419244177060}
@@ -12471,7 +12471,7 @@ MonoBehaviour:
   riderCapeMiddle: {fileID: 7510857478499382267}
   riderCapeLower: {fileID: 1231751323925091567}
   riderStand: {fileID: 8501515009646427048}
-  wraithPrefab: {fileID: 8057316288027309744, guid: 2b96243fe01e0e84eb56d4383e5eb84b, type: 3}
+  <WraithPrefab>k__BackingField: {fileID: 8057316288027309744, guid: 2b96243fe01e0e84eb56d4383e5eb84b, type: 3}
   flapsPerSecond: 2.6
   wingAngle: 38
   wingOuterAngle: 28

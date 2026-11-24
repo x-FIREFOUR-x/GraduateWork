@@ -21696,11 +21696,11 @@ MonoBehaviour:
   <UnitType>k__BackingField: 5
   <StartHealth>k__BackingField: 500
   <StartSpeed>k__BackingField: 8
-  timeReturnSpeed: 1
+  <TimeReturnSpeed>k__BackingField: 1
   <Damage>k__BackingField: 10
   <Price>k__BackingField: 15
-  maxRandomPathOffset: 0.7
-  offsetStartPosY: 0.15
+  <MaxRandomPathOffset>k__BackingField: 0.7
+  <OffsetStartPosY>k__BackingField: 0.15
   deathEffect: {fileID: 8265156892577599904, guid: 2c5b9617531ca7f40bc7ed1b46c4af02, type: 3}
   healthBar: {fileID: 4542376027414502127}
   <FullHealthBar>k__BackingField: {fileID: 3991754630141204472}
@@ -21720,9 +21720,9 @@ MonoBehaviour:
   armSwing: 30
   clothTrail: 12
   clothFlutter: 6
-  gravity: 16
+  <Gravity>k__BackingField: 16
   clothLift: 55
-  recoveryTime: 1.2
+  <RecoveryTime>k__BackingField: 1.2
   landingSquash: 0.12
   mist: {fileID: 909549140828724479}
   fallMistRate: 80

@@ -42,8 +42,9 @@ namespace TowerDefense.Main.Units
         private Transform riderCapeLower;
         [SerializeField]
         private Transform riderStand;
-        [SerializeField]
-        private Wraith wraithPrefab;
+        public float RiderStandHeight => riderStand.position.y - transform.position.y;
+        [field: SerializeField]
+        public Wraith WraithPrefab { get; private set; }
 
         [Header("Flight")]
         [SerializeField]
@@ -143,7 +144,7 @@ namespace TowerDefense.Main.Units
         {
             base.OnKilled();
 
-            Wraith wraith = Instantiate(wraithPrefab, riderStand.position, transform.rotation);
+            Wraith wraith = Instantiate(WraithPrefab, riderStand.position, transform.rotation);
             wraith.BecomeSuccessorOf(this);
 
             rider.gameObject.SetActive(false);
@@ -159,8 +160,8 @@ namespace TowerDefense.Main.Units
         {
             base.UpgradeHealth(upByPercentage);
 
-            if (wraithPrefab != null)
-                wraithPrefab.UpgradeHealth(upByPercentage);
+            if (WraithPrefab != null)
+                WraithPrefab.UpgradeHealth(upByPercentage);
         }
     }
 

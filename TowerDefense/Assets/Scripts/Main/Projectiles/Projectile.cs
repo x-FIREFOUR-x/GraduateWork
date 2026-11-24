@@ -11,9 +11,9 @@ namespace TowerDefense.Main.Projectiles
         [SerializeField]
         public GameObject effectHitPrefab;
 
-        [Header("Attributes")]
-        [SerializeField]
-        protected float speed = 70f;
+        [field: Header("Attributes")]
+        [field: SerializeField]
+        public float Speed { get; private set; } = 70f;
         [field: SerializeField]
         public float Damage { get; private set; } = 100f;
 

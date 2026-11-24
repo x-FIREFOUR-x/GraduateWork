@@ -39,13 +39,13 @@ namespace TowerDefense.Main.Units
         [SerializeField]
         private float clothFlutter = 6f;
 
-        [Header("Fall")]
-        [SerializeField]
-        private float gravity = 16f;
+        [field: Header("Fall")]
+        [field: SerializeField]
+        public float Gravity { get; private set; } = 16f;
         [SerializeField]
         private float clothLift = 55f;
-        [SerializeField]
-        private float recoveryTime = 1.2f;
+        [field: SerializeField]
+        public float RecoveryTime { get; private set; } = 1.2f;
         [SerializeField]
         private float landingSquash = 0.12f;
         [SerializeField]
@@ -134,7 +134,7 @@ namespace TowerDefense.Main.Units
 
         private void Fall()
         {
-            fallSpeed += gravity * Time.deltaTime;
+            fallSpeed += Gravity * Time.deltaTime;
             float height = transform.position.y - fallSpeed * Time.deltaTime;
 
             float flare = Mathf.Clamp01(fallSpeed / 6f);
@@ -162,7 +162,7 @@ namespace TowerDefense.Main.Units
             if (landing < 0f)
                 return 0f;
 
-            landing += Time.deltaTime / recoveryTime;
+            landing += Time.deltaTime / RecoveryTime;
             if (landing >= 1f)
             {
                 landing = -1f;
