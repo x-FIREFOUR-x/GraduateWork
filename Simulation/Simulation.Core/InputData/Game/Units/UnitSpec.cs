@@ -11,7 +11,6 @@ namespace Simulation.InputData.Game.Units
         public float Health;
         public float Speed;
         public int CastleDamage;
-        public int Price;
         public float MaxPathOffset;
         public float TravelHeightOffset;
         public float SpeedRecoveryTime;

@@ -9,7 +9,6 @@ namespace Simulation.InputData.Game.Towers
     public class TowerSpec
     {
         public string Type;
-        public int Price;
         public float ShootRange;
         public float TimeBetweenShoots;
         public Vec3 BuildPositionOffset;
@@ -24,8 +23,6 @@ namespace Simulation.InputData.Game.Towers
         public float SwingTime;
         public float BeamDamagePerSecond;
         public float SlowPercent;
-
-        public bool CanTarget(string type) => TargetableUnitTypes.Contains(type);
 
         public float DamagePerSecond
         {

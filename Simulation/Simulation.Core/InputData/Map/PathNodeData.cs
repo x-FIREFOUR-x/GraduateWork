@@ -9,7 +9,6 @@ namespace Simulation.InputData.Map
     public class PathNodeData
     {
         public int Id;
-        public Cell Cell;
         public Vec3 Position;
         public List<int> Next = new List<int>();
     }
