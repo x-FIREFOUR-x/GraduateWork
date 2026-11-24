@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+    <Nullable>disable</Nullable>
+    <RootNamespace>Simulation</RootNamespace>
+    <AssemblyName>Simulation.Core</AssemblyName>
+    <DebugType>portable</DebugType>
+    <UnityPluginDir>$(MSBuildThisFileDirectory)..\..\TowerDefense\Assets\Plugins\Simulation\</UnityPluginDir>
+  </PropertyGroup>
+
+  <Target Name="CopyToUnity" AfterTargets="Build">
+    <Copy SourceFiles="$(TargetPath);$(TargetDir)$(TargetName).pdb" DestinationFolder="$(UnityPluginDir)" SkipUnchangedFiles="true" />
+  </Target>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" PrivateAssets="all" ExcludeAssets="runtime" />
+  </ItemGroup>
+
+</Project>
