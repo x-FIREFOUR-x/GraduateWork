@@ -8,16 +8,22 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 using TowerDefense.Main.Map.Buildings;
+using TowerDefense.Main.Map.Path;
+using TowerDefense.Main.Map.Tile;
 using TowerDefense.Main.Towers;
 using TowerDefense.Main.Units;
 using TowerDefense.Opponents.Attacker.State;
 using TowerDefense.Opponents.Attacker.Strategies;
+using TowerDefense.Opponents.SimulationBridge;
 
 
 namespace TowerDefense.Main.Managers.WaveSpawners
 {
     public class AIWaveSpawner : WaveSpawner
     {
+        public const int FirstWaveMaxUnits = 3;
+        public const string SimulationInputFileName = "simulation-input-attacker.json";
+
         public enum AttackerDecisionAlgorithm
         {
             OriginalGa = 0,
@@ -27,8 +33,8 @@ namespace TowerDefense.Main.Managers.WaveSpawners
 
         [SerializeField, FormerlySerializedAs("strategy")]
         private AttackerDecisionAlgorithm decisionAlgorithm = AttackerDecisionAlgorithm.OriginalGa;
-        [SerializeField]
-        private float timeLimitSeconds = 2f;
+        [SerializeField, Range(0.1f, 1f)]
+        private float decisionTimeShare = 0.9f;
         [SerializeField]
         private bool useSeed = false;
         [SerializeField]
@@ -46,6 +52,7 @@ namespace TowerDefense.Main.Managers.WaveSpawners
 
         private IWaveDecisionStrategy decisionStrategy;
         private AttackerBudget attackerBudget;
+        private TilesMap tilesMap;
         private AttackerSnapshot decisionSnapshot;
         private Task<List<UnitType>> decisionTask;
         private int castleHealthBeforeWave;
@@ -57,6 +64,7 @@ namespace TowerDefense.Main.Managers.WaveSpawners
             base.Initialize(spawn);
 
             attackerBudget = new AttackerBudget();
+            tilesMap = FindAnyObjectByType<TilesMap>();
             decisionStrategy = CreateStrategy();
 
             availableUnit = new List<UnitType>();
@@ -100,7 +108,7 @@ namespace TowerDefense.Main.Managers.WaveSpawners
 
         private IWaveDecisionStrategy CreateStrategy()
         {
-            TimeSpan timeLimit = TimeSpan.FromSeconds(timeLimitSeconds);
+            TimeSpan timeLimit = TimeSpan.FromSeconds(TimeBetweenWaves * decisionTimeShare);
             int? strategySeed = useSeed ? seed : (int?)null;
 
             switch (decisionAlgorithm)
@@ -118,7 +126,7 @@ namespace TowerDefense.Main.Managers.WaveSpawners
         {
             UpdateAvailableUnit();
 
-            AttackerSnapshot snapshot = new AttackerSnapshot(availableUnit, availablePrices, CollectBuiltTowers(), Mathf.Max(0, attackerBudget.MoneyForWave()));
+            AttackerSnapshot snapshot = new AttackerSnapshot(availableUnit, availablePrices, CollectBuiltTowers(), Mathf.Max(0, attackerBudget.MoneyForWave()), CreateSimulationRequest());
             decisionSnapshot = snapshot;
             decisionTask = Task.Run(() => decisionStrategy.Decide(snapshot));
         }
@@ -137,7 +145,7 @@ namespace TowerDefense.Main.Managers.WaveSpawners
 
         private IEnumerator SpawnWave(List<UnitType> wave)
         {
-            nextWave = WaveNumber == 1 ? wave.Take(3).ToList() : wave;
+            nextWave = wave.Take(MaxUnitsInWave(WaveNumber)).ToList();
             castleHealthBeforeWave = CastleHealth();
 
             OperationPrevStartWave();
@@ -145,11 +153,19 @@ namespace TowerDefense.Main.Managers.WaveSpawners
             for (int i = 0; i < nextWave.Count; i++)
             {
                 SpawnUnit(nextWave[i]);
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(UnitSpawnInterval);
             }
 
             AllCurrentWaveUnitsSpawned = true;
             isSpawning = false;
+        }
+
+        public static int MaxUnitsInWave(int waveNumber) => waveNumber == 1 ? FirstWaveMaxUnits : int.MaxValue;
+
+        private SimulationRequest CreateSimulationRequest()
+        {
+            string inputPath = SimulationInputDataWriter.Write(tilesMap, PathGraphHolder.Graph, SpawnPoint.position, SimulationInputFileName);
+            return new SimulationRequest(inputPath, SimulationTowerPlacementConverter.CollectBuiltTowers(tilesMap), MaxUnitsInWave(WaveNumber), WaveNumber);
         }
 
         private static List<TowerType> CollectBuiltTowers()

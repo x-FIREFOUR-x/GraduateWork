@@ -27,7 +27,7 @@ namespace TowerDefense.Opponents.Defender.Strategies
             _fireDensityWeight = fireDensityWeight;
         }
 
-        protected override IFitnessFunction<DefenderGene> CreateFitness(DefenderSnapshot snapshot) => new DefenceHeuristicFitness(snapshot, _balanceWeight, _fireDensityWeight);
+        protected override IFitnessFunction<DefenderGene> CreateFitness(DefenderSnapshot snapshot) => new DefenceSimulationFitness(snapshot, _balanceWeight, _fireDensityWeight);
 
         protected override GeneticAlgorithmConfig CreateConfig() => DefenceOriginalGaConfiguration.CreateConfig();
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 using UnityEngine;
@@ -12,6 +13,7 @@ namespace TowerDefense.Main.Managers.WaveSpawners
     public abstract class WaveSpawner: MonoBehaviour
     {
         public Transform SpawnPoint { get; protected set; }
+        public const float UnitSpawnInterval = 0.5f;
 
         protected UnitsStorage unitsStorage;
 
@@ -27,6 +29,7 @@ namespace TowerDefense.Main.Managers.WaveSpawners
         protected Dictionary<UnitType, int> availablePrices;
 
         protected List<UnitType> nextWave;
+        public IReadOnlyList<UnitType> LastWave => (IReadOnlyList<UnitType>)nextWave ?? Array.Empty<UnitType>();
         
         protected int countAllUnitsCurrentWave;
         protected int countSpawnedUnitsInThisWave;

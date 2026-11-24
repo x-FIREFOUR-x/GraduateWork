@@ -8,17 +8,22 @@ using UnityEngine;
 using TowerDefense.Storage;
 using TowerDefense.Main.Map;
 using TowerDefense.Main.Map.Buildings;
+using TowerDefense.Main.Map.Path;
 using TowerDefense.Main.Map.Tile;
 using TowerDefense.Main.Managers.WaveSpawners;
 using TowerDefense.Main.Towers;
+using TowerDefense.Main.Units;
 using TowerDefense.Opponents.Defender.State;
 using TowerDefense.Opponents.Defender.Strategies;
+using TowerDefense.Opponents.SimulationBridge;
 
 
 namespace TowerDefense.Main.Managers.TowerBuilders
 {
     public class AITowerBuilder : MonoBehaviour
     {
+        public const string SimulationInputFileName = "simulation-input-defender.json";
+
         public enum DefenderDecisionAlgorithm
         {
             OriginalGa = 0,
@@ -51,8 +56,8 @@ namespace TowerDefense.Main.Managers.TowerBuilders
         [Header("Decision")]
         [SerializeField]
         private DefenderDecisionAlgorithm decisionAlgorithm = DefenderDecisionAlgorithm.OriginalGa;
-        [SerializeField]
-        private float timeLimitSeconds = 1f;
+        [SerializeField, Range(0.1f, 1f)]
+        private float decisionTimeShare = 0.9f;
         [SerializeField]
         private bool useSeed = false;
         [SerializeField]
@@ -119,7 +124,7 @@ namespace TowerDefense.Main.Managers.TowerBuilders
 
         private IDefenceDecisionStrategy CreateStrategy()
         {
-            TimeSpan timeLimit = TimeSpan.FromSeconds(timeLimitSeconds);
+            TimeSpan timeLimit = TimeSpan.FromSeconds(waveSpawner.TimeBetweenWaves * decisionTimeShare);
             int? strategySeed = useSeed ? seed : (int?)null;
 
             switch (decisionAlgorithm)
@@ -140,15 +145,18 @@ namespace TowerDefense.Main.Managers.TowerBuilders
             UpdateAvailableTower();
             ReportCastleDamage();
 
+            List<DefenderGene> builtTowers = CollectBuiltTowers();
             DefenderSnapshot snapshot = new DefenderSnapshot(
                 availableTowersTypes,
                 availableTowersPrices,
                 CollectFreeCells(),
-                CollectBuiltTowers(),
+                builtTowers,
                 waveSpawner.AvailableUnits,
                 TargetShares,
                 coverageMap,
-                Mathf.Max(0, PlayerStats.MoneyDefender));
+                Mathf.Max(0, PlayerStats.MoneyDefender),
+                CreateSimulationRequest(builtTowers),
+                ExpectedWave());
 
             if (snapshot.CandidateGenes.Count == 0)
             {
@@ -158,6 +166,21 @@ namespace TowerDefense.Main.Managers.TowerBuilders
 
             decisionSnapshot = snapshot;
             decisionTask = Task.Run(() => decisionStrategy.Decide(snapshot));
+        }
+
+        private SimulationRequest CreateSimulationRequest(IEnumerable<DefenderGene> builtTowers)
+        {
+            string inputPath = SimulationInputDataWriter.Write(tilesMap, PathGraphHolder.Graph, waveSpawner.SpawnPoint.position, SimulationInputFileName);
+            return new SimulationRequest(inputPath, builtTowers.Select(SimulationTowerPlacementConverter.Of), int.MaxValue, waveSpawner.WaveNumber);
+        }
+
+        private IReadOnlyList<UnitType> ExpectedWave()
+        {
+            if (waveSpawner.LastWave.Count > 0)
+                return waveSpawner.LastWave;
+            if (waveSpawner.AvailableUnits != null && waveSpawner.AvailableUnits.Count > 0)
+                return waveSpawner.AvailableUnits;
+            return Enum.GetValues(typeof(UnitType)).Cast<UnitType>().ToList();
         }
 
         private List<DefenderGene> TakeDecision()

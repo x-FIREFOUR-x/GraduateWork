@@ -5,32 +5,35 @@ using GeneticAlgorithms.Fitness;
 
 using TowerDefense.Main.Units;
 using TowerDefense.Opponents.Attacker.State;
+using TowerDefense.Opponents.SimulationBridge;
 
 
 namespace TowerDefense.Opponents.Attacker.Evaluation
 {
-    public sealed class WaveMultiObjectiveFitness : IFitnessFunction<UnitType>
+    public sealed class AttackSimulationFitness : IFitnessFunction<UnitType>
     {
+        public const int AttackObjectiveIndex = 0;
+
         private readonly AttackerSnapshot _snapshot;
-        private readonly WaveHeuristicFitness _waveHeuristicFitness;
+        private readonly SimulationEvaluator _evaluator;
 
         public int FitnessValueCount => 4;
 
         public bool PrefersFeasibleIndividuals => false;
 
 
-        public WaveMultiObjectiveFitness(AttackerSnapshot snapshot)
+        public AttackSimulationFitness(AttackerSnapshot snapshot)
         {
             _snapshot = snapshot ?? throw new ArgumentNullException(nameof(snapshot));
-            _waveHeuristicFitness = new WaveHeuristicFitness(snapshot);
+            _evaluator = new SimulationEvaluator(snapshot.Simulation);
         }
 
         public double[] Evaluate(IReadOnlyList<UnitType> genes)
         {
             int count = genes.Count;
-            double strength = _waveHeuristicFitness.Value(genes);
+            double strength = _evaluator.AttackScore(genes);
             double remainingBudget = _snapshot.WaveBudget - _snapshot.Cost(genes);
-            double meanStrength = count == 0 ? 0 : (strength - count) / count;
+            double meanStrength = count == 0 ? 0 : strength / count;
             return new[] { strength, remainingBudget, meanStrength, Entropy(genes) };
         }
 

@@ -63,7 +63,7 @@ namespace TowerDefense.Opponents.Defender.Strategies
             DifficultyLevel = Math.Min(1, Math.Max(_minDifficultyLevel, difficultyLevel));
         }
 
-        protected override IFitnessFunction<DefenderGene> CreateFitness(DefenderSnapshot snapshot) => new DefenceMultiObjectiveFitness(snapshot, _balanceWeight, _fireDensityWeight);
+        protected override IFitnessFunction<DefenderGene> CreateFitness(DefenderSnapshot snapshot) => new DefenceSimulationFitness(snapshot, _balanceWeight, _fireDensityWeight);
 
         protected override GeneticAlgorithmConfig CreateConfig() => DefenceNsgaIIConfiguration.CreateConfig();
 
@@ -71,6 +71,6 @@ namespace TowerDefense.Opponents.Defender.Strategies
             DefenceNsgaIIConfiguration.Create(fitness, costConstraint, constraint, candidateGenes, config);
 
         protected override IReadOnlyList<DefenderGene> SelectTowers(GeneticAlgorithmResult<DefenderGene> result) =>
-            new QuantileSolutionSelection<DefenderGene>(DefenceMultiObjectiveFitness.CoverageObjectiveIndex, DifficultyLevel).Select(result.ParetoFront).Genes;
+            new QuantileSolutionSelection<DefenderGene>(DefenceSimulationFitness.DefenceObjectiveIndex, DifficultyLevel).Select(result.ParetoFront).Genes;
     }
 }

@@ -10,7 +10,7 @@ using TowerDefense.Opponents.Attacker.State;
 
 namespace TowerDefense.Opponents.Attacker.Evaluation
 {
-    public sealed class WaveHeuristicFitness : IFitnessFunction<UnitType>
+    public sealed class AttackHeuristicFitness : IFitnessFunction<UnitType>
     {
         private readonly Dictionary<UnitType, double> _heuristicValueByUnit;
 
@@ -19,7 +19,7 @@ namespace TowerDefense.Opponents.Attacker.Evaluation
         public bool PrefersFeasibleIndividuals => false;
 
 
-        public WaveHeuristicFitness(AttackerSnapshot snapshot)
+        public AttackHeuristicFitness(AttackerSnapshot snapshot)
         {
             if (snapshot == null)
                 throw new ArgumentNullException(nameof(snapshot));

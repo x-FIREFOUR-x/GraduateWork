@@ -16,8 +16,6 @@ namespace TowerDefense.Opponents.Attacker.Strategies
 {
     public sealed class NsgaIIWaveStrategy : GeneticWaveStrategy
     {
-        private const int StrengthObjectiveIndex = 0;
-
         private readonly bool _adaptiveDifficulty;
         private readonly double _targetCastleDamage;
         private readonly double _regulatorStep;
@@ -53,7 +51,7 @@ namespace TowerDefense.Opponents.Attacker.Strategies
             DifficultyLevel = Math.Min(1, Math.Max(0, difficultyLevel));
         }
 
-        protected override IFitnessFunction<UnitType> CreateFitness(AttackerSnapshot snapshot) => new WaveMultiObjectiveFitness(snapshot);
+        protected override IFitnessFunction<UnitType> CreateFitness(AttackerSnapshot snapshot) => new AttackSimulationFitness(snapshot);
 
         protected override GeneticAlgorithmConfig CreateConfig() => NsgaIIOriginalConfiguration.CreateConfig();
 
@@ -61,6 +59,6 @@ namespace TowerDefense.Opponents.Attacker.Strategies
             NsgaIIOriginalConfiguration.Create(fitness, constraint, availableUnits, config);
 
         protected override IReadOnlyList<UnitType> SelectWave(GeneticAlgorithmResult<UnitType> result) =>
-            new QuantileSolutionSelection<UnitType>(StrengthObjectiveIndex, DifficultyLevel).Select(result.ParetoFront).Genes;
+            new QuantileSolutionSelection<UnitType>(AttackSimulationFitness.AttackObjectiveIndex, DifficultyLevel).Select(result.ParetoFront).Genes;
     }
 }

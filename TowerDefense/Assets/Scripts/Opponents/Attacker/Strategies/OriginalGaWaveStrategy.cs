@@ -22,7 +22,7 @@ namespace TowerDefense.Opponents.Attacker.Strategies
         {
         }
 
-        protected override IFitnessFunction<UnitType> CreateFitness(AttackerSnapshot snapshot) => new WaveHeuristicFitness(snapshot);
+        protected override IFitnessFunction<UnitType> CreateFitness(AttackerSnapshot snapshot) => new AttackSimulationFitness(snapshot);
 
         protected override GeneticAlgorithmConfig CreateConfig() => OriginalGaConfiguration.CreateConfig();
 

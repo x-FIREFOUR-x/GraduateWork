@@ -4,6 +4,7 @@ using System.Linq;
 
 using TowerDefense.Main.Towers;
 using TowerDefense.Main.Units;
+using TowerDefense.Opponents.SimulationBridge;
 
 
 namespace TowerDefense.Opponents.Attacker.State
@@ -17,9 +18,10 @@ namespace TowerDefense.Opponents.Attacker.State
         public IReadOnlyList<TowerType> BuiltTowers { get; }
 
         public int WaveBudget { get; }
+        public SimulationRequest Simulation { get; }
 
 
-        public AttackerSnapshot(IEnumerable<UnitType> availableUnits, IReadOnlyDictionary<UnitType, int> unitPrices, IEnumerable<TowerType> builtTowers, int waveBudget)
+        public AttackerSnapshot(IEnumerable<UnitType> availableUnits, IReadOnlyDictionary<UnitType, int> unitPrices, IEnumerable<TowerType> builtTowers, int waveBudget, SimulationRequest simulation)
         {
             if (availableUnits == null)
                 throw new ArgumentNullException(nameof(availableUnits));
@@ -34,6 +36,7 @@ namespace TowerDefense.Opponents.Attacker.State
             UnitPrices = AvailableUnits.ToDictionary(unit => unit, unit => PriceOf(unitPrices, unit));
             BuiltTowers = builtTowers.ToList();
             WaveBudget = waveBudget;
+            Simulation = simulation ?? throw new ArgumentNullException(nameof(simulation));
         }
 
         public int Cost(IEnumerable<UnitType> units) => units.Sum(unit => UnitPrices[unit]);

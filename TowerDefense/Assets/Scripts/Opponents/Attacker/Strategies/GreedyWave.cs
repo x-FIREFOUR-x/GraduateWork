@@ -16,7 +16,7 @@ namespace TowerDefense.Opponents.Attacker.Strategies
             if (snapshot == null)
                 throw new ArgumentNullException(nameof(snapshot));
 
-            var heuristic = new WaveHeuristicFitness(snapshot);
+            var heuristic = new AttackHeuristicFitness(snapshot);
             var availableUnitsOrderedbyRatio = snapshot.AvailableUnits
                 .OrderByDescending(unit => heuristic.UnitValue(unit) / snapshot.UnitPrices[unit])
                 .ToList();

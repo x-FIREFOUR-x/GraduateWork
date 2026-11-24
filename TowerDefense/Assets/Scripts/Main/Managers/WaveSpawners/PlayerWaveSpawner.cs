@@ -54,7 +54,7 @@ namespace TowerDefense.Main.Managers.WaveSpawners
             for (int i = 0; i < nextWave.Count; i++)
             {
                 SpawnUnit(nextWave[i]);
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(UnitSpawnInterval);
             }
 
             AllCurrentWaveUnitsSpawned = true;

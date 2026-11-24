@@ -6,6 +6,7 @@ using UnityEngine;
 
 using TowerDefense.Main.Towers;
 using TowerDefense.Main.Units;
+using TowerDefense.Opponents.SimulationBridge;
 
 
 namespace TowerDefense.Opponents.Defender.State
@@ -27,6 +28,8 @@ namespace TowerDefense.Opponents.Defender.State
         public PathCoverageMap CoverageMap { get; }
 
         public int Budget { get; }
+        public SimulationRequest Simulation { get; }
+        public IReadOnlyList<UnitType> ExpectedWave { get; }
 
         public IReadOnlyList<DefenderGene> CandidateGenes { get; }
 
@@ -39,7 +42,9 @@ namespace TowerDefense.Opponents.Defender.State
             IEnumerable<UnitType> unitTypesUnlockedByAttacker,
             IReadOnlyDictionary<TowerType, double> targetShares,
             PathCoverageMap coverageMap,
-            int budget)
+            int budget,
+            SimulationRequest simulation,
+            IEnumerable<UnitType> expectedWave)
         {
             if (availableTowers == null)
                 throw new ArgumentNullException(nameof(availableTowers));
@@ -64,6 +69,8 @@ namespace TowerDefense.Opponents.Defender.State
             TargetShares = new Dictionary<TowerType, double>(targetShares.ToDictionary(share => share.Key, share => share.Value));
             CoverageMap = coverageMap ?? throw new ArgumentNullException(nameof(coverageMap));
             Budget = budget;
+            Simulation = simulation ?? throw new ArgumentNullException(nameof(simulation));
+            ExpectedWave = (expectedWave ?? throw new ArgumentNullException(nameof(expectedWave))).ToList();
             CandidateGenes = AvailableTowers
                 .SelectMany(tower => FreeCells.Select(cell => new DefenderGene(tower, cell)))
                 .ToList();
