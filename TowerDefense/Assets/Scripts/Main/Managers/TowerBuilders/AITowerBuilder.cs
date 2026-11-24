@@ -1,21 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 using UnityEngine;
 
 using TowerDefense.Storage;
-using TowerDefense.Collections;
 using TowerDefense.Main.Map;
+using TowerDefense.Main.Map.Buildings;
 using TowerDefense.Main.Map.Tile;
 using TowerDefense.Main.Managers.WaveSpawners;
 using TowerDefense.Main.Towers;
-using TowerDefense.Algorithms.TowerSelectionAlgorithm;
+using TowerDefense.Opponents.Defender.State;
+using TowerDefense.Opponents.Defender.Strategies;
 
 
 namespace TowerDefense.Main.Managers.TowerBuilders
 {
     public class AITowerBuilder : MonoBehaviour
     {
+        public enum DefenderDecisionAlgorithm
+        {
+            OriginalGa = 0,
+            NsgaII = 1,
+            LegacyGa = 2,
+            Greedy = 3
+        }
+
+        private static readonly Dictionary<TowerType, double> TargetShares = new Dictionary<TowerType, double>
+        {
+            [TowerType.BallistaTower] = 0.15,
+            [TowerType.ArcherTower] = 0.3,
+            [TowerType.CatapultTower] = 0.3,
+            [TowerType.IceMageTower] = 0.25,
+        };
+
         [SerializeField]
         private MapController mapController;
         private TilesMap tilesMap;
@@ -29,10 +48,39 @@ namespace TowerDefense.Main.Managers.TowerBuilders
         [SerializeField]
         private float timeEffectBuilding;
 
+        [Header("Decision")]
+        [SerializeField]
+        private DefenderDecisionAlgorithm decisionAlgorithm = DefenderDecisionAlgorithm.OriginalGa;
+        [SerializeField]
+        private float timeLimitSeconds = 1f;
+        [SerializeField]
+        private bool useSeed = false;
+        [SerializeField]
+        private int seed = 0;
+        [SerializeField, Range(0f, 1f)]
+        private float balanceWeight = 1f;
+        [SerializeField, Min(0f)]
+        private float fireDensityWeight = 1f;
+
+        [Header("NSGA-II")]
+        [SerializeField, Range(0f, 1f)]
+        private float difficultyLevel = 0.7f;
+        [SerializeField, Range(0f, 1f)]
+        private float minDifficultyLevel = 0.5f;
+        [SerializeField]
+        private bool adaptiveDifficulty = true;
+        [SerializeField]
+        private float targetCastleDamage = 10f;
+        [SerializeField]
+        private float regulatorStep = 0.02f;
 
         private TowersStorage towersStorage;
+        private PathCoverageMap coverageMap;
+        private IDefenceDecisionStrategy decisionStrategy;
+        private DefenderSnapshot decisionSnapshot;
+        private Task<List<DefenderGene>> decisionTask;
+        private int? castleHealthAtLastDecision;
 
-        private TowerSelectionAlgorithm towerSelectionAlgorithm;
         private List<TowerType> availableTowersTypes;
         private Dictionary<TowerType, int> availableTowersPrices;
 
@@ -42,64 +90,111 @@ namespace TowerDefense.Main.Managers.TowerBuilders
         private void Start()
         {
             towersStorage = Resources.Load<TowersStorage>($"{nameof(TowersStorage)}");
-
             tilesMap = mapController.TilesMap;
-            InitializeTowerSelectionAlgorithm();
-        }
-
-        private void Update()
-        {
-            if(waveSpawner.WaveFinished() && countBuildedTowerList != waveSpawner.WaveNumber)
-            {
-                UpdateAvailableTower();
-
-                List<Tuple<TowerType, Vector2Int>> towerList = towerSelectionAlgorithm.GenerateTowerList(availableTowersTypes, availableTowersPrices, PlayerStats.MoneyDefender);
-                foreach (var towerAndTile in towerList)
-                {
-                    TowerTile towerTile = tilesMap.GetTowerTileAt(towerAndTile.Item2.x, towerAndTile.Item2.y);
-                    BuildTower(towerAndTile.Item1, towerTile);
-                }
-
-                countBuildedTowerList++;
-            }
-        }
-
-
-        private void InitializeTowerSelectionAlgorithm()
-        {
-            Dictionary<TowerType, float> sharesTowerType = new Dictionary<TowerType, float> {
-                [TowerType.BallistaTower] = 0.15f,
-                [TowerType.ArcherTower] = 0.3f,
-                [TowerType.CatapultTower] = 0.3f,
-                [TowerType.IceMageTower] = 0.25f,
-            };
 
             availableTowersTypes = new List<TowerType>();
             availableTowersPrices = new Dictionary<TowerType, int>();
 
-            towerSelectionAlgorithm = new TowerSelectionAlgorithm(CreatePriorityQueueTilesForTowers(), sharesTowerType);
+            coverageMap = PathCoverageMap.Build(tilesMap, towersStorage.Towers.Select(tower => tower.GetComponent<Tower>()));
+            decisionStrategy = CreateStrategy();
+        }
+
+        private void Update()
+        {
+            if (decisionTask != null)
+            {
+                if (!decisionTask.IsCompleted)
+                    return;
+
+                BuildTowers(TakeDecision());
+                decisionTask = null;
+                countBuildedTowerList++;
+                return;
+            }
+
+            if (waveSpawner.WaveFinished() && countBuildedTowerList != waveSpawner.WaveNumber)
+                StartDecision();
+        }
+
+
+        private IDefenceDecisionStrategy CreateStrategy()
+        {
+            TimeSpan timeLimit = TimeSpan.FromSeconds(timeLimitSeconds);
+            int? strategySeed = useSeed ? seed : (int?)null;
+
+            switch (decisionAlgorithm)
+            {
+                case DefenderDecisionAlgorithm.NsgaII:
+                    return new NsgaIIDefenceStrategy(timeLimit, strategySeed, balanceWeight, fireDensityWeight, difficultyLevel, minDifficultyLevel, adaptiveDifficulty, targetCastleDamage, regulatorStep);
+                case DefenderDecisionAlgorithm.LegacyGa:
+                    return new LegacyGaDefenceStrategy(timeLimit, strategySeed, balanceWeight, fireDensityWeight);
+                case DefenderDecisionAlgorithm.Greedy:
+                    return new GreedyDefence(balanceWeight, fireDensityWeight);
+                default:
+                    return new OriginalGaDefenceStrategy(timeLimit, strategySeed, balanceWeight, fireDensityWeight);
+            }
+        }
+
+        private void StartDecision()
+        {
+            UpdateAvailableTower();
+            ReportCastleDamage();
+
+            DefenderSnapshot snapshot = new DefenderSnapshot(
+                availableTowersTypes,
+                availableTowersPrices,
+                CollectFreeCells(),
+                CollectBuiltTowers(),
+                waveSpawner.AvailableUnits,
+                TargetShares,
+                coverageMap,
+                Mathf.Max(0, PlayerStats.MoneyDefender));
+
+            if (snapshot.CandidateGenes.Count == 0)
+            {
+                countBuildedTowerList++;
+                return;
+            }
+
+            decisionSnapshot = snapshot;
+            decisionTask = Task.Run(() => decisionStrategy.Decide(snapshot));
+        }
+
+        private List<DefenderGene> TakeDecision()
+        {
+            if (decisionTask.IsFaulted)
+            {
+                Debug.LogException(decisionTask.Exception);
+                return GreedyDefence.Build(decisionSnapshot, balanceWeight, fireDensityWeight);
+            }
+
+            Debug.Log($"Defence {waveSpawner.WaveNumber}: {decisionStrategy.LastReport}");
+            return decisionTask.Result;
+        }
+
+        private void ReportCastleDamage()
+        {
+            int castleHealth = CastleHealth();
+            if (castleHealthAtLastDecision.HasValue)
+                decisionStrategy.OnWaveFinished(Mathf.Max(0, castleHealthAtLastDecision.Value - castleHealth));
+            castleHealthAtLastDecision = castleHealth;
         }
 
         private void UpdateAvailableTower()
         {
-            
             switch (countBuildedTowerList)
             {
                 case 0:
-                    availableTowersTypes.Add(TowerType.BallistaTower);
-                    availableTowersPrices[TowerType.BallistaTower] = towersStorage.Towers[(int)TowerType.BallistaTower].GetComponent<Tower>().Price;
+                    AddAvailableTower(TowerType.BallistaTower);
                     break;
                 case 2:
-                    availableTowersTypes.Add(TowerType.ArcherTower);
-                    availableTowersPrices[TowerType.ArcherTower] = towersStorage.Towers[(int)TowerType.ArcherTower].GetComponent<Tower>().Price;
+                    AddAvailableTower(TowerType.ArcherTower);
                     break;
                 case 4:
-                    availableTowersTypes.Add(TowerType.CatapultTower);
-                    availableTowersPrices[TowerType.CatapultTower] = towersStorage.Towers[(int)TowerType.CatapultTower].GetComponent<Tower>().Price;
+                    AddAvailableTower(TowerType.CatapultTower);
                     break;
                 case 6:
-                    availableTowersTypes.Add(TowerType.IceMageTower);
-                    availableTowersPrices[TowerType.IceMageTower] = towersStorage.Towers[(int)TowerType.IceMageTower].GetComponent<Tower>().Price;
+                    AddAvailableTower(TowerType.IceMageTower);
                     break;
 
                 default:
@@ -107,6 +202,17 @@ namespace TowerDefense.Main.Managers.TowerBuilders
             }
         }
 
+        private void AddAvailableTower(TowerType towerType)
+        {
+            availableTowersTypes.Add(towerType);
+            availableTowersPrices[towerType] = towersStorage.Towers[(int)towerType].GetComponent<Tower>().Price;
+        }
+
+        private void BuildTowers(IEnumerable<DefenderGene> towers)
+        {
+            foreach (DefenderGene tower in towers)
+                BuildTower(tower.Type, tilesMap.GetTowerTileAt(tower.Cell.x, tower.Cell.y));
+        }
 
         private void BuildTower(TowerType towerType, TowerTile tile)
         {
@@ -120,47 +226,40 @@ namespace TowerDefense.Main.Managers.TowerBuilders
             PlayerStats.AddDefenderMoney(-tower.Price);
         }
 
-        private PriorityQueueWithDictOfPriorities<Vector2Int, TowerType, int> CreatePriorityQueueTilesForTowers()
+        private List<Vector2Int> CollectFreeCells()
         {
-            PriorityQueueWithDictOfPriorities<Vector2Int, TowerType, int> priorityQueueTowerTiles = new((a, b) => a > b);
-            for (int i = 0; i < tilesMap.Size; i++)
+            var freeCells = new List<Vector2Int>();
+            for (int row = 0; row < tilesMap.Size; row++)
             {
-                for (int j = 0; j < tilesMap.Size; j++)
+                for (int column = 0; column < tilesMap.Size; column++)
                 {
-                    TowerTile towerTile = tilesMap.GetTowerTileAt(i, j);
-
-                    if (towerTile == null)
-                        continue;
-
-                    Dictionary<TowerType, int> dictOfPriorities = CreateDictOfPrioritiesForTowerTile(towerTile.GetTowerBuildPosition());
-                    priorityQueueTowerTiles.Add(new Vector2Int(i, j), dictOfPriorities);
+                    TowerTile towerTile = tilesMap.GetTowerTileAt(row, column);
+                    if (towerTile != null && towerTile.Tower == null)
+                        freeCells.Add(new Vector2Int(row, column));
                 }
             }
-
-            return priorityQueueTowerTiles;
+            return freeCells;
         }
 
-        private Dictionary<TowerType, int> CreateDictOfPrioritiesForTowerTile(Vector3 towerTilePosition)
+        private List<DefenderGene> CollectBuiltTowers()
         {
-            Dictionary<TowerType, int> dictOfPriorities = new();
-            foreach (var towerPrefab in towersStorage.Towers)
+            var builtTowers = new List<DefenderGene>();
+            for (int row = 0; row < tilesMap.Size; row++)
             {
-                Tower tower = towerPrefab.GetComponent<Tower>();
-                int countPathTilesInShootRangeTower = 0;
-
-                Collider[] colliderInShootRange = Physics.OverlapSphere(towerTilePosition, tower.ShootRange);
-                foreach (Collider collider in colliderInShootRange)
+                for (int column = 0; column < tilesMap.Size; column++)
                 {
-                    if (collider.tag == PathTile.pathTileTag)
-                    {
-                        countPathTilesInShootRangeTower++;
-                    }
+                    TowerTile towerTile = tilesMap.GetTowerTileAt(row, column);
+                    if (towerTile != null && towerTile.Tower != null)
+                        builtTowers.Add(new DefenderGene(towerTile.Tower.GetComponent<Tower>().Type, new Vector2Int(row, column)));
                 }
-
-                dictOfPriorities[tower.Type] = countPathTilesInShootRangeTower;
             }
+            return builtTowers;
+        }
 
-            return dictOfPriorities;
+        private static int CastleHealth()
+        {
+            GameObject castle = GameObject.FindGameObjectWithTag(EndBuilding.endBuildingTag);
+            return castle == null ? 0 : castle.GetComponent<EndBuilding>().Health;
         }
     }
 
