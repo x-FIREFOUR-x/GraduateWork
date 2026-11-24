@@ -65,6 +65,8 @@ namespace TowerDefense.Main.Managers.TowerBuilders
         [Header("NSGA-II")]
         [SerializeField, Range(0f, 1f)]
         private float difficultyLevel = 0.7f;
+        [SerializeField, Range(0f, 1f)]
+        private float minDifficultyLevel = 0.5f;
         [SerializeField]
         private bool adaptiveDifficulty = true;
         [SerializeField]
@@ -123,7 +125,7 @@ namespace TowerDefense.Main.Managers.TowerBuilders
             switch (decisionAlgorithm)
             {
                 case DefenderDecisionAlgorithm.NsgaII:
-                    return new NsgaIIDefenceStrategy(timeLimit, strategySeed, balanceWeight, fireDensityWeight, difficultyLevel, adaptiveDifficulty, targetCastleDamage, regulatorStep);
+                    return new NsgaIIDefenceStrategy(timeLimit, strategySeed, balanceWeight, fireDensityWeight, difficultyLevel, minDifficultyLevel, adaptiveDifficulty, targetCastleDamage, regulatorStep);
                 case DefenderDecisionAlgorithm.LegacyGa:
                     return new LegacyGaDefenceStrategy(timeLimit, strategySeed, balanceWeight, fireDensityWeight);
                 case DefenderDecisionAlgorithm.Greedy:

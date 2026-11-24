@@ -18,6 +18,7 @@ namespace TowerDefense.Opponents.Defender.Strategies
     {
         private readonly double _balanceWeight;
         private readonly double _fireDensityWeight;
+        private readonly double _minDifficultyLevel;
         private readonly bool _adaptiveDifficulty;
         private readonly double _targetCastleDamage;
         private readonly double _regulatorStep;
@@ -29,7 +30,7 @@ namespace TowerDefense.Opponents.Defender.Strategies
         protected override double? ReportedDifficultyLevel => DifficultyLevel;
 
 
-        public NsgaIIDefenceStrategy(TimeSpan timeLimit, int? seed, double balanceWeight, double fireDensityWeight, double difficultyLevel, bool adaptiveDifficulty, double targetCastleDamage, double regulatorStep) : base(timeLimit, seed)
+        public NsgaIIDefenceStrategy(TimeSpan timeLimit, int? seed, double balanceWeight, double fireDensityWeight, double difficultyLevel, double minDifficultyLevel, bool adaptiveDifficulty, double targetCastleDamage, double regulatorStep) : base(timeLimit, seed)
         {
             if (!(balanceWeight >= 0 && balanceWeight <= 1))
                 throw new ArgumentOutOfRangeException(nameof(balanceWeight), balanceWeight, "Balance weight must be in [0; 1].");
@@ -37,6 +38,8 @@ namespace TowerDefense.Opponents.Defender.Strategies
                 throw new ArgumentOutOfRangeException(nameof(fireDensityWeight), fireDensityWeight, "Fire density weight must be non-negative.");
             if (!(difficultyLevel >= 0 && difficultyLevel <= 1))
                 throw new ArgumentOutOfRangeException(nameof(difficultyLevel), difficultyLevel, "Difficulty level must be in [0; 1].");
+            if (!(minDifficultyLevel >= 0 && minDifficultyLevel <= 1))
+                throw new ArgumentOutOfRangeException(nameof(minDifficultyLevel), minDifficultyLevel, "Min difficulty level must be in [0; 1].");
             if (!(targetCastleDamage >= 0))
                 throw new ArgumentOutOfRangeException(nameof(targetCastleDamage), targetCastleDamage, "Target castle damage must be non-negative.");
             if (!(regulatorStep >= 0))
@@ -44,7 +47,8 @@ namespace TowerDefense.Opponents.Defender.Strategies
 
             _balanceWeight = balanceWeight;
             _fireDensityWeight = fireDensityWeight;
-            DifficultyLevel = difficultyLevel;
+            _minDifficultyLevel = minDifficultyLevel;
+            DifficultyLevel = Math.Max(minDifficultyLevel, difficultyLevel);
             _adaptiveDifficulty = adaptiveDifficulty;
             _targetCastleDamage = targetCastleDamage;
             _regulatorStep = regulatorStep;
@@ -56,7 +60,7 @@ namespace TowerDefense.Opponents.Defender.Strategies
                 return;
 
             double difficultyLevel = DifficultyLevel + _regulatorStep * (castleDamage - _targetCastleDamage);
-            DifficultyLevel = Math.Min(1, Math.Max(0, difficultyLevel));
+            DifficultyLevel = Math.Min(1, Math.Max(_minDifficultyLevel, difficultyLevel));
         }
 
         protected override IFitnessFunction<DefenderGene> CreateFitness(DefenderSnapshot snapshot) => new DefenceMultiObjectiveFitness(snapshot, _balanceWeight, _fireDensityWeight);
