@@ -13,20 +13,20 @@ using TowerDefense.Opponents.Attacker.State;
 
 namespace TowerDefense.Opponents.Attacker.Strategies
 {
-    public abstract class GeneticWaveStrategy : IWaveDecisionStrategy
+    public abstract class GeneticAttackStrategy : IAttackDecisionStrategy
     {
         private readonly TimeSpan _timeLimit;
         private readonly int? _seed;
         private List<UnitType> _previousWave = new List<UnitType>();
 
-        public WaveDecisionReport LastReport { get; private set; }
+        public AttackDecisionReport LastReport { get; private set; }
 
         public abstract string StrategyName { get; }
 
         protected virtual double? ReportedDifficultyLevel => null;
 
 
-        protected GeneticWaveStrategy(TimeSpan timeLimit, int? seed)
+        protected GeneticAttackStrategy(TimeSpan timeLimit, int? seed)
         {
             if (timeLimit <= TimeSpan.Zero)
                 throw new ArgumentOutOfRangeException(nameof(timeLimit), timeLimit, "Time limit must be positive.");
@@ -60,7 +60,7 @@ namespace TowerDefense.Opponents.Attacker.Strategies
             }
 
             _previousWave = wave.ToList();
-            LastReport = new WaveDecisionReport(StrategyName, snapshot.WaveBudget, snapshot.Cost(wave), wave.ToList(), fitness.Evaluate(wave), (fitness as INamedFitnessValues)?.FitnessValueNames, ReportedDifficultyLevel, iterationCount, stopwatch.Elapsed);
+            LastReport = new AttackDecisionReport(StrategyName, snapshot.WaveBudget, snapshot.Cost(wave), wave.ToList(), fitness.Evaluate(wave), (fitness as INamedFitnessValues)?.FitnessValueNames, ReportedDifficultyLevel, iterationCount, stopwatch.Elapsed);
             return wave;
         }
 

@@ -20,7 +20,7 @@ using TowerDefense.Main.Units;
 
 namespace TowerDefense.Opponents.Attacker.Configurations
 {
-    public static class OriginalGaConfiguration
+    public static class AttackOriginalGaConfiguration
     {
         public static GeneticAlgorithmConfig CreateConfig()
         {

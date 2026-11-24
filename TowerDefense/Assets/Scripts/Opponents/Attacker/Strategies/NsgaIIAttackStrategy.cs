@@ -14,7 +14,7 @@ using TowerDefense.Opponents.Attacker.Evaluation;
 
 namespace TowerDefense.Opponents.Attacker.Strategies
 {
-    public sealed class NsgaIIWaveStrategy : GeneticWaveStrategy
+    public sealed class NsgaIIAttackStrategy : GeneticAttackStrategy
     {
         private readonly bool _adaptiveDifficulty;
         private readonly double _targetCastleDamage;
@@ -27,7 +27,7 @@ namespace TowerDefense.Opponents.Attacker.Strategies
         protected override double? ReportedDifficultyLevel => DifficultyLevel;
 
 
-        public NsgaIIWaveStrategy(TimeSpan timeLimit, int? seed, double difficultyLevel, bool adaptiveDifficulty, double targetCastleDamage, double regulatorStep) : base(timeLimit, seed)
+        public NsgaIIAttackStrategy(TimeSpan timeLimit, int? seed, double difficultyLevel, bool adaptiveDifficulty, double targetCastleDamage, double regulatorStep) : base(timeLimit, seed)
         {
             if (!(difficultyLevel >= 0 && difficultyLevel <= 1))
                 throw new ArgumentOutOfRangeException(nameof(difficultyLevel), difficultyLevel, "Difficulty level must be in [0; 1].");
@@ -53,10 +53,10 @@ namespace TowerDefense.Opponents.Attacker.Strategies
 
         protected override IFitnessFunction<UnitType> CreateFitness(AttackerSnapshot snapshot) => new AttackSimulationFitness(snapshot);
 
-        protected override GeneticAlgorithmConfig CreateConfig() => NsgaIIOriginalConfiguration.CreateConfig();
+        protected override GeneticAlgorithmConfig CreateConfig() => AttackNsgaIIConfiguration.CreateConfig();
 
         protected override GeneticAlgorithm<UnitType> CreateAlgorithm(IFitnessFunction<UnitType> fitness, CostLimitConstraint<UnitType> constraint, IReadOnlyList<UnitType> availableUnits, GeneticAlgorithmConfig config) =>
-            NsgaIIOriginalConfiguration.Create(fitness, constraint, availableUnits, config);
+            AttackNsgaIIConfiguration.Create(fitness, constraint, availableUnits, config);
 
         protected override IReadOnlyList<UnitType> SelectWave(GeneticAlgorithmResult<UnitType> result) =>
             new QuantileSolutionSelection<UnitType>(AttackSimulationFitness.AttackObjectiveIndex, DifficultyLevel).Select(result.ParetoFront).Genes;

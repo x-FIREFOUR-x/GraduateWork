@@ -8,7 +8,7 @@ using TowerDefense.Main.Units;
 
 namespace TowerDefense.Opponents.Attacker.Strategies
 {
-    public sealed class WaveDecisionReport
+    public sealed class AttackDecisionReport
     {
         public string StrategyName { get; }
 
@@ -29,7 +29,7 @@ namespace TowerDefense.Opponents.Attacker.Strategies
         public TimeSpan DecisionTime { get; }
 
 
-        public WaveDecisionReport(string strategyName, int waveBudget, int waveCost, IReadOnlyList<UnitType> waveUnits, IReadOnlyList<double> waveFitnessValues, IReadOnlyList<string> waveFitnessValueNames, double? difficultyLevel, int searchIterationCount, TimeSpan decisionTime)
+        public AttackDecisionReport(string strategyName, int waveBudget, int waveCost, IReadOnlyList<UnitType> waveUnits, IReadOnlyList<double> waveFitnessValues, IReadOnlyList<string> waveFitnessValueNames, double? difficultyLevel, int searchIterationCount, TimeSpan decisionTime)
         {
             StrategyName = strategyName;
             WaveBudget = waveBudget;

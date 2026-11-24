@@ -9,7 +9,7 @@ using TowerDefense.Opponents.Attacker.Evaluation;
 
 namespace TowerDefense.Opponents.Attacker.Strategies
 {
-    public static class GreedyWave
+    public static class GreedyAttack
     {
         public static List<UnitType> Build(AttackerSnapshot snapshot)
         {

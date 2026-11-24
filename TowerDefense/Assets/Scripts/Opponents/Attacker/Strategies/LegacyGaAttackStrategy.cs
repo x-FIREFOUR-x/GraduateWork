@@ -13,21 +13,21 @@ using TowerDefense.Opponents.Attacker.Evaluation;
 
 namespace TowerDefense.Opponents.Attacker.Strategies
 {
-    public sealed class LegacyGaWaveStrategy : GeneticWaveStrategy
+    public sealed class LegacyGaAttackStrategy : GeneticAttackStrategy
     {
         public override string StrategyName => "GeneticAlgorithm-legacy";
 
 
-        public LegacyGaWaveStrategy(TimeSpan timeLimit, int? seed) : base(timeLimit, seed)
+        public LegacyGaAttackStrategy(TimeSpan timeLimit, int? seed) : base(timeLimit, seed)
         {
         }
 
         protected override IFitnessFunction<UnitType> CreateFitness(AttackerSnapshot snapshot) => new AttackHeuristicFitness(snapshot);
 
-        protected override GeneticAlgorithmConfig CreateConfig() => LegacyGaConfiguration.CreateConfig();
+        protected override GeneticAlgorithmConfig CreateConfig() => AttackLegacyGaConfiguration.CreateConfig();
 
         protected override GeneticAlgorithm<UnitType> CreateAlgorithm(IFitnessFunction<UnitType> fitness, CostLimitConstraint<UnitType> constraint, IReadOnlyList<UnitType> availableUnits, GeneticAlgorithmConfig config) =>
-            LegacyGaConfiguration.Create(fitness, constraint, availableUnits, config);
+            AttackLegacyGaConfiguration.Create(fitness, constraint, availableUnits, config);
 
         protected override IReadOnlyList<UnitType> SelectWave(GeneticAlgorithmResult<UnitType> result) => result.BestIndividual.Genes;
     }

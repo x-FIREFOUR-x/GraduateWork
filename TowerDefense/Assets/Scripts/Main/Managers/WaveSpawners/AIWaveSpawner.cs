@@ -50,7 +50,7 @@ namespace TowerDefense.Main.Managers.WaveSpawners
         [SerializeField]
         private float regulatorStep = 0.02f;
 
-        private IWaveDecisionStrategy decisionStrategy;
+        private IAttackDecisionStrategy decisionStrategy;
         private AttackerBudget attackerBudget;
         private TilesMap tilesMap;
         private AttackerSnapshot decisionSnapshot;
@@ -106,7 +106,7 @@ namespace TowerDefense.Main.Managers.WaveSpawners
         }
 
 
-        private IWaveDecisionStrategy CreateStrategy()
+        private IAttackDecisionStrategy CreateStrategy()
         {
             TimeSpan timeLimit = TimeSpan.FromSeconds(TimeBetweenWaves * decisionTimeShare);
             int? strategySeed = useSeed ? seed : (int?)null;
@@ -114,11 +114,11 @@ namespace TowerDefense.Main.Managers.WaveSpawners
             switch (decisionAlgorithm)
             {
                 case AttackerDecisionAlgorithm.NsgaII:
-                    return new NsgaIIWaveStrategy(timeLimit, strategySeed, difficultyLevel, adaptiveDifficulty, targetCastleDamage, regulatorStep);
+                    return new NsgaIIAttackStrategy(timeLimit, strategySeed, difficultyLevel, adaptiveDifficulty, targetCastleDamage, regulatorStep);
                 case AttackerDecisionAlgorithm.LegacyGa:
-                    return new LegacyGaWaveStrategy(timeLimit, strategySeed);
+                    return new LegacyGaAttackStrategy(timeLimit, strategySeed);
                 default:
-                    return new OriginalGaWaveStrategy(timeLimit, strategySeed);
+                    return new OriginalGaAttackStrategy(timeLimit, strategySeed);
             }
         }
 
@@ -136,7 +136,7 @@ namespace TowerDefense.Main.Managers.WaveSpawners
             if (decisionTask.IsFaulted)
             {
                 Debug.LogException(decisionTask.Exception);
-                return GreedyWave.Build(decisionSnapshot);
+                return GreedyAttack.Build(decisionSnapshot);
             }
 
             Debug.Log($"Wave {WaveNumber}: {decisionStrategy.LastReport}");

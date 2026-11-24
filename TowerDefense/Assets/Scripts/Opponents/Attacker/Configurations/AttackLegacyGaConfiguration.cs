@@ -16,7 +16,7 @@ using TowerDefense.Main.Units;
 
 namespace TowerDefense.Opponents.Attacker.Configurations
 {
-    public static class LegacyGaConfiguration
+    public static class AttackLegacyGaConfiguration
     {
         private const double MutationProbability = 0.5;
 
@@ -52,7 +52,7 @@ namespace TowerDefense.Opponents.Attacker.Configurations
                 new ProbabilisticMutation<UnitType>(new RangeRegenerationMutation<UnitType>(individualBuilder, config.MaxMutationShare), MutationProbability),
                 new BestChildReplacesWorstSurvivorSelection<UnitType>(),
                 OriginalGeneticAlgorithm.CreateStopCriterion(config),
-                OriginalGaConfiguration.CreateRandom(config));
+                AttackOriginalGaConfiguration.CreateRandom(config));
         }
     }
 }

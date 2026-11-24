@@ -6,9 +6,9 @@ using TowerDefense.Opponents.Attacker.State;
 
 namespace TowerDefense.Opponents.Attacker.Strategies
 {
-    public interface IWaveDecisionStrategy
+    public interface IAttackDecisionStrategy
     {
-        WaveDecisionReport LastReport { get; }
+        AttackDecisionReport LastReport { get; }
 
         List<UnitType> Decide(AttackerSnapshot snapshot);
 

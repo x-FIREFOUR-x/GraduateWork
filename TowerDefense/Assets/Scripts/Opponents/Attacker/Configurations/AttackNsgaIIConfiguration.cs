@@ -20,7 +20,7 @@ using TowerDefense.Main.Units;
 
 namespace TowerDefense.Opponents.Attacker.Configurations
 {
-    public static class NsgaIIOriginalConfiguration
+    public static class AttackNsgaIIConfiguration
     {
         public static GeneticAlgorithmConfig CreateConfig()
         {
@@ -67,7 +67,7 @@ namespace TowerDefense.Opponents.Attacker.Configurations
                 mutation,
                 new NondominatedSortingSurvivorSelection<UnitType>(comparer: comparer),
                 OriginalGeneticAlgorithm.CreateStopCriterion(config),
-                OriginalGaConfiguration.CreateRandom(config),
+                AttackOriginalGaConfiguration.CreateRandom(config),
                 repair);
         }
     }
