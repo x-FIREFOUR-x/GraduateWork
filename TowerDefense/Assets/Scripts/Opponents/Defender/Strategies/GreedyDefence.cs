@@ -33,7 +33,7 @@ namespace TowerDefense.Opponents.Defender.Strategies
             Stopwatch stopwatch = Stopwatch.StartNew();
             List<DefenderGene> towers = Build(snapshot, _balanceWeight, _fireDensityWeight);
             var fitness = new DefenceHeuristicFitness(snapshot, _balanceWeight, _fireDensityWeight);
-            LastReport = new DefenceDecisionReport("Greedy", snapshot.Budget, snapshot.Cost(towers), towers.ToArray(), fitness.Evaluate(towers), null, 0, stopwatch.Elapsed);
+            LastReport = new DefenceDecisionReport("Greedy", snapshot.Budget, snapshot.Cost(towers), towers.ToArray(), fitness.Evaluate(towers), fitness.FitnessValueNames, null, 0, stopwatch.Elapsed);
             return towers;
         }
 

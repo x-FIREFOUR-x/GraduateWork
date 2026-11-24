@@ -10,9 +10,10 @@ using TowerDefense.Opponents.Defender.State;
 
 namespace TowerDefense.Opponents.Defender.Evaluation
 {
-    public sealed class DefenceHeuristicFitness : IFitnessFunction<DefenderGene>
+    public sealed class DefenceHeuristicFitness : IFitnessFunction<DefenderGene>, INamedFitnessValues
     {
         private static readonly int TowerTypeCount = Enum.GetValues(typeof(TowerType)).Cast<int>().Max() + 1;
+        private static readonly string[] ValueNames = { "heuristicDefence" };
 
         private readonly PathCoverageMap _coverageMap;
         private readonly double _balanceWeight;
@@ -23,7 +24,9 @@ namespace TowerDefense.Opponents.Defender.Evaluation
         private readonly double[] _targetShareByType;
         private int _currentEvaluation;
 
-        public int FitnessValueCount => 1;
+        public int FitnessValueCount => ValueNames.Length;
+
+        public IReadOnlyList<string> FitnessValueNames => ValueNames;
 
         public bool PrefersFeasibleIndividuals => false;
 

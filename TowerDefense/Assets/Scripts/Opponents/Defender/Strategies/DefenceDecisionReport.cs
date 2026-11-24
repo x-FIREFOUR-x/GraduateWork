@@ -20,6 +20,8 @@ namespace TowerDefense.Opponents.Defender.Strategies
 
         public IReadOnlyList<double> DefenceFitnessValues { get; }
 
+        public IReadOnlyList<string> DefenceFitnessValueNames { get; }
+
         public double? DifficultyLevel { get; }
 
         public int SearchIterationCount { get; }
@@ -27,13 +29,14 @@ namespace TowerDefense.Opponents.Defender.Strategies
         public TimeSpan DecisionTime { get; }
 
 
-        public DefenceDecisionReport(string strategyName, int budget, int defenceCost, IReadOnlyList<DefenderGene> towers, IReadOnlyList<double> defenceFitnessValues, double? difficultyLevel, int searchIterationCount, TimeSpan decisionTime)
+        public DefenceDecisionReport(string strategyName, int budget, int defenceCost, IReadOnlyList<DefenderGene> towers, IReadOnlyList<double> defenceFitnessValues, IReadOnlyList<string> defenceFitnessValueNames, double? difficultyLevel, int searchIterationCount, TimeSpan decisionTime)
         {
             StrategyName = strategyName;
             Budget = budget;
             DefenceCost = defenceCost;
             Towers = towers;
             DefenceFitnessValues = defenceFitnessValues;
+            DefenceFitnessValueNames = defenceFitnessValueNames;
             DifficultyLevel = difficultyLevel;
             SearchIterationCount = searchIterationCount;
             DecisionTime = decisionTime;
@@ -41,10 +44,16 @@ namespace TowerDefense.Opponents.Defender.Strategies
 
         public override string ToString()
         {
-            string formattedFitnessValues = string.Join("; ", DefenceFitnessValues.Select(value => value.ToString("0.###", CultureInfo.InvariantCulture)));
+            string formattedFitnessValues = string.Join("; ", DefenceFitnessValues.Select((value, index) => FormatFitnessValue(value, index)));
             string formattedDifficultyLevel = DifficultyLevel.HasValue ? DifficultyLevel.Value.ToString("0.###", CultureInfo.InvariantCulture) : "-";
             string decisionMilliseconds = DecisionTime.TotalMilliseconds.ToString("0", CultureInfo.InvariantCulture);
-            return $"[{StrategyName}] budget={Budget} cost={DefenceCost} towers=[{string.Join(", ", Towers)}] f=({formattedFitnessValues}) difficulty={formattedDifficultyLevel} iterations={SearchIterationCount} time={decisionMilliseconds}ms";
+            return $"[{StrategyName}] budget={Budget} cost={DefenceCost} f=({formattedFitnessValues}) difficulty={formattedDifficultyLevel} iterations={SearchIterationCount} time={decisionMilliseconds}ms towers=[{string.Join(", ", Towers)}]";
+        }
+
+        private string FormatFitnessValue(double value, int index)
+        {
+            string formattedValue = value.ToString("0.###", CultureInfo.InvariantCulture);
+            return DefenceFitnessValueNames != null && index < DefenceFitnessValueNames.Count ? $"{DefenceFitnessValueNames[index]}={formattedValue}" : formattedValue;
         }
     }
 }

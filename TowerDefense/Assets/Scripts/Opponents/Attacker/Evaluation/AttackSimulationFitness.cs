@@ -10,14 +10,18 @@ using TowerDefense.Opponents.SimulationBridge;
 
 namespace TowerDefense.Opponents.Attacker.Evaluation
 {
-    public sealed class AttackSimulationFitness : IFitnessFunction<UnitType>
+    public sealed class AttackSimulationFitness : IFitnessFunction<UnitType>, INamedFitnessValues
     {
         public const int AttackObjectiveIndex = 0;
+
+        private static readonly string[] ValueNames = { "strength", "remainingBudget", "meanStrength", "entropy" };
 
         private readonly AttackerSnapshot _snapshot;
         private readonly SimulationEvaluator _evaluator;
 
-        public int FitnessValueCount => 4;
+        public int FitnessValueCount => ValueNames.Length;
+
+        public IReadOnlyList<string> FitnessValueNames => ValueNames;
 
         public bool PrefersFeasibleIndividuals => false;
 

@@ -14,9 +14,11 @@ using Simulation.Geometry;
 
 namespace TowerDefense.Opponents.Defender.Evaluation
 {
-    public sealed class DefenceSimulationFitness : IFitnessFunction<DefenderGene>
+    public sealed class DefenceSimulationFitness : IFitnessFunction<DefenderGene>, INamedFitnessValues
     {
         public const int DefenceObjectiveIndex = 0;
+
+        private static readonly string[] ValueNames = { "defence", "balance", "remainingBudget", "robustness" };
 
         private readonly DefenderSnapshot _snapshot;
         private readonly SimulationEvaluator _evaluator;
@@ -26,7 +28,9 @@ namespace TowerDefense.Opponents.Defender.Evaluation
         private readonly IReadOnlyList<UnitType> _threatUnits;
         private readonly double _attackScoreWithoutNewTowers;
 
-        public int FitnessValueCount => 4;
+        public int FitnessValueCount => ValueNames.Length;
+
+        public IReadOnlyList<string> FitnessValueNames => ValueNames;
 
         public bool PrefersFeasibleIndividuals => false;
 

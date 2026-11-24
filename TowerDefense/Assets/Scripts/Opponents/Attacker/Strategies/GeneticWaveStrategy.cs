@@ -60,7 +60,7 @@ namespace TowerDefense.Opponents.Attacker.Strategies
             }
 
             _previousWave = wave.ToList();
-            LastReport = new WaveDecisionReport(StrategyName, snapshot.WaveBudget, snapshot.Cost(wave), wave.ToList(), fitness.Evaluate(wave), ReportedDifficultyLevel, iterationCount, stopwatch.Elapsed);
+            LastReport = new WaveDecisionReport(StrategyName, snapshot.WaveBudget, snapshot.Cost(wave), wave.ToList(), fitness.Evaluate(wave), (fitness as INamedFitnessValues)?.FitnessValueNames, ReportedDifficultyLevel, iterationCount, stopwatch.Elapsed);
             return wave;
         }
 

@@ -10,11 +10,15 @@ using TowerDefense.Opponents.Attacker.State;
 
 namespace TowerDefense.Opponents.Attacker.Evaluation
 {
-    public sealed class AttackHeuristicFitness : IFitnessFunction<UnitType>
+    public sealed class AttackHeuristicFitness : IFitnessFunction<UnitType>, INamedFitnessValues
     {
+        private static readonly string[] ValueNames = { "heuristicStrength" };
+
         private readonly Dictionary<UnitType, double> _heuristicValueByUnit;
 
-        public int FitnessValueCount => 1;
+        public int FitnessValueCount => ValueNames.Length;
+
+        public IReadOnlyList<string> FitnessValueNames => ValueNames;
 
         public bool PrefersFeasibleIndividuals => false;
 

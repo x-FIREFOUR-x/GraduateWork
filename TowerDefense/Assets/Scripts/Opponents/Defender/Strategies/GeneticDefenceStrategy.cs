@@ -68,7 +68,7 @@ namespace TowerDefense.Opponents.Defender.Strategies
                 iterationCount = result.Progress.IterationCount;
             }
 
-            LastReport = new DefenceDecisionReport(StrategyName, snapshot.Budget, snapshot.Cost(towers), towers.ToList(), fitness.Evaluate(towers), ReportedDifficultyLevel, iterationCount, stopwatch.Elapsed);
+            LastReport = new DefenceDecisionReport(StrategyName, snapshot.Budget, snapshot.Cost(towers), towers.ToList(), fitness.Evaluate(towers), (fitness as INamedFitnessValues)?.FitnessValueNames, ReportedDifficultyLevel, iterationCount, stopwatch.Elapsed);
             return towers;
         }
 
