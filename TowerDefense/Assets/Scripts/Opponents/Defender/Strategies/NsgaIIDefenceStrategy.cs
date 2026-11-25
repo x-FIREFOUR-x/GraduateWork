@@ -59,7 +59,8 @@ namespace TowerDefense.Opponents.Defender.Strategies
             if (!_adaptiveDifficulty)
                 return;
 
-            double difficultyLevel = DifficultyLevel + _regulatorStep * (castleDamage - _targetCastleDamage);
+            double relativeError = (castleDamage - _targetCastleDamage) / Math.Max(1, _targetCastleDamage);
+            double difficultyLevel = DifficultyLevel + _regulatorStep * Math.Max(-1, Math.Min(1, relativeError));
             DifficultyLevel = Math.Min(1, Math.Max(_minDifficultyLevel, difficultyLevel));
         }
 

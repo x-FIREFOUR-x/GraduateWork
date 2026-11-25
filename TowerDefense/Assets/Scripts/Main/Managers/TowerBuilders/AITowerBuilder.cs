@@ -77,7 +77,7 @@ namespace TowerDefense.Main.Managers.TowerBuilders
         [SerializeField]
         private float targetCastleDamage = 10f;
         [SerializeField]
-        private float regulatorStep = 0.02f;
+        private float regulatorStep = 0.1f;
 
         private TowersStorage towersStorage;
         private PathCoverageMap coverageMap;

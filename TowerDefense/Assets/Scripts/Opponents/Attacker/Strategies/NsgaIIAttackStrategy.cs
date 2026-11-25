@@ -16,6 +16,7 @@ namespace TowerDefense.Opponents.Attacker.Strategies
 {
     public sealed class NsgaIIAttackStrategy : GeneticAttackStrategy
     {
+        private readonly double _minDifficultyLevel;
         private readonly bool _adaptiveDifficulty;
         private readonly double _targetCastleDamage;
         private readonly double _regulatorStep;
@@ -27,16 +28,19 @@ namespace TowerDefense.Opponents.Attacker.Strategies
         protected override double? ReportedDifficultyLevel => DifficultyLevel;
 
 
-        public NsgaIIAttackStrategy(TimeSpan timeLimit, int? seed, double difficultyLevel, bool adaptiveDifficulty, double targetCastleDamage, double regulatorStep) : base(timeLimit, seed)
+        public NsgaIIAttackStrategy(TimeSpan timeLimit, int? seed, double difficultyLevel, double minDifficultyLevel, bool adaptiveDifficulty, double targetCastleDamage, double regulatorStep) : base(timeLimit, seed)
         {
             if (!(difficultyLevel >= 0 && difficultyLevel <= 1))
                 throw new ArgumentOutOfRangeException(nameof(difficultyLevel), difficultyLevel, "Difficulty level must be in [0; 1].");
+            if (!(minDifficultyLevel >= 0 && minDifficultyLevel <= 1))
+                throw new ArgumentOutOfRangeException(nameof(minDifficultyLevel), minDifficultyLevel, "Min difficulty level must be in [0; 1].");
             if (!(targetCastleDamage >= 0))
                 throw new ArgumentOutOfRangeException(nameof(targetCastleDamage), targetCastleDamage, "Target castle damage must be non-negative.");
             if (!(regulatorStep >= 0))
                 throw new ArgumentOutOfRangeException(nameof(regulatorStep), regulatorStep, "Regulator step must be non-negative.");
 
-            DifficultyLevel = difficultyLevel;
+            _minDifficultyLevel = minDifficultyLevel;
+            DifficultyLevel = Math.Max(minDifficultyLevel, difficultyLevel);
             _adaptiveDifficulty = adaptiveDifficulty;
             _targetCastleDamage = targetCastleDamage;
             _regulatorStep = regulatorStep;
@@ -47,8 +51,9 @@ namespace TowerDefense.Opponents.Attacker.Strategies
             if (!_adaptiveDifficulty)
                 return;
 
-            double difficultyLevel = DifficultyLevel + _regulatorStep * (_targetCastleDamage - castleDamage);
-            DifficultyLevel = Math.Min(1, Math.Max(0, difficultyLevel));
+            double relativeError = (_targetCastleDamage - castleDamage) / Math.Max(1, _targetCastleDamage);
+            double difficultyLevel = DifficultyLevel + _regulatorStep * Math.Max(-1, Math.Min(1, relativeError));
+            DifficultyLevel = Math.Min(1, Math.Max(_minDifficultyLevel, difficultyLevel));
         }
 
         protected override IFitnessFunction<UnitType> CreateFitness(AttackerSnapshot snapshot) => new AttackSimulationFitness(snapshot);

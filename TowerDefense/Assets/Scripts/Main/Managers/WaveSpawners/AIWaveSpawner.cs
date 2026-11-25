@@ -43,12 +43,14 @@ namespace TowerDefense.Main.Managers.WaveSpawners
         [Header("NSGA-II")]
         [SerializeField, Range(0f, 1f), FormerlySerializedAs("beta")]
         private float difficultyLevel = 0.7f;
+        [SerializeField, Range(0f, 1f)]
+        private float minDifficultyLevel = 0.5f;
         [SerializeField]
         private bool adaptiveDifficulty = true;
         [SerializeField]
         private float targetCastleDamage = 10f;
         [SerializeField]
-        private float regulatorStep = 0.02f;
+        private float regulatorStep = 0.1f;
 
         private IAttackDecisionStrategy decisionStrategy;
         private AttackerBudget attackerBudget;
@@ -114,7 +116,7 @@ namespace TowerDefense.Main.Managers.WaveSpawners
             switch (decisionAlgorithm)
             {
                 case AttackerDecisionAlgorithm.NsgaII:
-                    return new NsgaIIAttackStrategy(timeLimit, strategySeed, difficultyLevel, adaptiveDifficulty, targetCastleDamage, regulatorStep);
+                    return new NsgaIIAttackStrategy(timeLimit, strategySeed, difficultyLevel, minDifficultyLevel, adaptiveDifficulty, targetCastleDamage, regulatorStep);
                 case AttackerDecisionAlgorithm.LegacyGa:
                     return new LegacyGaAttackStrategy(timeLimit, strategySeed);
                 default:

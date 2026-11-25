@@ -4737,7 +4737,7 @@ MonoBehaviour:
   difficultyLevel: 0.7
   adaptiveDifficulty: 1
   targetCastleDamage: 10
-  regulatorStep: 0.02
+  regulatorStep: 0.1
 --- !u!1 &2101387946
 GameObject:
   m_ObjectHideFlags: 0
