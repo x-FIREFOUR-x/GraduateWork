@@ -4729,12 +4729,13 @@ MonoBehaviour:
   effectBuildingPrefab: {fileID: 358637981425055526, guid: 8eb503696b886e04faff8fc0f480d473, type: 3}
   timeEffectBuilding: 1
   decisionAlgorithm: 1
-  timeLimitSeconds: 4
+  decisionTimeShare: 0.9
   useSeed: 0
   seed: 0
   balanceWeight: 1
   fireDensityWeight: 1
   difficultyLevel: 0.7
+  minDifficultyLevel: 0.5
   adaptiveDifficulty: 1
   targetCastleDamage: 10
   regulatorStep: 0.1

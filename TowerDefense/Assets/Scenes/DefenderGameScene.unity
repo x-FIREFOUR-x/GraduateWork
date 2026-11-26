@@ -3168,10 +3168,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeBetweenWaves: 5
   decisionAlgorithm: 1
-  timeLimitSeconds: 4
+  decisionTimeShare: 0.9
   useSeed: 0
   seed: 0
   difficultyLevel: 0.7
+  minDifficultyLevel: 0.5
   adaptiveDifficulty: 1
   targetCastleDamage: 10
   regulatorStep: 0.1
