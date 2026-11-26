@@ -155,14 +155,6 @@ namespace TowerDefense.Main.Units
             UnitCorpse corpse = model.gameObject.AddComponent<UnitCorpse>();
             corpse.Fall(wraith.TravelHeight, corpseThickness * model.lossyScale.y, Random.value < 0.5f ? -1f : 1f);
         }
-
-        public override void UpgradeHealth(float upByPercentage)
-        {
-            base.UpgradeHealth(upByPercentage);
-
-            if (WraithPrefab != null)
-                WraithPrefab.UpgradeHealth(upByPercentage);
-        }
     }
 
 }

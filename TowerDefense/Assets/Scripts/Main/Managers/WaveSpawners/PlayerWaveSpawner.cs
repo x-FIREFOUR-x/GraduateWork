@@ -9,6 +9,7 @@ namespace TowerDefense.Main.Managers.WaveSpawners
 {
     public class PlayerWaveSpawner : WaveSpawner
     {
+        [Header("ShopMenu")]
         [SerializeField]
         private UnitShopMenu unitShopMenu;
 

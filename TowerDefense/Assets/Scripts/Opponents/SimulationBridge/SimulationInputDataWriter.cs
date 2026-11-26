@@ -31,34 +31,34 @@ namespace TowerDefense.Opponents.SimulationBridge
 {
     public static class SimulationInputDataWriter
     {
-        public static string Write(TilesMap tilesMap, GamePathGraph pathGraph, Vector3 spawnPosition, string fileName)
+        public static string Write(TilesMap tilesMap, GamePathGraph pathGraph, WaveSpawner waveSpawner, string fileName)
         {
             string path = Path.Combine(Application.temporaryCachePath, fileName);
-            CreateInputData(tilesMap, pathGraph, spawnPosition).Save(path);
+            CreateInputData(tilesMap, pathGraph, waveSpawner).Save(path);
             return path;
         }
 
-        private static SimulationInputData CreateInputData(TilesMap tilesMap, GamePathGraph pathGraph, Vector3 spawnPosition)
+        private static SimulationInputData CreateInputData(TilesMap tilesMap, GamePathGraph pathGraph, WaveSpawner waveSpawner)
         {
             return new SimulationInputData
             {
-                Data = CreateGameData(),
-                Map = CreateMapData(tilesMap, pathGraph, spawnPosition)
+                Data = CreateGameData(waveSpawner.HealthMultiplier, waveSpawner.UnitSpawnInterval),
+                Map = CreateMapData(tilesMap, pathGraph, waveSpawner.SpawnPoint.position)
             };
         }
 
-        private static GameData CreateGameData()
+        private static GameData CreateGameData(float healthMultiplier, float unitSpawnInterval)
         {
-            var data = new GameData { Settings = CreateBattleSettings() };
+            var data = new GameData { Settings = CreateBattleSettings(unitSpawnInterval) };
 
             List<Unit> units = LoadComponents<Unit>(Resources.Load<UnitsStorage>(nameof(UnitsStorage)).Units).ToList();
             foreach (Unit unit in units)
-                data.Units.Add(CreateUnitSpec(unit));
+                data.Units.Add(CreateUnitSpec(unit, healthMultiplier));
 
             foreach (WraithDragonRider rider in units.OfType<WraithDragonRider>())
             {
                 if (rider.WraithPrefab != null && data.Units.All(unit => unit.Type != rider.WraithPrefab.UnitType.ToString()))
-                    data.Units.Add(CreateUnitSpec(rider.WraithPrefab));
+                    data.Units.Add(CreateUnitSpec(rider.WraithPrefab, healthMultiplier));
             }
 
             foreach (Tower tower in LoadComponents<Tower>(Resources.Load<TowersStorage>(nameof(TowersStorage)).Towers))
@@ -109,24 +109,24 @@ namespace TowerDefense.Opponents.SimulationBridge
             return map;
         }
 
-        private static BattleSettings CreateBattleSettings()
+        private static BattleSettings CreateBattleSettings(float unitSpawnInterval)
         {
             return new BattleSettings
             {
                 FixedTimeStepSeconds = Time.fixedDeltaTime,
-                UnitSpawnIntervalSeconds = AIWaveSpawner.UnitSpawnInterval,
+                UnitSpawnIntervalSeconds = unitSpawnInterval,
                 TowerRetargetIntervalSeconds = Tower.TargetingInterval,
                 PathNodeReachDistance = Unit.NodeReachDistance,
                 CatapultStoneMinFlightSeconds = CatapultStone.MinFlightTime
             };
         }
 
-        private static UnitSpec CreateUnitSpec(Unit unit)
+        private static UnitSpec CreateUnitSpec(Unit unit, float healthMultiplier)
         {
             var spec = new UnitSpec
             {
                 Type = unit.UnitType.ToString(),
-                Health = unit.StartHealth,
+                Health = unit.StartHealth * healthMultiplier,
                 Speed = unit.StartSpeed,
                 CastleDamage = unit.Damage,
                 MaxPathOffset = unit.MaxRandomPathOffset,

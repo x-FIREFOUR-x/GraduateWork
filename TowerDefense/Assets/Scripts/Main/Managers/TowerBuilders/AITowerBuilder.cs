@@ -163,7 +163,7 @@ namespace TowerDefense.Main.Managers.TowerBuilders
 
         private SimulationRequest CreateSimulationRequest(IEnumerable<DefenderGene> builtTowers)
         {
-            string inputPath = SimulationInputDataWriter.Write(tilesMap, PathGraphHolder.Graph, waveSpawner.SpawnPoint.position, SimulationInputFileName);
+            string inputPath = SimulationInputDataWriter.Write(tilesMap, PathGraphHolder.Graph, waveSpawner, SimulationInputFileName);
             return new SimulationRequest(inputPath, builtTowers.Select(SimulationTowerPlacementConverter.Of), int.MaxValue, waveSpawner.WaveNumber);
         }
 

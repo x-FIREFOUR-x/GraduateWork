@@ -31,6 +31,7 @@ namespace TowerDefense.Main.Managers.WaveSpawners
             LegacyGa = 2
         }
 
+        [Header("Algorithm Settings")]
         [SerializeField, FormerlySerializedAs("strategy")]
         private AttackerDecisionAlgorithm decisionAlgorithm = AttackerDecisionAlgorithm.OriginalGa;
         [SerializeField, Range(0.1f, 1f)]
@@ -161,7 +162,7 @@ namespace TowerDefense.Main.Managers.WaveSpawners
 
         private SimulationRequest CreateSimulationRequest()
         {
-            string inputPath = SimulationInputDataWriter.Write(tilesMap, PathGraphHolder.Graph, SpawnPoint.position, SimulationInputFileName);
+            string inputPath = SimulationInputDataWriter.Write(tilesMap, PathGraphHolder.Graph, this, SimulationInputFileName);
             return new SimulationRequest(inputPath, SimulationTowerPlacementConverter.CollectBuiltTowers(tilesMap), MaxUnitsInWave(WaveNumber), WaveNumber);
         }
 

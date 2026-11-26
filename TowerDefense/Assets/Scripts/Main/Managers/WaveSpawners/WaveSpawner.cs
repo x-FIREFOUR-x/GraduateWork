@@ -12,18 +12,23 @@ namespace TowerDefense.Main.Managers.WaveSpawners
 {
     public abstract class WaveSpawner: MonoBehaviour
     {
-        public Transform SpawnPoint { get; protected set; }
-        public const float UnitSpawnInterval = 0.5f;
-
         protected UnitsStorage unitsStorage;
 
         [SerializeField]
         protected UnlockScheduleController unlockScheduleController;
 
+        public Transform SpawnPoint { get; protected set; }
+        [field: SerializeField]
+        public float UnitSpawnInterval { get; private set; } = 0.5f;
+
         [SerializeField]
         protected float timeBetweenWaves = 5f;
         public float timeToNextSpawn { get; protected set; } = 5f;
         public float TimeBetweenWaves { get { return timeBetweenWaves; } }
+
+        [SerializeField]
+        private float healthUpgradeMultiplier = 1.25f;
+        public float HealthMultiplier { get; private set; } = 1f;
 
         public int WaveNumber { get; protected set; } = 1;
 
@@ -57,6 +62,7 @@ namespace TowerDefense.Main.Managers.WaveSpawners
             countSpawnedUnitsInThisWave++;
             GameObject unitObject = Instantiate(unitsStorage.Units[(int)unitType], SpawnPoint.position, SpawnPoint.rotation);
             Unit unit = unitObject.GetComponent<Unit>();
+            unit.ApplyHealthMultiplier(HealthMultiplier);
 
             RecruitToSquad(unit);
 
@@ -103,13 +109,7 @@ namespace TowerDefense.Main.Managers.WaveSpawners
         protected void UpdateGameStats()
         {
             if (WaveNumber % 5 == 0)
-            {
-                foreach (var unit in unitsStorage.Units)
-                {
-                    if (unit != null)
-                        unit.GetComponent<Unit>().UpgradeHealth((float)0.25);
-                }
-            }
+                HealthMultiplier *= healthUpgradeMultiplier;
         }
     }
 

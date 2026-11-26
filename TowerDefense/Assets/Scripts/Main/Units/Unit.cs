@@ -27,6 +27,7 @@ namespace TowerDefense.Main.Units
         [field: SerializeField]
         public float StartHealth { get; private set; } = 100f;
         private float health;
+        private float healthMultiplier = 1f;
         private bool isDead;
 
         [field: SerializeField]
@@ -228,6 +229,7 @@ namespace TowerDefense.Main.Units
             TravelHeight = previous.TravelHeight - previous.OffsetStartPosY + OffsetStartPosY;
             movedDistance = previous.movedDistance;
             model.rotation = previous.model.rotation;
+            ApplyHealthMultiplier(previous.healthMultiplier);
 
             IsSuccessor = true;
             previous.hasSuccessor = true;
@@ -302,9 +304,10 @@ namespace TowerDefense.Main.Units
             currentTimeReturnSpeed = TimeReturnSpeed;
         }
 
-        public virtual void UpgradeHealth(float upByPercentage)
+        public void ApplyHealthMultiplier(float multiplier)
         {
-            StartHealth += StartHealth * upByPercentage;
+            healthMultiplier *= multiplier;
+            StartHealth *= multiplier;
         }
     }
 
