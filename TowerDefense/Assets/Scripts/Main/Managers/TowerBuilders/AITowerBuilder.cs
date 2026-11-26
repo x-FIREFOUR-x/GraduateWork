@@ -69,15 +69,19 @@ namespace TowerDefense.Main.Managers.TowerBuilders
 
         [Header("NSGA-II")]
         [SerializeField, Range(0f, 1f)]
-        private float difficultyLevel = 0.7f;
+        private float difficultyLevel = 1.0f;
         [SerializeField, Range(0f, 1f)]
-        private float minDifficultyLevel = 0.5f;
+        private float minDifficultyLevel = 0.9f;
         [SerializeField]
         private bool adaptiveDifficulty = true;
         [SerializeField]
         private float targetCastleDamage = 10f;
         [SerializeField]
-        private float regulatorStep = 0.1f;
+        private float regulatorStep = 0.05f;
+
+        [Header("Expected wave")]
+        [SerializeField, Min(0)]
+        private int waveNumbersForThreatForecast = 3;
 
         private TowersStorage towersStorage;
         private PathCoverageMap coverageMap;
@@ -167,13 +171,18 @@ namespace TowerDefense.Main.Managers.TowerBuilders
             return new SimulationRequest(inputPath, builtTowers.Select(SimulationTowerPlacementConverter.Of), int.MaxValue, waveSpawner.WaveNumber);
         }
 
-        private IReadOnlyList<UnitType> ExpectedWave()
+        private List<UnitType> ExpectedWave()
         {
-            if (waveSpawner.LastWave.Count > 0)
-                return waveSpawner.LastWave;
-            if (unlockScheduleController.UnlockedUnits.Count > 0)
-                return unlockScheduleController.UnlockedUnits;
-            return Enum.GetValues(typeof(UnitType)).Cast<UnitType>().ToList();
+            List<UnitType> wave = waveSpawner.LastWave.ToList();
+            List<UnitType> missingUnitTypes = unlockScheduleController.UnlockedUnitsAt(waveSpawner.WaveNumber + waveNumbersForThreatForecast).Where(unit => !wave.Contains(unit)).ToList();
+            if (missingUnitTypes.Count == 0)
+                return wave;
+
+            int waveCost = Mathf.Max(wave.Sum(unit => unlockScheduleController.UnitPrices.TryGetValue(unit, out int price) ? price : 0), PlayerStats.MoneyAttacker);
+            int costPerMissingUnit = waveCost / (missingUnitTypes.Count + (wave.Count > 0 ? 1 : 0));
+            foreach (UnitType unit in missingUnitTypes)
+                wave.AddRange(Enumerable.Repeat(unit, Mathf.Max(1, costPerMissingUnit / unlockScheduleController.UnitPrices[unit])));
+            return wave;
         }
 
         private List<DefenderGene> TakeDecision()

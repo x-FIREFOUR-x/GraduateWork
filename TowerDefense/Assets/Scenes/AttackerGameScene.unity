@@ -3624,9 +3624,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3190bcb461d841748a8138c24fca9fa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeBetweenWaves: 10
-  unitShopMenu: {fileID: 869074699}
   unlockScheduleController: {fileID: 1900000003}
+  <UnitSpawnInterval>k__BackingField: 0.5
+  timeBetweenWaves: 10
+  healthUpgradeMultiplier: 1.25
+  unitShopMenu: {fileID: 869074699}
 --- !u!1 &1672618633
 GameObject:
   m_ObjectHideFlags: 0
@@ -4772,9 +4774,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff945479a8ed1ff4eb5bdd6a50301488, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unlockScheduleController: {fileID: 1900000003}
   mapController: {fileID: 705115995}
   waveSpawner: {fileID: 1654633878}
-  unlockScheduleController: {fileID: 1900000003}
   effectBuildingPrefab: {fileID: 358637981425055526, guid: 8eb503696b886e04faff8fc0f480d473, type: 3}
   timeEffectBuilding: 1
   decisionAlgorithm: 1
@@ -4783,11 +4785,12 @@ MonoBehaviour:
   seed: 0
   balanceWeight: 1
   fireDensityWeight: 1
-  difficultyLevel: 0.7
-  minDifficultyLevel: 0.5
+  difficultyLevel: 1
+  minDifficultyLevel: 0.85
   adaptiveDifficulty: 1
   targetCastleDamage: 10
-  regulatorStep: 0.1
+  regulatorStep: 0.03
+  waveNumbersForThreatForecast: 3
 --- !u!1 &2101387946
 GameObject:
   m_ObjectHideFlags: 0

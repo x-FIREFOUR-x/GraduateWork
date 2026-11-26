@@ -29,7 +29,7 @@ namespace TowerDefense.Main.Managers
 
         public int CurrentWaveNumber => waveSpawner.WaveNumber;
 
-        public IReadOnlyList<UnitType> UnlockedUnits => UnlockedTypesAt(UnitUnlockScheduleRecords, CurrentWaveNumber);
+        public IReadOnlyList<UnitType> UnlockedUnits => UnlockedUnitsAt(CurrentWaveNumber);
 
         public IReadOnlyDictionary<UnitType, int> UnitPrices { get; private set; } = new Dictionary<UnitType, int>();
 
@@ -51,6 +51,8 @@ namespace TowerDefense.Main.Managers
             if (towersUnlockScheduleStorage != null)
                 (TowerUnlockScheduleRecords, TowerPrices) = RegisterUnlockRecords(towersUnlockScheduleStorage.TowerUnlockScheduleRecords, Resources.Load<TowersStorage>(nameof(TowersStorage)).Towers, (Tower tower) => tower.Price);
         }
+
+        public IReadOnlyList<UnitType> UnlockedUnitsAt(int waveNumber) => UnlockedTypesAt(UnitUnlockScheduleRecords, waveNumber);
 
         private static TStorage LoadIfMissing<TStorage>(TStorage storage) where TStorage : ScriptableObject
         {
