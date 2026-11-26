@@ -20,7 +20,7 @@ using TowerDefense.Opponents.SimulationBridge;
 
 namespace TowerDefense.Main.Managers.TowerBuilders
 {
-    public class AITowerBuilder : MonoBehaviour
+    public class AITowerBuilder : TowerBuilder
     {
         public const string SimulationInputFileName = "simulation-input-defender.json";
 
@@ -86,9 +86,6 @@ namespace TowerDefense.Main.Managers.TowerBuilders
         private Task<List<DefenderGene>> decisionTask;
         private int? castleHealthAtLastDecision;
 
-        private List<TowerType> availableTowersTypes;
-        private Dictionary<TowerType, int> availableTowersPrices;
-
         private int countBuildedTowerList = 0;
 
 
@@ -96,9 +93,6 @@ namespace TowerDefense.Main.Managers.TowerBuilders
         {
             towersStorage = Resources.Load<TowersStorage>($"{nameof(TowersStorage)}");
             tilesMap = mapController.TilesMap;
-
-            availableTowersTypes = new List<TowerType>();
-            availableTowersPrices = new Dictionary<TowerType, int>();
 
             coverageMap = PathCoverageMap.Build(tilesMap, towersStorage.Towers.Select(tower => tower.GetComponent<Tower>()));
             decisionStrategy = CreateStrategy();
@@ -142,16 +136,15 @@ namespace TowerDefense.Main.Managers.TowerBuilders
 
         private void StartDecision()
         {
-            UpdateAvailableTower();
             ReportCastleDamage();
 
             List<DefenderGene> builtTowers = CollectBuiltTowers();
             DefenderSnapshot snapshot = new DefenderSnapshot(
-                availableTowersTypes,
-                availableTowersPrices,
+                unlockScheduleController.UnlockedTowers,
+                unlockScheduleController.TowerPrices,
                 CollectFreeCells(),
                 builtTowers,
-                waveSpawner.AvailableUnits,
+                unlockScheduleController.UnlockedUnits,
                 TargetShares,
                 coverageMap,
                 Mathf.Max(0, PlayerStats.MoneyDefender),
@@ -178,8 +171,8 @@ namespace TowerDefense.Main.Managers.TowerBuilders
         {
             if (waveSpawner.LastWave.Count > 0)
                 return waveSpawner.LastWave;
-            if (waveSpawner.AvailableUnits != null && waveSpawner.AvailableUnits.Count > 0)
-                return waveSpawner.AvailableUnits;
+            if (unlockScheduleController.UnlockedUnits.Count > 0)
+                return unlockScheduleController.UnlockedUnits;
             return Enum.GetValues(typeof(UnitType)).Cast<UnitType>().ToList();
         }
 
@@ -201,34 +194,6 @@ namespace TowerDefense.Main.Managers.TowerBuilders
             if (castleHealthAtLastDecision.HasValue)
                 decisionStrategy.OnWaveFinished(Mathf.Max(0, castleHealthAtLastDecision.Value - castleHealth));
             castleHealthAtLastDecision = castleHealth;
-        }
-
-        private void UpdateAvailableTower()
-        {
-            switch (countBuildedTowerList)
-            {
-                case 0:
-                    AddAvailableTower(TowerType.BallistaTower);
-                    break;
-                case 2:
-                    AddAvailableTower(TowerType.ArcherTower);
-                    break;
-                case 4:
-                    AddAvailableTower(TowerType.CatapultTower);
-                    break;
-                case 6:
-                    AddAvailableTower(TowerType.IceMageTower);
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
-        private void AddAvailableTower(TowerType towerType)
-        {
-            availableTowersTypes.Add(towerType);
-            availableTowersPrices[towerType] = towersStorage.Towers[(int)towerType].GetComponent<Tower>().Price;
         }
 
         private void BuildTowers(IEnumerable<DefenderGene> towers)

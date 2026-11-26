@@ -18,15 +18,14 @@ namespace TowerDefense.Main.Managers.WaveSpawners
         protected UnitsStorage unitsStorage;
 
         [SerializeField]
+        protected UnlockScheduleController unlockScheduleController;
+
+        [SerializeField]
         protected float timeBetweenWaves = 5f;
         public float timeToNextSpawn { get; protected set; } = 5f;
         public float TimeBetweenWaves { get { return timeBetweenWaves; } }
 
         public int WaveNumber { get; protected set; } = 1;
-
-        protected List<UnitType> availableUnit;
-        public List<UnitType> AvailableUnits => availableUnit;
-        protected Dictionary<UnitType, int> availablePrices;
 
         protected List<UnitType> nextWave;
         public IReadOnlyList<UnitType> LastWave => (IReadOnlyList<UnitType>)nextWave ?? Array.Empty<UnitType>();
@@ -73,44 +72,6 @@ namespace TowerDefense.Main.Managers.WaveSpawners
             {
                 if (squadLeader.TryRecruit(unit))
                     return;
-            }
-        }
-
-        protected void UpdateAvailableUnit()
-        {
-            switch (WaveNumber)
-            {
-                case 1:
-                    availableUnit.Add(UnitType.Goblin);
-                    availablePrices[UnitType.Goblin] = unitsStorage.Units[(int)UnitType.Goblin].GetComponent<Unit>().Price;
-                    break;
-                case 4:
-                    availablePrices[UnitType.OrcWargRider] = unitsStorage.Units[(int)UnitType.OrcWargRider].GetComponent<Unit>().Price;
-                    availableUnit.Add(UnitType.OrcWargRider);
-                    break;
-                case 6:
-                    availablePrices[UnitType.Bat] = unitsStorage.Units[(int)UnitType.Bat].GetComponent<Unit>().Price;
-                    availableUnit.Add(UnitType.Bat);
-                    break;
-                case 8:
-                    availablePrices[UnitType.Troll] = unitsStorage.Units[(int)UnitType.Troll].GetComponent<Unit>().Price;
-                    availableUnit.Add(UnitType.Troll);
-                    break;
-                case 10:
-                    availablePrices[UnitType.UrukStandardBearer] = unitsStorage.Units[(int)UnitType.UrukStandardBearer].GetComponent<Unit>().Price;
-                    availableUnit.Add(UnitType.UrukStandardBearer);
-                    break;
-                case 11:
-                    availablePrices[UnitType.OrcAlphaWargRider] = unitsStorage.Units[(int)UnitType.OrcAlphaWargRider].GetComponent<Unit>().Price;
-                    availableUnit.Add(UnitType.OrcAlphaWargRider);
-                    break;
-                case 12:
-                    availablePrices[UnitType.WraithDragonRider] = unitsStorage.Units[(int)UnitType.WraithDragonRider].GetComponent<Unit>().Price;
-                    availableUnit.Add(UnitType.WraithDragonRider);
-                    break;
-
-                default:
-                    break;
             }
         }
 

@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 894c1240cbd74b5db9e034a9ee932e18, type: 3}
+  m_Name: UnitsUnlockScheduleStorage
+  m_EditorClassIdentifier: 
+  <UnitUnlockScheduleRecords>k__BackingField:
+  - Type: 0
+    WaveNumber: 1
+  - Type: 2
+    WaveNumber: 4
+  - Type: 1
+    WaveNumber: 6
+  - Type: 3
+    WaveNumber: 8
+  - Type: 6
+    WaveNumber: 10
+  - Type: 7
+    WaveNumber: 11
+  - Type: 4
+    WaveNumber: 12

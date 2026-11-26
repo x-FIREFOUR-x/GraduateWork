@@ -68,9 +68,6 @@ namespace TowerDefense.Main.Managers.WaveSpawners
             attackerBudget = new AttackerBudget();
             tilesMap = FindAnyObjectByType<TilesMap>();
             decisionStrategy = CreateStrategy();
-
-            availableUnit = new List<UnitType>();
-            availablePrices = new Dictionary<UnitType, int>();
         }
 
 
@@ -126,9 +123,7 @@ namespace TowerDefense.Main.Managers.WaveSpawners
 
         private void GenerateWave()
         {
-            UpdateAvailableUnit();
-
-            AttackerSnapshot snapshot = new AttackerSnapshot(availableUnit, availablePrices, CollectBuiltTowers(), Mathf.Max(0, attackerBudget.MoneyForWave()), CreateSimulationRequest());
+            AttackerSnapshot snapshot = new AttackerSnapshot(unlockScheduleController.UnlockedUnits, unlockScheduleController.UnitPrices, CollectBuiltTowers(), Mathf.Max(0, attackerBudget.MoneyForWave()), CreateSimulationRequest());
             decisionSnapshot = snapshot;
             decisionTask = Task.Run(() => decisionStrategy.Decide(snapshot));
         }

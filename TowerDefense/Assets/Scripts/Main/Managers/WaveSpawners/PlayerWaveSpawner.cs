@@ -1,9 +1,7 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 
 using UnityEngine;
 
-using TowerDefense.Main.Units;
 using TowerDefense.Main.UI.UnitMenu;
 
 
@@ -17,9 +15,6 @@ namespace TowerDefense.Main.Managers.WaveSpawners
         public override void Initialize(Transform spawn)
         {
             base.Initialize(spawn);
-
-            availableUnit = new List<UnitType>();
-            availablePrices = new Dictionary<UnitType, int>();
         }
 
         void Update()

@@ -8,7 +8,7 @@ using TowerDefense.Main.UI.TowerMenu;
 
 namespace TowerDefense.Main.Managers.TowerBuilders
 {
-    public class TowerBuildManager : MonoBehaviour
+    public class TowerBuildManager : TowerBuilder
     {
         public static TowerBuildManager instance;
 
